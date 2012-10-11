@@ -1,0 +1,14 @@
+# Exclude build directories
+Debug/
+Release/
+
+# Exclude debug directories
+simple/Debug/
+
+# Exclude visual studio specific user files
+*.suo
+*.user
+simple.sdf
+
+# Exclude other directories
+ipch/
