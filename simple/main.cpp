@@ -1,5 +1,5 @@
 #include <iostream>
-#include "node.h"
+#include "Node.h"
 
 int main() {
 

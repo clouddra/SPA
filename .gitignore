@@ -8,6 +8,8 @@ simple/Debug/
 # Exclude visual studio specific user files
 *.suo
 *.user
+*.sdf
+*.opensdf
 simple.sdf
 
 # Exclude other directories

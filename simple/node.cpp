@@ -1,5 +1,7 @@
-#include "node.h"
-
+#ifndef NODE_HEAD
+#define NODE_HEAD
+#include "Node.h"
+#endif
 
 Node::Node(int type, int v) {
     nodeType = type;
