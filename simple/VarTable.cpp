@@ -11,20 +11,30 @@
 VarTable::VarTable() {
 }
 
-std::string VarTable::insertVar(std::string varName) {
-	varTable.push_back(varName);
-	return varName;
+int VarTable::insertVar(std::string varName) {
+
+	std::vector<std::string>::iterator it;
+	it = std::find (varTable.begin(), varTable.end(), varName);
+
+	int index = getVarIndex(varName);
+	if (index==-1) {
+		varTable.push_back(varName) ;
+		index = varTable.size();
+	}
+
+	return index;
 }
+
 
 int VarTable::getSize() {
 	return (int) varTable.size();
 }
 
-std::string VarTable::getVarName (int ind) {
+std::string VarTable::getVarName (int ind) throw(std::out_of_range){
 	return varTable.at(ind) ;
 }
 
-int VarTable::getVarIndex (std::string varName) throw(std::out_of_range) {
+int VarTable::getVarIndex (std::string varName)  {
 
 	std::vector<std::string>::iterator it;
 	it = std::find (varTable.begin(), varTable.end(), varName);
