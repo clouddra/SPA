@@ -8,7 +8,6 @@
 #include <algorithm>
 #endif
 
-
 ModifiesTable::ModifiesTable(){}
 
 int ModifiesTable::insertModifies(int stmt, int var){	
@@ -16,7 +15,7 @@ int ModifiesTable::insertModifies(int stmt, int var){
 	int index = getModifiesIndex(stmt, var);
 	if (index==-1) {
 		modifiesTable.push_back(std::pair<int ,int>(stmt, var)) ;
-		index = modifiesTable.size();
+		index = modifiesTable.size() - 1;
 	}
 
 	return index;
@@ -66,7 +65,7 @@ int ModifiesTable::getModifiesIndex(int stmt, int var){
 	return -1;
 
 }
-std::pair <int ,int> ModifiesTable::extractModifies (int ind) throw(std::out_of_range){
+std::pair <int ,int> ModifiesTable::extractModifies (int ind){
 	return modifiesTable.at(ind) ;
 }
 

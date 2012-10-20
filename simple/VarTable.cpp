@@ -19,18 +19,17 @@ int VarTable::insertVar(std::string varName) {
 	int index = getVarIndex(varName);
 	if (index==-1) {
 		varTable.push_back(varName) ;
-		index = varTable.size();
+		index = varTable.size() - 1;
 	}
 
 	return index;
 }
 
-
 int VarTable::getSize() {
 	return (int) varTable.size();
 }
 
-std::string VarTable::getVarName (int ind) throw(std::out_of_range){
+std::string VarTable::getVarName (int ind){
 	return varTable.at(ind) ;
 }
 

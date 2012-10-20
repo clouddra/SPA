@@ -17,6 +17,6 @@ public:
 	VarTable();
 	int insertVar(std::string varName);
 	int getSize();
-	std::string getVarName (int ind) throw(std::out_of_range);
+	std::string getVarName (int ind);
 	int getVarIndex (std::string varName);
 };

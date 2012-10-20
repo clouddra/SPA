@@ -16,6 +16,6 @@ public:
 	std::vector<int> getModifiedBy(int stmt);
 	bool isModifies(int stmt, int var);
 	int getModifiesIndex(int stmt, int var);
-	std::pair <int ,int> extractModifies (int ind) throw(std::out_of_range);
+	std::pair <int ,int> extractModifies (int ind);
 	int getSize();
 };
