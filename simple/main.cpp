@@ -1,25 +1,9 @@
 #include <iostream>
 
-#ifndef NODE_HEAD
-#define NODE_HEAD
-#include "Node.h"
+#ifndef PKB
+#define PKB
+#include "PKB.h"
 #endif
-
-#ifndef MODIFIES_HEAD
-#define MODIFIES_HEAD
-#include "ModifiesTable.h"
-#endif
-
-#ifndef VARTABLE_HEAD
-#define VARTABLE_HEAD
-#include "VarTable.h"
-#endif
-
-#ifndef USESTABLE_HEAD
-#define USESTABLE_HEAD
-#include "UsesTable.h"
-#endif
-
 //using namespace std;
 
 
@@ -35,7 +19,7 @@ int main() {
 	for (int i = 0; i < temp2.size(); i++) {
 	std::cout << temp2[i] << "\n";
 	} 
-*/
+
 	ModifiesTable v = ModifiesTable();
 
 	std::cout << v.insertModifies(1,1) << std::endl ;
@@ -73,6 +57,22 @@ int main() {
 
 	s.extractUses(1) ;
 	s.extractUses(10) ;
+*/
+
+	ProcTable q = ProcTable();
+
+	std::cout << q.insertProc("function1", 1, 2) << std::endl ;
+	std::cout << q.insertProc("function2", 4, 5) << std::endl ;
+	std::cout << q.insertProc("function3", 6, 7) << std::endl ;
+
+	std::cout << q.getProcIndex("function1") << std::endl ;
+	std::cout << q.getProcIndex("function3") << std::endl ;
+	std::cout << q.getProcIndex("lol") << std::endl ;
+
+	q.getSize() ;
+	std::cout << q.getProcName(2) ;
+
+
 
 	system("pause");
 	return 0;

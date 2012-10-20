@@ -45,7 +45,7 @@ std::vector<int> ModifiesTable::getModifiedBy(int stmt){
 
 bool ModifiesTable::isModifies(int stmt, int var){
 
-	if (ModifiesTable::getModifiesIndex(stmt, var) ==-1)
+	if (ModifiesTable::getModifiesIndex(stmt, var) == -1)
 		return false;
 
 	return true;

@@ -13,9 +13,6 @@ VarTable::VarTable() {
 
 int VarTable::insertVar(std::string varName) {
 
-	std::vector<std::string>::iterator it;
-	it = std::find (varTable.begin(), varTable.end(), varName);
-
 	int index = getVarIndex(varName);
 	if (index==-1) {
 		varTable.push_back(varName) ;

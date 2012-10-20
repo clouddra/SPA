@@ -41,7 +41,7 @@ std::vector<int> UsesTable::getUsedBy(int stmt){
 			varList.push_back(usesTable[i].second) ;
 	}
 
-	return varList;	//not sure how to return null. I guess its good enuough if the list is empty
+	return varList;	//not sure how to return null. I guess its good enough if the list is empty
 }
 
 bool UsesTable::isUses(int stmt, int var){
