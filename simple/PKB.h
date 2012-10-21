@@ -1,8 +1,3 @@
-#ifndef NODE_HEAD
-#define NODE_HEAD
-#include "Node.h"
-#endif
-
 #ifndef MODIFIES_HEAD
 #define MODIFIES_HEAD
 #include "ModifiesTable.h"
@@ -23,3 +18,21 @@
 #include "ProcTable.h"
 #endif
 
+#ifndef AST_HEAD
+#define AST_HEAD
+#include "AST.h"
+#endif
+
+class PKB {
+
+private:
+    AST ast;
+    ModifiesTable modifiesTable;
+    VarTable varTable;
+    UsesTable usesTable;
+    ProcTable procTable;
+
+public:
+    PKB();
+    int insertNode(int nodeType, std::string value, int stmtNum, int parent);
+};

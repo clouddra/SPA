@@ -76,15 +76,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AST.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModifiesTable.cpp" />
     <ClCompile Include="Node.cpp" />
+    <ClCompile Include="PKB.cpp" />
     <ClCompile Include="Procedure.cpp" />
     <ClCompile Include="ProcTable.cpp" />
     <ClCompile Include="UsesTable.cpp" />
     <ClCompile Include="VarTable.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AST.h" />
     <ClInclude Include="common.hpp" />
     <ClInclude Include="ModifiesTable.h" />
     <ClInclude Include="Node.h" />

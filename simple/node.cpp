@@ -3,9 +3,10 @@
 #include "Node.h"
 #endif
 
-Node::Node(int type, int v) {
+Node::Node(int type, int v, int s) {
     nodeType = type;
     value = v;
+    stmtNum = s;
     parent = leftSibling = rightSibling = -1;
 }
 
@@ -47,4 +48,13 @@ void Node::setRight(int r) {
 
 void Node::addChild(int c) {
     children.push_back(c);
+}
+
+bool Node::equals(Node other) {
+    if (nodeType != other.nodeType)
+        return false;
+    if (value != other.value)
+        return false;
+
+    return true;
 }

@@ -36,6 +36,12 @@
     <ClCompile Include="ProcTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AST.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PKB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.hpp">
@@ -60,6 +66,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PKB.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AST.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

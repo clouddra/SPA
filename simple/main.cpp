@@ -1,7 +1,7 @@
 #include <iostream>
 
-#ifndef PKB
-#define PKB
+#ifndef PKB_HEAD
+#define PKB_HEAD
 #include "PKB.h"
 #endif
 //using namespace std;
@@ -57,7 +57,6 @@ int main() {
 
 	s.extractUses(1) ;
 	s.extractUses(10) ;
-*/
 
 	ProcTable q = ProcTable();
 
@@ -71,8 +70,19 @@ int main() {
 
 	q.getSize() ;
 	std::cout << q.getProcName(2) ;
+    */
 
-
+    PKB temp = PKB();
+    int proc = temp.insertNode(Node::procedureNode, "first", -1, 0);
+    int stmtLst = temp.insertNode(Node::stmtLstNode, "", -1, proc);
+    int assign = temp.insertNode(Node::assignNode, "", 1, stmtLst);
+    int var = temp.insertNode(Node::varNode, "x", 1, assign);
+    temp.insertNode(Node::constNode, "5", 1, assign);
+    assign = temp.insertNode(Node::assignNode, "", 2, stmtLst);
+    var = temp.insertNode(Node::varNode, "y", 2, assign);
+    int plus = temp.insertNode(Node::plusNode, "", 2, assign);
+    temp.insertNode(Node::constNode, "5", 2, plus);
+    temp.insertNode(Node::varNode, "x", 2, plus);
 
 	system("pause");
 	return 0;
