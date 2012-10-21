@@ -77,6 +77,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AST.cpp" />
+    <ClCompile Include="Error.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModifiesTable.cpp" />
     <ClCompile Include="Node.cpp" />
@@ -89,6 +90,7 @@
   <ItemGroup>
     <ClInclude Include="AST.h" />
     <ClInclude Include="common.hpp" />
+    <ClInclude Include="Error.h" />
     <ClInclude Include="ModifiesTable.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="PKB.h" />
