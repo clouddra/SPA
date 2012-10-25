@@ -77,25 +77,25 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AST.cpp" />
-    <ClCompile Include="Error.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModifiesTable.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="PKB.cpp" />
     <ClCompile Include="Procedure.cpp" />
     <ClCompile Include="ProcTable.cpp" />
+    <ClCompile Include="StmtNodeTable.cpp" />
     <ClCompile Include="UsesTable.cpp" />
     <ClCompile Include="VarTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AST.h" />
     <ClInclude Include="common.hpp" />
-    <ClInclude Include="Error.h" />
     <ClInclude Include="ModifiesTable.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="PKB.h" />
     <ClInclude Include="Procedure.h" />
     <ClInclude Include="ProcTable.h" />
+    <ClInclude Include="StmtNodeTable.h" />
     <ClInclude Include="UsesTable.h" />
     <ClInclude Include="VarTable.h" />
   </ItemGroup>

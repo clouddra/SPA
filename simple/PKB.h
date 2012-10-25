@@ -23,6 +23,11 @@
 #include "AST.h"
 #endif
 
+#ifndef STMTNODE_HEAD
+#define STMTNODE_HEAD
+#include "StmtNodeTable.h"
+#endif
+
 class PKB {
 
 private:
@@ -31,6 +36,7 @@ private:
     VarTable varTable;
     UsesTable usesTable;
     ProcTable procTable;
+    StmtNodeTable stmtNodeTable;
 
 public:
     PKB();

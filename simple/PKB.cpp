@@ -9,13 +9,20 @@ PKB::PKB() {
     usesTable = UsesTable();
     procTable = ProcTable();
     ast = AST();
+    stmtNodeTable = StmtNodeTable();
 }
 
 int PKB::insertNode(int nodeType, std::string value, int stmtNum, int parent) {
-    int indexValue;
+    int indexValue = -1;
+    bool newStmtFlag = false;
 
     switch (nodeType) {
-    
+    // Please add if and call when implemented
+    case Node::assignNode:
+    case Node::whileNode:
+        newStmtFlag = true;
+        break;
+
     case Node::varNode:
         indexValue = varTable.insertVar(value);
         break;
@@ -27,11 +34,11 @@ int PKB::insertNode(int nodeType, std::string value, int stmtNum, int parent) {
     case Node::procedureNode:
         indexValue = procTable.insertProc(value, 0, 0);
         break;
-
-    default:
-        indexValue = -1;
     }
 
     int newNode = ast.insertNode(nodeType, indexValue, stmtNum, parent);
+    if (newStmtFlag)
+        stmtNodeTable.insertStmtNode(stmtNum, newNode, nodeType);
+
     return newNode;
 }

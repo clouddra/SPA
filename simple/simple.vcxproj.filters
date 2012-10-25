@@ -42,7 +42,7 @@
     <ClCompile Include="PKB.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Error.cpp">
+    <ClCompile Include="StmtNodeTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,7 +74,7 @@
     <ClInclude Include="AST.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Error.h">
+    <ClInclude Include="StmtNodeTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
