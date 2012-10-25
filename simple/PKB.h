@@ -41,4 +41,12 @@ private:
 public:
     PKB();
     int insertNode(int nodeType, std::string value, int stmtNum, int parent);
+    std::vector<int> getModifiesVar(std::string var);
+	std::vector<std::string> getModifiedBy(int stmt);
+    bool isModifies(int stmt, std::string var);
+    std::vector<int> getUsesVar(std::string var);
+	std::vector<std::string> getUsedBy(int stmt);
+    bool isUses(int stmt, std::string var);
+    std::vector<int> getStmtWithType(int nodeType);
+    int getNumStmts();
 };

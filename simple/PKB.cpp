@@ -37,8 +37,55 @@ int PKB::insertNode(int nodeType, std::string value, int stmtNum, int parent) {
     }
 
     int newNode = ast.insertNode(nodeType, indexValue, stmtNum, parent);
-    if (newStmtFlag)
+    if (newStmtFlag) {
         stmtNodeTable.insertStmtNode(stmtNum, newNode, nodeType);
+    }
 
     return newNode;
+}
+
+std::vector<int> PKB::getModifiesVar(std::string var) {
+    int varIndex = varTable.getVarIndex(var);
+    return modifiesTable.getModifiesVar(varIndex);
+}
+
+std::vector<std::string> PKB::getModifiedBy(int stmt) {
+    std::vector<std::string> toReturn;
+    std::vector<int> answer = modifiesTable.getModifiedBy(stmt);
+    for (int i = 0; i < answer.size(); i++) {
+        toReturn.push_back(varTable.getVarName(answer[i]));
+    }
+    return toReturn;
+}
+
+bool PKB::isModifies(int stmt, std::string var) {
+    int varIndex = varTable.getVarIndex(var);
+    return modifiesTable.isModifies(stmt, varIndex);
+}
+
+std::vector<int> PKB::getUsesVar(std::string var) {
+    int varIndex = varTable.getVarIndex(var);
+    return usesTable.getUsesVar(varIndex);
+}
+
+std::vector<std::string> PKB::getUsedBy(int stmt) {
+    std::vector<std::string> toReturn;
+    std::vector<int> answer = usesTable.getUsedBy(stmt);
+    for (int i = 0; i < answer.size(); i++) {
+        toReturn.push_back(varTable.getVarName(answer[i]));
+    }
+    return toReturn;
+}
+
+bool PKB::isUses(int stmt, std::string var) {
+    int varIndex = varTable.getVarIndex(var);
+    return usesTable.isUses(stmt, varIndex);
+}
+
+std::vector<int> PKB::getStmtWithType(int nodeType) {
+    return stmtNodeTable.getStmtWithType(nodeType);
+}
+
+int PKB::getNumStmts() {
+    return stmtNodeTable.getSize() - 1;
 }
