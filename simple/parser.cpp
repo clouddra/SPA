@@ -117,6 +117,62 @@ BOOST_FUSION_ADAPT_STRUCT(
 namespace simpleparser
 {
     ///////////////////////////////////////////////////////////////////////////
+    // [Print the tree
+    int const tabsize = 4;
+
+    void tab(int indent)
+    {
+        for (int i = 0; i < indent; ++i)
+            std::cout << ' ';
+    }
+
+    struct common_node_printer : boost::static_visitor<>
+    {
+        common_node_printer(int indent = 0)
+          : indent(indent)
+        {
+        }
+
+        void operator()(common_node const& node) const
+		{
+			tab(indent);
+			std::cout << "name: " << node.name << ", value: " << node.value << std::endl;
+
+			tab(indent);
+			std::cout << '{' << std::endl;
+
+			BOOST_FOREACH(combined_type const& each_node, node.children)
+			{
+				boost::apply_visitor(common_node_printer(indent+tabsize), each_node);
+			}
+
+			tab(indent);
+			std::cout << '}' << std::endl;
+		}
+
+		void operator()(expression_node const& ast) const
+        {
+            boost::apply_visitor(*this, ast.expr);
+        }
+
+		void operator()(binary_op const& expr) const
+        {
+            std::cout << "op:" << expr.op << "(";
+            boost::apply_visitor(*this, expr.left.expr);
+
+            std::cout << ", ";
+            boost::apply_visitor(*this, expr.right.expr);
+
+			std::cout << ')';
+        }
+
+		void operator()(std::string n) const { std::cout << n; }
+
+        int indent;
+    };
+	//]
+
+    ///////////////////////////////////////////////////////////////////////////
     // [Grammar for Simple
 
     template <typename Iterator>
@@ -237,3 +293,70 @@ namespace simpleparser
 
     //]
 }
+
+/*
+///////////////////////////////////////////////////////////////////////////////
+// [Main program
+int main(int argc, char **argv)
+{
+    char const* filename;
+    if (argc > 1)
+    {
+        filename = argv[1];
+    }
+    else
+    {
+        //std::cerr << "Error: No input file provided." << std::endl;
+        //return 1;
+		filename = "C:\\test.txt";
+    }
+
+    std::ifstream in(filename, std::ios_base::in);
+
+    if (!in)
+    {
+        std::cerr << "Error: Could not open input file: "
+            << filename << std::endl;
+		int x;
+		std::cin >> x;
+        return 1;
+    }
+
+    std::string storage; // We will read the contents here.
+    in.unsetf(std::ios::skipws); // No white space skipping!
+    std::copy(
+        std::istream_iterator<char>(in),
+        std::istream_iterator<char>(),
+        std::back_inserter(storage));
+
+    typedef simpleparser::simple_grammar<std::string::const_iterator> simple_grammar;
+	simple_grammar simple; // Our grammar
+    simpleparser::common_node ast; // Our tree
+
+    using boost::spirit::ascii::space;
+    std::string::const_iterator iter = storage.begin();
+    std::string::const_iterator end = storage.end();
+	bool r = phrase_parse(iter, end, simple, space, ast);
+	
+    if (r && iter == end)
+    {
+        std::cout << "-------------------------\n";
+        std::cout << "Parsing succeeded\n";
+        std::cout << "-------------------------\n";
+        simpleparser::common_node_printer printer;
+        printer(ast);
+        return 0;
+    }
+    else
+    {
+        std::string::const_iterator some = iter+30;
+        std::string context(iter, (some>end)?end:some);
+        std::cout << "-------------------------\n";
+        std::cout << "Parsing failed\n";
+        std::cout << "stopped at: \": " << context << "...\"\n";
+        std::cout << "-------------------------\n";
+        return 1;
+    }
+}
+//]
+*/
