@@ -1,7 +1,7 @@
 # Exclude build directories
 Debug/
 Release/
-lib/
+external_libs/
 
 # Exclude debug directories
 simple/Debug/
