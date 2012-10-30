@@ -1,3 +1,13 @@
+#ifndef PARENT_HEAD
+#define PARENT_HEAD
+#include "ParentTable.h"
+#endif
+
+#ifndef FOLLOWS_HEAD
+#define FOLLOWS_HEAD
+#include "FollowsTable.h"
+#endif
+
 #ifndef MODIFIES_HEAD
 #define MODIFIES_HEAD
 #include "ModifiesTable.h"
@@ -33,6 +43,8 @@ class PKB {
 private:
     AST ast;
     ModifiesTable modifiesTable;
+    ParentTable parentTable;
+    FollowsTable followsTable;
     VarTable varTable;
     UsesTable usesTable;
     ProcTable procTable;

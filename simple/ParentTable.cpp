@@ -22,17 +22,16 @@ int ParentTable::insertParent(int stmt1, int stmt2){
 }
 
 
-std::vector<int> ParentTable::getParent(int stmt){
-	std::vector<int> stmtList;
+int ParentTable::getParent(int stmt){
 	for (int i=0; i < (int)parentTable.size(); i++){
 		if (parentTable[i].second == stmt)
-			stmtList.push_back(parentTable[i].first) ;
+			return parentTable[i].first;
 	}
 
-	return stmtList;	//not sure how to return null. I guess its good enuough if the list is empty
+	return -1;
 }
 
-std::vector<int> ParentTable::getParentOf(int stmt){
+std::vector<int> ParentTable::getChild(int stmt){
 
 	std::vector<int> varList;
 	for (int i=0; i < (int)parentTable.size(); i++){

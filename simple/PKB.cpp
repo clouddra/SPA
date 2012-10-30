@@ -45,7 +45,7 @@ int PKB::insertNode(int nodeType, std::string value, int stmtNum, int parent) {
 }
 
 int PKB::getParent(int stmt) {
-    return -1;    
+    return parentTable.getParent(stmt);    
 }
 
 std::vector<int> PKB::getParentT(int stmt) {
@@ -60,7 +60,7 @@ std::vector<int> PKB::getParentT(int stmt) {
 }
 
 std::vector<int> PKB::getChild(int stmt) {
-    return std::vector<int> ();
+    return parentTable.getChild(stmt);
 }
 
 std::vector<int> PKB::getChildT(int stmt) {
@@ -78,11 +78,11 @@ std::vector<int> PKB::getChildT(int stmt) {
 }
 
 bool PKB::isParent(int parent, int child) {
-    return false;
+    return parentTable.isParent(parent, child);
 }
 
 std::vector<int> PKB::getFollows(int stmt) {
-    return std::vector<int> ();
+    return followsTable.getFollows(stmt);
 }
 
 std::vector<int> PKB::getFollowsT(int stmt) {
@@ -100,7 +100,7 @@ std::vector<int> PKB::getFollowsT(int stmt) {
 }
 
 std::vector<int> PKB::getFollowedBy(int stmt) {
-    return std::vector<int> ();
+    return followsTable.getFollowedBy(stmt);
 }
 
 std::vector<int> PKB::getFollowedByT(int stmt) {
@@ -117,8 +117,8 @@ std::vector<int> PKB::getFollowedByT(int stmt) {
     return ans;
 }
 
-bool isFollow(int first, int second) {
-    return false;
+bool PKB::isFollow(int first, int second) {
+    return followsTable.isFollows(first, second);
 }
 
 std::vector<int> PKB::getModifiesVar(std::string var) {
