@@ -45,7 +45,7 @@
     <ClCompile Include="StmtNodeTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="parser.cpp">
+    <ClCompile Include="DeclarationTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -78,6 +78,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StmtNodeTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DeclarationTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,6 +4,11 @@
 #define PKB_HEAD
 #include "PKB.h"
 #endif
+
+#ifndef DECLARATION_HEAD
+#define DECLARATION_HEAD
+#include "DeclarationTable.h"
+#endif
 //using namespace std;
 
 
@@ -71,7 +76,7 @@ int main() {
 	q.getSize() ;
 	std::cout << q.getProcName(2) ;
     */
-
+	/*
     PKB temp = PKB();
     int proc = temp.insertNode(Node::procedureNode, "first", -1, 0);
     int stmtLst = temp.insertNode(Node::stmtLstNode, "", -1, proc);
@@ -85,5 +90,16 @@ int main() {
     temp.insertNode(Node::varNode, "x", 2, plus);
 
 	system("pause");
+	*/
+
+	DeclarationTable declare;
+	declare.insertDeclaration(declare.stmt_, "s2");
+	declare.insertDeclaration(declare.assign_, "a2");
+	declare.insertDeclaration(declare.variable_, "x");
+	declare.insertDeclaration(declare.stmt_, "s2");
+	declare.insertDeclaration(declare.stmt_, "s1");
+
+	declare.printDeclarationTable();
+
 	return 0;
 }
