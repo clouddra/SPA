@@ -79,9 +79,11 @@
   <ItemGroup>
     <ClCompile Include="AST.cpp" />
     <ClCompile Include="DeclarationTable.cpp" />
+    <ClCompile Include="FollowsTable.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModifiesTable.cpp" />
     <ClCompile Include="Node.cpp" />
+    <ClCompile Include="ParentTable.cpp" />
     <ClCompile Include="parser.cpp" />
     <ClCompile Include="PKB.cpp" />
     <ClCompile Include="Procedure.cpp" />
@@ -94,8 +96,10 @@
     <ClInclude Include="AST.h" />
     <ClInclude Include="common.hpp" />
     <ClInclude Include="DeclarationTable.h" />
+    <ClInclude Include="FollowsTable.h" />
     <ClInclude Include="ModifiesTable.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="ParentTable.h" />
     <ClInclude Include="PKB.h" />
     <ClInclude Include="Procedure.h" />
     <ClInclude Include="ProcTable.h" />
