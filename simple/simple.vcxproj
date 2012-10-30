@@ -81,6 +81,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModifiesTable.cpp" />
     <ClCompile Include="Node.cpp" />
+    <ClCompile Include="parser.cpp" />
     <ClCompile Include="PKB.cpp" />
     <ClCompile Include="Procedure.cpp" />
     <ClCompile Include="ProcTable.cpp" />
