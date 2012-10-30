@@ -16,12 +16,12 @@ int DeclarationTable::insertDeclaration(int nodeType, std::string name)
 
 int DeclarationTable::getSize()
 {
-	return declarationTable.size();
+	return (int)declarationTable.size();
 }
 
 bool DeclarationTable::isDeclared(int nodeType, std::string name)
 {
-	for (int i=0; i<declarationTable.size(); i++)
+	for (int i=0; i<getSize(); i++)
 	{
 		if (declarationTable.at(i).first == nodeType && declarationTable.at(i).second == name)
 			return true;
@@ -31,7 +31,7 @@ bool DeclarationTable::isDeclared(int nodeType, std::string name)
 
 void DeclarationTable::printDeclarationTable()
 {
-	for (int i=0; i<declarationTable.size(); i++)
+	for (int i=0; i<getSize(); i++)
 		std::cout << declarationTable.at(i).first << " " << declarationTable.at(i).second << std::endl;
 	
 	std::cout<< "Size of declaration table: " << getSize() << std::endl;
