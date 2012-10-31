@@ -1,8 +1,8 @@
 #include <iostream>
 
-#ifndef PKB_HEAD
-#define PKB_HEAD
-#include "PKB.h"
+#ifndef SPA_HEAD
+#define SPA_HEAD
+#include "SPA.h"
 #endif
 
 #ifndef DECLARATION_HEAD
@@ -90,7 +90,7 @@ int main() {
     temp.insertNode(Node::varNode, "x", 2, plus);
 
 	system("pause");
-	*/
+	
 
 	DeclarationTable declare;
 	declare.insertDeclaration(declare.stmt_, "s2");
@@ -100,6 +100,11 @@ int main() {
 	declare.insertDeclaration(declare.stmt_, "s1");
 
 	declare.printDeclarationTable();
+
+    */
+    
+    SPA temp = SPA();
+    temp.parseCode("test.txt");
 
 	return 0;
 }

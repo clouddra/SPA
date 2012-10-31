@@ -16,7 +16,7 @@ private:
 	std::vector<int> children;
 
 public:
-	static const enum {programNode, procedureNode, stmtLstNode, assignNode, whileNode, varNode, plusNode, constNode}; // not sure how to deal with constants
+	static const enum {programNode, procedureNode, stmtLstNode, assignNode, whileNode, ifNode, callNode, varNode, constNode, plusNode, minusNode, timesNode, divideNode}; 
 	Node(int type, int v, int s);
 	int getNodeType();
 	int getValue();

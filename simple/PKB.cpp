@@ -17,9 +17,10 @@ int PKB::insertNode(int nodeType, std::string value, int stmtNum, int parent) {
     bool newStmtFlag = false;
 
     switch (nodeType) {
-    // Please add if and call when implemented
     case Node::assignNode:
     case Node::whileNode:
+    case Node::ifNode:
+    case Node::callNode:
         newStmtFlag = true;
         break;
 

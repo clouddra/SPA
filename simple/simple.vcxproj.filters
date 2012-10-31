@@ -48,13 +48,13 @@
     <ClCompile Include="DeclarationTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="parser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FollowsTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ParentTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SPA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -98,5 +98,13 @@
     <ClInclude Include="ParentTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SPA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test.txt">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
