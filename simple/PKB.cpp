@@ -12,7 +12,7 @@ PKB::PKB() {
     stmtNodeTable = StmtNodeTable();
 }
 
-int PKB::insertNode(int nodeType, std::string value, int stmtNum, int parent) {
+int PKB::insertNode(int nodeType, std::string value, bool hasStmtNum, int parent) {
     int indexValue = -1;
     bool newStmtFlag = false;
 
@@ -37,6 +37,13 @@ int PKB::insertNode(int nodeType, std::string value, int stmtNum, int parent) {
         break;
     }
 
+    int stmtNum = -1;
+    if (hasStmtNum) {
+        if (newStmtFlag)
+            stmtNum = stmtNodeTable.getSize();
+        else
+            stmtNum = stmtNodeTable.getSize() - 1;
+    }
     int newNode = ast.insertNode(nodeType, indexValue, stmtNum, parent);
     if (newStmtFlag) {
         stmtNodeTable.insertStmtNode(stmtNum, newNode, nodeType);

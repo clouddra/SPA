@@ -1,8 +1,13 @@
 #include <iostream>
 
-#ifndef SPA_HEAD
-#define SPA_HEAD
-#include "SPA.h"
+#ifndef PARSER_HEAD
+#define PARSER_HEAD
+#include "Parser.h"
+#endif
+
+#ifndef PKB_HEAD
+#define PKB_HEAD
+#include "PKB.h"
 #endif
 
 #ifndef DECLARATION_HEAD
@@ -103,8 +108,9 @@ int main() {
 
     */
     
-    SPA temp = SPA();
-    temp.parseCode("..\\sample_input\\simple.txt");
+    PKB pkb = PKB();
+    Parser temp = Parser();
+    temp.parseCode("..\\sample_input\\simple.txt", &pkb);
 
 	return 0;
 }

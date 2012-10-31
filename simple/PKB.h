@@ -52,7 +52,7 @@ private:
 
 public:
     PKB();
-    int insertNode(int nodeType, std::string value, int stmtNum, int parent);
+    int insertNode(int nodeType, std::string value, bool hasStmtNum, int parent);
     int getParent(int stmt);
     std::vector<int> getParentT(int stmt);
 	std::vector<int> getChild(int stmt);

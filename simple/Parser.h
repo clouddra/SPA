@@ -3,12 +3,11 @@
 #include "PKB.h"
 #endif
 
-class SPA {
+class Parser {
 
 private:
-    PKB pkb;
 
 public:
-    SPA();
-    int parseCode(char const*);
+    Parser();
+    int parseCode(char const* filename, PKB* pkb);
 };

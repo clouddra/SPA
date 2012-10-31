@@ -88,7 +88,7 @@
     <ClCompile Include="PKB.cpp" />
     <ClCompile Include="Procedure.cpp" />
     <ClCompile Include="ProcTable.cpp" />
-    <ClCompile Include="SPA.cpp" />
+    <ClCompile Include="Parser.cpp" />
     <ClCompile Include="StmtNodeTable.cpp" />
     <ClCompile Include="UsesTable.cpp" />
     <ClCompile Include="VarTable.cpp" />
@@ -104,7 +104,7 @@
     <ClInclude Include="PKB.h" />
     <ClInclude Include="Procedure.h" />
     <ClInclude Include="ProcTable.h" />
-    <ClInclude Include="SPA.h" />
+    <ClInclude Include="Parser.h" />
     <ClInclude Include="StmtNodeTable.h" />
     <ClInclude Include="UsesTable.h" />
     <ClInclude Include="VarTable.h" />
