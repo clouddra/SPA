@@ -102,9 +102,4 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="test.txt">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
 </Project>

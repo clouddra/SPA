@@ -109,9 +109,6 @@
     <ClInclude Include="UsesTable.h" />
     <ClInclude Include="VarTable.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="test.txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
