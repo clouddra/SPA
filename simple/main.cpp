@@ -94,9 +94,6 @@ int main() {
     temp.insertNode(Node::constNode, "5", 2, plus);
     temp.insertNode(Node::varNode, "x", 2, plus);
 
-	system("pause");
-	
-
 	DeclarationTable declare;
 	declare.insertDeclaration(declare.stmt_, "s2");
 	declare.insertDeclaration(declare.assign_, "a2");
@@ -111,6 +108,8 @@ int main() {
     PKB pkb = PKB();
     Parser temp = Parser();
     temp.parseCode("..\\sample_input\\simple.txt", &pkb);
+
+    system("pause");
 
 	return 0;
 }

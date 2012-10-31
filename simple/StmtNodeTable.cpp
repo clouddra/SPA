@@ -14,11 +14,12 @@ StmtNodeTable::StmtNodeTable(){
 }
 
 int StmtNodeTable::insertStmtNode(int stmt, int astNode, int nodeType){	
-    if (stmtNodeTable.size() <= stmt) {
-        stmtNodeTable.resize(stmt+1);
-        stmtNodeTable[stmt] = std::pair<int, int>(astNode, nodeType);
+    if (stmtNodeTable.size() == stmt) {
+        stmtNodeTable.push_back(std::pair<int, int>(astNode, nodeType));
     }
-    else {} // Should not reach here, throw exception?
+    else { // Should not reach here, throw exception?
+        return -1;
+    } 
 	return stmt;
 }
 
