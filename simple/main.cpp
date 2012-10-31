@@ -104,7 +104,7 @@ int main() {
     */
     
     SPA temp = SPA();
-    temp.parseCode("test.txt");
+    temp.parseCode("..\\sample_input\\simple.txt");
 
 	return 0;
 }
