@@ -20,11 +20,13 @@
     <ClInclude Include="..\source\ParentTable.h" />
     <ClInclude Include="..\source\Parser.h" />
     <ClInclude Include="..\source\PKB.h" />
+    <ClInclude Include="..\source\PqlParser.h" />
     <ClInclude Include="..\source\Procedure.h" />
     <ClInclude Include="..\source\ProcTable.h" />
     <ClInclude Include="..\source\QueryNode.h" />
     <ClInclude Include="..\source\QueryProcessor.h" />
     <ClInclude Include="..\source\QueryTree.h" />
+    <ClInclude Include="..\source\SimpleGrammar.h" />
     <ClInclude Include="..\source\StmtNodeTable.h" />
     <ClInclude Include="..\source\UsesTable.h" />
     <ClInclude Include="..\source\VarTable.h" />
