@@ -41,7 +41,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Program Files %28x86%29\Microsoft Visual Studio 10.0\boost_1_51_0\boost_1_51_0;C:\boost_1_51_0;$(IncludePath)</IncludePath>
+    <IncludePath>C:\boost_1_51_0;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -86,13 +86,9 @@
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="ParentTable.cpp" />
     <ClCompile Include="PKB.cpp" />
-    <ClCompile Include="PqlParser.cpp" />
     <ClCompile Include="Procedure.cpp" />
     <ClCompile Include="ProcTable.cpp" />
     <ClCompile Include="Parser.cpp" />
-    <ClCompile Include="QueryNode.cpp" />
-    <ClCompile Include="QueryProcessor.cpp" />
-    <ClCompile Include="QueryTree.cpp" />
     <ClCompile Include="StmtNodeTable.cpp" />
     <ClCompile Include="UsesTable.cpp" />
     <ClCompile Include="VarTable.cpp" />
@@ -107,14 +103,10 @@
     <ClInclude Include="ParentTable.h" />
     <ClInclude Include="ParserNode.h" />
     <ClInclude Include="PKB.h" />
-    <ClInclude Include="PqlParser.h" />
     <ClInclude Include="Procedure.h" />
     <ClInclude Include="ProcTable.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="SimpleGrammar.h" />
-    <ClInclude Include="QueryNode.h" />
-    <ClInclude Include="QueryProcessor.h" />
-    <ClInclude Include="QueryTree.h" />
     <ClInclude Include="StmtNodeTable.h" />
     <ClInclude Include="UsesTable.h" />
     <ClInclude Include="VarTable.h" />

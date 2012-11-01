@@ -110,6 +110,12 @@
     <ClInclude Include="Parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="ParserNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleGrammar.h">
+=======
     <ClInclude Include="QueryNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -117,12 +123,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QueryProcessor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ParserNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleGrammar.h">
+>>>>>>> 08de8cb46d376c2ddec5b38b82520c3e175c9d89
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -66,6 +66,12 @@
     <ClInclude Include="..\source\QueryTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\PqlParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\SimpleGrammar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\AST.cpp">
