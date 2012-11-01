@@ -18,6 +18,6 @@ private:
 public:
 	QueryProcessor();
 	int insertNode(std::string, std::string, int parent);
-	void processQuery(std::string);
+	void processQuery();
 	void printResult();
 };

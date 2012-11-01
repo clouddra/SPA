@@ -16,13 +16,19 @@ int QueryProcessor::insertNode(std::string _name, std::string _value, int _paren
 	return newNodeIndex;
 }
 
-void QueryProcessor::processQuery(std::string query)
+void QueryProcessor::processQuery()
 {
 	// Walk our Query Tree and store results in result vector
+
+	// For now, try to see what is stored in the tree
+	std::vector<QueryNode> temp = queryTree.getTree();
+	for (int i=0; i<(int)temp.size(); i++)
+		std::cout << "Name: " << temp[i].getName() << ", Value: " << temp[i].getValue() << std::endl;
+
 }
 
 void QueryProcessor::printResult()
 {
-	for (int i=0; i<(int)(result.size()); i++)
+	for (int i=0; i<(int)result.size(); i++)
 		std::cout << result[i] << std::endl;
 }
