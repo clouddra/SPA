@@ -10,10 +10,16 @@
 #include "PKB.h"
 #endif
 
-#ifndef DECLARATION_HEAD
-#define DECLARATION_HEAD
-#include "DeclarationTable.h"
+#ifndef PQLPARSER_HEAD
+#define PQLPARSER_HEAD
+#include "PqlParser.h"
 #endif
+
+#ifndef QUERYPROCESSOR_HEAD
+#define QUERYPROCESSOR_HEAD
+#include "QueryProcessor.h"
+#endif
+
 //using namespace std;
 
 
