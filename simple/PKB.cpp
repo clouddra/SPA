@@ -12,9 +12,10 @@ PKB::PKB() {
     stmtNodeTable = StmtNodeTable();
 }
 
-int PKB::insertNode(int nodeType, std::string value, bool hasStmtNum, int parent) {
+int PKB::insertNode(int nodeType, std::string value, int parent) {
     int indexValue = -1;
     bool newStmtFlag = false;
+    bool hasStmtNum = false;
 
     switch (nodeType) {
     case Node::assignNode:
@@ -22,19 +23,30 @@ int PKB::insertNode(int nodeType, std::string value, bool hasStmtNum, int parent
     case Node::ifNode:
     case Node::callNode:
         newStmtFlag = true;
+        hasStmtNum = true;
         break;
 
     case Node::varNode:
         indexValue = varTable.insertVar(value);
+        hasStmtNum = true;
         break;
 
     case Node::constNode:
         indexValue = atoi(value.c_str());
+        hasStmtNum = true;
         break;
 
     case Node::procedureNode:
-        indexValue = procTable.insertProc(value, 0, 0);
+        indexValue = procTable.insertProc(value, stmtNodeTable.getSize());   // This line assumes there are no empty procedure
+        if (indexValue != 0)
+            procTable.setProcLastln(indexValue-1, stmtNodeTable.getSize()-1);
         break;
+
+    case Node::divideNode:
+    case Node::minusNode:
+    case Node::plusNode:
+    case Node::timesNode:
+        hasStmtNum = true;
     }
 
     int stmtNum = -1;
@@ -50,6 +62,10 @@ int PKB::insertNode(int nodeType, std::string value, bool hasStmtNum, int parent
     }
 
     return newNode;
+}
+
+void PKB::postParseCleanup() {
+    procTable.setProcLastln(procTable.getSize()-1, stmtNodeTable.getSize()-1);  //Set the lastLine of the last procedure
 }
 
 int PKB::getParent(int stmt) {

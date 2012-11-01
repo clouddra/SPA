@@ -115,7 +115,6 @@ BOOST_FUSION_ADAPT_STRUCT(
         void operator()(common_node const& node) const
 		{
             int nodeType = -1;
-            bool hasStmtNum = false;
             bool valueIsVar = false;
 			
             if (node.name.compare("program") == 0)
@@ -133,36 +132,29 @@ BOOST_FUSION_ADAPT_STRUCT(
             else if (node.name.compare("assign") == 0)
             {
                 nodeType = Node::assignNode;
-                hasStmtNum = true;
                 valueIsVar = true;
             }
             else if (node.name.compare("while") == 0)
             {
                 nodeType = Node::whileNode;
-                hasStmtNum = true;
                 valueIsVar = true;
             }
             else if (node.name.compare("if") == 0)
             {
                 nodeType = Node::ifNode;
-                hasStmtNum = true;
                 valueIsVar = true;
             }
             else if (node.name.compare("call") == 0)
             {
                 nodeType = Node::callNode;
-                hasStmtNum = true;
             }
 
             int newParent = parent;
             if (nodeType != -1) {
-                if (hasStmtNum)
-                    newParent = pkb->insertNode(nodeType, node.value, true, parent);
-                else
-                    newParent = pkb->insertNode(nodeType, node.value, false, parent);
+                newParent = pkb->insertNode(nodeType, node.value, parent);
             }
             if (valueIsVar) {
-                pkb->insertNode(Node::varNode, node.value, true, newParent);
+                pkb->insertNode(Node::varNode, node.value, newParent);
             }
 
 			BOOST_FOREACH(combined_type const& each_node, node.children)
@@ -198,7 +190,7 @@ BOOST_FUSION_ADAPT_STRUCT(
                 nodeType = Node::minusNode;
             }
 
-            int newParent = pkb->insertNode(nodeType, value, true, parent);
+            int newParent = pkb->insertNode(nodeType, value, parent);
             boost::apply_visitor(common_node_inserter(pkb, newParent), expr.left.expr);
             boost::apply_visitor(common_node_inserter(pkb, newParent), expr.right.expr);
         }
@@ -213,7 +205,7 @@ BOOST_FUSION_ADAPT_STRUCT(
                 nodeType = Node::constNode;
             }
 
-            pkb->insertNode(nodeType, n, true, parent); 
+            pkb->insertNode(nodeType, n, parent); 
         }
 
     private:
@@ -258,10 +250,11 @@ int Parser::parseCode(char const* filename, PKB* pkb) {
         std::cout << "-------------------------\n";
         std::cout << "Parsing succeeded\n";
         std::cout << "-------------------------\n";
-        common_node_printer printer;
-        printer(ast);
+        //common_node_printer printer;
+        //printer(ast);
         common_node_inserter inserter(pkb, -1);
         inserter(ast);
+        pkb->postParseCleanup();
         return 0;
     }
     else
