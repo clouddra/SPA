@@ -105,11 +105,13 @@
     <ClInclude Include="ModifiesTable.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="ParentTable.h" />
+    <ClInclude Include="ParserNode.h" />
     <ClInclude Include="PKB.h" />
     <ClInclude Include="PqlParser.h" />
     <ClInclude Include="Procedure.h" />
     <ClInclude Include="ProcTable.h" />
     <ClInclude Include="Parser.h" />
+    <ClInclude Include="SimpleGrammar.h" />
     <ClInclude Include="QueryNode.h" />
     <ClInclude Include="QueryProcessor.h" />
     <ClInclude Include="QueryTree.h" />
