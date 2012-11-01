@@ -86,6 +86,7 @@
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="ParentTable.cpp" />
     <ClCompile Include="PKB.cpp" />
+    <ClCompile Include="PqlParser.cpp" />
     <ClCompile Include="Procedure.cpp" />
     <ClCompile Include="ProcTable.cpp" />
     <ClCompile Include="Parser.cpp" />
@@ -106,6 +107,7 @@
     <ClInclude Include="ParentTable.h" />
     <ClInclude Include="ParserNode.h" />
     <ClInclude Include="PKB.h" />
+    <ClInclude Include="PqlParser.h" />
     <ClInclude Include="Procedure.h" />
     <ClInclude Include="ProcTable.h" />
     <ClInclude Include="Parser.h" />

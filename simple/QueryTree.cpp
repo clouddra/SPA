@@ -19,3 +19,8 @@ int QueryTree::insertNode(std::string _name, std::string _value, int _parent)
 
 	return newNodeIndex;
 }
+
+std::vector<QueryNode> QueryTree::getTree()
+{
+	return tree;
+}
