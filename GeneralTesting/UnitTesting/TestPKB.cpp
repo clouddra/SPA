@@ -1,28 +1,29 @@
 #include <cppunit/config/SourcePrefix.h>
 #include "stdafx.h"
-#include "AST.h"
-#include "TestAST.h"
+#include "PKB.h"
+#include "TestPKB.h"
 
 #include <iostream>
 #include <string>
 
 
 void 
-ASTTest::setUp()
+PKBTest::setUp()
 {
 }
 
 
 void 
-ASTTest::tearDown()
+PKBTest::tearDown()
 {
 }
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ASTTest );
+CPPUNIT_TEST_SUITE_REGISTRATION( PKBTest );
 
 // method to test the constructor
-void ASTTest::testConstructor() { 
-AST myAST();
+void PKBTest::testConstructor() {  
+// create a PKB object
+PKB MyPKB();
 
 }
