@@ -10,10 +10,16 @@
 #include "PKB.h"
 #endif
 
-#ifndef DECLARATION_HEAD
-#define DECLARATION_HEAD
-#include "DeclarationTable.h"
+#ifndef QUERYPROCESSOR_HEAD
+#define QUERYPROCESSOR_HEAD
+#include "QueryProcessor.h"
 #endif
+
+#ifndef PQLPARSER_HEAD
+#define PQLPARSER_HEAD
+#include "PqlParser.h"
+#endif
+
 //using namespace std;
 
 
@@ -105,10 +111,13 @@ int main() {
 
     */
     
-    PKB pkb = PKB();
-    Parser temp = Parser();
-    temp.parseCode("..\\sample_input\\simple.txt", &pkb);
+//    PKB pkb = PKB();
+//    Parser temp = Parser();
+//    temp.parseCode("..\\sample_input\\simple.txt", &pkb);
 
+    QueryProcessor qp = QueryProcessor();
+    PqlParser temp2 = PqlParser();
+    temp2.parseQuery("..\\sample_input\\pql.txt", &qp);
     system("pause");
 
 	return 0;

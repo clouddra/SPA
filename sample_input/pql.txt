@@ -1,2 +1,0 @@
-stmt s1, s2;
-Select a such that Modifies(s2, s1) such that Modifies("x", s2)

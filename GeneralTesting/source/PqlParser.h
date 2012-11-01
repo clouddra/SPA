@@ -9,5 +9,5 @@ private:
 
 public:
 	PqlParser();
-	int parseQuery(std::string, QueryProcessor* queryProcessor);
+	int parseQuery(char const* filename, QueryProcessor* queryProcessor);
 };

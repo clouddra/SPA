@@ -440,8 +440,26 @@ namespace pqlparser
 
 PqlParser::PqlParser() {}
 
-int PqlParser::parseQuery(std::string storage, QueryProcessor* qp)
+int PqlParser::parseQuery(char const* filename, QueryProcessor* qp)
 {
+    std::ifstream in(filename, std::ios_base::in);
+
+    if (!in)
+    {
+        std::cerr << "Error: Could not open input file: "
+            << filename << std::endl;
+		int x;
+		std::cin >> x;
+        return 1;
+    }
+
+    std::string storage; // We will read the contents here.
+    in.unsetf(std::ios::skipws); // No white space skipping!
+    std::copy(
+        std::istream_iterator<char>(in),
+        std::istream_iterator<char>(),
+        std::back_inserter(storage));
+
 	typedef pqlparser::pql_grammar<std::string::const_iterator> pql_grammar;
 	pql_grammar pql; // Our grammar
     pqlparser::common_node pql_root; // Our tree
