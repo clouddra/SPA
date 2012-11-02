@@ -34,6 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\AST.cpp" />
+    <ClCompile Include="..\source\DeclarationTable.cpp" />
     <ClCompile Include="..\source\DesignExtractor.cpp" />
     <ClCompile Include="..\source\FollowsTable.cpp" />
     <ClCompile Include="..\source\main.cpp" />
@@ -51,7 +52,6 @@
     <ClCompile Include="..\source\StmtNodeTable.cpp" />
     <ClCompile Include="..\source\UsesTable.cpp" />
     <ClCompile Include="..\source\VarTable.cpp" />
-    <ClCompile Include="DeclarationTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\sample_input\pql.txt" />

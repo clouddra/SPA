@@ -66,13 +66,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="source\UnitTest.cpp" />
     <ClCompile Include="TestAST.cpp" />
     <ClCompile Include="TestASTMain.cpp" />
     <ClCompile Include="TestPKB.cpp" />
     <ClCompile Include="TestPKBMain.cpp" />
     <ClCompile Include="TestQuery.cpp" />
     <ClCompile Include="TestQueryMain.cpp" />
+    <ClCompile Include="UnitTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
