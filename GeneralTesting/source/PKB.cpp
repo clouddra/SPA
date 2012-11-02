@@ -63,7 +63,29 @@ int PKB::insertNode(int nodeType, std::string value, int parent) {
 
     return newNode;
 }
+ModifiesTable* PKB::getModifiesTable() {
+    return &modifiesTable;
+}
 
+ParentTable* PKB::getParentTable() {
+    return &parentTable;
+}
+
+FollowsTable* PKB::getFollowsTable() {
+    return &followsTable;
+}
+
+UsesTable* PKB::getUsesTable() {
+    return &usesTable;
+}
+AST PKB::getAST()
+{
+	return ast;
+}
+StmtNodeTable* PKB::getStmtNodeTable()
+{
+	return &stmtNodeTable;
+}
 void PKB::postParseCleanup() {
     procTable.setProcLastln(procTable.getSize()-1, stmtNodeTable.getSize()-1);  //Set the lastLine of the last procedure
 }

@@ -21,7 +21,3 @@ int Procedure::getFirstLine(){
 int Procedure::getLastLine(){
 	return lastLine;
 }
-
-void Procedure::setLastLine(int last) {
-    lastLine = last;
-}

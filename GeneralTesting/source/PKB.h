@@ -72,4 +72,12 @@ public:
     std::vector<int> getStmtWithType(int nodeType);
     int getNumStmts();
     void postParseCleanup();
+
+	void printModifiesTable();
+	AST PKB::getAST();
+	ModifiesTable* getModifiesTable();
+	ParentTable* getParentTable();
+	FollowsTable* getFollowsTable();
+	UsesTable* getUsesTable();
+	StmtNodeTable* getStmtNodeTable();
 };

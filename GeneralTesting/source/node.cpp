@@ -58,3 +58,8 @@ bool Node::equals(Node other) {
 
     return true;
 }
+
+int Node::getStmtNum()
+{
+	return stmtNum;
+}

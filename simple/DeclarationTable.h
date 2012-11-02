@@ -1,7 +1,4 @@
-#ifndef IOSTREAM_HEAD
-#define IOSTREAM_HEAD
-#include <iostream>
-#endif
+#include "common.hpp"
 
 #ifndef STRING_HEAD
 #define STRING_HEAD
