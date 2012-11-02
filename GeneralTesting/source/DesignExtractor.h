@@ -42,7 +42,6 @@
 class DesignExtractor {
 
 private:
-	void populateTables();
 	AST _ast;
 	PKB* _pkb;
 	ModifiesTable* _mt;
@@ -55,7 +54,8 @@ private:
 	void DesignExtractor::insertParent(int stmt1, int stmt2);
 	void DesignExtractor::insertUses(int stmt1, int stmt2);
 	void DesignExtractor::insertModifies(int stmt1, int stmt2);
+
 public:
-    DesignExtractor(AST ast, StmtNodeTable* stmtTable, ModifiesTable* ModifiesTable, ParentTable* ParentTable, FollowsTable* FollowsTable, UsesTable* UsesTable, PKB* pkb );
-	
+    DesignExtractor(PKB* pkb);
+	void populateTables();
 };

@@ -13,6 +13,11 @@
 #include "PKB.h"
 #endif
 
+#ifndef STD_HEAD
+#define STD_HEAD
+#include "common.hpp"
+#endif
+
 class QueryProcessor {
 
 private:

@@ -1,18 +1,16 @@
 #include "DesignExtractor.h"
 //currently adds modifies, uses for statements, parent and follows relationship
-DesignExtractor::DesignExtractor(AST ast, StmtNodeTable* stmtTable, ModifiesTable* mtable, 
-	ParentTable* ptable, FollowsTable* ftable, UsesTable* utable, PKB* pkb)
+DesignExtractor::DesignExtractor(PKB* pkb)
 {
-	_ast = ast;
-	_mt = mtable;
-	_pt = ptable;
-	_ft = ftable;
-	_ut = utable;
-	_stmtt = stmtTable;
+    _ast = pkb->getAST();
+    _mt = pkb->getModifiesTable();
+    _pt = pkb->getParentTable();
+    _ft = pkb->getFollowsTable();
+    _ut = pkb->getUsesTable();
+    _stmtt = pkb->getStmtNodeTable();
 	_pkb = pkb;
-	populateTables();
-
 }
+
 void DesignExtractor::populateTables()
 {
 	for(int i = 0; i<_ast.getTree().size(); i++)

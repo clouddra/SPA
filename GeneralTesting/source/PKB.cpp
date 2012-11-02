@@ -63,6 +63,7 @@ int PKB::insertNode(int nodeType, std::string value, int parent) {
 
     return newNode;
 }
+
 ModifiesTable* PKB::getModifiesTable() {
     return &modifiesTable;
 }
