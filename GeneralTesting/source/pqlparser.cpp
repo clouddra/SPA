@@ -438,8 +438,6 @@ namespace pqlparser
     //]
 }
 
-PqlParser::PqlParser() {}
-
 int PqlParser::parseQuery(std::string storage, QueryProcessor* qp)
 {
 	typedef pqlparser::pql_grammar<std::string::const_iterator> pql_grammar;
@@ -472,4 +470,33 @@ int PqlParser::parseQuery(std::string storage, QueryProcessor* qp)
         std::cout << "-------------------------\n";
         return 1;
     }
+}
+
+// Splits input into multiple pql queries, appending the declaration to each of them
+// No delimiter needed (Delimiter is "Select", IT IS CASE SENSITIVE)
+std::vector<std::string> PqlParser::splitQuery(std::string input) {
+    std::vector<std::string> queries;
+    std::string declaration;
+    std::string sel = "Select";
+    int found = 0;
+    
+    found = input.find(sel);
+    if (found != std::string::npos)
+    {
+        declaration = input.substr(0, found);
+        input = input.substr(found);
+        while (found != std::string::npos) {
+            found = input.find(sel, 1);
+            std::string query;
+            if (found != std::string::npos) {
+                query = declaration + input.substr(0, found);
+                input = input.substr(found);
+            }
+            else
+                query = declaration + input;
+            queries.push_back(query);
+        }
+    }
+
+    return queries;
 }

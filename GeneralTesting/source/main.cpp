@@ -87,11 +87,9 @@ int main() {
         std::istream_iterator<char>(),
         std::back_inserter(storage2));
 
-    PqlSplitter splitter = PqlSplitter();
-    std::vector<std::string> queries = splitter.splitQuery(storage2);
-
     QueryProcessor qp = QueryProcessor();
     PqlParser temp2 = PqlParser();
+    std::vector<std::string> queries = temp2.splitQuery(storage2);
     for (int i = 0; i < queries.size(); i++) {
         temp2.parseQuery(queries[i], &qp);
         qp = QueryProcessor();
