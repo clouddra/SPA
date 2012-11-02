@@ -45,7 +45,7 @@ void DesignExtractor::populateTables()
 			insertModifies(i, children[0]);//add the first child of the assign node to modifies table
 			for(int n = 0; n<parents.size();n++)
 			{
-				insertModifies(parents[i], children[0]);//indirect parents modify this variable too
+				insertModifies(parents[n], children[0]);//indirect parents modify this variable too
 			}
 			if(_ast.getNode(children[1]).getNodeType()==Node::varNode)//if 2nd child is a variable
 			{

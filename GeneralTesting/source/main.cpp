@@ -62,7 +62,7 @@ int main() {
     PKB pkb = PKB();
     Parser temp = Parser();
     temp.parseCode(storage, &pkb);
-	DesignExtractor* de = new DesignExtractor(pkb.getAST(),pkb.getStmtNodeTable(),pkb.getModifiesTable(),pkb.getParentTable(),pkb.getFollowsTable(),pkb.getUsesTable(),&pkb);
+	DesignExtractor de = DesignExtractor(pkb.getAST(),pkb.getStmtNodeTable(),pkb.getModifiesTable(),pkb.getParentTable(),pkb.getFollowsTable(),pkb.getUsesTable(),&pkb);
 
     char const* pqlFile = "..\\sample_input\\pql.txt";
     std::ifstream in2(pqlFile, std::ios_base::in);
