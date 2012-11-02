@@ -8,11 +8,10 @@
 #include "SimpleGrammar.h"
 #endif
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <vector>
+#ifndef STD_HEAD
+#define STD_HEAD
+#include "common.hpp"
+#endif
 
     expression_node& expression_node::operator+=(expression_node const& rhs)
     {
@@ -213,29 +212,7 @@ BOOST_FUSION_ADAPT_STRUCT(
         int parent;
     };
 
-Parser::Parser() {
-
-}
-
-int Parser::parseCode(char const* filename, PKB* pkb) {
-    std::ifstream in(filename, std::ios_base::in);
-
-    if (!in)
-    {
-        std::cerr << "Error: Could not open input file: "
-            << filename << std::endl;
-		int x;
-		std::cin >> x;
-        return 1;
-    }
-
-    std::string storage; // We will read the contents here.
-    in.unsetf(std::ios::skipws); // No white space skipping!
-    std::copy(
-        std::istream_iterator<char>(in),
-        std::istream_iterator<char>(),
-        std::back_inserter(storage));
-
+int Parser::parseCode(std::string storage, PKB* pkb) {
     typedef simple_grammar<std::string::const_iterator> simple_grammar;
 	simple_grammar simple; // Our grammar
     common_node ast; // Our tree

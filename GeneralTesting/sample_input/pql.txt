@@ -1,2 +1,5 @@
 stmt s1, s2;
 Select s1 such that Follows(s1, s2)
+Select s1 such that Follows*(s1, s2)
+Select s1 such that Parent(s1, s2)
+Select s1 such that Parent*(s1, s2)

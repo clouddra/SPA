@@ -21,6 +21,7 @@
     <ClInclude Include="..\source\Parser.h" />
     <ClInclude Include="..\source\PKB.h" />
     <ClInclude Include="..\source\PqlParser.h" />
+    <ClInclude Include="..\source\PqlSplitter.h" />
     <ClInclude Include="..\source\Procedure.h" />
     <ClInclude Include="..\source\ProcTable.h" />
     <ClInclude Include="..\source\QueryNode.h" />
@@ -42,6 +43,7 @@
     <ClCompile Include="..\source\parser.cpp" />
     <ClCompile Include="..\source\PKB.cpp" />
     <ClCompile Include="..\source\pqlparser.cpp" />
+    <ClCompile Include="..\source\PqlSplitter.cpp" />
     <ClCompile Include="..\source\Procedure.cpp" />
     <ClCompile Include="..\source\ProcTable.cpp" />
     <ClCompile Include="..\source\QueryNode.cpp" />
