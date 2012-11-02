@@ -301,7 +301,10 @@ namespace pqlparser
 				>> ';'
 				;
 			
-			suchthat_cl_ %= "such that" >> relRef_;
+			suchthat_cl_ = 
+				string("such that")			[at_c<0>(_val) = "such that"]
+				>> relRef_					[push_back(at_c<2>(_val), _1)]
+				;
 			//pattern_cl_ = string("pattern") >> syn_assign_ >> char_("(") >> entRef_ >> char_(",") >> (expression_spec_ | char_("_")) >> char_(")");
 
 			relRef_ %= ModifiesS_ | ModifiesP_ | UsesS_ | UsesP_ | Parent_ | ParentT_ | Follows_ | FollowsT_;
