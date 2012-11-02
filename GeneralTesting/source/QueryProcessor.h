@@ -8,6 +8,11 @@
 #include "QueryTree.h"
 #endif
 
+#ifndef PKB_HEAD
+#define PKB_HEAD
+#include "PKB.h"
+#endif
+
 class QueryProcessor {
 
 private:
@@ -18,6 +23,7 @@ private:
 public:
 	QueryProcessor();
 	int insertNode(std::string, std::string, int parent);
-	void processQuery();
+	void processQuery(PKB pkb);
+    void printTree();
 	void printResult();
 };

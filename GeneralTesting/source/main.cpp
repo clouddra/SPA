@@ -38,7 +38,7 @@ int main() {
 	declare.printDeclarationTable();
     */
 
-/*
+
     char const* simpleFile = "..\\sample_input\\simple.txt";
     std::ifstream in(simpleFile, std::ios_base::in);
 
@@ -61,7 +61,7 @@ int main() {
     PKB pkb = PKB();
     Parser temp = Parser();
     temp.parseCode(storage, &pkb);
-*/
+
 
     char const* pqlFile = "..\\sample_input\\pql.txt";
     std::ifstream in2(pqlFile, std::ios_base::in);
@@ -85,8 +85,12 @@ int main() {
     QueryProcessor qp = QueryProcessor();
     PqlParser temp2 = PqlParser();
     std::vector<std::string> queries = temp2.splitQuery(storage2);
-    for (int i = 0; i < queries.size(); i++) {
+    for (int i = 0; i < (int)queries.size(); i++) {
         temp2.parseQuery(queries[i], &qp);
+        qp.processQuery(pkb);
+        std::cout << "Result of Query " << i+1 << std::endl;
+        qp.printResult();
+        std::cout << std::endl << std::endl;
         qp = QueryProcessor();
     }
 

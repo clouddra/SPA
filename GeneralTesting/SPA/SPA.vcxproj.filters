@@ -129,4 +129,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\sample_input\pql.txt">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\sample_input\simple.txt">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>
