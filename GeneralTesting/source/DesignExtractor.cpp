@@ -10,6 +10,7 @@ DesignExtractor::DesignExtractor(AST ast, StmtNodeTable* stmtTable, ModifiesTabl
 	_ut = utable;
 	_stmtt = stmtTable;
 	_pkb = pkb;
+	populateTables();
 
 }
 void DesignExtractor::populateTables()
