@@ -13,6 +13,11 @@
 #include "PKB.h"
 #endif
 
+#ifndef VVTABLE_HEAD
+#define VVTABLE_HEAD
+#include "ValidValueTable.h"
+#endif
+
 #ifndef STD_HEAD
 #define STD_HEAD
 #include "common.hpp"
@@ -23,6 +28,7 @@ class QueryProcessor {
 private:
 	QueryTree queryTree;
 	DeclarationTable declarationTable;
+    ValidValueTable vvTable;
 	std::vector<std::string> result;
 
 public:

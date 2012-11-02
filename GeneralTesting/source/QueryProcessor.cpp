@@ -3,6 +3,14 @@
 #include "QueryProcessor.h"
 #endif
 
+std::vector<std::string> intVecToStringVec(std::vector<int> input) {
+    std::vector<std::string> output;
+    for (int i = 0; i < (int)input.size(); i++) {
+        output.push_back(std::to_string((long long)input[i]));
+    }
+    return output;
+}
+
 QueryProcessor::QueryProcessor()
 {
 	queryTree = QueryTree();
@@ -87,7 +95,7 @@ void QueryProcessor::processQuery(PKB pkb)
                 }
             }
             // Parameter 2
-            int para2Type = declarationTable.getType(para1);
+            int para2Type = declarationTable.getType(para2);
             if (para2Type == -1) {
                 if (para1.find("\"") != std::string::npos) {
                     para2IsEnt = true;
@@ -104,7 +112,9 @@ void QueryProcessor::processQuery(PKB pkb)
                 }
             }
 
-            // follows query
+            std::vector<int> temp;
+            std::vector<std::string> toStore;
+            // follows query, assuming no entities
             if (relation.getName().compare("follows") == 0) {
                 if (para1IsNum) {
                     if (para2IsNum) {
@@ -113,11 +123,19 @@ void QueryProcessor::processQuery(PKB pkb)
                         // Follows(num1, num2) is true, do nothing
                     }
                     else {
-                        pkb.getFollowedBy(para1Num);    // Store the result somewhere (Incomplete)
+                        temp = pkb.getFollowedBy(para1Num);
+                        toStore = intVecToStringVec(temp);
+                        int ret = vvTable.insert(para2, toStore);
+                        if (ret == -1)  // Exit cond
+                            return;
                     }
                 }
                 else if (para2IsNum) {
-                    pkb.getFollows(para2Num);   // Store the result somewhere (Incomplete)
+                    temp = pkb.getFollows(para2Num);
+                    toStore = intVecToStringVec(temp);
+                    int ret = vvTable.insert(para1, toStore);
+                    if (ret == -1)  // Exit cond
+                        return;
                 }
                 else {
                     // Double variable e.g Follows(s1, s2)
@@ -126,33 +144,52 @@ void QueryProcessor::processQuery(PKB pkb)
         }
     } 
 
-    // Evaluating select
+    // Evaluating select (Currently only doing stmt, assign, while)
+    // This is the last step (ie we set the result here) so no other evaluation should take place after this
     int targetType = declarationTable.getType(target);
     std::vector<int> validStmtNum;
+    std::vector<std::string> toStore;
     switch (targetType) {
         case -1:    // Target is not declared ?? (Could be BOOLEAN)
         {
+            if (target.compare("BOOLEAN") == 0)
+                result.push_back("TRUE");
             return;
         }
 
-        case DeclarationTable::stmt_:
+        case DeclarationTable::stmt_:  
         {
             int temp = pkb.getNumStmts();
             for (int i = 1; i <= temp; i++) {
                 validStmtNum.push_back(i);
             }
+            toStore = intVecToStringVec(validStmtNum);
+            int ret = vvTable.insert(target, toStore);
+            if (ret == -1)  // Exit cond
+                return;
+            result = vvTable.getValues(target);
             break;
         }
 
         case DeclarationTable::assign_:
         {
             validStmtNum = pkb.getStmtWithType(Node::assignNode);
+            toStore = intVecToStringVec(validStmtNum);
+            int ret = vvTable.insert(target, toStore);
+            if (ret == -1)  // Exit cond
+                return;
+            result = vvTable.getValues(target);
             break;
         }
 
         case DeclarationTable::while_:
         {
             validStmtNum = pkb.getStmtWithType(Node::whileNode);
+            toStore = intVecToStringVec(validStmtNum);
+            int ret = vvTable.insert(target, toStore);
+            if (ret == -1)  // Exit cond
+                return;
+            result = vvTable.getValues(target);
             break;
         }
     }
@@ -167,6 +204,9 @@ void QueryProcessor::printTree()
 
 void QueryProcessor::printResult()
 {
-	for (int i=0; i<(int)result.size(); i++)
+	for (int i=0; i<(int)result.size(); i++) {
 		std::cout << result[i] << " ";
+        if ((i % 10) == 9)
+            std::cout << std::endl;
+    }
 }

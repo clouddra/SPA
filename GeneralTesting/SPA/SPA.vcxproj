@@ -30,6 +30,8 @@
     <ClInclude Include="..\source\SimpleGrammar.h" />
     <ClInclude Include="..\source\StmtNodeTable.h" />
     <ClInclude Include="..\source\UsesTable.h" />
+    <ClInclude Include="..\source\ValidValue.h" />
+    <ClInclude Include="..\source\ValidValueTable.h" />
     <ClInclude Include="..\source\VarTable.h" />
   </ItemGroup>
   <ItemGroup>
@@ -51,6 +53,8 @@
     <ClCompile Include="..\source\QueryTree.cpp" />
     <ClCompile Include="..\source\StmtNodeTable.cpp" />
     <ClCompile Include="..\source\UsesTable.cpp" />
+    <ClCompile Include="..\source\ValidValue.cpp" />
+    <ClCompile Include="..\source\ValidValueTable.cpp" />
     <ClCompile Include="..\source\VarTable.cpp" />
   </ItemGroup>
   <ItemGroup>
