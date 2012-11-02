@@ -2,6 +2,7 @@
 Debug/
 Release/
 external_libs/
+GeneralTesting/external_libs/
 
 # Exclude debug directories
 simple/Debug/
