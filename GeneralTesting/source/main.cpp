@@ -23,11 +23,6 @@
 #include "PqlParser.h"
 #endif
 
-#ifndef PQLSPLIT_HEAD
-#define PQLSPLIT_HEAD
-#include "PqlSplitter.h"
-#endif
-
 //using namespace std;
 
 
