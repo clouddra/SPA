@@ -31,7 +31,6 @@
     <ClInclude Include="..\source\StmtNodeTable.h" />
     <ClInclude Include="..\source\UsesTable.h" />
     <ClInclude Include="..\source\VarTable.h" />
-    <ClInclude Include="DesignExtractor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\AST.cpp" />
@@ -52,6 +51,7 @@
     <ClCompile Include="..\source\StmtNodeTable.cpp" />
     <ClCompile Include="..\source\UsesTable.cpp" />
     <ClCompile Include="..\source\VarTable.cpp" />
+    <ClCompile Include="DeclarationTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\sample_input\pql.txt" />
