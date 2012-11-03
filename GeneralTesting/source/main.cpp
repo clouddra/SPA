@@ -109,7 +109,6 @@ int main() {
     Parser temp = Parser();
     temp.parseCode("..\\sample_input\\simple.txt", &pkb);
 
-    system("pause");
-
+	system("pause");
 	return 0;
 }
