@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\sample_input\pql.txt" />
+    <None Include="..\sample_input\pqlShort.txt" />
     <None Include="..\sample_input\simple.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
