@@ -1,0 +1,22 @@
+# Exclude debug directories
+SPA/Debug
+AutoTester/Debug
+IntegrationTesting/Debug
+UnitTesting/Debug
+Debug
+
+# Exclude release directories
+SPA/Release
+AutoTester/Release
+IntegrationTesting/Release
+UnitTesting/Release
+Release
+
+# Exclude visual studio specific user files
+*.suo
+*.user
+*.sdf
+*.opensdf
+
+# Exclude other directories
+ipch/

@@ -8,6 +8,6 @@ class PqlParser {
 private:
 
 public:
-	PqlParser();
-	int parseQuery(std::string, QueryProcessor* queryProcessor);
+    int parseQuery(std::string storage, QueryProcessor* queryProcessor);
+    std::vector<std::string> splitQuery(std::string input);
 };

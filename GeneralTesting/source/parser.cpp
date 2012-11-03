@@ -8,11 +8,10 @@
 #include "SimpleGrammar.h"
 #endif
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <vector>
+#ifndef STD_HEAD
+#define STD_HEAD
+#include "common.hpp"
+#endif
 
     expression_node& expression_node::operator+=(expression_node const& rhs)
     {
@@ -115,7 +114,6 @@ BOOST_FUSION_ADAPT_STRUCT(
         void operator()(common_node const& node) const
 		{
             int nodeType = -1;
-            bool hasStmtNum = false;
             bool valueIsVar = false;
 			
             if (node.name.compare("program") == 0)
@@ -133,36 +131,29 @@ BOOST_FUSION_ADAPT_STRUCT(
             else if (node.name.compare("assign") == 0)
             {
                 nodeType = Node::assignNode;
-                hasStmtNum = true;
                 valueIsVar = true;
             }
             else if (node.name.compare("while") == 0)
             {
                 nodeType = Node::whileNode;
-                hasStmtNum = true;
                 valueIsVar = true;
             }
             else if (node.name.compare("if") == 0)
             {
                 nodeType = Node::ifNode;
-                hasStmtNum = true;
                 valueIsVar = true;
             }
             else if (node.name.compare("call") == 0)
             {
                 nodeType = Node::callNode;
-                hasStmtNum = true;
             }
 
             int newParent = parent;
             if (nodeType != -1) {
-                if (hasStmtNum)
-                    newParent = pkb->insertNode(nodeType, node.value, true, parent);
-                else
-                    newParent = pkb->insertNode(nodeType, node.value, false, parent);
+                newParent = pkb->insertNode(nodeType, node.value, parent);
             }
             if (valueIsVar) {
-                pkb->insertNode(Node::varNode, node.value, true, newParent);
+                pkb->insertNode(Node::varNode, node.value, newParent);
             }
 
 			BOOST_FOREACH(combined_type const& each_node, node.children)
@@ -198,7 +189,7 @@ BOOST_FUSION_ADAPT_STRUCT(
                 nodeType = Node::minusNode;
             }
 
-            int newParent = pkb->insertNode(nodeType, value, true, parent);
+            int newParent = pkb->insertNode(nodeType, value, parent);
             boost::apply_visitor(common_node_inserter(pkb, newParent), expr.left.expr);
             boost::apply_visitor(common_node_inserter(pkb, newParent), expr.right.expr);
         }
@@ -213,7 +204,7 @@ BOOST_FUSION_ADAPT_STRUCT(
                 nodeType = Node::constNode;
             }
 
-            pkb->insertNode(nodeType, n, true, parent); 
+            pkb->insertNode(nodeType, n, parent); 
         }
 
     private:
@@ -221,29 +212,7 @@ BOOST_FUSION_ADAPT_STRUCT(
         int parent;
     };
 
-Parser::Parser() {
-
-}
-
-int Parser::parseCode(char const* filename, PKB* pkb) {
-    std::ifstream in(filename, std::ios_base::in);
-
-    if (!in)
-    {
-        std::cerr << "Error: Could not open input file: "
-            << filename << std::endl;
-		int x;
-		std::cin >> x;
-        return 1;
-    }
-
-    std::string storage; // We will read the contents here.
-    in.unsetf(std::ios::skipws); // No white space skipping!
-    std::copy(
-        std::istream_iterator<char>(in),
-        std::istream_iterator<char>(),
-        std::back_inserter(storage));
-
+int Parser::parseCode(std::string storage, PKB* pkb) {
     typedef simple_grammar<std::string::const_iterator> simple_grammar;
 	simple_grammar simple; // Our grammar
     common_node ast; // Our tree
@@ -258,10 +227,11 @@ int Parser::parseCode(char const* filename, PKB* pkb) {
         std::cout << "-------------------------\n";
         std::cout << "Parsing succeeded\n";
         std::cout << "-------------------------\n";
-        common_node_printer printer;
-        printer(ast);
+        //common_node_printer printer;
+        //printer(ast);
         common_node_inserter inserter(pkb, -1);
         inserter(ast);
+        pkb->postParseCleanup();
         return 0;
     }
     else

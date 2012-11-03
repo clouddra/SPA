@@ -7,12 +7,12 @@
 ProcTable::ProcTable() {
 }
 
-int ProcTable::insertProc(std::string procName, int start) {
+int ProcTable::insertProc(std::string procName, int start, int end) {
 
 	int index = getProcIndex(procName);
 
 	if (index==-1) {
-		procTable.push_back(Procedure(procName, start, -1)) ;
+		procTable.push_back(Procedure(procName, start, end)) ;
 		index = procTable.size() - 1;
 	}
 
@@ -24,11 +24,11 @@ int ProcTable::getSize() {
 }
 
 //throws exception if out of bounds
-std::string ProcTable::getProcName (int ind) {
+std::string ProcTable::getProcName (int ind){
 	return procTable.at(ind).getProcName() ;
 }
 
-int ProcTable::getProcIndex (std::string procName) {
+int ProcTable::getProcIndex (std::string procName)  {
 
 	for (int i=0; i < (int)procTable.size(); i++){
 		if (procTable[i].getProcName() == procName)
@@ -38,15 +38,9 @@ int ProcTable::getProcIndex (std::string procName) {
 	return -1 ;
 }
 
-int ProcTable::getProcFirstln(int ind) {
+int ProcTable::getProcFirstln(int ind){
 	return procTable.at(ind).getFirstLine() ;
 }
-
-int ProcTable::getProcLastln(int ind) {
+int ProcTable::getProcLastln(int ind){
 	return procTable.at(ind).getLastLine() ;
 }
-
-void ProcTable::setProcLastln(int ind, int lastLine) {
-    procTable[ind].setLastLine(lastLine);
-}
-

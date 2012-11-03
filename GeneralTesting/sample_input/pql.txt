@@ -1,2 +1,6 @@
-stmt s1, s2;
-Select a such that Modifies(s2, s1) such that Modifies("x", s2)
+stmt s1, s2; assign a; while w;
+Select s2 such that Follows(1, s2)
+Select s1 such that Follows(s1, 2)
+Select s2 such that Follows(5, s2)
+Select s1 such that Follows(s1, 7)
+Select s1 such that Follows(13, s2)

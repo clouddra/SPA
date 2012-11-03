@@ -17,4 +17,5 @@ public:
     AST();
     int insertNode(int nodeType, int value, int stmtNum, int parent);
     std::vector<Node> getTree();
+	Node getNode(int index);
 };

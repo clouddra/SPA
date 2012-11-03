@@ -1,21 +1,50 @@
+#include <iostream>
+
 #ifndef PKB_HEAD
 #define PKB_HEAD
 #include "PKB.h"
 #endif
 
+#ifndef MODIFIES_HEAD
+#define MODIFIES_HEAD
+#include "ModifiesTable.h"
+#endif
 PKB::PKB() {
     modifiesTable = ModifiesTable();
+	parentTable = ParentTable();
+	followsTable = FollowsTable();
     varTable = VarTable();
     usesTable = UsesTable();
     procTable = ProcTable();
     ast = AST();
     stmtNodeTable = StmtNodeTable();
 }
+void PKB::printModifiesTable()
+{
+	for(int i=0;i<modifiesTable.getSize();i++)
+	{
+		std::cout << modifiesTable.extractModifies(i).first<< " "<<modifiesTable.extractModifies(i).second << std::endl;
+	}
+}
 
-int PKB::insertNode(int nodeType, std::string value, int parent) {
+void PKB::printUsesTable()
+{
+	for(int i=0;i<usesTable.getSize();i++)
+	{
+		std::cout << usesTable.extractUses(i).first<< " "<<usesTable.extractUses(i).second << std::endl;
+	}
+}
+
+void PKB::printFollowsTable()
+{
+	for(int i=0;i<followsTable.getSize();i++)
+	{
+		std::cout << followsTable.extractFollows(i).first<< " "<<followsTable.extractFollows(i).second << std::endl;
+	}
+}
+int PKB::insertNode(int nodeType, std::string value, bool hasStmtNum, int parent) {
     int indexValue = -1;
     bool newStmtFlag = false;
-    bool hasStmtNum = false;
 
     switch (nodeType) {
     case Node::assignNode:
@@ -23,30 +52,19 @@ int PKB::insertNode(int nodeType, std::string value, int parent) {
     case Node::ifNode:
     case Node::callNode:
         newStmtFlag = true;
-        hasStmtNum = true;
         break;
 
     case Node::varNode:
         indexValue = varTable.insertVar(value);
-        hasStmtNum = true;
         break;
 
     case Node::constNode:
         indexValue = atoi(value.c_str());
-        hasStmtNum = true;
         break;
 
     case Node::procedureNode:
-        indexValue = procTable.insertProc(value, stmtNodeTable.getSize());   // This line assumes there are no empty procedure
-        if (indexValue != 0)
-            procTable.setProcLastln(indexValue-1, stmtNodeTable.getSize()-1);
+        indexValue = procTable.insertProc(value, 0, 0);
         break;
-
-    case Node::divideNode:
-    case Node::minusNode:
-    case Node::plusNode:
-    case Node::timesNode:
-        hasStmtNum = true;
     }
 
     int stmtNum = -1;
@@ -63,9 +81,28 @@ int PKB::insertNode(int nodeType, std::string value, int parent) {
 
     return newNode;
 }
+ModifiesTable* PKB::getModifiesTable() {
+    return &modifiesTable;
+}
 
-void PKB::postParseCleanup() {
-    procTable.setProcLastln(procTable.getSize()-1, stmtNodeTable.getSize()-1);  //Set the lastLine of the last procedure
+ParentTable* PKB::getParentTable() {
+    return &parentTable;
+}
+
+FollowsTable* PKB::getFollowsTable() {
+    return &followsTable;
+}
+
+UsesTable* PKB::getUsesTable() {
+    return &usesTable;
+}
+AST PKB::getAST()
+{
+	return ast;
+}
+StmtNodeTable* PKB::getStmtNodeTable()
+{
+	return &stmtNodeTable;
 }
 
 int PKB::getParent(int stmt) {

@@ -30,3 +30,8 @@ int AST::insertNode(int nodeType, int value, int stmtNum, int parent) {
 std::vector<Node> AST::getTree() {
     return tree;
 }
+
+Node AST::getNode(int index)
+{
+	return tree[index];	
+}

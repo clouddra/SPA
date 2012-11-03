@@ -66,13 +66,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="source\UnitTest.cpp" />
     <ClCompile Include="TestAST.cpp" />
     <ClCompile Include="TestASTMain.cpp" />
+    <ClCompile Include="TestPKB.cpp" />
+    <ClCompile Include="TestPKBMain.cpp" />
+    <ClCompile Include="TestQuery.cpp" />
+    <ClCompile Include="TestQueryMain.cpp" />
+    <ClCompile Include="UnitTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestAST.h" />
+    <ClInclude Include="TestPKB.h" />
+    <ClInclude Include="TestQuery.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

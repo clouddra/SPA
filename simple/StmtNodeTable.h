@@ -6,6 +6,11 @@
 #include <vector>
 #endif
 
+#ifndef NODE_HEAD
+#define NODE_HEAD
+#include "Node.h"
+#endif
+
 class StmtNodeTable {
 
 private:

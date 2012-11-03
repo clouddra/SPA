@@ -21,7 +21,7 @@
 #endif
 
 //using namespace std;
-
+#include "DesignExtractor.h"
 
 int main() {
 
@@ -111,11 +111,30 @@ int main() {
 
     */
     
-    PKB pkb = PKB();
-    Parser temp = Parser();
-    temp.parseCode("..\\sample_input\\simple.txt", &pkb);
+ //   PKB pkb = PKB();
+ //   Parser temp = Parser();
+ //   temp.parseCode("..\\sample_input\\simple.txt", &pkb);
+	//DesignExtractor* de = new DesignExtractor(pkb.getAST(),pkb.getStmtNodeTable(),pkb.getModifiesTable(),pkb.getParentTable(),pkb.getFollowsTable(),pkb.getUsesTable(),&pkb);
+ //   system("pause");
 
-    system("pause");
+	//return 0;
 
+	PKB temp = PKB();
+    int proc = temp.insertNode(Node::procedureNode, "first", -1, 0);
+    int stmtLst = temp.insertNode(Node::stmtLstNode, "", -1, proc);
+    int assign = temp.insertNode(Node::assignNode, "", 1, stmtLst);
+    int var = temp.insertNode(Node::varNode, "x", 1, assign);
+    temp.insertNode(Node::constNode, "5", 1, assign);
+    assign = temp.insertNode(Node::assignNode, "", 2, stmtLst);
+    var = temp.insertNode(Node::varNode, "y", 2, assign);
+    int plus = temp.insertNode(Node::plusNode, "", 2, assign);
+    temp.insertNode(Node::constNode, "5", 2, plus);
+    temp.insertNode(Node::varNode, "x", 2, plus);
+	DesignExtractor* de = new DesignExtractor(temp.getAST(),temp.getStmtNodeTable(),temp.getModifiesTable(),temp.getParentTable(),temp.getFollowsTable(),temp.getUsesTable(),&temp);
+	//ModifiesTable* mt = temp.getModifiesTable();
+	temp.printModifiesTable();
+	temp.printUsesTable();
+	temp.printFollowsTable();
+	system("pause");
 	return 0;
 }

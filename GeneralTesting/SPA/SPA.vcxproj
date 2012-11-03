@@ -14,6 +14,7 @@
     <ClInclude Include="..\source\AST.h" />
     <ClInclude Include="..\source\common.hpp" />
     <ClInclude Include="..\source\DeclarationTable.h" />
+    <ClInclude Include="..\source\DesignExtractor.h" />
     <ClInclude Include="..\source\FollowsTable.h" />
     <ClInclude Include="..\source\ModifiesTable.h" />
     <ClInclude Include="..\source\node.h" />
@@ -29,11 +30,14 @@
     <ClInclude Include="..\source\SimpleGrammar.h" />
     <ClInclude Include="..\source\StmtNodeTable.h" />
     <ClInclude Include="..\source\UsesTable.h" />
+    <ClInclude Include="..\source\ValidValue.h" />
+    <ClInclude Include="..\source\ValidValueTable.h" />
     <ClInclude Include="..\source\VarTable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\AST.cpp" />
     <ClCompile Include="..\source\DeclarationTable.cpp" />
+    <ClCompile Include="..\source\DesignExtractor.cpp" />
     <ClCompile Include="..\source\FollowsTable.cpp" />
     <ClCompile Include="..\source\main.cpp" />
     <ClCompile Include="..\source\ModifiesTable.cpp" />
@@ -49,7 +53,13 @@
     <ClCompile Include="..\source\QueryTree.cpp" />
     <ClCompile Include="..\source\StmtNodeTable.cpp" />
     <ClCompile Include="..\source\UsesTable.cpp" />
+    <ClCompile Include="..\source\ValidValue.cpp" />
+    <ClCompile Include="..\source\ValidValueTable.cpp" />
     <ClCompile Include="..\source\VarTable.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\sample_input\pql.txt" />
+    <None Include="..\sample_input\simple.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DC21A1EA-D2C6-4D14-A2B4-E025B64BDE81}</ProjectGuid>
@@ -84,7 +94,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\Users\Christian\Documents\Lessons\NUS\Semester 5\CS3201\SPA\cs3201\GeneralTesting\SPA\external_libs\boost;external_libs/boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\Downloads\boost_1_51_0\boost_1_51_0;external_libs/boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

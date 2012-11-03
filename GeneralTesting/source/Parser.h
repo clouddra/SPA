@@ -8,8 +8,7 @@ class Parser {
 private:
 
 public:
-	Parser();
-	int parseCode(char const* filename, PKB* pkb);
+	int parseCode(std::string storage, PKB* pkb);
 };
 
 

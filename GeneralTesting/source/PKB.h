@@ -52,7 +52,7 @@ private:
 
 public:
     PKB();
-    int insertNode(int nodeType, std::string value, bool hasStmtNum, int parent);
+    int insertNode(int nodeType, std::string value, int parent);
     int getParent(int stmt);
     std::vector<int> getParentT(int stmt);
 	std::vector<int> getChild(int stmt);
@@ -71,4 +71,13 @@ public:
     bool isUses(int stmt, std::string var);
     std::vector<int> getStmtWithType(int nodeType);
     int getNumStmts();
+    void postParseCleanup();
+
+	void printModifiesTable();
+	AST PKB::getAST();
+	ModifiesTable* getModifiesTable();
+	ParentTable* getParentTable();
+	FollowsTable* getFollowsTable();
+	UsesTable* getUsesTable();
+	StmtNodeTable* getStmtNodeTable();
 };

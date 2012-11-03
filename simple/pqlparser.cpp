@@ -1,8 +1,3 @@
-#ifndef PQLPARSER_HEAD
-#define PQLPARSER_HEAD
-#include "PqlParser.h"
-#endif
-
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/phoenix_core.hpp>
@@ -178,74 +173,6 @@ namespace pqlparser
     };
 	//]
 
-
-
-	/// Copied from Shihan's Parser.cpp
-	struct common_node_inserter : boost::static_visitor<>
-    {
-        explicit common_node_inserter(QueryProcessor* myQP, int par) {
-            queryProcessor = myQP;
-            parent = par;
-        }
-
-        void operator()(common_node const& node) const
-		{
-            int newParent = parent;
-
-			newParent = queryProcessor->insertNode(node.name, node.value, parent);
-
-			BOOST_FOREACH(combined_type const& each_node, node.children)
-			{
-				boost::apply_visitor(common_node_inserter(queryProcessor, newParent), each_node);
-			}
-		}
-
-		void operator()(expression_node const& ast) const
-        {
-            boost::apply_visitor(*this, ast.expr);
-        }
-
-		void operator()(binary_op const& expr) const
-        {
-		/* We shall not handle expressions for PQL yet
-            std::string value(1, expr.op);
-            int nodeType;
-
-            if (value.compare("*") == 0)
-            {
-                nodeType = Node::timesNode;
-            }
-            else if (value.compare("/") == 0)
-            {
-                nodeType = Node::divideNode;
-            }
-            else if (value.compare("+") == 0)
-            {
-                nodeType = Node::plusNode;
-            }
-            else if (value.compare("-") == 0)
-            {
-                nodeType = Node::minusNode;
-            }
-
-            int newParent = pkb->insertNode(nodeType, value, true, parent);
-            boost::apply_visitor(common_node_inserter(pkb, newParent), expr.left.expr);
-            boost::apply_visitor(common_node_inserter(pkb, newParent), expr.right.expr);
-		*/
-        }
-
-        void operator()(std::string n) const {     
-			queryProcessor->insertNode(n, "", parent);
-
-        }
-
-	private:
-        QueryProcessor* queryProcessor;
-        int parent;
-    };
-
-
-
     ///////////////////////////////////////////////////////////////////////////
     // [Grammar for PQL
 
@@ -263,6 +190,90 @@ namespace pqlparser
 
             using phoenix::at_c;
             using phoenix::push_back;
+
+			/*
+			text_ = lexeme[+(char_ - '{' - '}' - ';')				[_val += _1]];
+			name_ = lexeme[+(char_ - ')' - '(' - qi::space - '+' - '-' - '*' - '/' - '=' - ';')			[_val += _1]];
+
+			
+			call_	=
+					string("call")				[at_c<0>(_val) = _1]
+				>>	name_						[at_c<1>(_val) = _1]
+				>>	';'
+			;
+			
+			while_	=
+					string("while")				[at_c<0>(_val) = _1]
+				>>	name_						[at_c<1>(_val) = _1]
+				>>	'{'
+				>>	stmtLst_					[push_back(at_c<2>(_val), _1)]
+				>>	'}'
+			;
+
+			if_		=
+					string("if")				[at_c<0>(_val) = _1]
+				>>	name_						[at_c<1>(_val) = _1]
+				>>	then_						[push_back(at_c<2>(_val), _1)]
+				>>	else_						[push_back(at_c<2>(_val), _1)]
+			;
+
+			then_	=
+					string("then")				[at_c<0>(_val) = _1]
+				>>	'{'
+				>>	stmtLst_					[push_back(at_c<2>(_val), _1)]
+				>>	'}'
+			;
+
+			else_	=
+					string("else")				[at_c<0>(_val) = _1]
+				>>	'{'
+				>>	stmtLst_					[push_back(at_c<2>(_val), _1)]
+				>>	'}'
+			;
+
+			assign_	=
+					name_						[at_c<0>(_val) = "assign"][at_c<1>(_val) = _1]
+				>>	'='
+				>>	expr_						[push_back(at_c<2>(_val), _1)]
+				>>	';'
+			;
+
+			expr_ =	term_                       [_val = _1]
+                >> *(   ('+' >> term_           [_val += _1])
+                |   ('-' >> term_			    [_val -= _1])
+                    )
+            ;
+
+			term_ =	factor_                     [_val = _1]
+                >> *(   ('*' >> factor_         [_val *= _1])
+                    |   ('/' >> factor_         [_val /= _1])
+                    )
+            ;
+
+			factor_ =
+				 name_                          [_val = _1]
+                |   '(' >> expr_                [_val = _1] >> ')'
+            ;
+			
+			stmt_	 %= (call_ | while_ | if_ | assign_);
+
+			stmtLst_
+					= *stmt_					[at_c<0>(_val) = "stmtLst"][push_back(at_c<2>(_val), _1)]
+			;
+			
+			procedure_
+					= 
+					string("procedure")			[at_c<0>(_val) = _1]
+				>>	name_						[at_c<1>(_val) = _1]
+				>>	'{'
+				>>	stmtLst_					[push_back(at_c<2>(_val), _1)]
+				>>	'}'
+			;
+			
+            program_
+					=	+procedure_				[at_c<0>(_val) = "program"][push_back(at_c<2>(_val), _1)]
+			;
+			*/
 
 			// Lexical Rules
 			LETTER_ %= lexeme[char_("a-zA-Z")];
@@ -394,6 +405,24 @@ namespace pqlparser
 			*/
         }
 
+		/*
+        qi::rule<Iterator, common_node(), ascii::space_type> program_;
+		qi::rule<Iterator, common_node(), ascii::space_type> procedure_;
+		qi::rule<Iterator, common_node(), ascii::space_type> stmtLst_;
+		qi::rule<Iterator, common_node(), ascii::space_type> stmt_;
+		qi::rule<Iterator, common_node(), ascii::space_type> call_;			
+		qi::rule<Iterator, common_node(), ascii::space_type> while_;
+		qi::rule<Iterator, common_node(), ascii::space_type> if_;
+		qi::rule<Iterator, common_node(), ascii::space_type> then_;
+		qi::rule<Iterator, common_node(), ascii::space_type> else_;
+		qi::rule<Iterator, common_node(), ascii::space_type> assign_;
+		qi::rule<Iterator, expression_node(), ascii::space_type> expr_;
+		qi::rule<Iterator, expression_node(), ascii::space_type> term_;
+		qi::rule<Iterator, expression_node(), ascii::space_type> factor_;
+        qi::rule<Iterator, std::string(), ascii::space_type> text_;
+		qi::rule<Iterator, std::string()> name_;
+		*/
+
 		// Lexical Rules
 		qi::rule<Iterator, char()> LETTER_;
 		qi::rule<Iterator, char()> DIGIT_;
@@ -438,11 +467,42 @@ namespace pqlparser
     //]
 }
 
-PqlParser::PqlParser() {}
-
-int PqlParser::parseQuery(std::string storage, QueryProcessor* qp)
+/*
+///////////////////////////////////////////////////////////////////////////////
+// [Main program
+int main(int argc, char **argv)
 {
-	typedef pqlparser::pql_grammar<std::string::const_iterator> pql_grammar;
+    char const* filename;
+    if (argc > 1)
+    {
+        filename = argv[1];
+    }
+    else
+    {
+        //std::cerr << "Error: No input file provided." << std::endl;
+        //return 1;
+		filename = "C:\\pql.txt";
+    }
+
+    std::ifstream in(filename, std::ios_base::in);
+
+    if (!in)
+    {
+        std::cerr << "Error: Could not open input file: "
+            << filename << std::endl;
+		int x;
+		std::cin >> x;
+        return 1;
+    }
+
+    std::string storage; // We will read the contents here.
+    in.unsetf(std::ios::skipws); // No white space skipping!
+    std::copy(
+        std::istream_iterator<char>(in),
+        std::istream_iterator<char>(),
+        std::back_inserter(storage));
+
+    typedef pqlparser::pql_grammar<std::string::const_iterator> pql_grammar;
 	pql_grammar pql; // Our grammar
     pqlparser::common_node pql_root; // Our tree
 
@@ -458,8 +518,6 @@ int PqlParser::parseQuery(std::string storage, QueryProcessor* qp)
         std::cout << "-------------------------\n";
         pqlparser::common_node_printer printer;
         printer(pql_root);
-		pqlparser::common_node_inserter inserter(qp, -1);
-		inserter(pql_root);
         return 0;
     }
     else
@@ -473,3 +531,5 @@ int PqlParser::parseQuery(std::string storage, QueryProcessor* qp)
         return 1;
     }
 }
+//]
+*/

@@ -24,5 +24,6 @@ public:
 	int insertDeclaration(int nodeType, std::string name);
 	int getSize();
 	bool isDeclared(int nodeType, std::string name);
+    int getType(std::string name);
 	void printDeclarationTable(); // For testing
 };
