@@ -1,6 +1,8 @@
 stmt s1, s2; assign a; while w;
-Select s2 such that Follows(1, s2)
-Select s1 such that Follows(s1, 2)
-Select s2 such that Follows(5, s2)
-Select s1 such that Follows(s1, 7)
-Select s1 such that Follows(13, s2)
+Select s2 such that Follows*(1, s2)
+Select s1 such that Follows*(s1, 2)
+Select s2 such that Follows*(5, s2)
+Select s1 such that Follows*(s1, 7)
+Select s1 such that Follows*(2, 8)
+Select s1 such that Follows*(2, 25)
+Select s1 such that Follows*(12, s2)

@@ -93,7 +93,7 @@ int main() {
         std::cout << "Result of Query " << i+1 << std::endl;
         qp.printResult();
         std::cout << std::endl << std::endl;
-        qp = QueryProcessor();
+        qp = QueryProcessor();  // Reset qp to empty for next query
     }
 
     system("pause");

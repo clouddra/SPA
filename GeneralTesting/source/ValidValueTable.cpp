@@ -12,6 +12,8 @@ int ValidValueTable::findVariable(std::string var) {
 }
 
 int ValidValueTable::insert(std::string variable, std::vector<std::string> values) {
+    if ((int)values.size() == 0)
+        return -1;
     int index = findVariable(variable);
     if (index == -1) {
         vvTable.push_back(ValidValue(variable, values));
