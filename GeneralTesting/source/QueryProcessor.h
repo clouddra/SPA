@@ -30,6 +30,13 @@ private:
 	DeclarationTable declarationTable;
     ValidValueTable vvTable;
 	std::vector<std::string> result;
+    void loadDeclaration(std::vector<QueryNode> tree, int* curr);
+    int findTypeOf(std::string para, bool* paraIsNum, bool* paraIsEnt, int* paraNum);
+    int evaluateFollows(bool T, bool para1IsNum, bool para2IsNum, std::string para1, std::string para2, int para1Num, int para2Num, PKB pkb);
+    int evaluateParent(bool T, bool para1IsNum, bool para2IsNum, std::string para1, std::string para2, int para1Num, int para2Num, PKB pkb);
+    int evaluateModifiesS(bool para1IsNum, bool para2IsEnt, std::string para1, std::string para2, int para1Num, PKB pkb);
+    int evaluateUsesS(bool para1IsNum, bool para2IsEnt, std::string para1, std::string para2, int para1Num, PKB pkb);
+    int evaluateType(PKB pkb, std::string target, bool select);
 
 public:
 	QueryProcessor();

@@ -34,7 +34,7 @@ int DeclarationTable::getType(std::string name)
     for (int i=0; i<getSize(); i++)
 	{
 		if (declarationTable.at(i).second == name)
-			return i;
+			return declarationTable.at(i).first;
 	}
     return -1;
 }

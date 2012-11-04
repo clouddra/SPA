@@ -91,15 +91,17 @@ void PKB::postParseCleanup() {
     procTable.setProcLastln(procTable.getSize()-1, stmtNodeTable.getSize()-1);  //Set the lastLine of the last procedure
 }
 
-int PKB::getParent(int stmt) {
-    return parentTable.getParent(stmt);    
+std::vector<int> PKB::getParent(int stmt) {
+    std::vector<int> ans;
+    ans.push_back(parentTable.getParent(stmt)); 
+    return ans;
 }
 
 std::vector<int> PKB::getParentT(int stmt) {
     std::vector<int> ans;
     int curr = stmt;
     while (curr != -1) {
-        curr = getParent(curr);
+        curr = parentTable.getParent(curr);
         if (curr != -1)
             ans.push_back(curr);
     }

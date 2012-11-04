@@ -1,5 +1,5 @@
 #include "DesignExtractor.h"
-//currently adds modifies, uses for statements, parent and follows relationship
+//currently adds modifies & uses for statements, parent and follows relationship
 DesignExtractor::DesignExtractor(PKB* pkb)
 {
     _ast = pkb->getAST();
@@ -28,7 +28,7 @@ void DesignExtractor::populateTables()
 			
 				}
 			}
-			//i.e. if this stmtLst Node is a then:stmtLst or else:stmtLst 
+			//i.e. if this stmtLst Node is a then:stmtLst or else:stmtLst or just a stmtLst which is a child of a while node
 			if(_ast.getNode(parent).getNodeType()==Node::ifNode ||_ast.getNode(parent).getNodeType()==Node::whileNode)
 			{
 				for(int k = 0;k<children.size();k++)
@@ -37,25 +37,30 @@ void DesignExtractor::populateTables()
 				}
 			}
 		}
-		else if(_ast.getNode(i).getNodeType()==Node::assignNode)//look for assign nodes
-		{
-			std::vector<int> parents = _pkb->getParentT(_ast.getNode(i).getStmtNum());//get parent and indirect parents of node
-			insertModifies(i, children[0]);//add the first child of the assign node to modifies table
-			for(int n = 0; n<parents.size();n++)
+	}
+	//Need to loop through again because Modifies and Uses tables require the Parent* relationship which is computed in earlier loop
+	for(int t = 0; t<_ast.getTree().size(); t++)
+	{
+		std::vector<int> childrenAssign = _ast.getNode(t).getChildren();		
+		if(_ast.getNode(t).getNodeType()==Node::assignNode)//look for assign nodes
+		{		
+			std::vector<int> parents = _pkb->getParentT(_ast.getNode(t).getStmtNum());//get parent and indirect parents of node
+			insertModifies(t, childrenAssign[0]);//add the first child of the assign node to modifies table
+			for(int w = 0; w<parents.size();w++)
 			{
-				insertModifies(parents[n], children[0]);//indirect parents modify this variable too
+				insertModifies(parents[w], childrenAssign[0]);//indirect parents modify this variable too
 			}
-			if(_ast.getNode(children[1]).getNodeType()==Node::varNode)//if 2nd child is a variable
+			if(_ast.getNode(childrenAssign[1]).getNodeType()==Node::varNode)//if 2nd child is a variable
 			{
-				insertUses(i,children[1]);//add it to the uses table
-				for(int n = 0; n<parents.size();n++)
+				insertUses(t,childrenAssign[1]);//add it to the uses table
+				for(int v = 0; v<parents.size();v++)
 				{
-					insertUses(parents[i], children[1]);//indirect parents use this variable too
+					insertUses(parents[v], childrenAssign[1]);//indirect parents use this variable too
 				}
 			}
 			else//if it isn't a variable
 			{
-				checkChildrenUses(children[1], parents);
+				checkChildrenUses(childrenAssign[1], parents);
 			}
 		}
 	}
