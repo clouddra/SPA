@@ -65,6 +65,7 @@ int main() {
 	DesignExtractor de = DesignExtractor(&pkb);
     de.populateTables();
 
+    // pql.txt stores currently working queries, pqlShort.txt stores queries in development (may not work)
     char const* pqlFile = "..\\sample_input\\pqlShort.txt";
     std::ifstream in2(pqlFile, std::ios_base::in);
 

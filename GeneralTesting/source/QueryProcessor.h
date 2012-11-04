@@ -36,7 +36,7 @@ private:
     int evaluateParent(bool T, bool para1IsNum, bool para2IsNum, std::string para1, std::string para2, int para1Num, int para2Num, PKB pkb);
     int evaluateModifiesS(bool para1IsNum, bool para2IsEnt, std::string para1, std::string para2, int para1Num, PKB pkb);
     int evaluateUsesS(bool para1IsNum, bool para2IsEnt, std::string para1, std::string para2, int para1Num, PKB pkb);
-    int evaluateType(PKB pkb, std::string target, bool select);
+    int evaluateType(PKB pkb, std::string target, bool insertStmt);
 
 public:
 	QueryProcessor();

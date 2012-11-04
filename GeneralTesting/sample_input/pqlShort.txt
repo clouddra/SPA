@@ -1,3 +1,3 @@
 stmt s1, s2; assign a; while w; variable v;
 Select v such that Uses(2, v)
-
+Select s1 such that Uses(s1, "x")

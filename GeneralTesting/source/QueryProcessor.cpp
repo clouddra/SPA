@@ -75,7 +75,8 @@ int QueryProcessor::findTypeOf(std::string para, bool* paraIsNum, bool* paraIsEn
             if (convert >> *paraNum) {
                 *paraIsNum = true;
             }
-            else {  // Can't figure out type of para ??
+            else {  // Can't figure out type of para ?? Should never reach here
+                std::cout << "Cannot figure out type of " << para << std::endl;
                 return -2;
             }
         }
@@ -89,35 +90,44 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para2IsNum, st
     std::vector<std::string> toStore;
 
     // Inserting valid values based on parameter type (if variable)
+    int ret;
     if (!para1IsNum) {
-        evaluateType(pkb, para1, false);
+        ret = evaluateType(pkb, para1, false);
+        if (ret == -1)
+            return -1;
     }
     if (!para2IsNum) {
-        evaluateType(pkb, para2, false);
+        int ret2 = evaluateType(pkb, para2, false);
+        if (ret2 == -1)
+            return -1;
     }
 
     // Inserting valid values based on PKB tables 
     if (!T) {
         if (para1IsNum) {
             if (para2IsNum) {
-                if (!pkb.isFollow(para1Num, para2Num))  // Follows(num1, num2) is false, whole query is false
+                if (!pkb.isFollow(para1Num, para2Num)) {  // Follows(num1, num2) is false, whole query is false
+                    std::cout << "Follows(" << para1 << "," << para2 << ") is false" << std::endl;
                     return -1;
+                }
                 // Follows(num1, num2) is true, do nothing
             }
             else {
                 temp = pkb.getFollowedBy(para1Num);
                 toStore = intVecToStringVec(temp);
                 int ret = vvTable.insert(para2, toStore);
-                if (ret == -1)  // Exit cond
+                if (ret == -1) {  // Exit cond
                     return -1;
+                }
             }
         }
         else if (para2IsNum) {
             temp = pkb.getFollows(para2Num);
             toStore = intVecToStringVec(temp);
             int ret = vvTable.insert(para1, toStore);
-            if (ret == -1)  // Exit cond
+            if (ret == -1) {  // Exit cond
                 return -1;
+            }
         }
         else {
             // Double variable e.g Follows(s1, s2) Imcomplete
@@ -134,24 +144,28 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para2IsNum, st
                         break;
                     }
                 }
-                if (!found)  // Follows*(num1, num2) is false, whole query is false
+                if (!found) {  // Follows*(num1, num2) is false, whole query is false
+                    std::cout << "Follows*(" << para1 << "," << para2 << ") is false" << std::endl;
                     return -1;
+                }
                 // Follows*(num1, num2) is true, do nothing
             }
             else {
                 temp = pkb.getFollowedByT(para1Num);
                 toStore = intVecToStringVec(temp);
                 int ret = vvTable.insert(para2, toStore);
-                if (ret == -1)  // Exit cond
+                if (ret == -1) {  // Exit cond
                     return -1;
+                }
             }
         }
         else if (para2IsNum) {
             temp = pkb.getFollowsT(para2Num);
             toStore = intVecToStringVec(temp);
             int ret = vvTable.insert(para1, toStore);
-            if (ret == -1)  // Exit cond
+            if (ret == -1) {  // Exit cond
                 return -1;
+            }
         }
         else {
             // Double variable e.g Follows(s1, s2) Imcomplete
@@ -166,35 +180,44 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para2IsNum, std
     std::vector<std::string> toStore;
 
     // Inserting valid values based on parameter type (if variable)
+    int ret;
     if (!para1IsNum) {
-        evaluateType(pkb, para1, false);
+        ret = evaluateType(pkb, para1, false);
+        if (ret == -1)
+            return -1;
     }
     if (!para2IsNum) {
-        evaluateType(pkb, para2, false);
+        int ret2 = evaluateType(pkb, para2, false);
+        if (ret2 == -1)
+            return -1;
     }
 
     // Inserting valid values based on PKB tables 
     if (!T) {
         if (para1IsNum) {
             if (para2IsNum) {
-                if (!pkb.isParent(para1Num, para2Num))  // Parent(num1, num2) is false, whole query is false
+                if (!pkb.isParent(para1Num, para2Num)) {  // Parent(num1, num2) is false, whole query is false
+                    std::cout << "Parent(" << para1 << "," << para2 << ") is false" << std::endl;
                     return -1;
+                }
                 // Parent(num1, num2) is true, do nothing
             }
             else {
                 temp = pkb.getChild(para1Num);
                 toStore = intVecToStringVec(temp);
                 int ret = vvTable.insert(para2, toStore);
-                if (ret == -1)  // Exit cond
+                if (ret == -1) {  // Exit cond
                     return -1;
+                }
             }
         }
         else if (para2IsNum) {
             temp = pkb.getParent(para2Num);
             toStore = intVecToStringVec(temp);
             int ret = vvTable.insert(para1, toStore);
-            if (ret == -1)  // Exit cond
+            if (ret == -1) {  // Exit cond
                 return -1;
+            }
         }
         else {
             // Double variable e.g Parent(s1, s2) Imcomplete
@@ -211,24 +234,28 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para2IsNum, std
                         break;
                     }
                 }
-                if (!found)  // Parent*(num1, num2) is false, whole query is false
+                if (!found) {  // Parent*(num1, num2) is false, whole query is false
+                    std::cout << "Parent*(" << para1 << "," << para2 << ") is false" << std::endl;
                     return -1;
+                }
                 // Parent*(num1, num2) is true, do nothing
             }
             else {
                 temp = pkb.getChildT(para1Num);
                 toStore = intVecToStringVec(temp);
                 int ret = vvTable.insert(para2, toStore);
-                if (ret == -1)  // Exit cond
+                if (ret == -1) {  // Exit cond
                     return -1;
+                }
             }
         }
         else if (para2IsNum) {
             temp = pkb.getParentT(para2Num);
             toStore = intVecToStringVec(temp);
             int ret = vvTable.insert(para1, toStore);
-            if (ret == -1)  // Exit cond
+            if (ret == -1) {  // Exit cond
                 return -1;
+            }
         }
         else {
             // Double variable e.g Parent(s1, s2) Imcomplete
@@ -244,31 +271,38 @@ int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para2IsEnt, std::str
 
     // Inserting valid values based on parameter type (if variable)
     // Note that parameter 2 does not need to be evaluated since it will not restrict valid values
+    int ret;
     if (!para1IsNum) {
-        evaluateType(pkb, para1, false);
+        ret = evaluateType(pkb, para1, false);
+        if (ret == -1)
+            return -1;
     }
 
     // Inserting valid values based on PKB tables 
     if (para1IsNum) {
         if (para2IsEnt) {
-            if (!pkb.isModifies(para1Num, para2))  // Modifies(num, ent) is false, whole query is false
+            if (!pkb.isModifies(para1Num, para2)) {  // Modifies(num, ent) is false, whole query is false
+                std::cout << "Modifies(" << para1 << ",\"" << para2 << "\") is false" << std::endl;
                 return -1;
+            }
             // Modifies(num, ent) is true, do nothing
         }
         else {
             toStore = pkb.getModifiedBy(para1Num);
             int ret = vvTable.insert(para2, toStore);
-            if (ret == -1)  // Exit cond
+            if (ret == -1) {  // Exit cond
                 return -1;
+            }
         }
     }
     else if (para2IsEnt) {
         temp = pkb.getModifiesVar(para2);
         toStore = intVecToStringVec(temp);
         int ret = vvTable.insert(para1, toStore);
-        if (ret == -1)  // Exit cond
+        if (ret == -1) {  // Exit cond
             return -1;
         }
+    }
     else {
         // Double variable e.g Modifies(s1, v) Imcomplete
     }
@@ -282,31 +316,38 @@ int QueryProcessor::evaluateUsesS(bool para1IsNum, bool para2IsEnt, std::string 
 
     // Inserting valid values based on parameter type (if variable)
     // Note that parameter 2 does not need to be evaluated since it will not restrict valid values
+    int ret;
     if (!para1IsNum) {
-        evaluateType(pkb, para1, false);
+        ret = evaluateType(pkb, para1, false);
+        if (ret == -1) 
+            return -1;
     }
 
     // Inserting valid values based on PKB tables 
     if (para1IsNum) {
         if (para2IsEnt) {
-            if (!pkb.isUses(para1Num, para2))  // Uses(num, ent) is false, whole query is false
+            if (!pkb.isUses(para1Num, para2)) {  // Uses(num, ent) is false, whole query is false
+                std::cout << "Uses(" << para1 << ",\"" << para2 << "\") is false" << std::endl;
                 return -1;
+            }
             // Uses(num, ent) is true, do nothing
         }
         else {
             toStore = pkb.getUsedBy(para1Num);
             int ret = vvTable.insert(para2, toStore);
-            if (ret == -1)  // Exit cond
+            if (ret == -1) {  // Exit cond
                 return -1;
+            }
         }
     }
     else if (para2IsEnt) {
         temp = pkb.getUsesVar(para2);
         toStore = intVecToStringVec(temp);
         int ret = vvTable.insert(para1, toStore);
-        if (ret == -1)  // Exit cond
+        if (ret == -1) {  // Exit cond
             return -1;
         }
+    }
     else {
         // Double variable e.g Uses(s1, v) Imcomplete
     }
@@ -314,7 +355,11 @@ int QueryProcessor::evaluateUsesS(bool para1IsNum, bool para2IsEnt, std::string 
 }
 
 // Evaluating based on variable type (target should be a declared variable in the declaration table)
-int QueryProcessor::evaluateType(PKB pkb, std::string target, bool select) {
+// Return values: 
+// -1 = target not found in declaration table (error)
+// 0  = normal execution
+// 1  = target is a stmt and not inserted into vvTable (need to flag for dbl variable query)
+int QueryProcessor::evaluateType(PKB pkb, std::string target, bool insertStmt) {
     int targetType = declarationTable.getType(target);
     std::vector<int> validStmtNum;
     std::vector<std::string> toStore;
@@ -322,13 +367,14 @@ int QueryProcessor::evaluateType(PKB pkb, std::string target, bool select) {
     switch (targetType) {
         case -1:    // Target is not declared
         {
+            std::cout << target << " is not declared" << std::endl;
             return -1;
         }
 
         case DeclarationTable::stmt_:  
         {
-            // Only needs to be done when coming from evaluate select, as stmt does not restrict valid values
-            if (select) {
+            // Only needs to be done under specific conditions (evaluating select/dbl variable queries), as stmt does not restrict valid values
+            if (insertStmt) {
                 int temp = pkb.getNumStmts();
                 for (int i = 1; i <= temp; i++) {
                     validStmtNum.push_back(i);
@@ -337,6 +383,9 @@ int QueryProcessor::evaluateType(PKB pkb, std::string target, bool select) {
                 int ret = vvTable.insert(target, toStore);
                 if (ret == -1)  // Exit cond
                     return -1;
+            }
+            else {
+                return 1;
             }
             break;
         }
