@@ -8,6 +8,7 @@ PKB::PKB() {
     varTable = VarTable();
     usesTable = UsesTable();
     procTable = ProcTable();
+	parentTable = ParentTable();
     ast = AST();
     stmtNodeTable = StmtNodeTable();
 }
