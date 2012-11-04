@@ -5,6 +5,7 @@
 
 // Maps a variable to the values it can take, used in query processor
 // Note that values are strings
+// For performance might want to change values to set type
 
 class ValidValue {
 private:

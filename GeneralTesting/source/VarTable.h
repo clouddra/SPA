@@ -19,4 +19,5 @@ public:
 	int getSize();
 	std::string getVarName (int ind);
 	int getVarIndex (std::string varName);
+    std::vector<std::string> getTable();
 };
