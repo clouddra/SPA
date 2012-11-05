@@ -73,6 +73,7 @@ public:
     std::vector<std::string> getVarTable();
     int getNumStmts();
     void postParseCleanup();
+	std::vector<int> matchPattern(int nodeType, std::string varName, std::string pattern); 
 
 	void printModifiesTable();
 	AST PKB::getAST();
