@@ -756,3 +756,45 @@ void QueryProcessor::printResult()
             std::cout << std::endl;
     }
 }
+
+// Evaluates pattern query Eg. "pattern a1(x, _"y"_)" ===> a1 = pattern, x = var, _"y"_ = expr
+void QueryProcessor::evaluatePattern(std::string pattern, std::string var, std::string expr, PKB pkb)
+{
+	int patternType = declarationTable.getType(pattern);
+
+	// For now we only need to handle assign
+	if (patternType == DeclarationTable::assign_)
+	{
+		if (declarationTable.getType(var) == DeclarationTable::variable_) // The variable var was declared in query
+		{
+			// Get list containing all variable names
+			std::vector<std::string> varList = pkb.getVarTable();
+			for (int i=0; i<(int)varList.size(); i++)
+			{
+				std::vector<int> statements = pkb.matchPattern(Node::assignNode, varList[i], expr);
+
+				PatternRow temp = PatternRow(pattern, var, varList[i], statements); // var is the declared variable
+				patternTable.insertPatternRow(temp);
+			}
+		}
+		else if (var == "_")
+		{
+			std::vector<std::string> varList = pkb.getVarTable();
+			for (int i=0; i<(int)varList.size(); i++)
+			{
+				std::vector<int> statements = pkb.matchPattern(Node::assignNode, varList[i], expr);
+
+				PatternRow temp = PatternRow(pattern, "", varList[i], statements); // No declared variable
+				patternTable.insertPatternRow(temp);
+			}
+		}
+		else // The var == "varName", where varName is in our simple source code
+		{
+			std::string varName = var.substr(1, var.length() - 2); // extract varName by removing the double quotes
+			std::vector<int> statements = pkb.matchPattern(Node::assignNode, varName, expr);
+			
+			PatternRow temp = PatternRow(pattern, "", varName, statements); // No declared variable
+			patternTable.insertPatternRow(temp);
+		}
+	}
+}

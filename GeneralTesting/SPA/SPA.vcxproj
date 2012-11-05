@@ -20,6 +20,8 @@
     <ClInclude Include="..\source\node.h" />
     <ClInclude Include="..\source\ParentTable.h" />
     <ClInclude Include="..\source\Parser.h" />
+    <ClInclude Include="..\source\PatternRow.h" />
+    <ClInclude Include="..\source\PatternTable.h" />
     <ClInclude Include="..\source\PKB.h" />
     <ClInclude Include="..\source\PqlParser.h" />
     <ClInclude Include="..\source\Procedure.h" />
@@ -46,6 +48,8 @@
     <ClCompile Include="..\source\node.cpp" />
     <ClCompile Include="..\source\ParentTable.cpp" />
     <ClCompile Include="..\source\parser.cpp" />
+    <ClCompile Include="..\source\PatternRow.cpp" />
+    <ClCompile Include="..\source\PatternTable.cpp" />
     <ClCompile Include="..\source\PKB.cpp" />
     <ClCompile Include="..\source\pqlparser.cpp" />
     <ClCompile Include="..\source\Procedure.cpp" />

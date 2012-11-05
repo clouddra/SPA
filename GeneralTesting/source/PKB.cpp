@@ -221,13 +221,13 @@ int PKB::getNumStmts() {
     return stmtNodeTable.getSize() - 1;
 }
 
-std::vector<int> PKB::matchPattern(int nodeType, std::string varName, std::string pattern) {
+std::vector<int> PKB::matchPattern(int nodeType, std::string varName, std::string expr) {
 	std::vector<int> toReturn;
 
 	if (nodeType == Node::assignNode)
 	{
 		std::vector<int> assignStmt = getStmtWithType(Node::assignNode); // Get all assignment statements
-		if (pattern == "_")
+		if (expr == "_")
 		{
 			for (int i=0; i<(int)assignStmt.size(); i++)
 			{
@@ -236,9 +236,9 @@ std::vector<int> PKB::matchPattern(int nodeType, std::string varName, std::strin
 					toReturn.push_back(assignStmt[i]);
 			}
 		}
-		else // This means pattern = _"var"_
+		else // This means expr = _"var"_
 		{
-			std::string var = pattern.substr(2, pattern.length() - 4); // get the var part only
+			std::string var = expr.substr(2, expr.length() - 4); // extract the var by removing _" and "_
 			for (int i=0; i<(int)assignStmt.size(); i++)
 			{
 				// Check if the assignStmt contains "varName = ...var..."
