@@ -64,8 +64,8 @@ int main() {
     temp.parseCode(storage, &pkb);
 	DesignExtractor de = DesignExtractor(&pkb);
     de.populateTables();
-	
-    char const* pqlFile = "..\\sample_input\\pql.txt";
+
+    char const* pqlFile = "..\\sample_input\\pqlShort.txt";
     std::ifstream in2(pqlFile, std::ios_base::in);
 
     if (!in2)
