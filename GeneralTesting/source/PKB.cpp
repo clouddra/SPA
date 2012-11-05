@@ -121,9 +121,9 @@ std::vector<int> PKB::getChildT(int stmt) {
     int curr = 0;
     std::vector<int> ans = getChild(stmt);
     
-    while (curr < ans.size()) {
+    while (curr < (int)ans.size()) {
         std::vector<int> temp = getChild(ans[curr]);
-        for (int i = 0; i < temp.size(); i++) {
+        for (int i = 0; i < (int)temp.size(); i++) {
             ans.push_back(temp[i]);
         }
         curr++;
@@ -143,9 +143,9 @@ std::vector<int> PKB::getFollowsT(int stmt) {
     int curr = 0;
     std::vector<int> ans = getFollows(stmt);
     
-    while (curr < ans.size()) {
+    while (curr < (int)ans.size()) {
         std::vector<int> temp = getFollows(ans[curr]);
-        for (int i = 0; i < temp.size(); i++) {
+        for (int i = 0; i < (int)temp.size(); i++) {
             ans.push_back(temp[i]);
         }
         curr++;
@@ -161,9 +161,9 @@ std::vector<int> PKB::getFollowedByT(int stmt) {
     int curr = 0;
     std::vector<int> ans = getFollowedBy(stmt);
     
-    while (curr < ans.size()) {
+    while (curr < (int)ans.size()) {
         std::vector<int> temp = getFollowedBy(ans[curr]);
-        for (int i = 0; i < temp.size(); i++) {
+        for (int i = 0; i < (int)temp.size(); i++) {
             ans.push_back(temp[i]);
         }
         curr++;
@@ -183,7 +183,7 @@ std::vector<int> PKB::getModifiesVar(std::string var) {
 std::vector<std::string> PKB::getModifiedBy(int stmt) {
     std::vector<std::string> toReturn;
     std::vector<int> answer = modifiesTable.getModifiedBy(stmt);
-    for (int i = 0; i < answer.size(); i++) {
+    for (int i = 0; i < (int)answer.size(); i++) {
         toReturn.push_back(varTable.getVarName(answer[i]));
     }
     return toReturn;
@@ -202,7 +202,7 @@ std::vector<int> PKB::getUsesVar(std::string var) {
 std::vector<std::string> PKB::getUsedBy(int stmt) {
     std::vector<std::string> toReturn;
     std::vector<int> answer = usesTable.getUsedBy(stmt);
-    for (int i = 0; i < answer.size(); i++) {
+    for (int i = 0; i < (int)answer.size(); i++) {
         toReturn.push_back(varTable.getVarName(answer[i]));
     }
     return toReturn;
@@ -219,4 +219,33 @@ std::vector<int> PKB::getStmtWithType(int nodeType) {
 
 int PKB::getNumStmts() {
     return stmtNodeTable.getSize() - 1;
+}
+
+std::vector<int> PKB::matchPattern(int nodeType, std::string varName, std::string pattern) {
+	std::vector<int> toReturn;
+
+	if (nodeType == Node::assignNode)
+	{
+		std::vector<int> assignStmt = getStmtWithType(Node::assignNode); // Get all assignment statements
+		if (pattern == "_")
+		{
+			for (int i=0; i<(int)assignStmt.size(); i++)
+			{
+				// Check if the assignStmt contains "varName = ..."
+				if (isModifies(assignStmt[i], varName))
+					toReturn.push_back(assignStmt[i]);
+			}
+		}
+		else // This means pattern = _"var"_
+		{
+			std::string var = pattern.substr(2, pattern.length() - 4); // get the var part only
+			for (int i=0; i<(int)assignStmt.size(); i++)
+			{
+				// Check if the assignStmt contains "varName = ...var..."
+				if (isModifies(assignStmt[i], varName) && isUses(assignStmt[i], var))
+					toReturn.push_back(assignStmt[i]);
+			}
+		}
+	}
+	return toReturn;
 }
