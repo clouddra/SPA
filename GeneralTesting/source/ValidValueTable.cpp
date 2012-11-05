@@ -12,8 +12,10 @@ int ValidValueTable::findVariable(std::string var) {
 }
 
 int ValidValueTable::insert(std::string variable, std::vector<std::string> values) {
-    if ((int)values.size() == 0)
+    if ((int)values.size() == 0) {
+        std::cout << variable << " has no valid values\n"; 
         return -1;
+    }
     int index = findVariable(variable);
     if (index == -1) {
         vvTable.push_back(ValidValue(variable, values));
@@ -29,5 +31,5 @@ std::vector<std::string> ValidValueTable::getValues(std::string variable) {
     if (index != -1)
         return vvTable[index].getValues();
 
-    return std::vector<std::string>();  // Empty vector if not found, should not happen
+    return std::vector<std::string>();  // Empty vector if not found
 }

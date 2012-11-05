@@ -70,6 +70,7 @@ public:
 	std::vector<std::string> getUsedBy(int stmt);
     bool isUses(int stmt, std::string var);
     std::vector<int> getStmtWithType(int nodeType);
+    std::vector<std::string> getVarTable();
     int getNumStmts();
     void postParseCleanup();
 

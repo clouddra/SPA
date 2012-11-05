@@ -225,7 +225,7 @@ int Parser::parseCode(std::string storage, PKB* pkb) {
     if (r && iter == end)
     {
         std::cout << "-------------------------\n";
-        std::cout << "Parsing succeeded\n";
+        std::cout << "Simple parsing succeeded\n";
         std::cout << "-------------------------\n";
         //common_node_printer printer;
         //printer(ast);
@@ -239,9 +239,9 @@ int Parser::parseCode(std::string storage, PKB* pkb) {
         std::string::const_iterator some = iter+30;
         std::string context(iter, (some>end)?end:some);
         std::cout << "-------------------------\n";
-        std::cout << "Parsing failed\n";
+        std::cout << "Simple parsing failed\n";
         std::cout << "stopped at: \": " << context << "...\"\n";
         std::cout << "-------------------------\n";
-        return 1;
+        return -1;
     }
 }

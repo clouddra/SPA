@@ -44,23 +44,33 @@ void DesignExtractor::populateTables()
 		std::vector<int> childrenAssign = _ast.getNode(t).getChildren();		
 		if(_ast.getNode(t).getNodeType()==Node::assignNode)//look for assign nodes
 		{		
-			std::vector<int> parents = _pkb->getParentT(_ast.getNode(t).getStmtNum());//get parent and indirect parents of node
+			std::vector<int> parents = _pkb->getParentT(_ast.getNode(t).getStmtNum());//get parent and indirect parents of assign node
+			
 			insertModifies(t, childrenAssign[0]);//add the first child of the assign node to modifies table
 			for(int w = 0; w<parents.size();w++)
-			{
-				insertModifies(parents[w], childrenAssign[0]);//indirect parents modify this variable too
+			{				
+				_mt->insertModifies(parents[w], _ast.getNode(childrenAssign[0]).getValue());//indirect parents modifies this variable too				
 			}
 			if(_ast.getNode(childrenAssign[1]).getNodeType()==Node::varNode)//if 2nd child is a variable
 			{
 				insertUses(t,childrenAssign[1]);//add it to the uses table
 				for(int v = 0; v<parents.size();v++)
 				{
-					insertUses(parents[v], childrenAssign[1]);//indirect parents use this variable too
+					 _ut->insertUses(parents[v],_ast.getNode(childrenAssign[1]).getValue());//indirect parents use this variable too					
 				}
 			}
 			else//if it isn't a variable
 			{
 				checkChildrenUses(childrenAssign[1], parents);
+			}
+		}
+		if(_ast.getNode(t).getNodeType()==Node::ifNode||_ast.getNode(t).getNodeType()==Node::whileNode)//child is a control variable
+		{
+			std::vector<int> parentsIfWhile = _pkb->getParentT(_ast.getNode(t).getStmtNum());
+			insertUses(t, childrenAssign[0]);
+			for(int p = 0; p<parentsIfWhile.size();p++)
+			{
+					 _ut->insertUses(parentsIfWhile[p],_ast.getNode(childrenAssign[0]).getValue());//indirect parents use this variable too					
 			}
 		}
 	}
@@ -78,12 +88,11 @@ void DesignExtractor::populateTables()
 				insertUses(nodeIndex,children1[m]);//add it to the uses table
 				for(int n = 0;n<parents.size();n++)
 				{
-					insertUses(parents[n],children1[m]);
-				}
-				checkChildrenUses(children1[m], parents);
+					_ut->insertUses(parents[n],_ast.getNode(children1[m]).getValue());					
+				}				
 			}
+			checkChildrenUses(children1[m], parents);
 		}
-
 	}
 }
 

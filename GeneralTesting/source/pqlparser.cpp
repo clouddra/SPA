@@ -272,8 +272,8 @@ namespace pqlparser
 
 			// Auxiliary grammar rules
 			synonym_ %= IDENT_;
-			varRef_ %= synonym_ | char_('_') | ('"' >> IDENT_ >> '"') ;
-			entRef_ %= synonym_ | char_('_') | ('"' >> IDENT_ >> '"') | INTEGER_;
+			varRef_ %= synonym_ | char_('_') | (char_('"') >> IDENT_ >> char_('"'));
+			entRef_ %= synonym_ | char_('_') | (char_('"') >> IDENT_ >> char_('"')) | INTEGER_;
 			stmtRef_ %= synonym_ | char_('_') | INTEGER_;
 
 			design_entity_ %= 
@@ -455,10 +455,10 @@ int PqlParser::parseQuery(std::string storage, QueryProcessor* qp)
     if (r && iter == end)
     {
         std::cout << "-------------------------\n";
-        std::cout << "Parsing succeeded\n";
+        std::cout << "PQL parsing succeeded\n";
         std::cout << "-------------------------\n";
-        pqlparser::common_node_printer printer;
-        printer(pql_root);
+        //pqlparser::common_node_printer printer;
+        //printer(pql_root);
 		pqlparser::common_node_inserter inserter(qp, -1);
 		inserter(pql_root);
         return 0;
@@ -468,10 +468,10 @@ int PqlParser::parseQuery(std::string storage, QueryProcessor* qp)
         std::string::const_iterator some = iter+30;
         std::string context(iter, (some>end)?end:some);
         std::cout << "-------------------------\n";
-        std::cout << "Parsing failed\n";
+        std::cout << "PQL parsing failed\n";
         std::cout << "stopped at: \": " << context << "...\"\n";
         std::cout << "-------------------------\n";
-        return 1;
+        return -1;
     }
 }
 
