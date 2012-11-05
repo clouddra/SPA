@@ -64,6 +64,15 @@ void DesignExtractor::populateTables()
 				checkChildrenUses(childrenAssign[1], parents);
 			}
 		}
+		if(_ast.getNode(t).getNodeType()==Node::ifNode||_ast.getNode(t).getNodeType()==Node::whileNode)//child is a control variable
+		{
+			std::vector<int> parentsIfWhile = _pkb->getParentT(_ast.getNode(t).getStmtNum());
+			insertUses(t, childrenAssign[0]);
+			for(int p = 0; p<parentsIfWhile.size();p++)
+			{
+					 _ut->insertUses(parentsIfWhile[p],_ast.getNode(childrenAssign[0]).getValue());//indirect parents use this variable too					
+			}
+		}
 	}
 }
 
