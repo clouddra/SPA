@@ -33,6 +33,7 @@
     <ClInclude Include="..\source\ValidValue.h" />
     <ClInclude Include="..\source\ValidValueTable.h" />
     <ClInclude Include="..\source\ValidValueTuple.h" />
+    <ClInclude Include="..\source\ValidValueTupleTable.h" />
     <ClInclude Include="..\source\VarTable.h" />
   </ItemGroup>
   <ItemGroup>
@@ -57,6 +58,7 @@
     <ClCompile Include="..\source\ValidValue.cpp" />
     <ClCompile Include="..\source\ValidValueTable.cpp" />
     <ClCompile Include="..\source\ValidValueTuple.cpp" />
+    <ClCompile Include="..\source\ValidValueTupleTable.cpp" />
     <ClCompile Include="..\source\VarTable.cpp" />
   </ItemGroup>
   <ItemGroup>

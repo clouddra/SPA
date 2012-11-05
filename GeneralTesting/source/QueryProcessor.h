@@ -18,9 +18,9 @@
 #include "ValidValueTable.h"
 #endif
 
-#ifndef VVTUPLE_HEAD
-#define VVTUPLE_HEAD
-#include "ValidValueTuple.h"
+#ifndef VVTUPLETABLE_HEAD
+#define VVTUPLETABLE_HEAD
+#include "ValidValueTupleTable.h"
 #endif
 
 #ifndef STD_HEAD
@@ -34,8 +34,7 @@ private:
 	QueryTree queryTree;
 	DeclarationTable declarationTable;
     ValidValueTable vvTable;
-    ValidValueTuple vvTuple;
-    bool hasTuple;  // Whether vvTuple is initialised
+    ValidValueTupleTable vvTupleTable;
 	std::vector<std::string> result;
     void loadDeclaration(std::vector<QueryNode> tree, int* curr);
     int findTypeOf(std::string para, bool* paraIsNum, bool* paraIsEnt, int* paraNum);

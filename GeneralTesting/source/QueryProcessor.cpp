@@ -36,7 +36,6 @@ QueryProcessor::QueryProcessor()
 {
 	queryTree = QueryTree();
 	declarationTable = DeclarationTable();
-    hasTuple = false;
 }
 
 int QueryProcessor::insertNode(std::string _name, std::string _value, int _parent)
@@ -183,8 +182,7 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para2IsNum, st
                         toStoreTuple.push_back(holder);
                     }
                 }
-                hasTuple = true;
-                vvTuple = ValidValueTuple(para1, para2, toStoreTuple);
+                vvTupleTable.insert(para1, para2, toStoreTuple);
             }
         }
     }
@@ -263,8 +261,7 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para2IsNum, st
                         toStoreTuple.push_back(holder);
                     }
                 }
-                hasTuple = true;
-                vvTuple = ValidValueTuple(para1, para2, toStoreTuple);
+                vvTupleTable.insert(para1, para2, toStoreTuple);
             }
         }
     }
@@ -350,8 +347,7 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para2IsNum, std
                         toStoreTuple.push_back(holder);
                     }
                 }
-                hasTuple = true;
-                vvTuple = ValidValueTuple(para1, para2, toStoreTuple);
+                vvTupleTable.insert(para1, para2, toStoreTuple);
             }
         }
     }
@@ -430,8 +426,7 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para2IsNum, std
                         toStoreTuple.push_back(holder);
                     }
                 }
-                hasTuple = true;
-                vvTuple = ValidValueTuple(para1, para2, toStoreTuple);
+                vvTupleTable.insert(para1, para2, toStoreTuple);
             }
         }
     }
@@ -498,8 +493,7 @@ int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para2IsEnt, std::str
                     toStoreTuple.push_back(holder);
                 }
             }
-            hasTuple = true;
-            vvTuple = ValidValueTuple(para1, para2, toStoreTuple);
+            vvTupleTable.insert(para1, para2, toStoreTuple);
         }
     }
     return 0;
@@ -565,8 +559,7 @@ int QueryProcessor::evaluateUsesS(bool para1IsNum, bool para2IsEnt, std::string 
                     toStoreTuple.push_back(holder);
                 }
             }
-            hasTuple = true;
-            vvTuple = ValidValueTuple(para1, para2, toStoreTuple);
+            vvTupleTable.insert(para1, para2, toStoreTuple);
         }
     }
     return 0;
@@ -720,19 +713,22 @@ void QueryProcessor::processQuery(PKB pkb)
             return;
     }
 
-    // If tuple is initialised, "intersect" vvTuple with vvTable
-    if (hasTuple) {
-        int ret = vvTuple.restrictTo(vvTable);
-        if (ret == -1)
-            return;
+    // Reconcile the vvTuple in vvTupleTable
+    int ret = vvTupleTable.reconcile();
+    if (ret == -1)
+        return;
 
-        // Check if tuple will affect target variable
-        std::vector<std::string> temp = vvTuple.getValuesForVar(target);
-        if (temp.size() != 0) {     // if temp is empty it should mean that the tuple will not affect the target variable
-            ret = vvTable.insert(target, temp);
-            if (ret == -1)      // Note: this exit con should never be reached (logically)  
-                return;
-        }
+    // "intersect" vvTupleTable with vvTable
+    ret = vvTupleTable.restrictTo(vvTable);
+    if (ret == -1)
+        return;
+
+    // Check if tuple will affect target variable
+    std::vector<std::string> temp = vvTupleTable.getValues(target);
+    if (temp.size() != 0) {     // if temp is empty it should mean that the tuple will not affect the target variable
+        ret = vvTable.insert(target, temp);
+        if (ret == -1)      // Note: this exit con should never be reached (logically)  
+            return;
     }
 
     // This is the final step, inserting into result, please do not do any evaluation after this
