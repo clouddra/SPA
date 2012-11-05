@@ -272,8 +272,8 @@ namespace pqlparser
 
 			// Auxiliary grammar rules
 			synonym_ %= IDENT_;
-			varRef_ %= synonym_ | char_('_') | ('"' >> IDENT_ >> '"') ;
-			entRef_ %= synonym_ | char_('_') | ('"' >> IDENT_ >> '"') | INTEGER_;
+			varRef_ %= synonym_ | char_('_') | (char_('"') >> IDENT_ >> char_('"'));
+			entRef_ %= synonym_ | char_('_') | (char_('"') >> IDENT_ >> char_('"')) | INTEGER_;
 			stmtRef_ %= synonym_ | char_('_') | INTEGER_;
 
 			design_entity_ %= 
