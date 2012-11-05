@@ -88,6 +88,10 @@ StmtNodeTable* PKB::getStmtNodeTable()
 {
 	return &stmtNodeTable;
 }
+std::vector<std::string> PKB::getVarTable() {
+    return varTable.getTable();
+}
+
 void PKB::postParseCleanup() {
     procTable.setProcLastln(procTable.getSize()-1, stmtNodeTable.getSize()-1);  //Set the lastLine of the last procedure
 }

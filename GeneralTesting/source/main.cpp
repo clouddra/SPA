@@ -65,6 +65,7 @@ int main() {
 	DesignExtractor de = DesignExtractor(&pkb);
     de.populateTables();
 
+    // pql.txt stores currently working queries, pqlShort.txt stores queries in development (may not work)
     char const* pqlFile = "..\\sample_input\\pqlShort.txt";
     std::ifstream in2(pqlFile, std::ios_base::in);
 
@@ -88,11 +89,13 @@ int main() {
     PqlParser temp2 = PqlParser();
     std::vector<std::string> queries = temp2.splitQuery(storage2);
     for (int i = 0; i < (int)queries.size(); i++) {
-        temp2.parseQuery(queries[i], &qp);
-        qp.processQuery(pkb);
-        std::cout << "Result of Query " << i+1 << std::endl;
-        qp.printResult();
-        std::cout << std::endl << std::endl;
+        int ret = temp2.parseQuery(queries[i], &qp);
+        if (ret == 0) {
+            qp.processQuery(pkb);
+            std::cout << "Result of Query " << i+1 << std::endl;
+            qp.printResult();
+            std::cout << std::endl << std::endl;
+        }
         qp = QueryProcessor();  // Reset qp to empty for next query
     }
 

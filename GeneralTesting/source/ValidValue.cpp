@@ -36,7 +36,9 @@ int ValidValue::restrictTo(std::vector<std::string> valid) {
         values.erase(values.begin() + toDelete[i]);
     }
 
-    if (values.size() == 0)
+    if (values.size() == 0) {
+        std::cout << variable << " has no valid values\n";
         return -1;
+    }
     return 0;
 }

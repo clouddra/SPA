@@ -40,5 +40,8 @@ int VarTable::getVarIndex (std::string varName)  {
 
 	else			// not found
 		return -1 ;
+}
 
+std::vector<std::string> VarTable::getTable() {
+    return varTable;
 }
