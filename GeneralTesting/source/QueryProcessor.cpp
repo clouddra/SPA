@@ -3,6 +3,8 @@
 #include "QueryProcessor.h"
 #endif
 
+#include <set>
+
 // Notation guide: Variables = Declared in pql query, Entities = Variables in simple code (VarTable in PKB)
 
 std::vector<std::string> intVecToStringVec(std::vector<int> input) {
@@ -82,11 +84,14 @@ void QueryProcessor::loadDeclaration(std::vector<QueryNode> tree, int* curr) {
 
 // Figure out type of a parameter 
 // Note: return value of -1 means that parameter is either an entity or a number not an error, rather -2 is the error return 
-int QueryProcessor::findTypeOf(std::string para, bool* paraIsNum, bool* paraIsEnt, int* paraNum) {
+int QueryProcessor::findTypeOf(std::string para, bool* paraIsNum, bool* paraIsEnt, bool* paraIsPlaceholder, int* paraNum) {
     *paraIsNum = *paraIsEnt = false;
     int paraType = declarationTable.getType(para);
     if (paraType == -1) {
-        if (para.find("\"") != std::string::npos) {
+        if (para.compare("_") == 0) {
+            *paraIsPlaceholder = true;
+        }
+        else if (para.find("\"") != std::string::npos) {
             *paraIsEnt = true;
         }
         else {
@@ -439,11 +444,15 @@ int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para2IsEnt, std::str
     std::vector<std::string> toStore;
 
     // Inserting valid values based on parameter type (if variable)
-    // Note that parameter 2 does not need to be evaluated since it will not restrict valid values
     int ret;
     if (!para1IsNum) {
         ret = evaluateType(pkb, para1);
         if (ret == -1)
+            return -1;
+    }
+    if (!para2IsEnt) {
+        int ret2 = evaluateType(pkb, para2);
+        if (ret2 == -1)
             return -1;
     }
 
@@ -505,11 +514,15 @@ int QueryProcessor::evaluateUsesS(bool para1IsNum, bool para2IsEnt, std::string 
     std::vector<std::string> toStore;
 
     // Inserting valid values based on parameter type (if variable)
-    // Note that parameter 2 does not need to be evaluated since it will not restrict valid values
     int ret;
     if (!para1IsNum) {
         ret = evaluateType(pkb, para1);
         if (ret == -1) 
+            return -1;
+    }
+    if (!para2IsEnt) {
+        int ret2 = evaluateType(pkb, para2);
+        if (ret2 == -1)
             return -1;
     }
 
@@ -631,7 +644,13 @@ void QueryProcessor::processQuery(PKB pkb)
     std::vector<int> rootChildren = tree[0].getChildren();   
     int curr = 0;
     QueryNode currNode = tree[rootChildren[curr]];
-    result.push_back("FALSE");
+    bool isBool = false;
+    if (target.compare("BOOLEAN") == 0) {
+        isBool = true;
+        result.push_back("FALSE");
+    }
+    else
+        result.push_back("NULL");
 
     // Inserting into declaration table
     loadDeclaration(tree, &curr);
@@ -649,9 +668,10 @@ void QueryProcessor::processQuery(PKB pkb)
             // Figure out type of parameter 1 and 2
             bool para1IsNum = false, para2IsNum = false;
             bool para1IsEnt = false, para2IsEnt = false;
+            bool para1IsPlaceholder = false, para2IsPlaceholder = false;
             int para1Num = -1, para2Num = -1;
-            int para1Type = findTypeOf(para1, &para1IsNum, &para1IsEnt, &para1Num);
-            int para2Type = findTypeOf(para2, &para2IsNum, &para2IsEnt, &para2Num);
+            int para1Type = findTypeOf(para1, &para1IsNum, &para1IsEnt, &para1IsPlaceholder, &para1Num);
+            int para2Type = findTypeOf(para2, &para2IsNum, &para2IsEnt, &para2IsPlaceholder, &para2Num);
             if (para1Type == -2 || para2Type == -2) {   // Cannot figure out parameter type
                 return;
             }
@@ -704,10 +724,7 @@ void QueryProcessor::processQuery(PKB pkb)
 
     // Evaluating select
     // Note that this step is actually only necessary if the target did not appear in the clauses, might want to have a flag for performance
-    bool isBool = false;
-    if (target.compare("BOOLEAN") == 0) 
-        isBool = true;
-    else {
+    if (!isBool) {
         int ret = evaluateType(pkb, target);
         if (ret == -1)
             return;
@@ -758,12 +775,71 @@ void QueryProcessor::printResult()
 }
 
 // Evaluates pattern query Eg. "pattern a1(x, _"y"_)" ===> a1 = pattern, x = var, _"y"_ = expr
-void QueryProcessor::evaluatePattern(std::string pattern, std::string var, std::string expr, PKB pkb)
+int QueryProcessor::evaluatePattern(std::string pattern, std::string var, std::string expr, bool varIsEnt, bool varIsPlaceholder, PKB pkb)
 {
-	int patternType = declarationTable.getType(pattern);
+    // Inserting valid values based on parameter type (if variable)
+    int patternType, varType, ret;
+    patternType = evaluateType(pkb, pattern);
+    if (patternType == -1) 
+        return -1;
+    if (!varIsEnt && !varIsPlaceholder) {
+        varType = evaluateType(pkb, var);
+        if (varType == -1)
+            return -1;
+    }
 
+    std::vector<std::string> toStore;
+    std::vector<std::pair<std::string, std::string>> toStoreTuple;
+    std::vector<int> statements;
 	// For now we only need to handle assign
-	if (patternType == DeclarationTable::assign_)
+    if (patternType == DeclarationTable::assign_) {
+        if (varIsEnt) {     // The var == "var", where var is in our simple source code
+            statements = pkb.matchPattern(Node::assignNode, var, expr);
+            toStore = intVecToStringVec(statements);
+            ret = vvTable.insert(pattern, toStore);
+            if (ret == -1)
+                return -1;  
+        }
+        else if (varIsPlaceholder) {
+            std::vector<std::string> varList = pkb.getVarTable();
+            std::set<int> temp;
+            for (int i=0; i<(int)varList.size(); i++)
+			{
+				statements = pkb.matchPattern(Node::assignNode, varList[i], expr);
+                temp.insert(statements.begin(), statements.end());  // Set ensures no duplicates
+			}
+            statements.clear();
+            statements.insert(statements.begin(), temp.begin(), temp.end());
+            toStore = intVecToStringVec(statements);
+            ret = vvTable.insert(pattern, toStore);
+            if (ret == -1)
+                return -1; 
+        }
+        else if (varType == DeclarationTable::variable_) {   
+            std::vector<std::string> varList = vvTable.getValues(var);
+            for (int i=0; i<(int)varList.size(); i++)
+			{
+				statements = pkb.matchPattern(Node::assignNode, varList[i], expr);
+                toStore = intVecToStringVec(statements);
+                for (int j = 0; j < (int)toStore.size(); j++) {
+                    std::pair<std::string, std::string> temp (toStore[j], varList[i]);
+                    toStoreTuple.push_back(temp);
+                }
+			}
+            vvTupleTable.insert(pattern, var, toStoreTuple);
+        }
+        else {
+            std::cout << var << " is not declared as a variable, query cannot be evaluated/n"; 
+            return -1;
+        }
+    }
+    else {
+        std::cout << pattern << " is not declared as an assign, query cannot be evaluated/n"; 
+        return -1;
+    }
+    return 0;
+    /*
+    if (patternType == DeclarationTable::assign_)
 	{
 		if (declarationTable.getType(var) == DeclarationTable::variable_) // The variable var was declared in query
 		{
@@ -797,4 +873,5 @@ void QueryProcessor::evaluatePattern(std::string pattern, std::string var, std::
 			patternTable.insertPatternRow(temp);
 		}
 	}
+    */
 }
