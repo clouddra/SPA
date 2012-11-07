@@ -1,2 +1,2 @@
 stmt s1, s2, s3; assign a; while w; variable v;
-Select s1 pattern s1("x", _)
+Select a such that Uses(3, v) pattern a(v , _)

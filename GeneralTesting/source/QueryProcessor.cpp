@@ -655,9 +655,10 @@ void QueryProcessor::processQuery(PKB pkb)
     // Inserting into declaration table
     loadDeclaration(tree, &curr);
 
-    // Evaluating clauses (Incomplete)
+    // Evaluating clauses
     for (int i = curr; i < (int)rootChildren.size(); i++) {
         currNode = tree[rootChildren[i]];
+        // Evaluating such that
         if (currNode.getName().compare("such that") == 0) {
             QueryNode relation = tree[currNode.getChildren()[0]];
             int paraNode1 = relation.getChildren()[0];
@@ -718,6 +719,43 @@ void QueryProcessor::processQuery(PKB pkb)
                 int ret = evaluateUsesS(para1IsNum, para2IsEnt, para1, para2, para1Num, pkb); 
                 if (ret == -1)
                     return;
+            }
+        }
+
+        // Evaluates pattern query Eg. "pattern a1(x, _"y"_)" ===> a1 = pattern, x = var, _"y"_ = expr
+        if (currNode.getName().compare("pattern") == 0) {
+            QueryNode temp = tree[currNode.getChildren()[0]];
+            temp = tree[temp.getChildren()[0]];
+            if (temp.getName().compare("pattern_assign_or_while_") == 0) {
+                std::string pattern = tree[temp.getChildren()[0]].getName();
+                std::string var = tree[temp.getChildren()[1]].getName();
+                std::string expr = tree[temp.getChildren()[2]].getName();
+
+                 // Figure out type of parameter 1 and 2
+                bool patternIsNum = false, varIsNum = false;
+                bool patternIsEnt = false, varIsEnt = false;
+                bool patternIsPlaceholder = false, varIsPlaceholder = false;
+                int patternNum = -1, varNum = -1;
+                int patternType = findTypeOf(pattern, &patternIsNum, &patternIsEnt, &patternIsPlaceholder, &patternNum);
+                int varType = findTypeOf(var, &varIsNum, &varIsEnt, &varIsPlaceholder, &varNum);
+                if (patternType == -2 || varType == -2) {   // Cannot figure out type
+                    return;
+                }
+                // Get rid of " " if parameters are entities
+                if (patternIsEnt) {
+                    pattern = pattern.substr(1, pattern.size()-2);
+                }
+                if (varIsEnt) {
+                    var = var.substr(1, var.size()-2);
+                }
+
+                int ret = evaluatePattern(pattern, var, expr, varIsEnt, varIsPlaceholder, pkb);
+                if (ret == -1)
+                    return;
+            }
+            else {
+                std::cout << "Unknown pattern format\n";
+                return;
             }
         }
     } 

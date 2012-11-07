@@ -23,11 +23,6 @@
 #include "ValidValueTupleTable.h"
 #endif
 
-#ifndef PATTERNTABLE_HEAD
-#define PATTERNTABLE_HEAD
-#include "PatternTable.h"
-#endif
-
 #ifndef STD_HEAD
 #define STD_HEAD
 #include "common.hpp"
@@ -48,7 +43,6 @@ private:
     int evaluateModifiesS(bool para1IsNum, bool para2IsEnt, std::string para1, std::string para2, int para1Num, PKB pkb);
     int evaluateUsesS(bool para1IsNum, bool para2IsEnt, std::string para1, std::string para2, int para1Num, PKB pkb);
     int evaluateType(PKB pkb, std::string target);
-	PatternTable patternTable;
 	int evaluatePattern(std::string pattern, std::string var, std::string expr, bool varIsEnt, bool varIsPlaceholder, PKB pkb);
 
 public:
