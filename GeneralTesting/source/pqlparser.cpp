@@ -436,16 +436,6 @@ namespace pqlparser
 				>> stmtRef_					[push_back(at_c<2>(_val), _1)]	
 				>> char_(')')
 				;
-
-			// Simple grammar used
-			/*
-			NAME_ = LETTER_ >> *(LETTER_ | DIGIT_);
-			expr_ = (expr_ >> char_("+") >> term_) | (expr_ >> char_("-") >> term_) | term_;
-			term_ = (term_ >> char_("*") >> factor_) | factor_;
-			factor_ = var_name_ | const_value_ | (char_("(") >> expr_ >> char_(")"));
-			var_name_ = NAME_;
-			const_value_ = INTEGER_;
-			*/
         }
 
 		// Lexical Rules
@@ -484,15 +474,6 @@ namespace pqlparser
 		qi::rule<Iterator, common_node(), ascii::space_type> ParentT_;
 		qi::rule<Iterator, common_node(), ascii::space_type> Follows_;
 		qi::rule<Iterator, common_node(), ascii::space_type> FollowsT_;
-
-		/*
-		qi::rule<Iterator> NAME_;
-		qi::rule<Iterator, ascii::space_type> expr_;
-		qi::rule<Iterator, ascii::space_type> term_;
-		qi::rule<Iterator, ascii::space_type> factor_;
-		qi::rule<Iterator> var_name_;
-		qi::rule<Iterator> const_value_;
-		*/
     };
 
     //]
