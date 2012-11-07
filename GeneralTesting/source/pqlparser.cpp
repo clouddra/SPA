@@ -291,7 +291,7 @@ namespace pqlparser
 				+declaration_				[push_back(at_c<2>(_val), _1)]
 				>> string("Select")			[at_c<0>(_val) = "select"]
 				>> synonym_					[at_c<1>(_val) = _1]
-				>> *(suchthat_cl_)			[push_back(at_c<2>(_val), _1)]
+				>> *(suchthat_cl_ | pattern_cl_)	[push_back(at_c<2>(_val), _1)]
 				;
 
 			declaration_ = 
@@ -348,7 +348,7 @@ namespace pqlparser
 				>> '('
 				>> varRef_					[push_back(at_c<2>(_val), _1)]
 				>> ','
-				>> (string("_")) 	[push_back(at_c<2>(_val), _1)]
+				>> (string("_") | expression_spec_) 	[push_back(at_c<2>(_val), _1)]
 				>> ')'
 				;
 				
