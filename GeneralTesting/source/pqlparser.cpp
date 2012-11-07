@@ -305,8 +305,7 @@ namespace pqlparser
 				string("such that")			[at_c<0>(_val) = "such that"]
 				>> relRef_					[push_back(at_c<2>(_val), _1)]
 				;
-			//pattern_cl_ = string("pattern") >> syn_assign_ >> char_("(") >> entRef_ >> char_(",") >> (expression_spec_ | char_("_")) >> char_(")");
-
+			
 			relRef_ %= ModifiesS_ | ModifiesP_ | UsesS_ | UsesP_ | Parent_ | ParentT_ | Follows_ | FollowsT_;
 			
 			ModifiesS_ = 
@@ -381,11 +380,6 @@ namespace pqlparser
 				>> char_(')')
 				;
 
-			//syn_assign_ = synonym_; // This must be declared as synonym of assignment
-			
-
-			//expression_spec_ = (char_('"') >> expr_ >> char_('"')) | (char_("_") >> char_('"') >> expr_ >> char_('"') >> char_("_"));
-
 			// Simple grammar used
 			/*
 			NAME_ = LETTER_ >> *(LETTER_ | DIGIT_);
@@ -414,7 +408,6 @@ namespace pqlparser
 		qi::rule<Iterator, common_node(), ascii::space_type> select_cl_;
 		qi::rule<Iterator, common_node(), ascii::space_type> declaration_;
 		qi::rule<Iterator, common_node(), ascii::space_type> suchthat_cl_;
-		//qi::rule<Iterator, ascii::space_type> pattern_cl_;
 		qi::rule<Iterator, common_node(), ascii::space_type> relRef_;
 		qi::rule<Iterator, common_node(), ascii::space_type> ModifiesS_;
 		qi::rule<Iterator, common_node(), ascii::space_type> ModifiesP_;
@@ -424,9 +417,6 @@ namespace pqlparser
 		qi::rule<Iterator, common_node(), ascii::space_type> ParentT_;
 		qi::rule<Iterator, common_node(), ascii::space_type> Follows_;
 		qi::rule<Iterator, common_node(), ascii::space_type> FollowsT_;
-		//qi::rule<Iterator, ascii::space_type> syn_assign_;
-
-	//	qi::rule<Iterator, ascii::space_type> expression_spec_;
 
 		/*
 		qi::rule<Iterator> NAME_;
