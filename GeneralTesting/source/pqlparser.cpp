@@ -306,6 +306,38 @@ namespace pqlparser
 				>> relRef_					[push_back(at_c<2>(_val), _1)]
 				;
 			
+			pattern_cl_ = 
+				string("pattern")			[at_c<0>(_val) = "pattern"]
+				>> patternCond_				[push_back(at_c<2>(_val), _1)]
+				;
+
+			patternCond_ =
+				pattern_					[at_c<0>(_val) = "patternCond"][push_back(at_c<2>(_val), _1)]
+				>> *("and" >> pattern_)		[push_back(at_c<2>(_val), _1)]
+				;
+
+			pattern_ %= assign_or_while_ | if_;
+
+			assign_or_while_ = 
+				synonym_					[at_c<0>(_val) = "pattern_assign_or_while_"][push_back(at_c<2>(_val), _1)]
+				>> '('
+				>> varRef_					[push_back(at_c<2>(_val), _1)]
+				>> ','
+				>> (string("_")) 	[push_back(at_c<2>(_val), _1)]
+				>> ')'
+				;
+				
+			if_ = 
+				synonym_					[at_c<0>(_val) = "pattern_if_"][push_back(at_c<2>(_val), _1)]
+				>> '('
+				>> varRef_					[push_back(at_c<2>(_val), _1)]
+				>> ','
+				>> string("_")				[push_back(at_c<2>(_val), _1)]
+				>> ','
+				>> string("_")				[push_back(at_c<2>(_val), _1)]
+				>> ')'
+				;
+
 			relRef_ %= ModifiesS_ | ModifiesP_ | UsesS_ | UsesP_ | Parent_ | ParentT_ | Follows_ | FollowsT_;
 			
 			ModifiesS_ = 
@@ -408,6 +440,11 @@ namespace pqlparser
 		qi::rule<Iterator, common_node(), ascii::space_type> select_cl_;
 		qi::rule<Iterator, common_node(), ascii::space_type> declaration_;
 		qi::rule<Iterator, common_node(), ascii::space_type> suchthat_cl_;
+		qi::rule<Iterator, common_node(), ascii::space_type> pattern_cl_;
+		qi::rule<Iterator, common_node(), ascii::space_type> patternCond_;
+		qi::rule<Iterator, common_node(), ascii::space_type> pattern_;
+		qi::rule<Iterator, common_node(), ascii::space_type> if_;
+		qi::rule<Iterator, common_node(), ascii::space_type> assign_or_while_;
 		qi::rule<Iterator, common_node(), ascii::space_type> relRef_;
 		qi::rule<Iterator, common_node(), ascii::space_type> ModifiesS_;
 		qi::rule<Iterator, common_node(), ascii::space_type> ModifiesP_;
