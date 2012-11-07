@@ -428,6 +428,7 @@ namespace pqlparser
 		qi::rule<Iterator, char()> DIGIT_;
 		qi::rule<Iterator, std::string()> INTEGER_;
 		qi::rule<Iterator, std::string()> IDENT_;
+		qi::rule<Iterator, std::string()> NAME_;
 
 		// Auxiliary grammar rules
 		qi::rule<Iterator, std::string(), ascii::space_type> synonym_;
@@ -445,6 +446,10 @@ namespace pqlparser
 		qi::rule<Iterator, common_node(), ascii::space_type> pattern_;
 		qi::rule<Iterator, common_node(), ascii::space_type> if_;
 		qi::rule<Iterator, common_node(), ascii::space_type> assign_or_while_;
+		qi::rule<Iterator, common_node(), ascii::space_type> expression_spec_;
+		qi::rule<Iterator, expression_node(), ascii::space_type> expr_;
+		qi::rule<Iterator, expression_node(), ascii::space_type> term_;
+		qi::rule<Iterator, expression_node(), ascii::space_type> factor_;
 		qi::rule<Iterator, common_node(), ascii::space_type> relRef_;
 		qi::rule<Iterator, common_node(), ascii::space_type> ModifiesS_;
 		qi::rule<Iterator, common_node(), ascii::space_type> ModifiesP_;
