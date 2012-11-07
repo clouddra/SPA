@@ -269,6 +269,7 @@ namespace pqlparser
 			DIGIT_ %= lexeme[char_("0-9")];
 			INTEGER_ %= +DIGIT_;
 			IDENT_ %= LETTER_ >> *(LETTER_ | DIGIT_ | lexeme[char_('#')]);
+			NAME_ = lexeme[+(char_ - ')' - '(' - qi::space - '+' - '-' - '*' - '/' - '=' - ';' - '"')			[_val += _1]];
 
 			// Auxiliary grammar rules
 			synonym_ %= IDENT_;
@@ -317,6 +318,30 @@ namespace pqlparser
 				;
 
 			pattern_ %= assign_or_while_ | if_;
+			
+			expression_spec_ = 
+				(('"' >> expr_ [at_c<0>(_val) = "expr_no_underscore"][push_back(at_c<2>(_val), _1)] >> '"') 
+				| (lit('_') >> '"' >> expr_ [at_c<0>(_val) = "expr_with_underscore"][push_back(at_c<2>(_val), _1)] >> '"' >> lit('_')))
+				;
+
+			expr_ =	term_                       [_val = _1]
+                >> *(   ('+' >> term_           [_val += _1])
+                |   ('-' >> term_			    [_val -= _1])
+                    )
+				;
+
+			term_ =	factor_                     [_val = _1]
+                >> *(   ('*' >> factor_         [_val *= _1])
+                    |   ('/' >> factor_         [_val /= _1])
+                    )
+				;
+
+			factor_ =
+				 NAME_                          [_val = _1]
+                |   '(' 
+				>> expr_						[_val = _1] 
+				>> ')'
+				;
 
 			assign_or_while_ = 
 				synonym_					[at_c<0>(_val) = "pattern_assign_or_while_"][push_back(at_c<2>(_val), _1)]
