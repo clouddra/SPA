@@ -729,7 +729,20 @@ void QueryProcessor::processQuery(PKB pkb)
             if (temp.getName().compare("pattern_assign_or_while_") == 0) {
                 std::string pattern = tree[temp.getChildren()[0]].getName();
                 std::string var = tree[temp.getChildren()[1]].getName();
-                std::string expr = tree[temp.getChildren()[2]].getName();
+
+                temp = tree[temp.getChildren()[2]];
+                std::string expr;
+                if (temp.getName().compare("_") == 0) {
+                    expr = "_";
+                }
+                else if (temp.getName().compare("expr_with_underscore") == 0) {
+                    temp = tree[temp.getChildren()[0]];
+                    expr = "_\"" + temp.getName() + "\"_";
+                }
+                else {
+                    std::cout << "Error parsing pattern clause\n";
+                    return;
+                }
 
                  // Figure out type of parameter 1 and 2
                 bool patternIsNum = false, varIsNum = false;
