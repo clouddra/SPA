@@ -348,7 +348,7 @@ namespace pqlparser
 				>> '('
 				>> varRef_					[push_back(at_c<2>(_val), _1)]
 				>> ','
-				>> (string("_") | expression_spec_) 	[push_back(at_c<2>(_val), _1)]
+				>> (expression_spec_ | string("_")) 	[push_back(at_c<2>(_val), _1)]
 				>> ')'
 				;
 				
