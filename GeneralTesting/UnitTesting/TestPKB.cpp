@@ -1,7 +1,11 @@
 #include <cppunit/config/SourcePrefix.h>
 #include "stdafx.h"
-#include "PKB.h"
 #include "TestPKB.h"
+
+#ifndef PKB_HEAD
+#define PKB_HEAD
+#include "PKB.h"
+#endif
 
 #include <iostream>
 #include <string>
@@ -24,6 +28,6 @@ CPPUNIT_TEST_SUITE_REGISTRATION( PKBTest );
 // method to test the constructor
 void PKBTest::testConstructor() {  
 // create a PKB object
-PKB MyPKB();
+PKB myPKB = PKB();
 
 }
