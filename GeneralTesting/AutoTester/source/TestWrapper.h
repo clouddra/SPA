@@ -8,8 +8,31 @@
 // include your other headers here
 #include "AbstractWrapper.h"
 
+#ifndef PKB_HEAD
+#define PKB_HEAD
+#include "PKB.h"
+#endif
+
+#ifndef PARSER_HEAD
+#define PARSER_HEAD
+#include "Parser.h"
+#endif
+
+#ifndef QUERYPROCESSOR_HEAD
+#define QUERYPROCESSOR_HEAD
+#include "QueryProcessor.h"
+#endif
+
+#include "PqlParser.h"
+#include "DesignExtractor.h"
+
 class TestWrapper : public AbstractWrapper {
- public:
+
+protected:
+	PKB pkb;
+	QueryProcessor qp;
+
+public:
   // default constructor
   TestWrapper();
   

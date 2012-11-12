@@ -11,17 +11,17 @@ int main(int argc, char* argv[])
 CPPUNIT_NS::Test *suite = CPPUNIT_NS::TestFactoryRegistry::getRegistry().makeTest();
 CppUnit::TextUi::TestRunner runner;
 
-//parse the SIMPLE soource code into the parser
+//parse the SIMPLE source code into the parser
 //Parse();
 
 //Call of DesignExtractor
 //Extract();
 
 runner.addTest(suite);
-bool wasSucessful = runner.run();
+bool wasSuccessful = runner.run();
 
 
 //getchar();
 
-return wasSucessful ? 0 : 1;
+return wasSuccessful ? 0 : 1;
 }

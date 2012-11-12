@@ -16,3 +16,4 @@ simple.sdf
 
 # Exclude other directories
 ipch/
+GeneralTesting/cppunit-1.12.1/
