@@ -73,7 +73,7 @@ int main() {
 		std::cout<< pkb.getUsesTable()->extractUses(i).first <<" "<<pkb.getUsesTable()->extractUses(i).second<<std::endl;
 	}
     // pql.txt stores currently working queries, pqlShort.txt stores queries in development (may not work)
-    char const* pqlFile = "..\\sample_input\\pql.txt";
+    char const* pqlFile = "..\\sample_input\\pqlShort.txt";
     std::ifstream in2(pqlFile, std::ios_base::in);
 
     if (!in2)
@@ -104,6 +104,7 @@ int main() {
             std::cout << std::endl << std::endl;
         }
         qp = QueryProcessor();  // Reset qp to empty for next query
+        qp.getResult();
     }
 
     system("pause");

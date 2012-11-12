@@ -51,4 +51,5 @@ public:
 	void processQuery(PKB pkb);
     void printTree();
 	void printResult();
+    std::list<std::string> getResult();
 };

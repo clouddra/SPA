@@ -20,7 +20,7 @@ private:
 
 public:
 	DeclarationTable();
-	enum {stmt_, assign_, while_, variable_, constant_, prog_line_};
+	enum {stmt_, assign_, while_, if_, variable_, constant_, prog_line_};
 	int insertDeclaration(int nodeType, std::string name);
 	int getSize();
 	bool isDeclared(int nodeType, std::string name);

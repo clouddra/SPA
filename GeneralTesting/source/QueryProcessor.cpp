@@ -63,6 +63,9 @@ void QueryProcessor::loadDeclaration(std::vector<QueryNode> tree, int* curr) {
         else if (currNode.getValue().compare("while") == 0) {
             varType = DeclarationTable::while_;
         }
+        else if (currNode.getValue().compare("if") == 0) {
+            varType = DeclarationTable::if_;
+        }
         else if (currNode.getValue().compare("variable") == 0) {
             varType = DeclarationTable::variable_;
         }
@@ -624,6 +627,16 @@ int QueryProcessor::evaluateType(PKB pkb, std::string target) {
             break;
         }
 
+        case DeclarationTable::if_:
+        {
+            validStmtNum = pkb.getStmtWithType(Node::ifNode);
+            toStore = intVecToStringVec(validStmtNum);
+            int ret = vvTable.insert(target, toStore);
+            if (ret == -1)  // Exit cond
+                return -1;
+            break;
+        }
+
         case DeclarationTable::variable_:
         {
             toStore = pkb.getVarTable();
@@ -925,4 +938,9 @@ int QueryProcessor::evaluatePattern(std::string pattern, std::string var, std::s
 		}
 	}
     */
+}
+
+std::list<std::string> QueryProcessor::getResult() {
+    std::list<std::string> temp (result.begin(), result.end());
+    return temp;
 }

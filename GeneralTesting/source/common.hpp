@@ -4,3 +4,4 @@
 #include <string>
 #include <vector>
 #include <iterator>
+#include <list>

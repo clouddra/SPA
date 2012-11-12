@@ -281,6 +281,7 @@ namespace pqlparser
 				string("stmt")
 				| string("assign")
 				| string("while")
+                | string("if")
 				| string("variable")
 				| string("constant")
 				| string("prog_line");
