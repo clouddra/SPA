@@ -660,10 +660,8 @@ void QueryProcessor::processQuery(PKB pkb)
     bool isBool = false;
     if (target.compare("BOOLEAN") == 0) {
         isBool = true;
-        result.push_back("FALSE");
+        result.push_back("false");
     }
-    else
-        result.push_back("NULL");
 
     // Inserting into declaration table
     loadDeclaration(tree, &curr);
@@ -813,10 +811,10 @@ void QueryProcessor::processQuery(PKB pkb)
     }
 
     // This is the final step, inserting into result, please do not do any evaluation after this
-    // Only insert into result here (besides the FALSE at the start) as results will be cleared here
+    // Only insert into result here (besides the false at the start) as results will be cleared here
     result.clear(); 
     if (isBool) 
-        result.push_back("TRUE");
+        result.push_back("true");
     else
         result = vvTable.getValues(target);
 }
