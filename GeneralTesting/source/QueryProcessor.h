@@ -28,6 +28,8 @@
 #include "common.hpp"
 #endif
 
+#include "AbstractWrapper.h"
+
 class QueryProcessor {
 
 private:

@@ -83,7 +83,7 @@ int ValidValueTuple::restrictTo(std::string inputVar, std::vector<std::string> i
         }
     }
     if (values.size() == 0) {
-        std::cout << variable1 << " and " << variable2 << " have no valid values\n";
+        // std::cout << variable1 << " and " << variable2 << " have no valid values\n";
         return -1;
     }
     if (toDelete.size() == 0)

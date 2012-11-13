@@ -37,7 +37,7 @@ int ValidValue::restrictTo(std::vector<std::string> valid) {
     }
 
     if (values.size() == 0) {
-        std::cout << variable << " has no valid values\n";
+        // std::cout << variable << " has no valid values\n";
         return -1;
     }
     return 0;

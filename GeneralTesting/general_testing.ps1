@@ -1,6 +1,6 @@
 
 #set the path to the main project and to the CPP testing and autoTester
-$solution_path = "C:\Users\Christian\Documents\Lessons\NUS\Semester5\CS3201\SPA\cs3201\GeneralTesting\";
+$solution_path = "C:\Users\Shihan\Documents\SPA\cs3201\GeneralTesting\";
 
 #all the other paths are relative to the $solution_path
 $cppunit_relative_path = "UnitTesting\";

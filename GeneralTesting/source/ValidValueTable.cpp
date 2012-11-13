@@ -13,7 +13,7 @@ int ValidValueTable::findVariable(std::string var) {
 
 int ValidValueTable::insert(std::string variable, std::vector<std::string> values) {
     if ((int)values.size() == 0) {
-        std::cout << variable << " has no valid values\n"; 
+        // std::cout << variable << " has no valid values\n"; 
         return -1;
     }
     int index = findVariable(variable);
