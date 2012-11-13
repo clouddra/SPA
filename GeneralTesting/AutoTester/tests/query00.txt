@@ -1,4 +1,4 @@
-5
+23
 cat: All Category
 1 - Follows, Modifies ::
 stmt s1, s2; 
@@ -55,27 +55,27 @@ stmt s;
 Select s such that Uses(s, "z")
 2, 3, 5, 6, 7, 9, 10, 12, 14
 5000
-12 - ::
+12 - Assign ::
 assign a;
 Select a
 1, 2, 3, 4, 5, 6, 8, 10, 11, 12, 13, 14
 5000
-13 - ::
+13 - While ::
 while w;
 Select w
 7
 5000
-14 - ::
+14 - If ::
 if ifs;
 Select ifs
 9
 5000
-15 - ::
+15 - Stmt ::
 stmt s;
 Select s
 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
 5000
-16 - ::
+16 - Variable ::
 variable v;
 Select v
 z, x, y, d, e, i
@@ -99,4 +99,19 @@ Select a pattern a(_, _)
 stmt s; while w;
 Select s such that Parent(w, s) such that Parent(w, s)
 8, 9, 14
+5000
+21 - Pattern ::
+assign a; while w;
+Select w pattern a(_, _)
+7
+5000
+22 - Constant ::
+constant c;
+Select c
+1, 4, 5, 10, 12
+5000
+23 - ProgLine ::
+prog_line n;
+Select n
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
 5000

@@ -22,7 +22,7 @@ TestWrapper::TestWrapper() {
 void TestWrapper::parse(std::string filename) {
 	// call your parser to do the parsing
 	string program = loadFileContent(filename);
-	// std::cout << program << std::endl;
+	// std::cout << program << std::endl; // uncomment to print out program
 	Parser temp = Parser();
 	temp.parseCode(program, &pkb);
 	DesignExtractor de = DesignExtractor(&pkb);

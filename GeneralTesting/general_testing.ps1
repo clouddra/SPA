@@ -10,16 +10,19 @@ $autoTester_relative_path = "AutoTester\";
 $exe_cppunit = "Debug\UnitTesting.exe";
 $exe_integration = "Debug\IntegrationTesting.exe";
 $exe_autoTester = "Debug\AutoTester.exe";
+$exe_autoTester1 = "Debug\AutoTester.exe";
 
 #output filenames
 $out_cppunit = $cpp_relative_path +"cppunit.out";
 $out_integration = $integration_relative_path +"integration.out";
 $out_autoTester = $autoTester_relative_path +"autoTester.out";
+$out_autoTester1 = $autoTester_relative_path +"autoTester.out";
 
 #command line arguments for each executable
 $args_cppunit = @(" ");
 $args_integration = @($integration_relative_path + "tests\simple.txt");
-$args_autoTester = @($autoTester_relative_path + "tests\simple00.txt " + $autoTester_relative_path + "tests\query00.txt " + $autoTester_relative_path + "tests\out00.xml");# $autoTester_relative_path+"tests\simple01.txt "+$autoTester_relative_path+"tests\query01.txt "+$autoTester_relative_path+"tests\out01.xml");
+$args_autoTester = @($autoTester_relative_path + "tests\simple00.txt " + $autoTester_relative_path + "tests\query00.txt " + $autoTester_relative_path + "tests\out00.xml");
+$args_autoTester1 = @($autoTester_relative_path + "tests\simple01.txt " + $autoTester_relative_path + "tests\query01.txt " + $autoTester_relative_path + "tests\out01.xml");
 
 #change directory to the $solution_path
 $current_path = get-location;
@@ -30,7 +33,7 @@ write-output $p;
 
 #tests that will be run
 #add/remove items if you want to do only unit testing or autoTester testing
-$all_testing = @("cppunit", "integration", "autoTester");
+$all_testing = @("cppunit", "integration", "autoTester", "autoTester1");
 
 foreach ($testing in $all_testing)
 {
