@@ -23,7 +23,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION( DeclarationTest );
 
 // method to test the constructor
 void DeclarationTest::testConstructor() { 
-// create an AST object
+// create a declaration table
 DeclarationTable declare;
 
 }
