@@ -51,8 +51,9 @@ int QueryProcessor::insertNode(std::string _name, std::string _value, int _paren
 void QueryProcessor::loadDeclaration(std::vector<QueryNode> tree, int* curr) {
     std::vector<int> rootChildren = tree[0].getChildren();
     QueryNode currNode = tree[rootChildren[*curr]];
+    bool exit = false;
 
-    while (currNode.getName().compare("declaration") == 0) {
+    while (currNode.getName().compare("declaration") == 0 && !exit) {
         int varType;
         if (currNode.getValue().compare("stmt") == 0) {
             varType = DeclarationTable::stmt_;
@@ -81,7 +82,10 @@ void QueryProcessor::loadDeclaration(std::vector<QueryNode> tree, int* curr) {
             declarationTable.insertDeclaration(varType, tree[childHolder[i]].getName());
         }
         *curr = *curr+1;
-        currNode = tree[rootChildren[*curr]];
+        if (*curr < rootChildren.size())
+            currNode = tree[rootChildren[*curr]];
+        else
+            exit = true;
     }
 }
 
