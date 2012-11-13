@@ -71,6 +71,8 @@
   <ItemGroup>
     <ClCompile Include="TestAST.cpp" />
     <ClCompile Include="TestASTMain.cpp" />
+    <ClCompile Include="TestDeclaration.cpp" />
+    <ClCompile Include="TestDeclarationMain.cpp" />
     <ClCompile Include="TestParser.cpp" />
     <ClCompile Include="TestParserMain.cpp" />
     <ClCompile Include="TestPKB.cpp" />
@@ -82,6 +84,7 @@
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestAST.h" />
+    <ClInclude Include="TestDeclaration.h" />
     <ClInclude Include="TestParser.h" />
     <ClInclude Include="TestPKB.h" />
     <ClInclude Include="TestQuery.h" />

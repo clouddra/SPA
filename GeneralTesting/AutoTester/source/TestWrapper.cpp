@@ -1,5 +1,5 @@
 #include "TestWrapper.h"
-#include "HelperFunctions.h"
+// #include "HelperFunctions.h"
 
 // implementation code of WrapperFactory - do NOT modify the next 5 lines
 AbstractWrapper* WrapperFactory::wrapper = 0;
@@ -21,7 +21,13 @@ TestWrapper::TestWrapper() {
 // method for parsing the SIMPLE source
 void TestWrapper::parse(std::string filename) {
 	// call your parser to do the parsing
-	string program = loadFileContent(filename);
+	std::ifstream in(filename, std::ios_base::in);
+    std::string program; 
+    in.unsetf(std::ios::skipws); 
+    std::copy(
+        std::istream_iterator<char>(in),
+        std::istream_iterator<char>(),
+        std::back_inserter(program));
 	// std::cout << program << std::endl; // uncomment to print out program
 	Parser temp = Parser();
 	temp.parseCode(program, &pkb);
