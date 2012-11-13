@@ -20,7 +20,7 @@ $out_autoTester1 = $autoTester_relative_path +"autoTester.out";
 
 #command line arguments for each executable
 $args_cppunit = @(" ");
-$args_integration = @($integration_relative_path + "tests\simple.txt");
+$args_integration = @($integration_relative_path);
 $args_autoTester = @($autoTester_relative_path + "tests\simple00.txt " + $autoTester_relative_path + "tests\query00.txt " + $autoTester_relative_path + "tests\out00.xml");
 $args_autoTester1 = @($autoTester_relative_path + "tests\simple01.txt " + $autoTester_relative_path + "tests\query01.txt " + $autoTester_relative_path + "tests\out01.xml");
 
