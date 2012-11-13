@@ -269,7 +269,7 @@ namespace pqlparser
 			DIGIT_ %= lexeme[char_("0-9")];
 			INTEGER_ %= +DIGIT_;
 			IDENT_ %= LETTER_ >> *(LETTER_ | DIGIT_ | lexeme[char_('#')]);
-			NAME_ = lexeme[+(char_ - ')' - '(' - qi::space - '+' - '-' - '*' - '/' - '=' - ';' - '"')			[_val += _1]];
+			NAME_ = lexeme[+(char_ - ')' - '(' - qi::space - '+' - '-' - '*' - '/' - '=' - ';' - '"' - '{' - '}')			[_val += _1]];
 
 			// Auxiliary grammar rules
 			synonym_ %= IDENT_;
@@ -289,7 +289,7 @@ namespace pqlparser
 			// Grammar rules for select clause
 			
 			select_cl_ = 
-				+declaration_				[push_back(at_c<2>(_val), _1)]
+				*declaration_				[push_back(at_c<2>(_val), _1)]
 				>> string("Select")			[at_c<0>(_val) = "select"]
 				>> synonym_					[at_c<1>(_val) = _1]
 				>> *(suchthat_cl_ | pattern_cl_)	[push_back(at_c<2>(_val), _1)]

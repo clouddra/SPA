@@ -17,9 +17,9 @@ int main(int argc, char* argv[])
 
 
     runner.addTest(unitSuite);
-    bool wasSucessful = runner.run();
+    bool wasSuccessful = runner.run();
 
     //getchar();
 
-    return wasSucessful ? 0 : 1;
+    return wasSuccessful ? 0 : 1;
 }
