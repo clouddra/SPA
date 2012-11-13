@@ -1,2 +1,3 @@
-stmt s1, s2, s3; assign a; if ifs; while w; variable v;
-Select ifs such that Uses(ifs, "x")
+stmt s1; assign a; if ifs; while w; variable v; constant c; prog_line p;
+Select c
+Select p

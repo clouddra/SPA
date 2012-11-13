@@ -82,7 +82,7 @@ void QueryProcessor::loadDeclaration(std::vector<QueryNode> tree, int* curr) {
             declarationTable.insertDeclaration(varType, tree[childHolder[i]].getName());
         }
         *curr = *curr+1;
-        if (*curr < rootChildren.size())
+        if (*curr < (int)rootChildren.size())
             currNode = tree[rootChildren[*curr]];
         else
             exit = true;
@@ -598,7 +598,8 @@ int QueryProcessor::evaluateType(PKB pkb, std::string target) {
             return -1;
         }
 
-        case DeclarationTable::stmt_:  
+        case DeclarationTable::stmt_:
+        case DeclarationTable::prog_line_:
         {
             int temp = pkb.getNumStmts();
             for (int i = 1; i <= temp; i++) {
@@ -649,6 +650,17 @@ int QueryProcessor::evaluateType(PKB pkb, std::string target) {
                 return -1;
             break;
         }
+
+        case DeclarationTable::constant_:
+        {
+            std::set<int> temp = pkb.getConstants();
+            std::vector<int> temp2 (temp.begin(), temp.end());
+            toStore = intVecToStringVec(temp2);
+            int ret = vvTable.insert(target, toStore);
+            if (ret == -1)  // Exit cond
+                return -1;
+            break;
+        }
     }
     return targetType;
 }
@@ -691,6 +703,12 @@ void QueryProcessor::processQuery(PKB pkb)
             if (para1Type == -2 || para2Type == -2) {   // Cannot figure out parameter type
                 return;
             }
+             // Exit if a "constant" type variable is found (not allowed)
+            if (para1Type == DeclarationTable::constant_ || para1Type == DeclarationTable::constant_) {
+                std::cout << "Constant type not allowed in query\n";
+                return;
+            }
+
             // Get rid of " " if parameters are entities
             if (para1IsEnt) {
                 para1 = para1.substr(1, para1.size()-2);
@@ -767,6 +785,11 @@ void QueryProcessor::processQuery(PKB pkb)
                 int patternType = findTypeOf(pattern, &patternIsNum, &patternIsEnt, &patternIsPlaceholder, &patternNum);
                 int varType = findTypeOf(var, &varIsNum, &varIsEnt, &varIsPlaceholder, &varNum);
                 if (patternType == -2 || varType == -2) {   // Cannot figure out type
+                    return;
+                }
+                 // Exit if a "constant" type variable is found (not allowed)
+                if (patternType == DeclarationTable::constant_ || varType == DeclarationTable::constant_) {
+                    std::cout << "Constant type not allowed in query\n";
                     return;
                 }
                 // Get rid of " " if parameters are entities
@@ -904,42 +927,6 @@ int QueryProcessor::evaluatePattern(std::string pattern, std::string var, std::s
         return -1;
     }
     return 0;
-    /*
-    if (patternType == DeclarationTable::assign_)
-	{
-		if (declarationTable.getType(var) == DeclarationTable::variable_) // The variable var was declared in query
-		{
-			// Get list containing all variable names
-			std::vector<std::string> varList = pkb.getVarTable();
-			for (int i=0; i<(int)varList.size(); i++)
-			{
-				std::vector<int> statements = pkb.matchPattern(Node::assignNode, varList[i], expr);
-
-				PatternRow temp = PatternRow(pattern, var, varList[i], statements); // var is the declared variable
-				patternTable.insertPatternRow(temp);
-			}
-		}
-		else if (var == "_")
-		{
-			std::vector<std::string> varList = pkb.getVarTable();
-			for (int i=0; i<(int)varList.size(); i++)
-			{
-				std::vector<int> statements = pkb.matchPattern(Node::assignNode, varList[i], expr);
-
-				PatternRow temp = PatternRow(pattern, "", varList[i], statements); // No declared variable
-				patternTable.insertPatternRow(temp);
-			}
-		}
-		else // The var == "varName", where varName is in our simple source code
-		{
-			std::string varName = var.substr(1, var.length() - 2); // extract varName by removing the double quotes
-			std::vector<int> statements = pkb.matchPattern(Node::assignNode, varName, expr);
-			
-			PatternRow temp = PatternRow(pattern, "", varName, statements); // No declared variable
-			patternTable.insertPatternRow(temp);
-		}
-	}
-    */
 }
 
 std::list<std::string> QueryProcessor::getResult() {

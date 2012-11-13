@@ -38,6 +38,11 @@
 #include "StmtNodeTable.h"
 #endif
 
+#ifndef STD_HEAD
+#define STD_HEAD
+#include "common.hpp"
+#endif
+
 class PKB {
 
 private:
@@ -49,6 +54,7 @@ private:
     UsesTable usesTable;
     ProcTable procTable;
     StmtNodeTable stmtNodeTable;
+    std::set<int> constantList;
 
 public:
     PKB();
@@ -73,7 +79,8 @@ public:
     std::vector<std::string> getVarTable();
     int getNumStmts();
     void postParseCleanup();
-	std::vector<int> matchPattern(int nodeType, std::string varName, std::string pattern); 
+	std::vector<int> matchPattern(int nodeType, std::string varName, std::string pattern);
+    std::set<int> getConstants();
 
 	void printModifiesTable();
 	AST PKB::getAST();
