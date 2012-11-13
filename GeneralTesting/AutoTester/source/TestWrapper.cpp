@@ -14,28 +14,42 @@ volatile bool TestWrapper::GlobalStop = false;
 TestWrapper::TestWrapper() {
 	// create any objects here as instance variables of this class
 	// as well as any initialization required for your spa program
-	PKB pkb = PKB();	
+	PKB pkb = PKB();
+	
 }
 
 // method for parsing the SIMPLE source
 void TestWrapper::parse(std::string filename) {
 	// call your parser to do the parsing
 	string program = loadFileContent(filename);
+	// std::cout << program << std::endl;
 	Parser temp = Parser();
 	temp.parseCode(program, &pkb);
 	DesignExtractor de = DesignExtractor(&pkb);
+	de.populateTables();
 }
 
 // method to evaluating a query
 void TestWrapper::evaluate(std::string query, std::list<std::string>& results){
 // call your evaluator to evaluate the query here
 	// ...code to evaluate query...
-	string storage = loadFileContent(query);
-
+	
 	// store the answers to the query in the results list (it is initially empty)
 	// each result must be a string.
 	QueryProcessor qp = QueryProcessor();
     PqlParser temp = PqlParser();
-    std::vector<std::string> queries = temp.splitQuery(storage);
+    std::vector<std::string> queries = temp.splitQuery(query);
 
+	for (int i = 0; i < (int)queries.size(); i++) {
+        int ret = temp.parseQuery(queries[i], &qp);
+        if (ret == 0) {
+            qp.processQuery(pkb);
+			results = qp.getResult();
+            // std::cout << "Result of Query " << i+1 << std::endl;
+            // qp.printResult();
+            // std::cout << std::endl << std::endl;
+        }
+        qp = QueryProcessor();  // Reset qp to empty for next query
+        // qp.getResult();
+    }
 }
