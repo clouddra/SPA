@@ -34,6 +34,7 @@ int PKB::insertNode(int nodeType, std::string value, int parent) {
 
     case Node::constNode:
         indexValue = atoi(value.c_str());
+        constantList.insert(indexValue);
         hasStmtNum = true;
         break;
 
@@ -248,4 +249,8 @@ std::vector<int> PKB::matchPattern(int nodeType, std::string varName, std::strin
 		}
 	}
 	return toReturn;
+}
+
+std::set<int> PKB::getConstants() {
+    return constantList;
 }
