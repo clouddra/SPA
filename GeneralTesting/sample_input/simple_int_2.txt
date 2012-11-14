@@ -1,0 +1,11 @@
+procedure Billy {
+while i {
+	e = x - y;
+		if z then {
+			y = y + z;
+			i = y + 1; }
+		else {
+			x = y + z; 
+			i = i - 1; }
+	x = y + z; }
+}

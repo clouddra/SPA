@@ -1,7 +1,77 @@
-1
+14
 cat: All Category
-1 - Stmt ::
+1 - Parent ::
+stmt s, s1, s2;
+Select s such that Parent(s, s2)
+4, 6, 7, 9, 12, 14, 15, 16, 17, 19, 20, 21
+5000
+2 - Parent ::
+stmt s; assign a;
+Select s such that Parent(s, a)
+4, 6, 7, 9, 12, 14, 17, 21
+5000
+3 - ParentStar ::
+stmt s, s1, s2, s3; assign a;
+Select s such that Parent*(s, a)
+4, 6, 7, 9, 12, 14, 15, 16, 17, 19, 20, 21
+5000
+4 - Modifes ::
 stmt s;
-Select s
-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21
+Select s such that Modifies(s, "z")
+2, 4, 6, 7, 8, 14, 23, 24
+5000
+5 - Follows, Pattern ::
+assign cs3213isawesome, a, a#a;
+Select a#a such that Follows(a, a) pattern cs3213isawesome("cs3213isawesome", _)
+none
+5000
+6 - Uses, Pattern ::
+variable gg; assign gg;
+Select gg such that Uses(23, gg) pattern gg(gg, _) 
+none
+5000
+7 - Uses, Pattern ::
+variable gg; assign gg; stmt s;
+Select s such that Uses(23, gg) pattern gg(gg, _) 
+none
+5000
+8 - Modifies ::
+stmt s; assign a;
+Select a such that Modifies(_, "b")
+none
+5000
+9 - FollowsStar ::
+while w; assign s;
+Select w such that Follows*(s, w) 
+4, 6, 12, 14
+5000
+10 - Follows ::
+while w;
+Select w such that Follows(16, 19)
+4, 6, 7, 9, 12, 14, 15, 16, 17, 19, 20, 21
+5000
+11 - ParentStar, Pattern ::
+assign a;
+Select a such that Parent*(4, a) pattern a (_, _)
+5, 8, 10, 11, 13, 18, 22, 23, 24, 25, 26
+5000
+12 - Uses ::
+assign a; variable v;
+Select v such that Uses(a, v)
+Another300crazy200name100, z, x, cs3213isawesome, i, a, b, c, d, e, f, g, gg
+5000
+13 - Modifies, Pattern ::
+variable v;
+Select v such that Modifies(23, v) pattern a ("z", _)
+none
+5000
+14 - Uses ::
+assign a;
+Select a such that Uses(a, "cs3213isawesome")
+23, 24
+5000
+15 - Uses ::
+variable v;
+Select v such that Uses(_, v)
+none
 5000

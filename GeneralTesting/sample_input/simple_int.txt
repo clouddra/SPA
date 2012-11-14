@@ -1,0 +1,8 @@
+procedure Bill {
+z = 10;
+x = z + 5;
+y = x * z + 4;
+d = x + y * 12;    
+d = d + z + x;
+e = d + z * x;
+}

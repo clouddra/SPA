@@ -1,6 +1,6 @@
 
 #set the path to the main project and to the CPP testing and autoTester
-$solution_path = "C:\Users\Shihan\Documents\SPA\cs3201\GeneralTesting\";
+$solution_path = "C:\Users\Christian\Documents\Lessons\NUS\Semester5\CS3201\SPA\cs3201\GeneralTesting\";
 
 #all the other paths are relative to the $solution_path
 $cppunit_relative_path = "UnitTesting\";
@@ -18,9 +18,9 @@ $exe_autoTester1 = "Debug\AutoTester.exe";
 $out_cppunit = $cpp_relative_path +"cppunit.out";
 $out_integration = $integration_relative_path +"integration.out";
 $out_autoTester = $autoTester_relative_path +"autoTester.out";
-$out_autoTester1 = $autoTester_relative_path +"autoTester.out";
-#$out_autoTester2 = $autoTester_relative_path +"autoTester.out";
-#$out_autoTester3 = $autoTester_relative_path +"autoTester.out";
+$out_autoTester1 = $autoTester_relative_path +"autoTester1.out";
+#$out_autoTester2 = $autoTester_relative_path +"autoTester2.out";
+#$out_autoTester3 = $autoTester_relative_path +"autoTester3.out";
 
 #command line arguments for each executable
 $args_cppunit = @(" ");

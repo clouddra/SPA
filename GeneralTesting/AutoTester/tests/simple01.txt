@@ -1,53 +1,39 @@
-procedure Example {
-x = 2;
-z = 3;
-i = 5;
-while i {
-	x = x - 1;
-	if x then {
-		z = x + 1; }
-	else {
-		y = z + x; }
-	z = z + x + i;
-    i = i - 1; }
-if x then {
-	while i {
-		x = z * 3 + 2 * y;
-		i = i - 1; }
-	x = x + 1;
-	z = x + z; }
-else {
-	z = 1; }
-z = z + x + i; 
-if x then {
-	z = x + 1; }
-else {
-	x = z + x; } 
-while e {
-if i then {
-	y = z + 1; }
-else {
-	z = z * x + y + e * d; } } 
-while d {
-	z = x + z; }
-x = z + x; 
-while i {
-	z = y*3 + 2*x;
-	i = i - 1; }
-y = y + z + i;
-z = 10;
-x = z + 5;
-y = x * z + 4;
-d = x + y * 12;
-d = d + z + x;
-e = d + z * x;
-while i {
-	e = x - y;
-	if z {
-		y = y + z;
-		i = y + 1; }
-	else {
-		x = y + z;
-		i = i - 1; }
-	x = y + z; }
+procedure crazylongish123NAME321z {
+	Another300crazy200name100 = z + 3 + z;
+	z = Another300crazy200name100 + z;
+	x = 5 + z + 5 + z + 5 + z;
+	while Another300crazy200name100 {
+		x = 1234567891011121314151617181920 + 5;
+		while cs3213isAwesome {
+			while i {
+				z = z; 
+			}
+			while z {
+				i = i; }
+			a = b + c + d + e + f + g + 1;
+			while a {
+				c = 1 + a + 2 + b;
+			}
+			while c {
+				while d {
+					while e {
+						while f {
+							c = 1 + 1;
+						}
+					}
+					while g {
+						while h {
+							while i {
+								G = gg;
+							}
+						}
+					}
+				}
+				z = cs3213isawesome;
+				z = cs3213isawesome;
+				cs3213isawesome = z;
+			}
+			x = z + 1234567891011121314151617181920 + x;
+		}
+	}
 }
