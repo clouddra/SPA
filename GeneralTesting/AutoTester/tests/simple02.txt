@@ -1,7 +1,7 @@
 procedure 3xample {
 x = 2;
 z = 3;
-i = 5;
+i = 12345;
 while i {
 	x = x - 1;
 	if x then {
@@ -13,8 +13,11 @@ while i {
 if x then {
 	while i {
 		x = z * 3 + 2 * y;
-		i = i - 1; }
-	x = x + 1;
+		i = i - 1; 
+		if yl then {
+			x = x + 1; }
+		else {
+			nested = can + not;} }
 	z = x + z; }
 else {
 	z = 1; }
@@ -39,7 +42,7 @@ z = 10;
 x = z + 5;
 y = x * (z) + 4;
 d = x + y * 12;
-d = (d+z+x);
+dragon = (d+zebra+x);
 e = d + (z * x);
 while i {
 	e = x - y;
