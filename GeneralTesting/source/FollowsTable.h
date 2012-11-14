@@ -13,7 +13,9 @@ public:
 	FollowsTable();
 	int insertFollows(int stmt1, int stmt2);
 	std::vector<int> getFollows(int stmt);
+    std::vector<int> getFollows();
 	std::vector<int> getFollowedBy(int stmt);
+    std::vector<int> getFollowedBy();
 	bool isFollows(int stmt1, int stmt2);
 	int getFollowsIndex(int stmt1, int stmt2);
 	std::pair <int ,int> extractFollows (int ind);

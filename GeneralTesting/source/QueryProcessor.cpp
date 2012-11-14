@@ -4,6 +4,8 @@
 #endif
 
 #include <set>
+// Uncomment this line when using SPA.exe
+//volatile bool AbstractWrapper::GlobalStop = false;
 
 // Notation guide: Variables = Declared in pql query, Entities = Variables in simple code (VarTable in PKB)
 
@@ -116,18 +118,18 @@ int QueryProcessor::findTypeOf(std::string para, bool* paraIsNum, bool* paraIsEn
 }
 
 // Evaluating follows and follows* query
-int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para2IsNum, std::string para1, std::string para2, int para1Num, int para2Num, PKB pkb) {
+int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
 
     // Inserting valid values based on parameter type (if variable)
     int ret;
-    if (!para1IsNum) {
+    if (!para1IsNum && !para1IsPlaceholder) {
         ret = evaluateType(pkb, para1);
-        if (ret == -1)
+        if (ret == -1) 
             return -1;
     }
-    if (!para2IsNum) {
+    if (!para2IsNum && !para2IsPlaceholder) {
         int ret2 = evaluateType(pkb, para2);
         if (ret2 == -1)
             return -1;
@@ -143,6 +145,13 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para2IsNum, st
                 }
                 // Follows(num1, num2) is true, do nothing
             }
+            else if (para2IsPlaceholder) {
+                temp = pkb.getFollowedBy(para1Num);
+                if (temp.size() > 0)
+                    return 0;
+                else
+                    return -1;
+            }
             else {
                 temp = pkb.getFollowedBy(para1Num);
                 toStore = intVecToStringVec(temp);
@@ -153,7 +162,30 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para2IsNum, st
             }
         }
         else if (para2IsNum) {
+            if (para1IsPlaceholder) {
+                temp = pkb.getFollows(para2Num);
+                if (temp.size() > 0)
+                    return 0;
+                else
+                    return -1;
+            }
             temp = pkb.getFollows(para2Num);
+            toStore = intVecToStringVec(temp);
+            int ret = vvTable.insert(para1, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        else if (para1IsPlaceholder) {
+            temp = pkb.getFollowedBy();
+            toStore = intVecToStringVec(temp);
+            int ret = vvTable.insert(para2, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        else if (para2IsPlaceholder) {
+            temp = pkb.getFollows();
             toStore = intVecToStringVec(temp);
             int ret = vvTable.insert(para1, toStore);
             if (ret == -1) {  // Exit cond
@@ -215,6 +247,13 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para2IsNum, st
                 }
                 // Follows*(num1, num2) is true, do nothing
             }
+            else if (para2IsPlaceholder) {
+                temp = pkb.getFollowedBy(para1Num);
+                if (temp.size() > 0)
+                    return 0;
+                else
+                    return -1;
+            }
             else {
                 temp = pkb.getFollowedByT(para1Num);
                 toStore = intVecToStringVec(temp);
@@ -225,7 +264,30 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para2IsNum, st
             }
         }
         else if (para2IsNum) {
+            if (para2IsPlaceholder) {
+                temp = pkb.getFollows(para2Num);
+                if (temp.size() > 0)
+                    return 0;
+                else
+                    return -1;
+            }
             temp = pkb.getFollowsT(para2Num);
+            toStore = intVecToStringVec(temp);
+            int ret = vvTable.insert(para1, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        else if (para1IsPlaceholder) {
+            temp = pkb.getFollowedBy();
+            toStore = intVecToStringVec(temp);
+            int ret = vvTable.insert(para2, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        else if (para2IsPlaceholder) {
+            temp = pkb.getFollows();
             toStore = intVecToStringVec(temp);
             int ret = vvTable.insert(para1, toStore);
             if (ret == -1) {  // Exit cond
@@ -281,18 +343,18 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para2IsNum, st
 }
 
 // Evaluating parent and parent* query
-int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para2IsNum, std::string para1, std::string para2, int para1Num, int para2Num, PKB pkb) {
+int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
 
     // Inserting valid values based on parameter type (if variable)
     int ret;
-    if (!para1IsNum) {
+    if (!para1IsNum && !para1IsPlaceholder) {
         ret = evaluateType(pkb, para1);
-        if (ret == -1)
+        if (ret == -1) 
             return -1;
     }
-    if (!para2IsNum) {
+    if (!para2IsNum && !para2IsPlaceholder) {
         int ret2 = evaluateType(pkb, para2);
         if (ret2 == -1)
             return -1;
@@ -308,6 +370,13 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para2IsNum, std
                 }
                 // Parent(num1, num2) is true, do nothing
             }
+            else if (para2IsPlaceholder) {
+                temp = pkb.getChild(para1Num);
+                if (temp.size() > 0)
+                    return 0;
+                else
+                    return -1;
+            }
             else {
                 temp = pkb.getChild(para1Num);
                 toStore = intVecToStringVec(temp);
@@ -318,7 +387,30 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para2IsNum, std
             }
         }
         else if (para2IsNum) {
+            if (para1IsPlaceholder) {
+                temp = pkb.getParent(para2Num);
+                if (temp.size() > 0)
+                    return 0;
+                else
+                    return -1;
+            }
             temp = pkb.getParent(para2Num);
+            toStore = intVecToStringVec(temp);
+            int ret = vvTable.insert(para1, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        else if (para1IsPlaceholder) {
+            temp = pkb.getChild();
+            toStore = intVecToStringVec(temp);
+            int ret = vvTable.insert(para2, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        else if (para2IsPlaceholder) {
+            temp = pkb.getParent();
             toStore = intVecToStringVec(temp);
             int ret = vvTable.insert(para1, toStore);
             if (ret == -1) {  // Exit cond
@@ -380,6 +472,13 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para2IsNum, std
                 }
                 // Parent*(num1, num2) is true, do nothing
             }
+            else if (para2IsPlaceholder) {
+                temp = pkb.getChild(para1Num);
+                if (temp.size() > 0)
+                    return 0;
+                else
+                    return -1;
+            }
             else {
                 temp = pkb.getChildT(para1Num);
                 toStore = intVecToStringVec(temp);
@@ -390,7 +489,30 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para2IsNum, std
             }
         }
         else if (para2IsNum) {
+            if (para1IsPlaceholder) {
+                temp = pkb.getParent(para2Num);
+                if (temp.size() > 0)
+                    return 0;
+                else
+                    return -1;
+            }
             temp = pkb.getParentT(para2Num);
+            toStore = intVecToStringVec(temp);
+            int ret = vvTable.insert(para1, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        else if (para1IsPlaceholder) {
+            temp = pkb.getChild();
+            toStore = intVecToStringVec(temp);
+            int ret = vvTable.insert(para2, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        else if (para2IsPlaceholder) {
+            temp = pkb.getParent();
             toStore = intVecToStringVec(temp);
             int ret = vvTable.insert(para1, toStore);
             if (ret == -1) {  // Exit cond
@@ -446,18 +568,20 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para2IsNum, std
 }
 
 // Evaluating modifies query
-int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para2IsEnt, std::string para1, std::string para2, int para1Num, PKB pkb) {
+int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para1IsPlaceholder, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, PKB pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
+    if (para1IsPlaceholder)
+        return -1;
 
     // Inserting valid values based on parameter type (if variable)
     int ret;
-    if (!para1IsNum) {
+    if (!para1IsNum && !para1IsPlaceholder) {
         ret = evaluateType(pkb, para1);
-        if (ret == -1)
+        if (ret == -1) 
             return -1;
     }
-    if (!para2IsEnt) {
+    if (!para2IsEnt && !para2IsPlaceholder) {
         int ret2 = evaluateType(pkb, para2);
         if (ret2 == -1)
             return -1;
@@ -472,6 +596,13 @@ int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para2IsEnt, std::str
             }
             // Modifies(num, ent) is true, do nothing
         }
+        else if (para2IsPlaceholder) {
+            toStore = pkb.getModifiedBy(para1Num);
+            if (toStore.size() > 0)
+                return 0;
+            else
+                return -1;
+        }
         else {
             toStore = pkb.getModifiedBy(para1Num);
             int ret = vvTable.insert(para2, toStore);
@@ -482,6 +613,14 @@ int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para2IsEnt, std::str
     }
     else if (para2IsEnt) {
         temp = pkb.getModifiesVar(para2);
+        toStore = intVecToStringVec(temp);
+        int ret = vvTable.insert(para1, toStore);
+        if (ret == -1) {  // Exit cond
+            return -1;
+        }
+    }
+    else if (para2IsPlaceholder) {
+        temp = pkb.getModifiesVar();
         toStore = intVecToStringVec(temp);
         int ret = vvTable.insert(para1, toStore);
         if (ret == -1) {  // Exit cond
@@ -516,18 +655,20 @@ int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para2IsEnt, std::str
 }
 
 // Evaluating uses query
-int QueryProcessor::evaluateUsesS(bool para1IsNum, bool para2IsEnt, std::string para1, std::string para2, int para1Num, PKB pkb) {
+int QueryProcessor::evaluateUsesS(bool para1IsNum, bool para1IsPlaceholder, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, PKB pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
+    if (para1IsPlaceholder)
+        return -1;
 
     // Inserting valid values based on parameter type (if variable)
     int ret;
-    if (!para1IsNum) {
+    if (!para1IsNum && !para1IsPlaceholder) {
         ret = evaluateType(pkb, para1);
         if (ret == -1) 
             return -1;
     }
-    if (!para2IsEnt) {
+    if (!para2IsEnt && !para2IsPlaceholder) {
         int ret2 = evaluateType(pkb, para2);
         if (ret2 == -1)
             return -1;
@@ -542,6 +683,13 @@ int QueryProcessor::evaluateUsesS(bool para1IsNum, bool para2IsEnt, std::string 
             }
             // Uses(num, ent) is true, do nothing
         }
+        else if (para2IsPlaceholder) {
+            toStore = pkb.getUsedBy(para1Num);
+            if (toStore.size() > 0)
+                return 0;
+            else 
+                return -1;
+        }
         else {
             toStore = pkb.getUsedBy(para1Num);
             int ret = vvTable.insert(para2, toStore);
@@ -552,6 +700,14 @@ int QueryProcessor::evaluateUsesS(bool para1IsNum, bool para2IsEnt, std::string 
     }
     else if (para2IsEnt) {
         temp = pkb.getUsesVar(para2);
+        toStore = intVecToStringVec(temp);
+        int ret = vvTable.insert(para1, toStore);
+        if (ret == -1) {  // Exit cond
+            return -1;
+        }
+    }
+    else if (para2IsPlaceholder) {
+        temp = pkb.getUsesVar();
         toStore = intVecToStringVec(temp);
         int ret = vvTable.insert(para1, toStore);
         if (ret == -1) {  // Exit cond
@@ -724,37 +880,37 @@ void QueryProcessor::processQuery(PKB pkb)
 
             // follows query, assuming no entities
             if (relation.getName().compare("follows") == 0) {
-                int ret = evaluateFollows(false, para1IsNum, para2IsNum, para1, para2, para1Num, para2Num, pkb); 
+                int ret = evaluateFollows(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
                 if (ret == -1)
                     return;
             }
             // follows* query, assuming no entities
             if (relation.getName().compare("followst") == 0) {
-                int ret = evaluateFollows(true, para1IsNum, para2IsNum, para1, para2, para1Num, para2Num, pkb); 
+                int ret = evaluateFollows(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
                 if (ret == -1)
                     return;
             }
             // parent query, assuming no entities
             if (relation.getName().compare("parent") == 0) {
-                int ret = evaluateParent(false, para1IsNum, para2IsNum, para1, para2, para1Num, para2Num, pkb); 
+                int ret = evaluateParent(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
                 if (ret == -1)
                     return;
             }
             // parent* query, assuming no entities
             if (relation.getName().compare("parentt") == 0) {
-                int ret = evaluateParent(true, para1IsNum, para2IsNum, para1, para2, para1Num, para2Num, pkb); 
+                int ret = evaluateParent(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
                 if (ret == -1)
                     return;
             }
             // modifies query, only doing for statements
             if (relation.getName().compare("modifiess") == 0) {
-                int ret = evaluateModifiesS(para1IsNum, para2IsEnt, para1, para2, para1Num, pkb); 
+                int ret = evaluateModifiesS(para1IsNum, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
                 if (ret == -1)
                     return;
             }
             // uses query, only doing for statements
             if (relation.getName().compare("usess") == 0) {
-                int ret = evaluateUsesS(para1IsNum, para2IsEnt, para1, para2, para1Num, pkb); 
+                int ret = evaluateUsesS(para1IsNum, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
                 if (ret == -1)
                     return;
             }

@@ -8,6 +8,8 @@
 #include <algorithm>
 #endif
 
+#include <set>
+
 FollowsTable::FollowsTable(){}
 
 int FollowsTable::insertFollows(int stmt1, int stmt2){	
@@ -32,6 +34,15 @@ std::vector<int> FollowsTable::getFollows(int stmt){
 	return stmtList;	//not sure how to return null. I guess its good enuough if the list is empty
 }
 
+std::vector<int> FollowsTable::getFollows(){
+	std::set<int> stmtList;
+	for (int i=0; i < (int)followsTable.size(); i++){
+        stmtList.insert(followsTable[i].first);
+	}
+    std::vector<int> ret(stmtList.begin(), stmtList.end());
+	return ret;	//not sure how to return null. I guess its good enuough if the list is empty
+}
+
 std::vector<int> FollowsTable::getFollowedBy(int stmt){
 
 	std::vector<int> varList;
@@ -41,6 +52,15 @@ std::vector<int> FollowsTable::getFollowedBy(int stmt){
 	}
 
 	return varList;	//not sure how to return null. I guess its good enuough if the list is empty
+}
+
+std::vector<int> FollowsTable::getFollowedBy(){
+	std::set<int> stmtList;
+	for (int i=0; i < (int)followsTable.size(); i++){
+        stmtList.insert(followsTable[i].second);
+	}
+    std::vector<int> ret(stmtList.begin(), stmtList.end());
+	return ret;	//not sure how to return null. I guess its good enuough if the list is empty
 }
 
 bool FollowsTable::isFollows(int stmt1, int stmt2){

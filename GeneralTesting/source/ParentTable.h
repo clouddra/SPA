@@ -13,7 +13,9 @@ public:
 	ParentTable();
 	int insertParent(int stmt1, int stmt2);
 	int getParent(int stmt);
+    std::vector<int> getParent();
 	std::vector<int> getChild(int stmt);
+    std::vector<int> getChild();
 	bool isParent(int stmt1, int stmt2);
 	int getParentIndex(int stmt1, int stmt2);
 	std::pair <int ,int> extractParent (int ind);

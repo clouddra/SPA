@@ -8,6 +8,8 @@
 #include <algorithm>
 #endif
 
+#include <set>
+
 ModifiesTable::ModifiesTable(){}
 
 int ModifiesTable::insertModifies(int stmt, int var){	
@@ -32,6 +34,15 @@ std::vector<int> ModifiesTable::getModifiesVar(int var){
 	return stmtList;	//not sure how to return null. I guess its good enuough if the list is empty
 }
 
+std::vector<int> ModifiesTable::getModifiesVar(){
+	std::set<int> stmtList;
+	for (int i=0; i < (int)modifiesTable.size(); i++){
+        stmtList.insert(modifiesTable[i].first) ;
+	}
+    std::vector<int> ret(stmtList.begin(), stmtList.end());
+	return ret;	//not sure how to return null. I guess its good enuough if the list is empty
+}
+
 std::vector<int> ModifiesTable::getModifiedBy(int stmt){
 
 	std::vector<int> varList;
@@ -41,6 +52,17 @@ std::vector<int> ModifiesTable::getModifiedBy(int stmt){
 	}
 
 	return varList;	//not sure how to return null. I guess its good enuough if the list is empty
+}
+
+std::vector<int> ModifiesTable::getModifiedBy(){
+
+	std::set<int> varList;
+	for (int i=0; i < (int)modifiesTable.size(); i++){
+        varList.insert(modifiesTable[i].second) ;
+	}
+    std::vector<int> ret(varList.begin(), varList.end());
+
+	return ret;	//not sure how to return null. I guess its good enuough if the list is empty
 }
 
 bool ModifiesTable::isModifies(int stmt, int var){

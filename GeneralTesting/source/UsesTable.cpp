@@ -8,6 +8,8 @@
 #include <algorithm>
 #endif
 
+#include <set>
+
 UsesTable::UsesTable(){}
 
 int UsesTable::insertUses(int stmt, int var){	
@@ -33,6 +35,16 @@ std::vector<int> UsesTable::getUsesVar(int var){
 	return stmtList;	//not sure how to return null. I guess its good enuough if the list is empty
 }
 
+std::vector<int> UsesTable::getUsesVar(){
+	std::set<int> stmtList;
+	for (int i=0; i < (int)usesTable.size(); i++){
+        stmtList.insert(usesTable[i].first) ;
+	}
+    std::vector<int> ret(stmtList.begin(), stmtList.end());
+
+	return ret;	//not sure how to return null. I guess its good enuough if the list is empty
+}
+
 std::vector<int> UsesTable::getUsedBy(int stmt){
 
 	std::vector<int> varList;
@@ -42,6 +54,16 @@ std::vector<int> UsesTable::getUsedBy(int stmt){
 	}
 
 	return varList;	//not sure how to return null. I guess its good enough if the list is empty
+}
+
+std::vector<int> UsesTable::getUsedBy(){
+	std::set<int> varList;
+	for (int i=0; i < (int)usesTable.size(); i++){
+        varList.insert(usesTable[i].second) ;
+	}
+    std::vector<int> ret(varList.begin(), varList.end());
+
+	return ret;	//not sure how to return null. I guess its good enough if the list is empty
 }
 
 bool UsesTable::isUses(int stmt, int var){

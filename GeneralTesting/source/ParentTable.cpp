@@ -8,6 +8,8 @@
 #include <algorithm>
 #endif
 
+#include <set>
+
 ParentTable::ParentTable(){}
 
 int ParentTable::insertParent(int stmt1, int stmt2){	
@@ -31,15 +33,32 @@ int ParentTable::getParent(int stmt){
 	return -1;
 }
 
-std::vector<int> ParentTable::getChild(int stmt){
+std::vector<int> ParentTable::getParent(){
+    std::set<int> temp;
+	for (int i=0; i < (int)parentTable.size(); i++){
+        temp.insert(parentTable[i].first);
+	}
+    std::vector<int> ret(temp.begin(), temp.end());
+	return ret;
+}
 
-	std::vector<int> varList;
+std::vector<int> ParentTable::getChild(int stmt){
+	std::vector<int> temp;
 	for (int i=0; i < (int)parentTable.size(); i++){
 		if (parentTable[i].first == stmt)
-			varList.push_back(parentTable[i].second) ;
+			temp.push_back(parentTable[i].second) ;
 	}
 
-	return varList;	//not sure how to return null. I guess its good enuough if the list is empty
+	return temp;	//not sure how to return null. I guess its good enuough if the list is empty
+}
+
+std::vector<int> ParentTable::getChild(){
+    std::set<int> temp;
+	for (int i=0; i < (int)parentTable.size(); i++){
+        temp.insert(parentTable[i].second);
+	}
+    std::vector<int> ret(temp.begin(), temp.end());
+	return ret;
 }
 
 bool ParentTable::isParent(int stmt1, int stmt2){

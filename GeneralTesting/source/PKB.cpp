@@ -103,6 +103,10 @@ std::vector<int> PKB::getParent(int stmt) {
     return ans;
 }
 
+std::vector<int> PKB::getParent() {
+    return parentTable.getParent(); 
+}
+
 std::vector<int> PKB::getParentT(int stmt) {
     std::vector<int> ans;
     int curr = stmt;
@@ -116,6 +120,10 @@ std::vector<int> PKB::getParentT(int stmt) {
 
 std::vector<int> PKB::getChild(int stmt) {
     return parentTable.getChild(stmt);
+}
+
+std::vector<int> PKB::getChild() {
+    return parentTable.getChild();
 }
 
 std::vector<int> PKB::getChildT(int stmt) {
@@ -140,6 +148,10 @@ std::vector<int> PKB::getFollows(int stmt) {
     return followsTable.getFollows(stmt);
 }
 
+std::vector<int> PKB::getFollows() {
+    return followsTable.getFollows();
+}
+
 std::vector<int> PKB::getFollowsT(int stmt) {
     int curr = 0;
     std::vector<int> ans = getFollows(stmt);
@@ -156,6 +168,10 @@ std::vector<int> PKB::getFollowsT(int stmt) {
 
 std::vector<int> PKB::getFollowedBy(int stmt) {
     return followsTable.getFollowedBy(stmt);
+}
+
+std::vector<int> PKB::getFollowedBy() {
+    return followsTable.getFollowedBy();
 }
 
 std::vector<int> PKB::getFollowedByT(int stmt) {
@@ -181,9 +197,22 @@ std::vector<int> PKB::getModifiesVar(std::string var) {
     return modifiesTable.getModifiesVar(varIndex);
 }
 
+std::vector<int> PKB::getModifiesVar() {
+    return modifiesTable.getModifiesVar();
+}
+
 std::vector<std::string> PKB::getModifiedBy(int stmt) {
     std::vector<std::string> toReturn;
     std::vector<int> answer = modifiesTable.getModifiedBy(stmt);
+    for (int i = 0; i < (int)answer.size(); i++) {
+        toReturn.push_back(varTable.getVarName(answer[i]));
+    }
+    return toReturn;
+}
+
+std::vector<std::string> PKB::getModifiedBy() {
+    std::vector<std::string> toReturn;
+    std::vector<int> answer = modifiesTable.getModifiedBy();
     for (int i = 0; i < (int)answer.size(); i++) {
         toReturn.push_back(varTable.getVarName(answer[i]));
     }
@@ -200,9 +229,22 @@ std::vector<int> PKB::getUsesVar(std::string var) {
     return usesTable.getUsesVar(varIndex);
 }
 
+std::vector<int> PKB::getUsesVar() {
+    return usesTable.getUsesVar();
+}
+
 std::vector<std::string> PKB::getUsedBy(int stmt) {
     std::vector<std::string> toReturn;
     std::vector<int> answer = usesTable.getUsedBy(stmt);
+    for (int i = 0; i < (int)answer.size(); i++) {
+        toReturn.push_back(varTable.getVarName(answer[i]));
+    }
+    return toReturn;
+}
+
+std::vector<std::string> PKB::getUsedBy() {
+    std::vector<std::string> toReturn;
+    std::vector<int> answer = usesTable.getUsedBy();
     for (int i = 0; i < (int)answer.size(); i++) {
         toReturn.push_back(varTable.getVarName(answer[i]));
     }
