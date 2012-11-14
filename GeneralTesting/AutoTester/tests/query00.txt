@@ -115,3 +115,8 @@ prog_line n;
 Select n
 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
 5000
+24 - ReturnBoolean, Parent ::
+assign a; while w;
+Select BOOLEAN such that Parent(w, a)
+true
+5000

@@ -23,4 +23,31 @@ if x then {
 	z = x + 1; }
 else {
 	x = z + x; } 
+while e {
+if i then {
+	y = z + 1; }
+else {
+	z = z * x + y + e * d; } } 
+while d {
+	z = x + z; }
+x = z + x; 
+while i {
+	z = y*3 + 2*x;
+	i = i - 1; }
+y = y + z + i;
+z = 10;
+x = z + 5;
+y = x * z + 4;
+d = x + y * 12;
+d = d + z + x;
+e = d + z * x;
+while i {
+	e = x - y;
+	if z {
+		y = y + z;
+		i = y + 1; }
+	else {
+		x = y + z;
+		i = i - 1; }
+	x = y + z; }
 }
