@@ -28,7 +28,7 @@ std::vector<int> stringVecToIntVec(std::vector<std::string> input) {
         output.push_back(num);
     }
     if (error) {
-        std::cout << "String conversion error: cannot convert to int";
+        // std::cout << "String conversion error: cannot convert to int";
         return std::vector<int>();
     }
     return output;
@@ -107,7 +107,7 @@ int QueryProcessor::findTypeOf(std::string para, bool* paraIsNum, bool* paraIsEn
                 *paraIsNum = true;
             }
             else {  // Can't figure out type of para ?? Should never reach here
-                std::cout << "Cannot figure out type of " << para << std::endl;
+                // std::cout << "Cannot figure out type of " << para << std::endl;
                 return -2;
             }
         }
@@ -138,7 +138,7 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para2IsNum, st
         if (para1IsNum) {
             if (para2IsNum) {
                 if (!pkb.isFollow(para1Num, para2Num)) {  // Follows(num1, num2) is false, whole query is false
-                    std::cout << "Follows(" << para1 << "," << para2 << ") is false" << std::endl;
+                    // std::cout << "Follows(" << para1 << "," << para2 << ") is false" << std::endl;
                     return -1;
                 }
                 // Follows(num1, num2) is true, do nothing
@@ -210,7 +210,7 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para2IsNum, st
                     }
                 }
                 if (!found) {  // Follows*(num1, num2) is false, whole query is false
-                    std::cout << "Follows*(" << para1 << "," << para2 << ") is false" << std::endl;
+                    // std::cout << "Follows*(" << para1 << "," << para2 << ") is false" << std::endl;
                     return -1;
                 }
                 // Follows*(num1, num2) is true, do nothing
@@ -303,7 +303,7 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para2IsNum, std
         if (para1IsNum) {
             if (para2IsNum) {
                 if (!pkb.isParent(para1Num, para2Num)) {  // Parent(num1, num2) is false, whole query is false
-                    std::cout << "Parent(" << para1 << "," << para2 << ") is false" << std::endl;
+                    // std::cout << "Parent(" << para1 << "," << para2 << ") is false" << std::endl;
                     return -1;
                 }
                 // Parent(num1, num2) is true, do nothing
@@ -375,7 +375,7 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para2IsNum, std
                     }
                 }
                 if (!found) {  // Parent*(num1, num2) is false, whole query is false
-                    std::cout << "Parent*(" << para1 << "," << para2 << ") is false" << std::endl;
+                    // std::cout << "Parent*(" << para1 << "," << para2 << ") is false" << std::endl;
                     return -1;
                 }
                 // Parent*(num1, num2) is true, do nothing
@@ -467,7 +467,7 @@ int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para2IsEnt, std::str
     if (para1IsNum) {
         if (para2IsEnt) {
             if (!pkb.isModifies(para1Num, para2)) {  // Modifies(num, ent) is false, whole query is false
-                std::cout << "Modifies(" << para1 << ",\"" << para2 << "\") is false" << std::endl;
+                // std::cout << "Modifies(" << para1 << ",\"" << para2 << "\") is false" << std::endl;
                 return -1;
             }
             // Modifies(num, ent) is true, do nothing
@@ -492,7 +492,7 @@ int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para2IsEnt, std::str
         // Double variable e.g Modifies(s1, v)
         if (para1.compare(para2) == 0) {
             // Modifies (s1, s1)
-            std::cout << "Parameters of Modifies(" << para1 << "," << para2 << ") are the wrong type\n";
+            // std::cout << "Parameters of Modifies(" << para1 << "," << para2 << ") are the wrong type\n";
             return -1;
         }
         else {
@@ -537,7 +537,7 @@ int QueryProcessor::evaluateUsesS(bool para1IsNum, bool para2IsEnt, std::string 
     if (para1IsNum) {
         if (para2IsEnt) {
             if (!pkb.isUses(para1Num, para2)) {  // Uses(num, ent) is false, whole query is false
-                std::cout << "Uses(" << para1 << ",\"" << para2 << "\") is false" << std::endl;
+                // std::cout << "Uses(" << para1 << ",\"" << para2 << "\") is false" << std::endl;
                 return -1;
             }
             // Uses(num, ent) is true, do nothing
@@ -562,7 +562,7 @@ int QueryProcessor::evaluateUsesS(bool para1IsNum, bool para2IsEnt, std::string 
         // Double variable e.g Uses(s1, v)
         if (para1.compare(para2) == 0) {
             // Uses (s1, s1)
-            std::cout << "Parameters of Uses(" << para1 << "," << para2 << ") are the wrong type\n";
+            // std::cout << "Parameters of Uses(" << para1 << "," << para2 << ") are the wrong type\n";
             return -1;
         }
         else {
@@ -594,7 +594,7 @@ int QueryProcessor::evaluateType(PKB pkb, std::string target) {
     switch (targetType) {
         case -1:    // Target is not declared
         {
-            std::cout << target << " is not declared" << std::endl;
+            // std::cout << target << " is not declared" << std::endl;
             return -1;
         }
 
@@ -684,6 +684,11 @@ void QueryProcessor::processQuery(PKB pkb)
 
     // Evaluating clauses
     for (int i = curr; i < (int)rootChildren.size(); i++) {
+        // Autotester timeout
+        if (AbstractWrapper::GlobalStop) {
+            return;
+        }
+
         currNode = tree[rootChildren[i]];
         // Evaluating such that
         if (currNode.getName().compare("such that") == 0) {
@@ -705,7 +710,7 @@ void QueryProcessor::processQuery(PKB pkb)
             }
              // Exit if a "constant" type variable is found (not allowed)
             if (para1Type == DeclarationTable::constant_ || para1Type == DeclarationTable::constant_) {
-                std::cout << "Constant type not allowed in query\n";
+                // std::cout << "Constant type not allowed in query\n";
                 return;
             }
 
@@ -773,7 +778,7 @@ void QueryProcessor::processQuery(PKB pkb)
                     expr = "_\"" + temp.getName() + "\"_";
                 }
                 else {
-                    std::cout << "Error parsing pattern clause\n";
+                    // std::cout << "Error parsing pattern clause\n";
                     return;
                 }
 
@@ -789,7 +794,7 @@ void QueryProcessor::processQuery(PKB pkb)
                 }
                  // Exit if a "constant" type variable is found (not allowed)
                 if (patternType == DeclarationTable::constant_ || varType == DeclarationTable::constant_) {
-                    std::cout << "Constant type not allowed in query\n";
+                    // std::cout << "Constant type not allowed in query\n";
                     return;
                 }
                 // Get rid of " " if parameters are entities
@@ -805,7 +810,7 @@ void QueryProcessor::processQuery(PKB pkb)
                     return;
             }
             else {
-                std::cout << "Unknown pattern format\n";
+                // std::cout << "Unknown pattern format\n";
                 return;
             }
         }
@@ -918,12 +923,12 @@ int QueryProcessor::evaluatePattern(std::string pattern, std::string var, std::s
             vvTupleTable.insert(pattern, var, toStoreTuple);
         }
         else {
-            std::cout << var << " is not declared as a variable, query cannot be evaluated/n"; 
+            // std::cout << var << " is not declared as a variable, query cannot be evaluated/n"; 
             return -1;
         }
     }
     else {
-        std::cout << pattern << " is not declared as an assign, query cannot be evaluated/n"; 
+        // std::cout << pattern << " is not declared as an assign, query cannot be evaluated/n"; 
         return -1;
     }
     return 0;

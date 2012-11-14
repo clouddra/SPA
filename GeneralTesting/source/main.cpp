@@ -24,22 +24,9 @@
 #endif
 
 #include "DesignExtractor.h"
-//using namespace std;
 
-
+/*
 int main() {
-
-	/* Testing code
-	DeclarationTable declare;
-	declare.insertDeclaration(declare.stmt_, "s2");
-	declare.insertDeclaration(declare.assign_, "a2");
-	declare.insertDeclaration(declare.variable_, "x");
-	declare.insertDeclaration(declare.stmt_, "s2");
-	declare.insertDeclaration(declare.stmt_, "s1");
-	declare.printDeclarationTable();
-    */
-
-
     char const* simpleFile = "..\\sample_input\\simple.txt";
     std::ifstream in(simpleFile, std::ios_base::in);
 
@@ -64,10 +51,7 @@ int main() {
     temp.parseCode(storage, &pkb);
 	DesignExtractor de = DesignExtractor(&pkb);
     de.populateTables();
-	//for(int i=0;i<pkb.getModifiesTable()->getSize();i++)
-	//{
-	//	std::cout<< pkb.getModifiesTable()->extractModifies(i).first <<" "<<pkb.getModifiesTable()->extractModifies(i).second<<std::endl;
-	//}
+
 	for(int i=0;i<pkb.getUsesTable()->getSize();i++)
 	{
 		std::cout<< pkb.getUsesTable()->extractUses(i).first <<" "<<pkb.getUsesTable()->extractUses(i).second<<std::endl;
@@ -110,3 +94,4 @@ int main() {
     system("pause");
 	return 0;
 }
+*/

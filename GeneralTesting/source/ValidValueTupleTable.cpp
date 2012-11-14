@@ -21,7 +21,7 @@ int ValidValueTupleTable::findVariable(std::string var1, std::string var2) {
 
 int ValidValueTupleTable::insert(std::string var1, std::string var2, std::vector<std::pair<std::string,std::string>> val) {
     if ((int)val.size() == 0) {
-        std::cout << var1 << " and " << var2 << " have no valid values\n"; 
+        // std::cout << var1 << " and " << var2 << " have no valid values\n"; 
         return -1;
     }
     int index = findVariable(var1, var2);

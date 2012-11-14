@@ -504,11 +504,11 @@ int PqlParser::parseQuery(std::string storage, QueryProcessor* qp)
     }
     else
     {
-        std::string::const_iterator some = iter+30;
-        std::string context(iter, (some>end)?end:some);
+        //std::string::const_iterator some = iter+30;
+        //std::string context(iter, (some>end)?end:some);
         std::cout << "-------------------------\n";
         std::cout << "PQL parsing failed\n";
-        std::cout << "stopped at: \": " << context << "...\"\n";
+        //std::cout << "stopped at: \": " << context << "...\"\n";
         std::cout << "-------------------------\n";
         return -1;
     }

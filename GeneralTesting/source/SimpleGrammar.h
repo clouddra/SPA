@@ -36,7 +36,7 @@ template <typename Iterator>
             using phoenix::push_back;
 
 			text_ = lexeme[+(char_ - '{' - '}' - ';')				[_val += _1]];
-			name_ = lexeme[+(char_ - ')' - '(' - qi::space - '+' - '-' - '*' - '/' - '=' - ';')			[_val += _1]];
+			name_ = lexeme[+(char_ - ')' - '(' - qi::space - '+' - '-' - '*' - '/' - '=' - ';' - '"' - '{' - '}')			[_val += _1]];
 
 			
 			call_	=
@@ -101,7 +101,7 @@ template <typename Iterator>
 			stmt_	 %= (call_ | while_ | if_ | assign_);
 
 			stmtLst_
-					= *stmt_					[at_c<0>(_val) = "stmtLst"][push_back(at_c<2>(_val), _1)]
+					= +stmt_					[at_c<0>(_val) = "stmtLst"][push_back(at_c<2>(_val), _1)]
 			;
 			
 			procedure_

@@ -56,7 +56,6 @@ int FollowsTable::getFollowsIndex(int stmt, int stmt2){
 	std::pair<int ,int> search = std::pair<int, int>(stmt,stmt2) ;
 	std::vector<std::pair<int ,int>>::iterator it;
 
-	// by right should work
 	it = std::find(followsTable.begin(), followsTable.end(), search);
 
 	if (it != followsTable.end())	// found
