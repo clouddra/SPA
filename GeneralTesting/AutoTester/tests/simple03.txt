@@ -4,17 +4,4 @@ z = 3;
 i = 5;
 while i {
 	}
-if x then {
-	while i {
-		x = z * 3 + 2 * y;
-		i = i - 1; }
-	x = x + 1;
-	z = x + z; }
-else {
-	z = 1; }
-z = z + x + i; 
-if x then {
-	z = x + 1; }
-else {
-	x = z + x; } 
 }

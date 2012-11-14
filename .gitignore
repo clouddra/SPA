@@ -14,6 +14,9 @@ simple/Debug/
 *.opensdf
 simple.sdf
 
+# Exclude other files
+*.xml
+
 # Exclude other directories
 ipch/
 GeneralTesting/cppunit-1.12.1/
