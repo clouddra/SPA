@@ -226,7 +226,9 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para1IsPlaceho
                         toStoreTuple.push_back(holder);
                     }
                 }
-                vvTupleTable.insert(para1, para2, toStoreTuple);
+                int ret = vvTupleTable.insert(para1, para2, toStoreTuple);
+                if (ret == -1)
+                    return -1;
             }
         }
     }
@@ -335,7 +337,9 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para1IsPlaceho
                         toStoreTuple.push_back(holder);
                     }
                 }
-                vvTupleTable.insert(para1, para2, toStoreTuple);
+                int ret = vvTupleTable.insert(para1, para2, toStoreTuple);
+                if (ret == -1)
+                    return -1;
             }
         }
     }
@@ -451,7 +455,9 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para1IsPlacehol
                         toStoreTuple.push_back(holder);
                     }
                 }
-                vvTupleTable.insert(para1, para2, toStoreTuple);
+                int ret = vvTupleTable.insert(para1, para2, toStoreTuple);
+                if (ret == -1)
+                    return -1;
             }
         }
     }
@@ -560,7 +566,9 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para1IsPlacehol
                         toStoreTuple.push_back(holder);
                     }
                 }
-                vvTupleTable.insert(para1, para2, toStoreTuple);
+                int ret = vvTupleTable.insert(para1, para2, toStoreTuple);
+                if (ret == -1)
+                    return -1;
             }
         }
     }
@@ -648,7 +656,9 @@ int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para1IsPlaceholder, 
                     toStoreTuple.push_back(holder);
                 }
             }
-            vvTupleTable.insert(para1, para2, toStoreTuple);
+            int ret = vvTupleTable.insert(para1, para2, toStoreTuple);
+            if (ret == -1)
+                return -1;
         }
     }
     return 0;
@@ -735,7 +745,9 @@ int QueryProcessor::evaluateUsesS(bool para1IsNum, bool para1IsPlaceholder, bool
                     toStoreTuple.push_back(holder);
                 }
             }
-            vvTupleTable.insert(para1, para2, toStoreTuple);
+            int ret = vvTupleTable.insert(para1, para2, toStoreTuple);
+            if (ret == -1)
+                return -1;
         }
     }
     return 0;
@@ -1076,7 +1088,9 @@ int QueryProcessor::evaluatePattern(std::string pattern, std::string var, std::s
                     toStoreTuple.push_back(temp);
                 }
 			}
-            vvTupleTable.insert(pattern, var, toStoreTuple);
+            int ret = vvTupleTable.insert(pattern, var, toStoreTuple);
+            if (ret == -1)
+                return -1;
         }
         else {
             // std::cout << var << " is not declared as a variable, query cannot be evaluated/n"; 
