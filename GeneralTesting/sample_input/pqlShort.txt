@@ -1,2 +1,2 @@
-stmt s1; assign a; if ifs; while w; variable v; constant c; prog_line p;
-Select a such that Uses(a, _)
+stmt s1; assign a; if if1, if2; while w; variable v; constant c; prog_line p;
+Select if2 such that Parent(if1, w) such that Parent(w, if2)

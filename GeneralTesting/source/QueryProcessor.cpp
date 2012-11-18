@@ -5,7 +5,7 @@
 
 #include <set>
 // Uncomment this line when using SPA.exe
-//volatile bool AbstractWrapper::GlobalStop = false;
+// volatile bool AbstractWrapper::GlobalStop = false;
 
 // Notation guide: Variables = Declared in pql query, Entities = Variables in simple code (VarTable in PKB)
 

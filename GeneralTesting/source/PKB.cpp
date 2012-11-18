@@ -99,7 +99,10 @@ void PKB::postParseCleanup() {
 
 std::vector<int> PKB::getParent(int stmt) {
     std::vector<int> ans;
-    ans.push_back(parentTable.getParent(stmt)); 
+    int temp = parentTable.getParent(stmt);
+    if (temp == -1) 
+        return ans;
+    ans.push_back(temp); 
     return ans;
 }
 

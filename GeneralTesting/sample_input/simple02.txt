@@ -1,0 +1,56 @@
+procedure 3xample {
+x = 2;
+z = 3;
+i = 12345;
+while i {
+	x = x - 1;
+	if x then {
+		z = x + 1; }
+	else {
+		y = z + x; }
+	z = z + x + i;
+    i = i - 1; }
+if x then {
+	while i {
+		x = z * 3 + 2 * y;
+		i = i - 1; 
+		if yl then {
+			x = x + 1; }
+		else {
+			nested = can + not;} }
+	z = x + z; }
+else {
+	z = 1; }
+z = z + x + i; 
+if x then {
+	z = x + 1; }
+else {
+	xxx = z   + x; } 
+while e {
+	if i then {
+		y = z+1; }
+	else {
+		z = z * (x + y) + e * d; } } 
+while d {
+	z = x + z; }
+x = z + x;
+while i {
+	z = y * 3 + 2 * x;
+	i = i - 1; }
+y = y + z + i;
+z = 10;
+x = z + 5;
+y = x * (z) + 4;
+d = x + y * 12;
+dragon = (d+zebra+x);
+e = d + (z * x);
+while i {
+	e = x - y;
+	if z then {
+		y = y + z;
+		i = y + 1; }
+	else {
+		x = y + z;
+		i = i - 1; }
+	x = y + z; }
+}
