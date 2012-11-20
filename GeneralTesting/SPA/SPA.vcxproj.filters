@@ -175,5 +175,8 @@
     <None Include="..\sample_input\pqlShort.txt">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\sample_input\simple00.txt">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>GeneralTesting</name><parsing_time_taken>221.000000</parsing_time_taken>
+<name>GeneralTesting</name><parsing_time_taken>202.000000</parsing_time_taken>
 </info>
 <queries>
 <category name=" All Category">
@@ -9,105 +9,105 @@
 <id Parent="1" comment="" >1</id><querystr><![CDATA[stmt s, s1, s2; Select s such that Parent(s, s2)]]></querystr>
 <stuans>4,6,7,9,12,14,15,16,17,19,20,21</stuans>
 <correct>4,6,7,9,12,14,15,16,17,19,20,21</correct>
-<time_taken>33.000000</time_taken>
+<time_taken>47.000000</time_taken>
 <passed/>
 </query>
 <query>
 <id Parent="1" comment="" >2</id><querystr><![CDATA[stmt s; assign a; Select s such that Parent(s, a)]]></querystr>
 <stuans>4,6,7,9,12,14,17,21</stuans>
 <correct>4,6,7,9,12,14,17,21</correct>
-<time_taken>30.000000</time_taken>
+<time_taken>31.000000</time_taken>
 <passed/>
 </query>
 <query>
 <id ParentStar="1" comment="" >3</id><querystr><![CDATA[stmt s, s1, s2, s3; assign a; Select s such that Parent*(s, a)]]></querystr>
 <stuans>4,6,7,9,12,14,15,16,17,19,20,21</stuans>
 <correct>4,6,7,9,12,14,15,16,17,19,20,21</correct>
-<time_taken>34.000000</time_taken>
+<time_taken>16.000000</time_taken>
 <passed/>
 </query>
 <query>
 <id Modifes="1" comment="" >4</id><querystr><![CDATA[stmt s; Select s such that Modifies(s, "z")]]></querystr>
 <stuans>2,4,6,7,8,14,23,24</stuans>
 <correct>2,4,6,7,8,14,23,24</correct>
-<time_taken>33.000000</time_taken>
+<time_taken>16.000000</time_taken>
 <passed/>
 </query>
 <query>
 <id Follows="1" Pattern="1" comment="" >5</id><querystr><![CDATA[assign cs3213isawesome, a, a#a; Select a#a such that Follows(a, a) pattern cs3213isawesome("cs3213isawesome", _)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>32.000000</time_taken>
+<time_taken>15.000000</time_taken>
 <passed/>
 </query>
 <query>
 <id Uses="1" Pattern="1" comment="" >6</id><querystr><![CDATA[variable gg; assign gg; Select gg such that Uses(23, gg) pattern gg(gg, _) ]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>49.000000</time_taken>
+<time_taken>32.000000</time_taken>
 <passed/>
 </query>
 <query>
 <id Uses="1" Pattern="1" comment="" >7</id><querystr><![CDATA[variable gg; assign gg; stmt s; Select s such that Uses(23, gg) pattern gg(gg, _) ]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>48.000000</time_taken>
+<time_taken>15.000000</time_taken>
 <passed/>
 </query>
 <query>
 <id Modifies="1" comment="" >8</id><querystr><![CDATA[stmt s; assign a; Select a such that Modifies(_, "b")]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>31.000000</time_taken>
+<time_taken>15.000000</time_taken>
 <passed/>
 </query>
 <query>
 <id FollowsStar="1" comment="" >9</id><querystr><![CDATA[while w; assign s; Select w such that Follows*(s, w) ]]></querystr>
 <stuans>4,6,12,14</stuans>
 <correct>4,6,12,14</correct>
-<time_taken>45.000000</time_taken>
+<time_taken>16.000000</time_taken>
 <passed/>
 </query>
 <query>
 <id Follows="1" comment="" >10</id><querystr><![CDATA[while w; Select w such that Follows(16, 19)]]></querystr>
 <stuans>4,6,7,9,12,14,15,16,17,19,20,21</stuans>
 <correct>4,6,7,9,12,14,15,16,17,19,20,21</correct>
-<time_taken>35.000000</time_taken>
+<time_taken>16.000000</time_taken>
 <passed/>
 </query>
 <query>
 <id ParentStar="1" Pattern="1" comment="" >11</id><querystr><![CDATA[assign a; Select a such that Parent*(4, a) pattern a (_, _)]]></querystr>
 <stuans>5,8,10,11,13,18,22,23,24,25,26</stuans>
 <correct>5,8,10,11,13,18,22,23,24,25,26</correct>
-<time_taken>49.000000</time_taken>
+<time_taken>31.000000</time_taken>
 <passed/>
 </query>
 <query>
 <id Uses="1" comment="" >12</id><querystr><![CDATA[assign a; variable v; Select v such that Uses(a, v)]]></querystr>
 <stuans>Another300crazy200name100,z,x,i,a,b,c,d,e,f,g,gg,cs3213isawesome</stuans>
 <correct>Another300crazy200name100,z,x,cs3213isawesome,i,a,b,c,d,e,f,g,gg</correct>
-<time_taken>27.000000</time_taken>
+<time_taken>16.000000</time_taken>
 <passed/>
 </query>
 <query>
 <id Modifies="1" Pattern="1" comment="" >13</id><querystr><![CDATA[variable v; Select v such that Modifies(23, v) pattern a ("z", _)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>24.000000</time_taken>
+<time_taken>47.000000</time_taken>
 <passed/>
 </query>
 <query>
 <id Uses="1" comment="" >14</id><querystr><![CDATA[assign a; Select a such that Uses(a, "cs3213isawesome")]]></querystr>
 <stuans>23,24</stuans>
 <correct>23,24</correct>
-<time_taken>25.000000</time_taken>
+<time_taken>47.000000</time_taken>
 <passed/>
 </query>
 <query>
 <id Uses="1" comment="" >15</id><querystr><![CDATA[variable v; Select v such that Uses(_, v)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>32.000000</time_taken>
+<time_taken>31.000000</time_taken>
 <passed/>
 </query>
 </category>

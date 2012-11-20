@@ -67,6 +67,7 @@
     <None Include="..\sample_input\pql.txt" />
     <None Include="..\sample_input\pqlShort.txt" />
     <None Include="..\sample_input\simple.txt" />
+    <None Include="..\sample_input\simple00.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DC21A1EA-D2C6-4D14-A2B4-E025B64BDE81}</ProjectGuid>
