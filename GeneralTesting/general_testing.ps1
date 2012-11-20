@@ -1,6 +1,6 @@
 
 #set the path to the main project and to the CPP testing and autoTester
-$solution_path = "C:\NUS\a\GitCode\cs3201\GeneralTesting\";
+$solution_path = ".\";
 
 #all the other paths are relative to the $solution_path
 $cppunit_relative_path = "UnitTesting\";
@@ -12,7 +12,7 @@ $exe_integration = "Debug\IntegrationTesting.exe";
 $exe_autoTester = "Debug\AutoTester.exe";
 $exe_autoTester1 = "Debug\AutoTester.exe";
 $exe_autoTester2 = "Debug\AutoTester.exe";
-#$exe_autoTester3 = "Debug\AutoTester.exe";
+$exe_autoTester3 = "Debug\AutoTester.exe";
 
 #output filenames
 $out_cppunit = $cpp_relative_path +"cppunit.out";
@@ -20,7 +20,7 @@ $out_integration = $integration_relative_path +"integration.out";
 $out_autoTester = $autoTester_relative_path +"autoTester.out";
 $out_autoTester1 = $autoTester_relative_path +"autoTester1.out";
 $out_autoTester2 = $autoTester_relative_path +"autoTester2.out";
-#$out_autoTester3 = $autoTester_relative_path +"autoTester3.out";
+$out_autoTester3 = $autoTester_relative_path +"autoTester3.out";
 
 #command line arguments for each executable
 $args_cppunit = @(" ");
@@ -28,6 +28,7 @@ $args_integration = @($integration_relative_path);
 $args_autoTester = @($autoTester_relative_path + "tests\simple00.txt " + $autoTester_relative_path + "tests\query00.txt " + $autoTester_relative_path + "tests\out00.xml");
 $args_autoTester1 = @($autoTester_relative_path + "tests\simple01.txt " + $autoTester_relative_path + "tests\query01.txt " + $autoTester_relative_path + "tests\out01.xml");
 $args_autoTester2 = @($autoTester_relative_path + "tests\simple02.txt " + $autoTester_relative_path + "tests\query02.txt " + $autoTester_relative_path + "tests\out02.xml");
+$args_autoTester3 = @($autoTester_relative_path + "tests\simple04.txt " + $autoTester_relative_path + "tests\query05.txt " + $autoTester_relative_path + "tests\out03.xml");
 #$args_autoTester3 = @($autoTester_relative_path + "tests\simple03.txt " + $autoTester_relative_path + "tests\query03.txt " + $autoTester_relative_path + "tests\out03.xml");
 
 #change directory to the $solution_path
@@ -39,7 +40,7 @@ write-output $p;
 
 #tests that will be run
 #add/remove items if you want to do only unit testing or autoTester testing
-$all_testing = @("cppunit", "integration", "autoTester", "autoTester1", "autoTester2");#, "autoTester3");
+$all_testing = @("cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3");#, "autoTester3");
 
 foreach ($testing in $all_testing)
 {

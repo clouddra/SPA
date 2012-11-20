@@ -1,0 +1,7 @@
+23
+cat: All Category
+1 - Follows, Modifies ::
+variable v; assign a;
+Select v such that Uses(a, v) pattern a(v, _)
+d i y
+5000
