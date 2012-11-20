@@ -75,3 +75,8 @@ variable v;
 Select v such that Uses(_, v)
 none
 5000
+16 - Follow, ParentStar ::
+assign a; while w;
+Select w such that Follows(16, 19) such that Parent*(4, a)
+4, 6, 7, 9, 12, 14, 15, 16, 17, 19, 20, 21
+5000
