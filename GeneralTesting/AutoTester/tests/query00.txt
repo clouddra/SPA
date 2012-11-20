@@ -18,7 +18,7 @@ Select a such that Uses(3, v) pattern a(v, _)
 4 - Uses, Pattern ::
 assign a; variable v;
 Select a such that Uses(3, v) pattern a(v, _"x"_)
-1, 2, 3, 4, 5, 6, 8, 10, 11, 12, 13, 14
+none
 5000
 5 - FollowsStar ::
 stmt s;
@@ -119,4 +119,19 @@ Select n
 assign a; while w;
 Select BOOLEAN such that Parent(w, a)
 true
+5000
+25 - Parent ::
+while w;
+Select w such that Parent(w, 5)
+none
+5000
+26 - Parent ::
+assign a; while w;
+Select a such that Parent(w, a) pattern a("d", _)
+none
+5000
+27 - Folows ::
+stmt s;
+Select s such that Follows (1, s)
+2
 5000

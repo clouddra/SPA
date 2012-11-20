@@ -50,3 +50,33 @@ while w;
 Select w
 4, 12, 24, 28, 31, 41
 5000
+11 - Parent ::
+while w; if if1, if2;
+Select if2 such that Parent(if1, w) such that Parent(w, if2)
+15
+5000
+12 - Parent ::
+while w; if if1;
+Select if1 such that Parent(if1, w)
+11
+5000
+13 - Parent ::
+while w; if if2;
+Select if2 such that Parent(w, if2)
+6, 15, 25, 43
+5000
+14 - Parent ::
+while w; if if1;
+Select w such that Parent(if1, w)
+12
+5000
+15 - Parent ::
+while w; if if2;
+Select w such that Parent(w, if2)
+4, 12, 24, 41
+5000
+16 - Parent ::
+while w; if if1, if2;
+Select w such that Parent(if1, w) such that Parent(w, if2)
+12
+5000
