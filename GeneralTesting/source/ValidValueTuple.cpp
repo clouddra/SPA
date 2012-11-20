@@ -133,13 +133,70 @@ int ValidValueTuple::restrictTo(ValidValueTuple other, int index) {
     }
     // Case where other is for the same variable pair (index should be -1)
     else {
-        int ret;
-        ret = restrictTo(other.getVariable1(), other.getValuesForVar(other.getVariable1()));
-        if (ret == -1)
-            return -1;
-        ret = restrictTo(other.getVariable2(), other.getValuesForVar(other.getVariable2()));
-        if (ret == -1)
-            return -1;
+        if (variable1.compare(other.getVariable1()) == 0)
+        {
+			if (variable2.compare(other.getVariable2()) == 0) {
+				std::vector<int> toDelete;
+				for (int i = 0; i < (int)values.size(); i++) {
+					bool found = false;
+					for (int j = 0; j < (int)other.values.size(); j++) {
+						if (values[i].first.compare(other.values[j].first) == 0) {
+							if (values[i].second.compare(other.values[j].second) == 0) {
+								found = true;
+								break;
+							}
+						}
+					}
+					if (!found)
+						toDelete.push_back(i);
+				}
+				for (int i = toDelete.size()-1; i > -1; i--) {
+					values.erase(values.begin() + toDelete[i]);
+				}
+				if (values.size() == 0) {
+					// std::cout << variable1 << " and " << variable2 << " have no valid values\n";
+					return -1;
+				}
+				if (toDelete.size() == 0)
+					return 0;
+				else
+					return 1;
+			}
+			else // Should not reach here
+				return -1;
+        }
+        else if (variable1.compare(other.getVariable2()) == 0)
+        {
+			if (variable2.compare(other.getVariable1()) == 0) {
+				std::vector<int> toDelete;
+				for (int i = 0; i < (int)values.size(); i++) {
+					bool found = false;
+					for (int j = 0; j < (int)other.values.size(); j++) {
+						if (values[i].first.compare(other.values[j].second) == 0) {
+							if (values[i].second.compare(other.values[j].first) == 0) {
+								found = true;
+								break;
+							}
+						}
+					}
+					if (!found)
+						toDelete.push_back(i);
+				}
+				for (int i = toDelete.size()-1; i > -1; i--) {
+					values.erase(values.begin() + toDelete[i]);
+				}
+				if (values.size() == 0) {
+					// std::cout << variable1 << " and " << variable2 << " have no valid values\n";
+					return -1;
+				}
+				if (toDelete.size() == 0)
+					return 0;
+				else
+					return 1;
+			}
+			else // Should not reach here
+				return -1;
+        }
     }
 
     return 0;

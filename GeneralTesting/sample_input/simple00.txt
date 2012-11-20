@@ -1,17 +1,7 @@
-procedure Bill {
-z = 10;
-z = z + 5;
-z = x * z + 4;
-y = x + y * 12;    
-x = d + z + x;
-z = d + z * x;
+procedure While {
+x = y;
+z = shihan;
+shihan = hong;
 while i {
-	y = x - y;
-		if z then {
-			y = y + z;
-			y = y + 1; }
-		else {
-			z = y + z; 
-			y = i - 1; }
-	z = y + z; }
+ v = v;}
 }
