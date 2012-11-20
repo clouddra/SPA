@@ -1,2 +1,2 @@
 stmt s1; assign a; if if1, if2; while w; variable v; constant c; prog_line p;
-Select v such that Uses(a, v) pattern a(v, _)
+Select a such that Uses(a, v) pattern a(v, _)
