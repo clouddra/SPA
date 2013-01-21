@@ -852,10 +852,11 @@ void QueryProcessor::processQuery(PKB pkb)
 
     // Evaluating clauses
     for (int i = curr; i < (int)rootChildren.size(); i++) {
+        /*
         // Autotester timeout
         if (AbstractWrapper::GlobalStop) {
             return;
-        }
+        } */
 
         currNode = tree[rootChildren[i]];
         // Evaluating such that

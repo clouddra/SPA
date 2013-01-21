@@ -25,7 +25,7 @@
 
 #include "DesignExtractor.h"
 
-/*
+
 int main() {
     char const* simpleFile = "..\\sample_input\\simple00.txt";
     std::ifstream in(simpleFile, std::ios_base::in);
@@ -94,4 +94,3 @@ int main() {
     system("pause");
 	return 0;
 }
-*/
