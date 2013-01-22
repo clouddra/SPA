@@ -14,8 +14,8 @@ volatile bool TestWrapper::GlobalStop = false;
 TestWrapper::TestWrapper() {
 	// create any objects here as instance variables of this class
 	// as well as any initialization required for your spa program
-	PKB pkb = PKB();
-	
+	//PKB pkb = PKB();
+	controller = SPAController() ;	
 }
 
 // method for parsing the SIMPLE source
@@ -29,10 +29,16 @@ void TestWrapper::parse(std::string filename) {
         std::istream_iterator<char>(),
         std::back_inserter(program));
 	// std::cout << program << std::endl; // uncomment to print out program
+	/*
 	Parser temp = Parser();
 	temp.parseCode(program, &pkb);
 	DesignExtractor de = DesignExtractor(&pkb);
 	de.populateTables();
+	*/
+	controller.parseSource(program) ;
+	
+
+
 }
 
 // method to evaluating a query
@@ -42,10 +48,14 @@ void TestWrapper::evaluate(std::string query, std::list<std::string>& results){
 	
 	// store the answers to the query in the results list (it is initially empty)
 	// each result must be a string.
-
+	/*
     QueryProcessor qp = QueryProcessor();
     PqlParser temp = PqlParser();
     temp.parseQuery(query, &qp);
     qp.processQuery(pkb);
     results = qp.getResult();
+	*/
+
+	results = controller.evaluateQuery(query);
+
 }

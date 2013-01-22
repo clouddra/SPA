@@ -3,30 +3,42 @@
 #include "common.hpp"
 #endif
 
-#ifndef PARSER_HEAD
-#define PARSER_HEAD
-#include "Parser.h"
+#ifndef CONTROLLER_HEAD
+#define CONTROLLER_HEAD
+#include "SPAController.h"
 #endif
 
-#ifndef PKB_HEAD
-#define PKB_HEAD
-#include "PKB.h"
-#endif
+std::vector<std::string> splitQuery(std::string input) {
+    std::vector<std::string> queries;
+    std::string declaration;
+    std::string sel = "Select";
+    int found = 0;
+    
+    found = input.find(sel);
+    if (found != std::string::npos)
+    {
+        declaration = input.substr(0, found);
+        input = input.substr(found);
+        while (found != std::string::npos) {
+            found = input.find(sel, 1);
+            std::string query;
+            if (found != std::string::npos) {
+                query = declaration + input.substr(0, found);
+                input = input.substr(found);
+            }
+            else
+                query = declaration + input;
+            queries.push_back(query);
+        }
+    }
 
-#ifndef QUERYPROCESSOR_HEAD
-#define QUERYPROCESSOR_HEAD
-#include "QueryProcessor.h"
-#endif
-
-#ifndef PQLPARSER_HEAD
-#define PQLPARSER_HEAD
-#include "PqlParser.h"
-#endif
-
-#include "DesignExtractor.h"
-
+    return queries;
+}
 
 int main() {
+
+	SPAController controller = SPAController() ;
+	std::list<std::string> result;
     char const* simpleFile = "..\\sample_input\\simple00.txt";
     std::ifstream in(simpleFile, std::ios_base::in);
 
@@ -47,10 +59,13 @@ int main() {
         std::back_inserter(storage));
 
     PKB pkb = PKB();
-    Parser temp = Parser();
+   /* Parser temp = Parser();
     temp.parseCode(storage, &pkb);
 	DesignExtractor de = DesignExtractor(&pkb);
     de.populateTables();
+	*/
+
+	pkb = controller.parseSource(storage);
 
 	for(int i=0;i<pkb.getUsesTable()->getSize();i++)
 	{
@@ -75,7 +90,9 @@ int main() {
         std::istream_iterator<char>(in2),
         std::istream_iterator<char>(),
         std::back_inserter(storage2));
-
+		
+	std::vector<std::string> queries = splitQuery(storage2);
+	/*
     QueryProcessor qp = QueryProcessor();
     PqlParser temp2 = PqlParser();
     std::vector<std::string> queries = temp2.splitQuery(storage2);
@@ -90,7 +107,25 @@ int main() {
         qp = QueryProcessor();  // Reset qp to empty for next query
         qp.getResult();
     }
+	*/
+
+	for (int i = 0; i < (int)queries.size(); i++) {
+		std::cout << "Result of Query " << i+1 << std::endl;
+		result = controller.evaluateQuery(queries[i]) ;
+		for (int i=0; i<(int)result.size(); i++) {
+		//std::cout << result[i] << " ";
+		std::cout <<  result.front() << ' ';
+		result.pop_front();
+        if ((i % 10) == 9)
+            std::cout << std::endl;
+    }
+    }
+
+
+
 
     system("pause");
 	return 0;
 }
+
+

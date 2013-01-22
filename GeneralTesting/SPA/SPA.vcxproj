@@ -29,6 +29,7 @@
     <ClInclude Include="..\source\QueryProcessor.h" />
     <ClInclude Include="..\source\QueryTree.h" />
     <ClInclude Include="..\source\SimpleGrammar.h" />
+    <ClInclude Include="..\source\SPAController.h" />
     <ClInclude Include="..\source\StmtNodeTable.h" />
     <ClInclude Include="..\source\UsesTable.h" />
     <ClInclude Include="..\source\ValidValue.h" />
@@ -55,6 +56,7 @@
     <ClCompile Include="..\source\QueryNode.cpp" />
     <ClCompile Include="..\source\QueryProcessor.cpp" />
     <ClCompile Include="..\source\QueryTree.cpp" />
+    <ClCompile Include="..\source\SPAController.cpp" />
     <ClCompile Include="..\source\StmtNodeTable.cpp" />
     <ClCompile Include="..\source\UsesTable.cpp" />
     <ClCompile Include="..\source\ValidValue.cpp" />

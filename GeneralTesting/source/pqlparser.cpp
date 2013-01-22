@@ -3,6 +3,8 @@
 #include "PqlParser.h"
 #endif
 
+#ifndef BOOST_HEAD
+#define BOOST_HEAD
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/phoenix_core.hpp>
@@ -12,6 +14,8 @@
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/variant/recursive_variant.hpp>
 #include <boost/foreach.hpp>
+#endif
+
 
 #ifndef STD_HEAD
 #define STD_HEAD

@@ -1,5 +1,7 @@
+#ifndef VECTOR_HEAD
+#define VECTOR_HEAD
 #include <vector>
-
+#endif
 
 class UsesTable {
 
