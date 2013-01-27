@@ -11,7 +11,6 @@ class StmtNodeTable {
 private:
 	std::vector<std::pair <int ,int>> stmtNodeTable;
 
-
 public:
 	StmtNodeTable();
 	int insertStmtNode(int stmt, int astNode, int nodeType);

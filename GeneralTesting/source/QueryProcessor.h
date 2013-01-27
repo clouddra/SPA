@@ -25,7 +25,7 @@
 
 #ifndef STD_HEAD
 #define STD_HEAD
-#include "common.hpp"
+#include "Common.hpp"
 #endif
 
 #include "AbstractWrapper.h"

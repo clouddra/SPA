@@ -114,7 +114,7 @@ int ValidValueTuple::restrictTo(ValidValueTuple other, int index) {
     if (index >= 0) {
         // Other is different variable pair, should already be in table
         bool linked = false;
-        int ret;
+        int ret = 0;
 
         if (variable1.compare(other.getVariable1()) == 0 || variable2.compare(other.getVariable1()) == 0)
         {
@@ -200,4 +200,8 @@ int ValidValueTuple::restrictTo(ValidValueTuple other, int index) {
     }
 
     return 0;
+}
+
+std::vector<int> ValidValueTuple::getLinked() {
+    return linkedWith;
 }

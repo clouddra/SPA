@@ -3,59 +3,58 @@
 #include <boost/variant/recursive_variant.hpp>
 #endif   
 
-    struct common_node;
-	struct expression_node;
-		struct binary_op;
-    struct nil {};
+struct commonNode;
+struct expressionNode;
+struct binaryOp;
+struct nil {};
 
 typedef boost::variant<
-	boost::recursive_wrapper<common_node>,
-	boost::recursive_wrapper<expression_node>
-> combined_type;
+	boost::recursive_wrapper<commonNode>,
+	boost::recursive_wrapper<expressionNode>
+> combinedNode;
 
-
-struct common_node
+struct commonNode
 {
 	std::string name;                       // Name
 	std::string value;						// Value
-	std::vector<combined_type> children;    // Children
+	std::vector<combinedNode> children;    // Children
 };
 
-struct expression_node
+struct expressionNode
 {
 	typedef
 		boost::variant<
 		nil
 		, std::string
-		, boost::recursive_wrapper<expression_node>
-		, boost::recursive_wrapper<binary_op>
+		, boost::recursive_wrapper<expressionNode>
+		, boost::recursive_wrapper<binaryOp>
 		>
 		type;
 
-	expression_node()
+	expressionNode()
 		: expr(nil()) {}
 
 	template <typename Expr>
-	expression_node(Expr const& expr)
+	expressionNode(Expr const& expr)
 		: expr(expr) {}
 
-	expression_node& operator+=(expression_node const& rhs);
-	expression_node& operator-=(expression_node const& rhs);
-	expression_node& operator*=(expression_node const& rhs);
-	expression_node& operator/=(expression_node const& rhs);
+	expressionNode& operator+=(expressionNode const& rhs);
+	expressionNode& operator-=(expressionNode const& rhs);
+	expressionNode& operator*=(expressionNode const& rhs);
+	expressionNode& operator/=(expressionNode const& rhs);
 
 	type expr;
 };
 
-struct binary_op
+struct binaryOp
 {
-	binary_op(
+	binaryOp(
 		char op
-		, expression_node const& left
-		, expression_node const& right)
+		, expressionNode const& left
+		, expressionNode const& right)
 		: op(op), left(left), right(right) {}
 
 	char op;
-	expression_node left;
-	expression_node right;
+	expressionNode left;
+	expressionNode right;
 };
