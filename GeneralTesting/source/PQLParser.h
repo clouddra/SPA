@@ -3,7 +3,7 @@
 #include "QueryProcessor.h"
 #endif
 
-class PqlParser {
+class PQLParser {
 	
 private:
 

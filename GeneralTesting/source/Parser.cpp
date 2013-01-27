@@ -10,212 +10,211 @@
 
 #ifndef STD_HEAD
 #define STD_HEAD
-#include "common.hpp"
+#include "Common.hpp"
 #endif
 
-    expression_node& expression_node::operator+=(expression_node const& rhs)
-    {
-        expr = binary_op('+', expr, rhs);
-        return *this;
-    }
+expressionNode& expressionNode::operator+=(expressionNode const& rhs)
+{
+    expr = binaryOp('+', expr, rhs);
+    return *this;
+}
 
-    expression_node& expression_node::operator-=(expression_node const& rhs)
-    {
-        expr = binary_op('-', expr, rhs);
-        return *this;
-    }
+expressionNode& expressionNode::operator-=(expressionNode const& rhs)
+{
+    expr = binaryOp('-', expr, rhs);
+	return *this;
+}
 
-    expression_node& expression_node::operator*=(expression_node const& rhs)
-    {
-        expr = binary_op('*', expr, rhs);
-        return *this;
-    }
+expressionNode& expressionNode::operator*=(expressionNode const& rhs)
+{
+    expr = binaryOp('*', expr, rhs);
+    return *this;
+}
 
-    expression_node& expression_node::operator/=(expression_node const& rhs)
-    {
-        expr = binary_op('/', expr, rhs);
-        return *this;
-    }
-
+expressionNode& expressionNode::operator/=(expressionNode const& rhs)
+{
+    expr = binaryOp('/', expr, rhs);
+    return *this;
+}
 
 // A Random Access Sequence is a Bidirectional Sequence whose iterators model Random Access Iterator. 
 // It guarantees constant time access to arbitrary sequence elements.
 BOOST_FUSION_ADAPT_STRUCT(
-    common_node,
+    commonNode,
     (std::string, name)
 	(std::string, value)
-    (std::vector<combined_type>, children)
+    (std::vector<combinedNode>, children)
 )
 //]
 
+///////////////////////////////////////////////////////////////////////////
+// [Print the tree
+int const tabSize = 4;
 
-    ///////////////////////////////////////////////////////////////////////////
-    // [Print the tree
-    int const tabsize = 4;
+void tab(int indent)
+{
+    for (int i = 0; i < indent; ++i)
+        std::cout << ' ';
+}
 
-    void tab(int indent)
+struct CommonNodePrinter : boost::static_visitor<>
+{
+    CommonNodePrinter(int indent = 0)
+        : indent(indent)
     {
-        for (int i = 0; i < indent; ++i)
-            std::cout << ' ';
     }
 
-    struct common_node_printer : boost::static_visitor<>
-    {
-        common_node_printer(int indent = 0)
-          : indent(indent)
-        {
-        }
+    void operator()(commonNode const& node) const
+	{
+		tab(indent);
+		std::cout << "name: " << node.name << ", value: " << node.value << std::endl;
 
-        void operator()(common_node const& node) const
+		tab(indent);
+		std::cout << '{' << std::endl;
+
+		BOOST_FOREACH(combinedNode const& each_node, node.children)
 		{
-			tab(indent);
-			std::cout << "name: " << node.name << ", value: " << node.value << std::endl;
-
-			tab(indent);
-			std::cout << '{' << std::endl;
-
-			BOOST_FOREACH(combined_type const& each_node, node.children)
-			{
-				boost::apply_visitor(common_node_printer(indent+tabsize), each_node);
-			}
-
-			tab(indent);
-			std::cout << '}' << std::endl;
+			boost::apply_visitor(CommonNodePrinter(indent+tabSize), each_node);
 		}
 
-		void operator()(expression_node const& ast) const
-        {
-            boost::apply_visitor(*this, ast.expr);
-        }
+		tab(indent);
+		std::cout << '}' << std::endl;
+	}
 
-		void operator()(binary_op const& expr) const
-        {
-            std::cout << "op:" << expr.op << "(";
-            boost::apply_visitor(*this, expr.left.expr);
-
-            std::cout << ", ";
-            boost::apply_visitor(*this, expr.right.expr);
-
-			std::cout << ')';
-        }
-
-		void operator()(std::string n) const { std::cout << n; }
-
-        int indent;
-    };
-
-    struct common_node_inserter : boost::static_visitor<>
+	void operator()(expressionNode const& ast) const
     {
-        explicit common_node_inserter(PKB* myPKB, int par) {
-            pkb = myPKB;
-            parent = par;
-        }
+        boost::apply_visitor(*this, ast.expr);
+    }
 
-        void operator()(common_node const& node) const
-		{
-            int nodeType = -1;
-            bool valueIsVar = false;
+	void operator()(binaryOp const& expr) const
+    {
+        std::cout << "op:" << expr.op << "(";
+        boost::apply_visitor(*this, expr.left.expr);
+
+        std::cout << ", ";
+        boost::apply_visitor(*this, expr.right.expr);
+
+		std::cout << ')';
+    }
+
+	void operator()(std::string n) const { std::cout << n; }
+
+    int indent;
+};
+
+struct CommonNodeInserter : boost::static_visitor<>
+{
+    explicit CommonNodeInserter(PKB* myPKB, int par) {
+        pkb = myPKB;
+        parent = par;
+    }
+
+    void operator()(commonNode const& node) const
+	{
+        int nodeType = -1;
+        bool valueIsVar = false;
 			
-            if (node.name.compare("program") == 0)
-            {
-                nodeType = Node::programNode;
-            }
-            else if (node.name.compare("procedure") == 0)
-            {
-                nodeType = Node::procedureNode;
-            }
-            else if (node.name.compare("stmtLst") == 0)
-            {
-                nodeType = Node::stmtLstNode;
-            }
-            else if (node.name.compare("assign") == 0)
-            {
-                nodeType = Node::assignNode;
-                valueIsVar = true;
-            }
-            else if (node.name.compare("while") == 0)
-            {
-                nodeType = Node::whileNode;
-                valueIsVar = true;
-            }
-            else if (node.name.compare("if") == 0)
-            {
-                nodeType = Node::ifNode;
-                valueIsVar = true;
-            }
-            else if (node.name.compare("call") == 0)
-            {
-                nodeType = Node::callNode;
-            }
+        if (node.name.compare("program") == 0)
+        {
+            nodeType = Node::programNode;
+        }
+        else if (node.name.compare("procedure") == 0)
+        {
+            nodeType = Node::procedureNode;
+        }
+        else if (node.name.compare("stmtLst") == 0)
+        {
+            nodeType = Node::stmtLstNode;
+        }
+        else if (node.name.compare("assign") == 0)
+        {
+            nodeType = Node::assignNode;
+            valueIsVar = true;
+        }
+        else if (node.name.compare("while") == 0)
+        {
+            nodeType = Node::whileNode;
+            valueIsVar = true;
+        }
+        else if (node.name.compare("if") == 0)
+        {
+            nodeType = Node::ifNode;
+            valueIsVar = true;
+        }
+        else if (node.name.compare("call") == 0)
+        {
+            nodeType = Node::callNode;
+        }
 
-            int newParent = parent;
-            if (nodeType != -1) {
-                newParent = pkb->insertNode(nodeType, node.value, parent);
-            }
-            if (valueIsVar) {
-                pkb->insertNode(Node::varNode, node.value, newParent);
-            }
+        int newParent = parent;
+        if (nodeType != -1) {
+            newParent = pkb->insertNode(nodeType, node.value, parent);
+        }
+        if (valueIsVar) {
+            pkb->insertNode(Node::varNode, node.value, newParent);
+        }
 
-			BOOST_FOREACH(combined_type const& each_node, node.children)
-			{
-				boost::apply_visitor(common_node_inserter(pkb, newParent), each_node);
-			}
+		BOOST_FOREACH(combinedNode const& each_node, node.children)
+		{
+			boost::apply_visitor(CommonNodeInserter(pkb, newParent), each_node);
 		}
+	}
 
-		void operator()(expression_node const& ast) const
+	void operator()(expressionNode const& ast) const
+    {
+        boost::apply_visitor(*this, ast.expr);
+    }
+
+	void operator()(binaryOp const& expr) const
+    {
+        std::string value(1, expr.op);
+        int nodeType;
+
+        if (value.compare("*") == 0)
         {
-            boost::apply_visitor(*this, ast.expr);
+            nodeType = Node::timesNode;
         }
-
-		void operator()(binary_op const& expr) const
+        else if (value.compare("/") == 0)
         {
-            std::string value(1, expr.op);
-            int nodeType;
-
-            if (value.compare("*") == 0)
-            {
-                nodeType = Node::timesNode;
-            }
-            else if (value.compare("/") == 0)
-            {
-                nodeType = Node::divideNode;
-            }
-            else if (value.compare("+") == 0)
-            {
-                nodeType = Node::plusNode;
-            }
-            else if (value.compare("-") == 0)
-            {
-                nodeType = Node::minusNode;
-            }
-
-            int newParent = pkb->insertNode(nodeType, value, parent);
-            boost::apply_visitor(common_node_inserter(pkb, newParent), expr.left.expr);
-            boost::apply_visitor(common_node_inserter(pkb, newParent), expr.right.expr);
+            nodeType = Node::divideNode;
+        }
+        else if (value.compare("+") == 0)
+        {
+            nodeType = Node::plusNode;
+        }
+        else if (value.compare("-") == 0)
+        {
+            nodeType = Node::minusNode;
         }
 
-        void operator()(std::string n) const { 
-            std::istringstream convert(n);
-            int temp, nodeType;
-            if (!(convert >> temp)) {
-                nodeType = Node::varNode;
-            }
-            else {
-                nodeType = Node::constNode;
-            }
+        int newParent = pkb->insertNode(nodeType, value, parent);
+        boost::apply_visitor(CommonNodeInserter(pkb, newParent), expr.left.expr);
+        boost::apply_visitor(CommonNodeInserter(pkb, newParent), expr.right.expr);
+    }
 
-            pkb->insertNode(nodeType, n, parent); 
+    void operator()(std::string n) const { 
+        std::istringstream convert(n);
+        int temp, nodeType;
+
+        if (!(convert >> temp)) {
+            nodeType = Node::varNode;
+        }
+        else {
+            nodeType = Node::constNode;
         }
 
-    private:
-        PKB* pkb;
-        int parent;
-    };
+        pkb->insertNode(nodeType, n, parent); 
+    }
+
+private:
+    PKB* pkb;
+    int parent;
+};
 
 int Parser::parseCode(std::string storage, PKB* pkb) {
-    typedef simple_grammar<std::string::const_iterator> simple_grammar;
-	simple_grammar simple; // Our grammar
-    common_node ast; // Our tree
+    typedef SimpleGrammar<std::string::const_iterator> SimpleGrammar;
+	SimpleGrammar simple; // Our grammar
+    commonNode ast; // Our tree
 
     using boost::spirit::ascii::space;
     std::string::const_iterator iter = storage.begin();
@@ -227,9 +226,9 @@ int Parser::parseCode(std::string storage, PKB* pkb) {
         std::cout << "-------------------------\n";
         std::cout << "Simple parsing succeeded\n";
         std::cout << "-------------------------\n";
-        //common_node_printer printer;
+        //CommonNodePrinter printer;
         //printer(ast);
-        common_node_inserter inserter(pkb, -1);
+        CommonNodeInserter inserter(pkb, -1);
         inserter(ast);
         pkb->postParseCleanup();
         return 0;

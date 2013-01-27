@@ -23,7 +23,6 @@ int UsesTable::insertUses(int stmt, int var){
 	return index;
 }
 
-
 std::vector<int> UsesTable::getUsesVar(int var){
 	
 	std::vector<int> stmtList;
@@ -88,6 +87,7 @@ int UsesTable::getUsesIndex(int stmt, int var){
 	return -1;
 
 }
+
 // throws out of range exception
 std::pair <int ,int> UsesTable::extractUses (int ind){
 	return usesTable.at(ind) ;
