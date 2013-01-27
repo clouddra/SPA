@@ -1,36 +1,30 @@
 #ifndef TESTWRAPPER_H
 #define TESTWRAPPER_H
 
-#include <string>
+#ifndef IOSTREAM_HEAD
+#define IOSTREAM_HEAD
 #include <iostream>
+#endif
+
+#ifndef STRING_HEAD
+#define STRING_HEAD
+#include <string>
+#endif
+
 #include <list>
 
 // include your other headers here
 #include "AbstractWrapper.h"
 
-#ifndef PKB_HEAD
-#define PKB_HEAD
-#include "PKB.h"
+#ifndef CONTROLLER_HEAD
+#define CONTROLLER_HEAD
+#include "SPAController.h"
 #endif
-
-#ifndef PARSER_HEAD
-#define PARSER_HEAD
-#include "Parser.h"
-#endif
-
-#ifndef QUERYPROCESSOR_HEAD
-#define QUERYPROCESSOR_HEAD
-#include "QueryProcessor.h"
-#endif
-
-#include "PqlParser.h"
-#include "DesignExtractor.h"
 
 class TestWrapper : public AbstractWrapper {
 
 protected:
-	PKB pkb;
-	QueryProcessor qp;
+	SPAController controller ;
 
 public:
   // default constructor

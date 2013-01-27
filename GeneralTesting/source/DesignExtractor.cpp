@@ -1,4 +1,7 @@
+#ifndef DE_HEAD
+#define DE_HEAD
 #include "DesignExtractor.h"
+#endif
 //currently adds modifies & uses for statements, parent and follows relationship
 DesignExtractor::DesignExtractor(PKB* pkb)
 {
@@ -9,6 +12,10 @@ DesignExtractor::DesignExtractor(PKB* pkb)
     _ut = pkb->getUsesTable();
     _stmtt = pkb->getStmtNodeTable();
 	_pkb = pkb;
+}
+
+DesignExtractor::DesignExtractor() 
+{
 }
 
 void DesignExtractor::populateTables()

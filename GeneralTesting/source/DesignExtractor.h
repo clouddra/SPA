@@ -58,5 +58,6 @@ private:
 
 public:
     DesignExtractor(PKB* pkb);
+	DesignExtractor() ;
 	void populateTables();
 };
