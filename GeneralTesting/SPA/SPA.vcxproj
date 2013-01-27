@@ -96,7 +96,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Program Files %28x86%29\Microsoft Visual Studio 10.0\boost_1_51_0\boost_1_51_0;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\Wei Chee\Desktop\WeiChee\NUS\CurrentModules\CS3202\SourceCode\cs3201\GeneralTesting\SPA\external_libs\boost_1_52_0\boost_1_52_0;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
