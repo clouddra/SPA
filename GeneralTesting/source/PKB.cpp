@@ -293,6 +293,19 @@ std::vector<int> PKB::matchPattern(int nodeType, std::string varName, std::strin
 			}
 		}
 	}
+	else if (nodeType == Node::whileNode)
+	{
+		// Evaluate while pattern
+	}
+	else if (nodeType == Node::ifNode)
+	{
+		// Evaluate if pattern
+	}
+	else
+	{
+		 // nodeType is invalid, should never happen!
+		std::cout << "I am in PKB::matchPattern" << std::endl;
+	}
 	return toReturn;
 }
 
