@@ -2,6 +2,4 @@ procedure While {
 x = 2;
 z = 3;
 i = 5;
-while i {
-	}
 }

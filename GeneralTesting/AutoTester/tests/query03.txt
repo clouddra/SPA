@@ -3,5 +3,5 @@ cat: All Category
 1 - Stmt ::
 stmt s;
 Select s
-1, 2, 3, 4
+1, 2, 3
 5000
