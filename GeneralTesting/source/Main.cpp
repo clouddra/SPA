@@ -39,7 +39,7 @@ int main() {
 
 	SPAController controller = SPAController() ;
 	std::list<std::string> result;
-    char const* simpleFile = "..\\sample_input\\simple.txt";
+    char const* simpleFile = "..\\sample_input\\simple00.txt";
     std::ifstream in(simpleFile, std::ios_base::in);
 
     if (!in)
@@ -112,11 +112,13 @@ int main() {
 	for (int i = 0; i < (int)queries.size(); i++) {
 		std::cout << "Result of Query " << i+1 << std::endl;
 		result = controller.evaluateQuery(queries[i]) ;
+        int count = 0;
         while ((int)result.size() > 0) {
+            count++;
 		    //std::cout << result. << " ";
 		    std::cout <<  result.front() << ' ';
 		    result.pop_front();
-            if ((i % 10) == 9)
+            if ((count % 10) == 9)
                 std::cout << std::endl;
         }
     }
