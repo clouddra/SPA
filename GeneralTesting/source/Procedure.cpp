@@ -3,7 +3,6 @@
 #include "Procedure.h"
 #endif
 
-
 Procedure::Procedure(std::string pName, int first, int last)
 {
 	procName = pName;

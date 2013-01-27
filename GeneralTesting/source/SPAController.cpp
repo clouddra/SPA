@@ -26,7 +26,6 @@ std::list<std::string> SPAController::evaluateQuery(std::string query){
     qp.processQuery(pkb);
     return qp.getResult();
 }
-	
 
 std::string SPAController::runSPA(std::string program) {
 	return "lol" ;

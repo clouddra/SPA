@@ -10,6 +10,3 @@ private:
 public:
 	int parseCode(std::string storage, PKB* pkb);
 };
-
-
-

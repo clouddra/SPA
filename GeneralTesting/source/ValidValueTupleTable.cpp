@@ -58,13 +58,28 @@ int ValidValueTupleTable::restrictTo(ValidValueTable vvTable) {
 }
 
 int ValidValueTupleTable::reconcile() {
+    std::set<int> notFinalized;
     for (int i = 0; i < (int)vvTupleTable.size(); i++) {
+        notFinalized.insert(i);
         for (int j = 0; j < (int)vvTupleTable.size(); j++) {
             if (i != j) {
                 int ret = vvTupleTable[i].restrictTo(vvTupleTable[j], j);
                 if (ret == -1) 
                     return -1;
             }
+        }
+    }
+
+    while ((int)notFinalized.size() > 0) {
+        int curr = *notFinalized.begin();
+        notFinalized.erase(notFinalized.begin());
+        std::vector<int> temp = vvTupleTable[curr].getLinked();
+        for (int i = 0; i < (int)temp.size(); i++) {
+            int ret = vvTupleTable[curr].restrictTo(vvTupleTable[temp[i]], temp[i]);
+            if (ret == -1) 
+                return -1;
+            if (ret == 1 && temp[i] < curr)
+                notFinalized.insert(temp[i]);
         }
     }
     return 0;

@@ -1,5 +1,4 @@
 procedure Bill {
-
 z = 10;
 x = z + 5;
 y = x * z + 4;
