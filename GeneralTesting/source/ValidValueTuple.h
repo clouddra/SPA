@@ -23,6 +23,7 @@ public:
     std::string getVariable1();
     std::string getVariable2();
     std::vector<std::string> getValuesForVar(std::string target);
+    std::vector<int> getLinked();
     int restrictTo(std::string inputVar, std::vector<std::string> inputVal);
     int restrictTo(ValidValueTable vvTable);
     int restrictTo(ValidValueTuple other, int index);
