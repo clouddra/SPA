@@ -1,6 +1,6 @@
 #ifndef PQLPARSER_HEAD
 #define PQLPARSER_HEAD
-#include "PqlParser.h"
+#include "PQLParser.h"
 #endif
 
 #ifndef BOOST_HEAD
@@ -19,7 +19,7 @@
 
 #ifndef STD_HEAD
 #define STD_HEAD
-#include "common.hpp"
+#include "Common.hpp"
 #endif
 
 namespace pqlparser
@@ -31,85 +31,85 @@ namespace pqlparser
 
     ///////////////////////////////////////////////////////////////////////////
     // [Internal AST representation
-    struct common_node;
-	struct expression_node;
+    struct commonNode;
+	struct expressionNode;
 
     typedef boost::variant<
-			boost::recursive_wrapper<common_node>,
-			boost::recursive_wrapper<expression_node>,
+			boost::recursive_wrapper<commonNode>,
+			boost::recursive_wrapper<expressionNode>,
 			std::string
-    > combined_type;
+    > combinedNode;
 	
-    struct common_node
+    struct commonNode
     {
         std::string name;                       // Name
 		std::string value;						// Value
-        std::vector<combined_type> children;    // Children
+        std::vector<combinedNode> children;    // Children
     };
     
 	// Expression representation
-	struct binary_op;
+	struct binaryOp;
     struct nil {};
-    struct expression_node
+    struct expressionNode
     {
         typedef
             boost::variant<
                 nil
               , std::string
-              , boost::recursive_wrapper<expression_node>
-              , boost::recursive_wrapper<binary_op>
+              , boost::recursive_wrapper<expressionNode>
+              , boost::recursive_wrapper<binaryOp>
             >
         type;
 		
-        expression_node()
+        expressionNode()
           : expr(nil()) {}
 
         template <typename Expr>
-        expression_node(Expr const& expr)
+        expressionNode(Expr const& expr)
           : expr(expr) {}
 
-        expression_node& operator+=(expression_node const& rhs);
-        expression_node& operator-=(expression_node const& rhs);
-        expression_node& operator*=(expression_node const& rhs);
-        expression_node& operator/=(expression_node const& rhs);
+        expressionNode& operator+=(expressionNode const& rhs);
+        expressionNode& operator-=(expressionNode const& rhs);
+        expressionNode& operator*=(expressionNode const& rhs);
+        expressionNode& operator/=(expressionNode const& rhs);
 
         type expr;
     };
 
-    struct binary_op
+    struct binaryOp
     {
-        binary_op(
+        binaryOp(
             char op
-          , expression_node const& left
-          , expression_node const& right)
+          , expressionNode const& left
+          , expressionNode const& right)
         : op(op), left(left), right(right) {}
 
         char op;
-        expression_node left;
-        expression_node right;
+        expressionNode left;
+        expressionNode right;
     };
 
-    expression_node& expression_node::operator+=(expression_node const& rhs)
+    expressionNode& expressionNode::operator+=(expressionNode const& rhs)
     {
-        expr = binary_op('+', expr, rhs);
+        expr = binaryOp('+', expr, rhs);
         return *this;
     }
 
-    expression_node& expression_node::operator-=(expression_node const& rhs)
+    expressionNode& expressionNode::operator-=(expressionNode const& rhs)
     {
-        expr = binary_op('-', expr, rhs);
+        expr = binaryOp('-', expr, rhs);
         return *this;
     }
 
-    expression_node& expression_node::operator*=(expression_node const& rhs)
+    expressionNode& expressionNode::operator*=(expressionNode const& rhs)
     {
-        expr = binary_op('*', expr, rhs);
+        expr = binaryOp('*', expr, rhs);
         return *this;
     }
 
-    expression_node& expression_node::operator/=(expression_node const& rhs)
+    expressionNode& expressionNode::operator/=(expressionNode const& rhs)
     {
-        expr = binary_op('/', expr, rhs);
+        expr = binaryOp('/', expr, rhs);
         return *this;
     }
 }
@@ -117,10 +117,10 @@ namespace pqlparser
 // A Random Access Sequence is a Bidirectional Sequence whose iterators model Random Access Iterator. 
 // It guarantees constant time access to arbitrary sequence elements.
 BOOST_FUSION_ADAPT_STRUCT(
-    pqlparser::common_node,
+    pqlparser::commonNode,
     (std::string, name)
 	(std::string, value)
-    (std::vector<pqlparser::combined_type>, children)
+    (std::vector<pqlparser::combinedNode>, children)
 )
 //]
 
@@ -128,7 +128,7 @@ namespace pqlparser
 {
     ///////////////////////////////////////////////////////////////////////////
     // [Print the tree
-    int const tabsize = 4;
+    int const tabSize = 4;
 
     void tab(int indent)
     {
@@ -136,14 +136,14 @@ namespace pqlparser
             std::cout << ' ';
     }
 
-    struct common_node_printer : boost::static_visitor<>
+    struct CommonNodePrinter : boost::static_visitor<>
     {
-        common_node_printer(int indent = 0)
+        CommonNodePrinter(int indent = 0)
           : indent(indent)
         {
         }
 
-        void operator()(common_node const& node) const
+        void operator()(commonNode const& node) const
 		{
 			tab(indent);
 			std::cout << "name: " << node.name << ", value: " << node.value << std::endl;
@@ -151,21 +151,21 @@ namespace pqlparser
 			tab(indent);
 			std::cout << '{' << std::endl;
 
-			BOOST_FOREACH(combined_type const& each_node, node.children)
+			BOOST_FOREACH(combinedNode const& each_node, node.children)
 			{
-				boost::apply_visitor(common_node_printer(indent+tabsize), each_node);
+				boost::apply_visitor(CommonNodePrinter(indent+tabSize), each_node);
 			}
 
 			tab(indent);
 			std::cout << '}' << std::endl;
 		}
 
-		void operator()(expression_node const& ast) const
+		void operator()(expressionNode const& ast) const
         {
             boost::apply_visitor(*this, ast.expr);
         }
 
-		void operator()(binary_op const& expr) const
+		void operator()(binaryOp const& expr) const
         {
             std::cout << "op:" << expr.op << "(";
             boost::apply_visitor(*this, expr.left.expr);
@@ -185,31 +185,31 @@ namespace pqlparser
 
 
 	/// Copied from Shihan's Parser.cpp
-	struct common_node_inserter : boost::static_visitor<>
+	struct CommonNodeInserter : boost::static_visitor<>
     {
-        explicit common_node_inserter(QueryProcessor* myQP, int par) {
+        explicit CommonNodeInserter(QueryProcessor* myQP, int par) {
             queryProcessor = myQP;
             parent = par;
         }
 
-        void operator()(common_node const& node) const
+        void operator()(commonNode const& node) const
 		{
             int newParent = parent;
 
 			newParent = queryProcessor->insertNode(node.name, node.value, parent);
 
-			BOOST_FOREACH(combined_type const& each_node, node.children)
+			BOOST_FOREACH(combinedNode const& each_node, node.children)
 			{
-				boost::apply_visitor(common_node_inserter(queryProcessor, newParent), each_node);
+				boost::apply_visitor(CommonNodeInserter(queryProcessor, newParent), each_node);
 			}
 		}
 
-		void operator()(expression_node const& ast) const
+		void operator()(expressionNode const& ast) const
         {
             boost::apply_visitor(*this, ast.expr);
         }
 
-		void operator()(binary_op const& expr) const
+		void operator()(binaryOp const& expr) const
         {
 		/* We shall not handle expressions for PQL yet
             std::string value(1, expr.op);
@@ -233,8 +233,8 @@ namespace pqlparser
             }
 
             int newParent = pkb->insertNode(nodeType, value, true, parent);
-            boost::apply_visitor(common_node_inserter(pkb, newParent), expr.left.expr);
-            boost::apply_visitor(common_node_inserter(pkb, newParent), expr.right.expr);
+            boost::apply_visitor(CommonNodeInserter(pkb, newParent), expr.left.expr);
+            boost::apply_visitor(CommonNodeInserter(pkb, newParent), expr.right.expr);
 		*/
         }
 
@@ -254,7 +254,7 @@ namespace pqlparser
     // [Grammar for PQL
 
     template <typename Iterator>
-    struct pql_grammar : qi::grammar<Iterator, common_node(), ascii::space_type>
+    struct pql_grammar : qi::grammar<Iterator, commonNode(), ascii::space_type>
     {
         pql_grammar() : pql_grammar::base_type(select_cl_)
         {
@@ -458,27 +458,27 @@ namespace pqlparser
 		qi::rule<Iterator, std::string(), ascii::space_type> design_entity_;
 
 		// Grammar rules for select clause
-		qi::rule<Iterator, common_node(), ascii::space_type> select_cl_;
-		qi::rule<Iterator, common_node(), ascii::space_type> declaration_;
-		qi::rule<Iterator, common_node(), ascii::space_type> suchthat_cl_;
-		qi::rule<Iterator, common_node(), ascii::space_type> pattern_cl_;
-		qi::rule<Iterator, common_node(), ascii::space_type> patternCond_;
-		qi::rule<Iterator, common_node(), ascii::space_type> pattern_;
-		qi::rule<Iterator, common_node(), ascii::space_type> if_;
-		qi::rule<Iterator, common_node(), ascii::space_type> assign_or_while_;
-		qi::rule<Iterator, common_node(), ascii::space_type> expression_spec_;
-		qi::rule<Iterator, expression_node(), ascii::space_type> expr_;
-		qi::rule<Iterator, expression_node(), ascii::space_type> term_;
-		qi::rule<Iterator, expression_node(), ascii::space_type> factor_;
-		qi::rule<Iterator, common_node(), ascii::space_type> relRef_;
-		qi::rule<Iterator, common_node(), ascii::space_type> ModifiesS_;
-		qi::rule<Iterator, common_node(), ascii::space_type> ModifiesP_;
-		qi::rule<Iterator, common_node(), ascii::space_type> UsesS_;
-		qi::rule<Iterator, common_node(), ascii::space_type> UsesP_;
-		qi::rule<Iterator, common_node(), ascii::space_type> Parent_;
-		qi::rule<Iterator, common_node(), ascii::space_type> ParentT_;
-		qi::rule<Iterator, common_node(), ascii::space_type> Follows_;
-		qi::rule<Iterator, common_node(), ascii::space_type> FollowsT_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> select_cl_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> declaration_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> suchthat_cl_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> pattern_cl_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> patternCond_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> pattern_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> if_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> assign_or_while_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> expression_spec_;
+		qi::rule<Iterator, expressionNode(), ascii::space_type> expr_;
+		qi::rule<Iterator, expressionNode(), ascii::space_type> term_;
+		qi::rule<Iterator, expressionNode(), ascii::space_type> factor_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> relRef_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> ModifiesS_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> ModifiesP_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> UsesS_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> UsesP_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> Parent_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> ParentT_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> Follows_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> FollowsT_;
     };
 
     //]
@@ -488,7 +488,7 @@ int PqlParser::parseQuery(std::string storage, QueryProcessor* qp)
 {
 	typedef pqlparser::pql_grammar<std::string::const_iterator> pql_grammar;
 	pql_grammar pql; // Our grammar
-    pqlparser::common_node pql_root; // Our tree
+    pqlparser::commonNode pql_root; // Our tree
 
     using boost::spirit::ascii::space;
     std::string::const_iterator iter = storage.begin();
@@ -500,9 +500,9 @@ int PqlParser::parseQuery(std::string storage, QueryProcessor* qp)
         std::cout << "-------------------------\n";
         std::cout << "PQL parsing succeeded\n";
         std::cout << "-------------------------\n";
-        //pqlparser::common_node_printer printer;
+        //pqlparser::CommonNodePrinter printer;
         //printer(pql_root);
-		pqlparser::common_node_inserter inserter(qp, -1);
+		pqlparser::CommonNodeInserter inserter(qp, -1);
 		inserter(pql_root);
         return 0;
     }

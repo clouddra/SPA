@@ -21,12 +21,11 @@
 #include <iostream>
 #include <list>
 
-
 class SPAController {
 
 	private:
 	QueryProcessor qp;
-	PqlParser pqlParser; 
+	PQLParser pqlParser; 
 	DesignExtractor de;
 	Parser codeParser ;
 	PKB pkb;

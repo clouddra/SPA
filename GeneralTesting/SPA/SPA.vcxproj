@@ -12,17 +12,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\AST.h" />
-    <ClInclude Include="..\source\common.hpp" />
+    <ClInclude Include="..\source\Common.hpp" />
     <ClInclude Include="..\source\DeclarationTable.h" />
     <ClInclude Include="..\source\DesignExtractor.h" />
     <ClInclude Include="..\source\FollowsTable.h" />
     <ClInclude Include="..\source\HelperFunctions.h" />
     <ClInclude Include="..\source\ModifiesTable.h" />
-    <ClInclude Include="..\source\node.h" />
+    <ClInclude Include="..\source\Node.h" />
     <ClInclude Include="..\source\ParentTable.h" />
     <ClInclude Include="..\source\Parser.h" />
+    <ClInclude Include="..\source\ParserNode.h" />
     <ClInclude Include="..\source\PKB.h" />
-    <ClInclude Include="..\source\PqlParser.h" />
+    <ClInclude Include="..\source\PQLParser.h" />
     <ClInclude Include="..\source\Procedure.h" />
     <ClInclude Include="..\source\ProcTable.h" />
     <ClInclude Include="..\source\QueryNode.h" />
@@ -44,13 +45,13 @@
     <ClCompile Include="..\source\DesignExtractor.cpp" />
     <ClCompile Include="..\source\FollowsTable.cpp" />
     <ClCompile Include="..\source\HelperFunctions.cpp" />
-    <ClCompile Include="..\source\main.cpp" />
+    <ClCompile Include="..\source\Main.cpp" />
     <ClCompile Include="..\source\ModifiesTable.cpp" />
-    <ClCompile Include="..\source\node.cpp" />
+    <ClCompile Include="..\source\Node.cpp" />
     <ClCompile Include="..\source\ParentTable.cpp" />
-    <ClCompile Include="..\source\parser.cpp" />
+    <ClCompile Include="..\source\Parser.cpp" />
     <ClCompile Include="..\source\PKB.cpp" />
-    <ClCompile Include="..\source\pqlparser.cpp" />
+    <ClCompile Include="..\source\PQLParser.cpp" />
     <ClCompile Include="..\source\Procedure.cpp" />
     <ClCompile Include="..\source\ProcTable.cpp" />
     <ClCompile Include="..\source\QueryNode.cpp" />
@@ -77,7 +78,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -98,7 +99,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Program Files %28x86%29\Microsoft Visual Studio 10.0\boost_1_51_0\boost_1_51_0;$(IncludePath)</IncludePath>
+    <IncludePath>C:\boost\boost_1_51_0\boost_1_51_0;C:\Program Files %28x86%29\Microsoft Visual Studio 10.0\boost_1_51_0\boost_1_51_0;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
