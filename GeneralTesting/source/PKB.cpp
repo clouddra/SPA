@@ -296,6 +296,15 @@ std::vector<int> PKB::matchPattern(int nodeType, std::string varName, std::strin
 	else if (nodeType == Node::whileNode)
 	{
 		// Evaluate while pattern
+		std::vector<int> whileStmt = getStmtWithType(Node::whileNode);
+		// Loop through all while loops, get only those with "while varName"
+		for (int i=0; i<(int)whileStmt.size(); i++)
+		{
+			/*
+			std::vector<int> children = getChild(whileStmt[i]);
+			if ( ==
+			*/
+		}
 	}
 	else if (nodeType == Node::ifNode)
 	{
