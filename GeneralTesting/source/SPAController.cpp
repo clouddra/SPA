@@ -6,7 +6,7 @@
 SPAController::SPAController()
 {
 	qp = QueryProcessor(); 
-	pqlParser = PqlParser();
+	pqlParser = PQLParser();
 	codeParser = Parser() ;
 	pkb  = PKB();
 

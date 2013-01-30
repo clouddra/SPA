@@ -1,5 +1,30 @@
-procedure While {
+procedure GambleRumble {
 x = 2;
 z = 3;
 i = 5;
+}
+
+procedure Dogfight {
+y = 99;
+while NobodyReason {
+	h = 1;
+	z = h + x;
+	y = y + h * 8;
+	if RomancingTrain then {
+		g = 7 * 8 + 52; }
+	else {
+		i = j; } }
+g = h * h * x;
+p = 5 * j;
+}
+
+procedure GHETTOBLASTER {
+m = o + v - e;
+if RageYourDream then{
+	y = u - r * i; }
+else {
+	while Motsu {
+		x = x + 2 + y - t * 52;
+		s = f - x; } }
+t = kimura;
 }
