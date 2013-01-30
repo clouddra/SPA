@@ -16,7 +16,7 @@ private:
     std::string variable1;
     std::string variable2;
     std::vector<std::pair<std::string,std::string>> values;
-    std::vector<int> linkedWith;
+    std::set<int> linkedWith;
 
 public:
     ValidValueTuple(std::string var1, std::string var2, std::vector<std::pair<std::string,std::string>> val);

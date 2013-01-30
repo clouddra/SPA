@@ -293,6 +293,37 @@ std::vector<int> PKB::matchPattern(int nodeType, std::string varName, std::strin
 			}
 		}
 	}
+	else if (nodeType == Node::whileNode)
+	{
+		std::vector<int> whileStmt = getStmtWithType(Node::whileNode);
+		// Loop through all while loops, get only those with "while varName"
+		for (int i=0; i<(int)whileStmt.size(); i++)
+		{
+			Node whileAstNode = ast.getNode(stmtNodeTable.getNode(whileStmt[i]));
+			std::vector<int> children = whileAstNode.getChildren();
+			Node varAstNode = ast.getNode(children[0]); // First AST child of "while" should be variable
+			if (varAstNode.getValue() == varTable.getVarIndex(varName))
+				toReturn.push_back(whileStmt[i]);
+		}
+	}
+	else if (nodeType == Node::ifNode)
+	{
+		std::vector<int> ifStmt = getStmtWithType(Node::ifNode);
+		// Loop through all if statements, get only those with "if varName"
+		for (int i=0; i<(int)ifStmt.size(); i++)
+		{
+			Node ifAstNode = ast.getNode(stmtNodeTable.getNode(ifStmt[i]));
+			std::vector<int> children = ifAstNode.getChildren();
+			Node varAstNode = ast.getNode(children[0]);
+			if (varAstNode.getValue() == varTable.getVarIndex(varName))
+				toReturn.push_back(ifStmt[i]);
+		}
+	}
+	else
+	{
+		 // nodeType is invalid, should never happen!
+		std::cout << "I am in PKB::matchPattern" << std::endl;
+	}
 	return toReturn;
 }
 

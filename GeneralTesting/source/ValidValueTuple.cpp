@@ -127,7 +127,7 @@ int ValidValueTuple::restrictTo(ValidValueTuple other, int index) {
             ret = restrictTo(other.getVariable2(), other.getValuesForVar(other.getVariable2()));
         }
         if (linked)
-            linkedWith.push_back(index);
+            linkedWith.insert(index);
 
         return ret;
     }
@@ -203,5 +203,5 @@ int ValidValueTuple::restrictTo(ValidValueTuple other, int index) {
 }
 
 std::vector<int> ValidValueTuple::getLinked() {
-    return linkedWith;
+    return std::vector<int>(linkedWith.begin(), linkedWith.end());
 }

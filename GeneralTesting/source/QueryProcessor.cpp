@@ -930,6 +930,8 @@ void QueryProcessor::processQuery(PKB pkb)
         }
 
         // Evaluates pattern query Eg. "pattern a1(x, _"y"_)" ===> a1 = pattern, x = var, _"y"_ = expr
+		// Eg. "pattern w1(x, _)" ===> w1 = pattern, x = var
+		// Eg. "pattern if1(x, _, _)" ===> if1 = pattern, x = var
         if (currNode.getName().compare("pattern") == 0) {
             QueryNode temp = tree[currNode.getChildren()[0]];
             temp = tree[temp.getChildren()[0]];
@@ -1038,6 +1040,8 @@ void QueryProcessor::printResult()
 }
 
 // Evaluates pattern query Eg. "pattern a1(x, _"y"_)" ===> a1 = pattern, x = var, _"y"_ = expr
+// Eg. "pattern w1(x, _)" ===> w1 = pattern, x = var
+// Eg. "pattern if1(x, _, _)" ===> if1 = pattern, x = var
 int QueryProcessor::evaluatePattern(std::string pattern, std::string var, std::string expr, bool varIsEnt, bool varIsPlaceholder, PKB pkb)
 {
     // Inserting valid values based on parameter type (if variable)
@@ -1098,6 +1102,14 @@ int QueryProcessor::evaluatePattern(std::string pattern, std::string var, std::s
             return -1;
         }
     }
+	else if (patternType == DeclarationTable::while_)
+	{
+		// Evaluate while patterns
+	}
+	else if (patternType == DeclarationTable::if_)
+	{
+		// Evaluate if patterns
+	}
     else {
         // std::cout << pattern << " is not declared as an assign, query cannot be evaluated/n"; 
         return -1;

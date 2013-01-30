@@ -78,8 +78,12 @@ int ValidValueTupleTable::reconcile() {
             int ret = vvTupleTable[curr].restrictTo(vvTupleTable[temp[i]], temp[i]);
             if (ret == -1) 
                 return -1;
-            if (ret == 1 && temp[i] < curr)
-                notFinalized.insert(temp[i]);
+            if (ret == 1) {
+                for (int j = 0; j < (int)temp.size(); j++) {
+                    if (i != j)
+                        notFinalized.insert(temp[j]);
+                }
+            }
         }
     }
     return 0;
