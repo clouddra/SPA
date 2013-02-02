@@ -13,6 +13,7 @@ StmtNodeTable::StmtNodeTable(){
     stmtNodeTable.push_back(std::pair<int, int>(-1, -1));
 }
 
+// Statements have to be inserted in order, i.e. statement 1 must be inserted first and then statement 2, otherwise the error value -1 is returned
 int StmtNodeTable::insertStmtNode(int stmt, int astNode, int nodeType){	
     if (stmtNodeTable.size() == stmt) {
         stmtNodeTable.push_back(std::pair<int, int>(astNode, nodeType));
