@@ -318,7 +318,6 @@ namespace pqlparser
 				>> patternCond_				[push_back(at_c<2>(_val), _1)]
 				;
 
-				+			
 			with_cl_ = 
 				string("with")				[at_c<0>(_val) = "with"]
 				>> attrCond_				[push_back(at_c<2>(_val), _1)]
