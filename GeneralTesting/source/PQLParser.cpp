@@ -452,33 +452,42 @@ namespace pqlparser
 
 		// Auxiliary grammar rules
 		qi::rule<Iterator, std::string(), ascii::space_type> synonym_;
+		qi::rule<Iterator, std::string(), ascii::space_type> attrName_;
 		qi::rule<Iterator, std::string(), ascii::space_type> entRef_;
 		qi::rule<Iterator, std::string(), ascii::space_type> stmtRef_;
 		qi::rule<Iterator, std::string(), ascii::space_type> varRef_;
 		qi::rule<Iterator, std::string(), ascii::space_type> design_entity_;
 
 		// Grammar rules for select clause
-		qi::rule<Iterator, commonNode(), ascii::space_type> select_cl_;
-		qi::rule<Iterator, commonNode(), ascii::space_type> declaration_;
-		qi::rule<Iterator, commonNode(), ascii::space_type> suchthat_cl_;
-		qi::rule<Iterator, commonNode(), ascii::space_type> pattern_cl_;
-		qi::rule<Iterator, commonNode(), ascii::space_type> patternCond_;
-		qi::rule<Iterator, commonNode(), ascii::space_type> pattern_;
-		qi::rule<Iterator, commonNode(), ascii::space_type> if_;
-		qi::rule<Iterator, commonNode(), ascii::space_type> assign_or_while_;
-		qi::rule<Iterator, commonNode(), ascii::space_type> expression_spec_;
-		qi::rule<Iterator, expressionNode(), ascii::space_type> expr_;
-		qi::rule<Iterator, expressionNode(), ascii::space_type> term_;
-		qi::rule<Iterator, expressionNode(), ascii::space_type> factor_;
-		qi::rule<Iterator, commonNode(), ascii::space_type> relRef_;
-		qi::rule<Iterator, commonNode(), ascii::space_type> ModifiesS_;
-		qi::rule<Iterator, commonNode(), ascii::space_type> ModifiesP_;
-		qi::rule<Iterator, commonNode(), ascii::space_type> UsesS_;
-		qi::rule<Iterator, commonNode(), ascii::space_type> UsesP_;
-		qi::rule<Iterator, commonNode(), ascii::space_type> Parent_;
-		qi::rule<Iterator, commonNode(), ascii::space_type> ParentT_;
-		qi::rule<Iterator, commonNode(), ascii::space_type> Follows_;
-		qi::rule<Iterator, commonNode(), ascii::space_type> FollowsT_;
+		qi::rule<Iterator, common_node(), ascii::space_type> select_cl_;
+		qi::rule<Iterator, common_node(), ascii::space_type> declaration_;
+		qi::rule<Iterator, common_node(), ascii::space_type> with_cl_;
+		qi::rule<Iterator, common_node(), ascii::space_type> attrCond_;
+		qi::rule<Iterator, common_node(), ascii::space_type> attrCompare_;
+		qi::rule<Iterator, common_node(), ascii::space_type> attrRef_;
+		qi::rule<Iterator, std::string(), ascii::space_type> ref_pl_;
+		qi::rule<Iterator, common_node(), ascii::space_type> ref_;
+		qi::rule<Iterator, common_node(), ascii::space_type> suchthat_cl_;
+		qi::rule<Iterator, common_node(), ascii::space_type> pattern_cl_;
+		qi::rule<Iterator, common_node(), ascii::space_type> patternCond_;
+		qi::rule<Iterator, common_node(), ascii::space_type> pattern_;
+		qi::rule<Iterator, common_node(), ascii::space_type> if_;
+		qi::rule<Iterator, common_node(), ascii::space_type> assign_or_while_;
+		//qi::rule<Iterator, common_node(), ascii::space_type> while_;
+		//qi::rule<Iterator, common_node(), ascii::space_type> assign_;
+		qi::rule<Iterator, common_node(), ascii::space_type> expression_spec_;
+		qi::rule<Iterator, expression_node(), ascii::space_type> expr_;
+		qi::rule<Iterator, expression_node(), ascii::space_type> term_;
+		qi::rule<Iterator, expression_node(), ascii::space_type> factor_;
+		qi::rule<Iterator, common_node(), ascii::space_type> relRef_;
+		qi::rule<Iterator, common_node(), ascii::space_type> ModifiesS_;
+		qi::rule<Iterator, common_node(), ascii::space_type> ModifiesP_;
+		qi::rule<Iterator, common_node(), ascii::space_type> UsesS_;
+		qi::rule<Iterator, common_node(), ascii::space_type> UsesP_;
+		qi::rule<Iterator, common_node(), ascii::space_type> Parent_;
+		qi::rule<Iterator, common_node(), ascii::space_type> ParentT_;
+		qi::rule<Iterator, common_node(), ascii::space_type> Follows_;
+		qi::rule<Iterator, common_node(), ascii::space_type> FollowsT_;
     };
 
     //]
