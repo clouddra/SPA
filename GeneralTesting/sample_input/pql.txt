@@ -1,5 +1,6 @@
-stmt s1, s2, s3; assign a; while w; variable v;
-Select s1 such that Follows(s1, s2) such that Modifies(s2, "x")
-Select s1 such that Follows(s1, s2) such that Follows(s2, s3)
-Select a such that Uses(3, v) pattern a(v , _)
-Select a such that Uses(3, v) pattern a(v , _"x"_)
+stmt s; assign a; while w; prog_line n; variable v;
+Select a with a.stmt# = 5
+Select a with s.stmt# = 5
+Select a with a.stmt# = s.stmt#
+Select a with a.stmt# = v.varName
+Select n with n = 5
