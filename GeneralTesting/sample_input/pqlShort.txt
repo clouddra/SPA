@@ -1,2 +1,2 @@
 variable v; assign a; stmt s;
-Select a with v.varName = "z" such that Uses (s,v) with a.stmt# = s.stmt#
+Select a pattern a("x", _) and a(_, _"z"_) 
