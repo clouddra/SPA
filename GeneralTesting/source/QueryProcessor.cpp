@@ -984,6 +984,10 @@ void QueryProcessor::processQuery(PKB pkb)
                 // std::cout << "Unknown pattern format\n";
                 return;
             }
+
+            if (currNode.getName().compare("with") == 0) {
+                int i = 0;
+            }
         }
     } 
 

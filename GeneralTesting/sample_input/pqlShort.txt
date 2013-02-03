@@ -1,2 +1,2 @@
 stmt s1, s2, s3; assign a; if if1, if2; while w; variable v; constant c; prog_line p;
-Select a such that Follows(s1, s2) such that Follows(s2, s3) such that Follows(s3, s1)
+Select a with a.stmt# = 5
