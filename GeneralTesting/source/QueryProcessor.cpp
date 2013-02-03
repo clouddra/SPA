@@ -868,6 +868,7 @@ void QueryProcessor::processQuery(PKB pkb)
         // Evaluating such that
         if (currNode.getName().compare("such that") == 0) {
             QueryNode relation = tree[currNode.getChildren()[0]];
+            relation = tree[relation.getChildren()[0]];
             int paraNode1 = relation.getChildren()[0];
             std::string para1 = tree[paraNode1].getName();
             int paraNode2 = relation.getChildren()[1];
@@ -1106,13 +1107,13 @@ void QueryProcessor::processQuery(PKB pkb)
             return;
     }
 
-    // Reconcile the vvTuple in vvTupleTable
-    int ret = vvTupleTable.reconcile();
+    // "intersect" vvTupleTable with vvTable
+    int ret = vvTupleTable.restrictTo(vvTable);
     if (ret == -1)
         return;
 
-    // "intersect" vvTupleTable with vvTable
-    ret = vvTupleTable.restrictTo(vvTable);
+    // Reconcile the vvTuple in vvTupleTable
+    ret = vvTupleTable.reconcile();
     if (ret == -1)
         return;
 
