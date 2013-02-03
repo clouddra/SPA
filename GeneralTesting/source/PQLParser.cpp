@@ -342,6 +342,11 @@ namespace pqlparser
 				)
 				;
 
+			ref_pl_ =
+				INTEGER_					[at_c<0>(_val) = "ref_pl_integer"][push_back(at_c<2>(_val), _1)]
+				| attrRef_					[at_c<0>(_val) = "ref_pl_attrRef"][push_back(at_c<2>(_val), _1)]
+				;
+
 			attrRef_ =
 				synonym_					[at_c<0>(_val) = "attrRef"][push_back(at_c<2>(_val), _1)]
 				>> string(".")
@@ -502,7 +507,7 @@ namespace pqlparser
 		qi::rule<Iterator, commonNode(), ascii::space_type> attrCond_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> attrCompare_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> attrRef_;
-		qi::rule<Iterator, std::string(), ascii::space_type> ref_pl_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> ref_pl_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> ref_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> suchthat_cl_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> pattern_cl_;
