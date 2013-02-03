@@ -308,11 +308,17 @@ namespace pqlparser
 				>> ';'
 				;
 			
+				/*
 			suchthat_cl_ = 
 				string("such that")			[at_c<0>(_val) = "such that"]
 				>> relRef_					[push_back(at_c<2>(_val), _1)]
 				;
-			
+				*/
+			suchthat_cl_ = 
+				string("such that")			[at_c<0>(_val) = "such that"]
+				>> relCond_					[push_back(at_c<2>(_val), _1)]
+				;
+
 			pattern_cl_ = 
 				string("pattern")			[at_c<0>(_val) = "pattern"]
 				>> patternCond_				[push_back(at_c<2>(_val), _1)]
@@ -325,7 +331,7 @@ namespace pqlparser
 
 			attrCond_ = 
 				attrCompare_				[at_c<0>(_val) = "attrCompare"][push_back(at_c<2>(_val), _1)]
-				>> *(attrCompare_)			[push_back(at_c<2>(_val), _1)]
+				>> *("and" >> attrCompare_  [push_back(at_c<2>(_val), _1)])	
 				;
 
 			attrCompare_ = 
@@ -360,7 +366,7 @@ namespace pqlparser
 				
 			patternCond_ =
 				pattern_					[at_c<0>(_val) = "patternCond"][push_back(at_c<2>(_val), _1)]
-				>> *("and" >> pattern_)		[push_back(at_c<2>(_val), _1)]
+				>> *("and" >> pattern_      [push_back(at_c<2>(_val), _1)])
 				;
 
 			pattern_ %= assign_or_while_ | if_;
@@ -407,6 +413,11 @@ namespace pqlparser
 				>> ','
 				>> string("_")				[push_back(at_c<2>(_val), _1)]
 				>> ')'
+				;
+
+			relCond_ =
+				relRef_						[at_c<0>(_val) = "relcond_"][push_back(at_c<2>(_val), _1)]
+				>> *("and" >> relRef_       [push_back(at_c<2>(_val), _1)])
 				;
 
 			relRef_ %= ModifiesS_ | ModifiesP_ | UsesS_ | UsesP_ | Parent_ | ParentT_ | Follows_ | FollowsT_;
@@ -521,6 +532,7 @@ namespace pqlparser
 		qi::rule<Iterator, expressionNode(), ascii::space_type> term_;
 		qi::rule<Iterator, expressionNode(), ascii::space_type> factor_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> relRef_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> relCond_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> ModifiesS_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> ModifiesP_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> UsesS_;
