@@ -1,2 +1,7 @@
-stmt s1, s2, s3; assign a; if if1, if2; while w; variable v; constant c; prog_line p;
+stmt s; assign a; while w; prog_line n; variable v;
 Select a with a.stmt# = 5
+Select a with s.stmt# = 5
+Select a with a.stmt# = s.stmt#
+Select a with a.stmt# = v.varName
+Select n with n = 5
+Select n with n = w.stmt#

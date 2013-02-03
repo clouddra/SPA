@@ -78,6 +78,12 @@ void QueryProcessor::loadDeclaration(std::vector<QueryNode> tree, int* curr) {
         else if (currNode.getValue().compare("prog_line") == 0) {
             varType = DeclarationTable::prog_line_;
         }
+        else if (currNode.getValue().compare("procedure") == 0) {
+            varType = DeclarationTable::procedure_;
+        }
+        else if (currNode.getValue().compare("call") == 0) {
+            varType = DeclarationTable::call_;
+        }
 
         std::vector<int> childHolder = currNode.getChildren();
         for (int i = 0; i < (int)childHolder.size(); i++) {
@@ -94,7 +100,7 @@ void QueryProcessor::loadDeclaration(std::vector<QueryNode> tree, int* curr) {
 // Figure out type of a parameter 
 // Note: return value of -1 means that parameter is either an entity or a number not an error, rather -2 is the error return 
 int QueryProcessor::findTypeOf(std::string para, bool* paraIsNum, bool* paraIsEnt, bool* paraIsPlaceholder, int* paraNum) {
-    *paraIsNum = *paraIsEnt = false;
+    *paraIsPlaceholder = *paraIsNum = *paraIsEnt = false;
     int paraType = declarationTable.getType(para);
     if (paraType == -1) {
         if (para.compare("_") == 0) {
@@ -984,9 +990,110 @@ void QueryProcessor::processQuery(PKB pkb)
                 // std::cout << "Unknown pattern format\n";
                 return;
             }
+        }
+        if (currNode.getName().compare("with") == 0) {
+            std::vector <std::string> toStore; 
+            int ret;
+            QueryNode temp = tree[currNode.getChildren()[0]];
+            temp = tree[temp.getChildren()[0]];
 
-            if (currNode.getName().compare("with") == 0) {
-                int i = 0;
+            if (temp.getName().compare("attrCompare_attrRef") == 0) {
+                std::string syno, attrName;
+                int synoType;
+                ret = attrRefChecker(&syno, &attrName, &synoType, tree[temp.getChildren()[0]], tree, pkb);
+                if (ret == -1)
+                    return;
+                temp = tree[temp.getChildren()[1]];
+                if (temp.getName().compare("ref_integer") == 0) {
+                    std::string integerString = tree[temp.getChildren()[0]].getName(); 
+                    int integerHolder;
+                    bool dummy, isNum = false;
+                    ret = findTypeOf(integerString, &isNum, &dummy, &dummy, &integerHolder);
+                    if (ret == -2 || !isNum) {
+                        // Error
+                        return;
+                    }
+                    toStore.push_back(integerString);
+                    ret = vvTable.insert(syno, toStore);
+                    if (ret == -1)
+                        return;
+                }
+                else if (temp.getName().compare("ref_ident") == 0) {
+                    std::string varName = tree[temp.getChildren()[0]].getName();
+                    toStore.push_back(varName);
+                    ret = vvTable.insert(syno, toStore);
+                    if (ret == -1)
+                        return;
+                }
+                else if (temp.getName().compare("ref_attrRef") == 0) {
+                    std::string syno2, attrName2;
+                    int synoType2;
+                    ret = attrRefChecker(&syno2, &attrName2, &synoType2, tree[temp.getChildren()[0]], tree, pkb);
+                    if (ret == -1)
+                        return;
+
+                    toStore = vvTable.getValues(syno);
+                    std::vector<std::pair<std::string, std::string>> toStoreTuple;
+                    for (int i = 0; i < (int)toStore.size(); i++) {
+                        std::pair<std::string, std::string> tempPair (toStore[i], toStore[i]); 
+                        toStoreTuple.push_back(tempPair);
+                    }
+                    ret = vvTupleTable.insert(syno, syno2, toStoreTuple);
+                    if (ret == -1)
+                        return;
+
+                    toStoreTuple.empty();
+                    toStore = vvTable.getValues(syno2);
+                    for (int i = 0; i < (int)toStore.size(); i++) {
+                        std::pair<std::string, std::string> tempPair (toStore[i], toStore[i]); 
+                        toStoreTuple.push_back(tempPair);
+                    }
+                    ret = vvTupleTable.insert(syno, syno2, toStoreTuple);
+                    if (ret == -1)
+                        return;
+                }
+                else {
+                    // Error
+                    return;
+                }
+            }
+            else if (temp.getName().compare("attrCompare_synonym") == 0) {
+                std::string syno = (tree[temp.getChildren()[0]]).getName();
+                int synoType = evaluateType(pkb, syno);
+                if (synoType != DeclarationTable::prog_line_) {
+                    // Error
+                    return;
+                }
+                temp = tree[temp.getChildren()[1]];
+                if (temp.getName().compare("ref_pl_integer") == 0) {
+                    std::string integerString = tree[temp.getChildren()[0]].getName(); 
+                    int integerHolder;
+                    bool dummy, isNum = false;
+                    ret = findTypeOf(integerString, &isNum, &dummy, &dummy, &integerHolder);
+                    if (ret == -2 || !isNum) {
+                        // Error
+                        return;
+                    }
+                    toStore.push_back(integerString);
+                    ret = vvTable.insert(syno, toStore);
+                    if (ret == -1)
+                        return;
+                }
+                else if (temp.getName().compare("ref_pl_attrRef") == 0) {
+                    std::string syno2, attrName2;
+                    int synoType2;
+                    ret = attrRefChecker(&syno2, &attrName2, &synoType2, tree[temp.getChildren()[0]], tree, pkb);
+                    if (ret == -1)
+                        return;
+                    toStore = vvTable.getValues(syno2);
+                    ret = vvTable.insert(syno, toStore);
+                    if (ret == -1)
+                        return;
+                }
+            }
+            else {
+                // Error
+                return;
             }
         }
     } 
@@ -1024,6 +1131,46 @@ void QueryProcessor::processQuery(PKB pkb)
         result.push_back("true");
     else
         result = vvTable.getValues(target);
+}
+
+int QueryProcessor::attrRefChecker(std::string* synonym, std::string* attrName, int* synoType, QueryNode attrRef, std::vector<QueryNode> tree, PKB pkb) {
+    *synonym = (tree[attrRef.getChildren()[0]]).getName();
+    *synoType = evaluateType(pkb, *synonym);
+    if (*synoType == DeclarationTable::prog_line_ || *synoType == -1) {
+        // Error
+        return -1;
+    }
+
+    *attrName = (tree[attrRef.getChildren()[1]]).getName();
+    if (*synoType == DeclarationTable::assign_ || *synoType == DeclarationTable::if_ || *synoType == DeclarationTable::stmt_ || *synoType == DeclarationTable::while_) {
+        if ((*attrName).compare("stmt#") != 0) {
+            // Error
+            return -1;
+        }
+    }
+    else if (*synoType == DeclarationTable::variable_) {
+        if ((*attrName).compare("varName") != 0) {
+            // Error
+            return -1;
+        }
+    }
+    else if (*synoType == DeclarationTable::constant_) {
+        if ((*attrName).compare("value") != 0) {
+            // Error
+            return -1;
+        }
+    }
+    else if (*synoType == DeclarationTable::procedure_) {
+        // Not yet implemented
+    }
+    else if (*synoType == DeclarationTable::call_) {
+        // Not yet implemented
+    }
+    else {
+        // Error
+        return -1;
+    }
+    return 0;
 }
 
 void QueryProcessor::printTree() 
