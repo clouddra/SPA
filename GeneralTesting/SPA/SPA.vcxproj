@@ -99,7 +99,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\Wei Chee\Desktop\WeiChee\NUS\CurrentModules\CS3202\SourceCode\cs3201\GeneralTesting\SPA\external_libs\boost_1_52_0\boost_1_52_0;$(IncludePath)</IncludePath>
+    <IncludePath>C:\boost\boost_1_51_0\boost_1_51_0;C:\Users\Wei Chee\Desktop\WeiChee\NUS\CurrentModules\CS3202\SourceCode\cs3201\GeneralTesting\SPA\external_libs\boost_1_52_0\boost_1_52_0;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
