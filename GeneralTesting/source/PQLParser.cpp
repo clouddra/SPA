@@ -277,6 +277,7 @@ namespace pqlparser
 
 			// Auxiliary grammar rules
 			synonym_ %= IDENT_;
+			attrName_ %= string("procName") | string("varName") | string("value") | string("stmt#");
 			varRef_ %= synonym_ | char_('_') | (char_('"') >> IDENT_ >> char_('"'));
 			entRef_ %= synonym_ | char_('_') | (char_('"') >> IDENT_ >> char_('"')) | INTEGER_;
 			stmtRef_ %= synonym_ | char_('_') | INTEGER_;
@@ -296,7 +297,7 @@ namespace pqlparser
 				*declaration_				[push_back(at_c<2>(_val), _1)]
 				>> string("Select")			[at_c<0>(_val) = "select"]
 				>> synonym_					[at_c<1>(_val) = _1]
-				>> *(suchthat_cl_ | pattern_cl_)	[push_back(at_c<2>(_val), _1)]
+				>> *(suchthat_cl_ | with_cl_ | pattern_cl_)	[push_back(at_c<2>(_val), _1)]
 				;
 
 			declaration_ = 
@@ -307,19 +308,65 @@ namespace pqlparser
 				>> ';'
 				;
 			
+				/*
 			suchthat_cl_ = 
 				string("such that")			[at_c<0>(_val) = "such that"]
 				>> relRef_					[push_back(at_c<2>(_val), _1)]
 				;
-			
+				*/
+			suchthat_cl_ = 
+				string("such that")			[at_c<0>(_val) = "such that"]
+				>> relCond_					[push_back(at_c<2>(_val), _1)]
+				;
+
 			pattern_cl_ = 
 				string("pattern")			[at_c<0>(_val) = "pattern"]
 				>> patternCond_				[push_back(at_c<2>(_val), _1)]
 				;
 
+			with_cl_ = 
+				string("with")				[at_c<0>(_val) = "with"]
+				>> attrCond_				[push_back(at_c<2>(_val), _1)]
+				;
+
+			attrCond_ = 
+				attrCompare_				[at_c<0>(_val) = "attrCompare"][push_back(at_c<2>(_val), _1)]
+				>> *("and" >> attrCompare_  [push_back(at_c<2>(_val), _1)])	
+				;
+
+			attrCompare_ = 
+				(attrRef_					[at_c<0>(_val) = "attrCompare_attrRef"][push_back(at_c<2>(_val), _1)]
+				>> string("=")
+				>> ref_						[push_back(at_c<2>(_val), _1)]
+				)
+				|
+				(
+				synonym_					[at_c<0>(_val) = "attrCompare_synonym"][push_back(at_c<2>(_val), _1)]
+				>> string("=")
+				>> ref_pl_					[push_back(at_c<2>(_val), _1)]
+				)
+				;
+
+			ref_pl_ =
+				INTEGER_					[at_c<0>(_val) = "ref_pl_integer"][push_back(at_c<2>(_val), _1)]
+				| attrRef_					[at_c<0>(_val) = "ref_pl_attrRef"][push_back(at_c<2>(_val), _1)]
+				;
+
+			attrRef_ =
+				synonym_					[at_c<0>(_val) = "attrRef"][push_back(at_c<2>(_val), _1)]
+				>> string(".")
+				>> attrName_				[push_back(at_c<2>(_val), _1)]
+				;
+			
+			ref_ =
+				('"' >> IDENT_ >> '"')		[at_c<0>(_val) = "ref_ident"][push_back(at_c<2>(_val), _1)]
+				| INTEGER_					[at_c<0>(_val) = "ref_integer"][push_back(at_c<2>(_val), _1)]
+				| attrRef_					[at_c<0>(_val) = "ref_attrRef"][push_back(at_c<2>(_val), _1)]
+				;
+				
 			patternCond_ =
 				pattern_					[at_c<0>(_val) = "patternCond"][push_back(at_c<2>(_val), _1)]
-				>> *("and" >> pattern_)		[push_back(at_c<2>(_val), _1)]
+				>> *("and" >> pattern_      [push_back(at_c<2>(_val), _1)])
 				;
 
 			pattern_ %= assign_or_while_ | if_;
@@ -366,6 +413,11 @@ namespace pqlparser
 				>> ','
 				>> string("_")				[push_back(at_c<2>(_val), _1)]
 				>> ')'
+				;
+
+			relCond_ =
+				relRef_						[at_c<0>(_val) = "relcond_"][push_back(at_c<2>(_val), _1)]
+				>> *("and" >> relRef_       [push_back(at_c<2>(_val), _1)])
 				;
 
 			relRef_ %= ModifiesS_ | ModifiesP_ | UsesS_ | UsesP_ | Parent_ | ParentT_ | Follows_ | FollowsT_;
@@ -452,6 +504,7 @@ namespace pqlparser
 
 		// Auxiliary grammar rules
 		qi::rule<Iterator, std::string(), ascii::space_type> synonym_;
+		qi::rule<Iterator, std::string(), ascii::space_type> attrName_;
 		qi::rule<Iterator, std::string(), ascii::space_type> entRef_;
 		qi::rule<Iterator, std::string(), ascii::space_type> stmtRef_;
 		qi::rule<Iterator, std::string(), ascii::space_type> varRef_;
@@ -460,17 +513,26 @@ namespace pqlparser
 		// Grammar rules for select clause
 		qi::rule<Iterator, commonNode(), ascii::space_type> select_cl_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> declaration_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> with_cl_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> attrCond_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> attrCompare_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> attrRef_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> ref_pl_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> ref_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> suchthat_cl_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> pattern_cl_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> patternCond_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> pattern_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> if_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> assign_or_while_;
+		//qi::rule<Iterator, commonNode(), ascii::space_type> while_;
+		//qi::rule<Iterator, commonNode(), ascii::space_type> assign_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> expression_spec_;
 		qi::rule<Iterator, expressionNode(), ascii::space_type> expr_;
 		qi::rule<Iterator, expressionNode(), ascii::space_type> term_;
 		qi::rule<Iterator, expressionNode(), ascii::space_type> factor_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> relRef_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> relCond_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> ModifiesS_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> ModifiesP_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> UsesS_;
