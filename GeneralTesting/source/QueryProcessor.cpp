@@ -867,71 +867,75 @@ void QueryProcessor::processQuery(PKB pkb)
         currNode = tree[rootChildren[i]];
         // Evaluating such that
         if (currNode.getName().compare("such that") == 0) {
-            QueryNode relation = tree[currNode.getChildren()[0]];
-            int paraNode1 = relation.getChildren()[0];
-            std::string para1 = tree[paraNode1].getName();
-            int paraNode2 = relation.getChildren()[1];
-            std::string para2 = tree[paraNode2].getName();
+            QueryNode relCon = tree[currNode.getChildren()[0]];
+            std::vector<int> clauses = relCon.getChildren();
+            for (int j = 0; j < (int)clauses.size(); j++) {
+                QueryNode relation = tree[clauses[j]];
+                int paraNode1 = relation.getChildren()[0];
+                std::string para1 = tree[paraNode1].getName();
+                int paraNode2 = relation.getChildren()[1];
+                std::string para2 = tree[paraNode2].getName();
 
-            // Figure out type of parameter 1 and 2
-            bool para1IsNum = false, para2IsNum = false;
-            bool para1IsEnt = false, para2IsEnt = false;
-            bool para1IsPlaceholder = false, para2IsPlaceholder = false;
-            int para1Num = -1, para2Num = -1;
-            int para1Type = findTypeOf(para1, &para1IsNum, &para1IsEnt, &para1IsPlaceholder, &para1Num);
-            int para2Type = findTypeOf(para2, &para2IsNum, &para2IsEnt, &para2IsPlaceholder, &para2Num);
-            if (para1Type == -2 || para2Type == -2) {   // Cannot figure out parameter type
-                return;
-            }
-             // Exit if a "constant" type variable is found (not allowed)
-            if (para1Type == DeclarationTable::constant_ || para1Type == DeclarationTable::constant_) {
-                // std::cout << "Constant type not allowed in query\n";
-                return;
-            }
+                // Figure out type of parameter 1 and 2
+                bool para1IsNum = false, para2IsNum = false;
+                bool para1IsEnt = false, para2IsEnt = false;
+                bool para1IsPlaceholder = false, para2IsPlaceholder = false;
+                int para1Num = -1, para2Num = -1;
+                int para1Type = findTypeOf(para1, &para1IsNum, &para1IsEnt, &para1IsPlaceholder, &para1Num);
+                int para2Type = findTypeOf(para2, &para2IsNum, &para2IsEnt, &para2IsPlaceholder, &para2Num);
+                if (para1Type == -2 || para2Type == -2) {   // Cannot figure out parameter type
+                    return;
+                }
+                 // Exit if a "constant" type variable is found (not allowed)
+                if (para1Type == DeclarationTable::constant_ || para1Type == DeclarationTable::constant_) {
+                    // std::cout << "Constant type not allowed in query\n";
+                    return;
+                }
 
-            // Get rid of " " if parameters are entities
-            if (para1IsEnt) {
-                para1 = para1.substr(1, para1.size()-2);
-            }
-            if (para2IsEnt) {
-                para2 = para2.substr(1, para2.size()-2);
-            }
+                // Get rid of " " if parameters are entities
+                if (para1IsEnt) {
+                    para1 = para1.substr(1, para1.size()-2);
+                }
+                if (para2IsEnt) {
+                    para2 = para2.substr(1, para2.size()-2);
+                }
 
-            // follows query, assuming no entities
-            if (relation.getName().compare("follows") == 0) {
-                int ret = evaluateFollows(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
-                if (ret == -1)
-                    return;
-            }
-            // follows* query, assuming no entities
-            if (relation.getName().compare("followst") == 0) {
-                int ret = evaluateFollows(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
-                if (ret == -1)
-                    return;
-            }
-            // parent query, assuming no entities
-            if (relation.getName().compare("parent") == 0) {
-                int ret = evaluateParent(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
-                if (ret == -1)
-                    return;
-            }
-            // parent* query, assuming no entities
-            if (relation.getName().compare("parentt") == 0) {
-                int ret = evaluateParent(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
-                if (ret == -1)
-                    return;
-            }
-            // modifies query, only doing for statements
-            if (relation.getName().compare("modifiess") == 0) {
-                int ret = evaluateModifiesS(para1IsNum, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
-                if (ret == -1)
-                    return;
-            }
-            // uses query, only doing for statements
-            if (relation.getName().compare("usess") == 0) {
-                int ret = evaluateUsesS(para1IsNum, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
-                if (ret == -1)
-                    return;
+                // follows query, assuming no entities
+                if (relation.getName().compare("follows") == 0) {
+                    int ret = evaluateFollows(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                    if (ret == -1)
+                        return;
+                }
+                // follows* query, assuming no entities
+                if (relation.getName().compare("followst") == 0) {
+                    int ret = evaluateFollows(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                    if (ret == -1)
+                        return;
+                }
+                // parent query, assuming no entities
+                if (relation.getName().compare("parent") == 0) {
+                    int ret = evaluateParent(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                    if (ret == -1)
+                        return;
+                }
+                // parent* query, assuming no entities
+                if (relation.getName().compare("parentt") == 0) {
+                    int ret = evaluateParent(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                    if (ret == -1)
+                        return;
+                }
+                // modifies query, only doing for statements
+                if (relation.getName().compare("modifiess") == 0) {
+                    int ret = evaluateModifiesS(para1IsNum, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
+                    if (ret == -1)
+                        return;
+                }
+                // uses query, only doing for statements
+                if (relation.getName().compare("usess") == 0) {
+                    int ret = evaluateUsesS(para1IsNum, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
+                    if (ret == -1)
+                        return;
+                }
             }
         }
 
@@ -939,161 +943,170 @@ void QueryProcessor::processQuery(PKB pkb)
 		// Eg. "pattern w1(x, _)" ===> w1 = pattern, x = var
 		// Eg. "pattern if1(x, _, _)" ===> if1 = pattern, x = var
         if (currNode.getName().compare("pattern") == 0) {
-            QueryNode temp = tree[currNode.getChildren()[0]];
-            temp = tree[temp.getChildren()[0]];
-            if (temp.getName().compare("pattern_assign_or_while_") == 0) {
-                std::string pattern = tree[temp.getChildren()[0]].getName();
-                std::string var = tree[temp.getChildren()[1]].getName();
+            QueryNode patternCond = tree[currNode.getChildren()[0]];
+            std::vector<int> clauses = patternCond.getChildren();
+            
+            for (int j = 0; j < (int)clauses.size(); j++) {
+                QueryNode temp = tree[clauses[j]];
+                if (temp.getName().compare("pattern_assign_or_while_") == 0) {
+                    std::string pattern = tree[temp.getChildren()[0]].getName();
+                    std::string var = tree[temp.getChildren()[1]].getName();
 
-                temp = tree[temp.getChildren()[2]];
-                std::string expr;
-                if (temp.getName().compare("_") == 0) {
-                    expr = "_";
-                }
-                else if (temp.getName().compare("expr_with_underscore") == 0) {
-                    temp = tree[temp.getChildren()[0]];
-                    expr = "_\"" + temp.getName() + "\"_";
+                    temp = tree[temp.getChildren()[2]];
+                    std::string expr;
+                    if (temp.getName().compare("_") == 0) {
+                        expr = "_";
+                    }
+                    else if (temp.getName().compare("expr_with_underscore") == 0) {
+                        temp = tree[temp.getChildren()[0]];
+                        expr = "_\"" + temp.getName() + "\"_";
+                    }
+                    else {
+                        // std::cout << "Error parsing pattern clause\n";
+                        return;
+                    }
+
+                     // Figure out type of parameter 1 and 2
+                    bool patternIsNum = false, varIsNum = false;
+                    bool patternIsEnt = false, varIsEnt = false;
+                    bool patternIsPlaceholder = false, varIsPlaceholder = false;
+                    int patternNum = -1, varNum = -1;
+                    int patternType = findTypeOf(pattern, &patternIsNum, &patternIsEnt, &patternIsPlaceholder, &patternNum);
+                    int varType = findTypeOf(var, &varIsNum, &varIsEnt, &varIsPlaceholder, &varNum);
+                    if (patternType == -2 || varType == -2) {   // Cannot figure out type
+                        return;
+                    }
+                     // Exit if a "constant" type variable is found (not allowed)
+                    if (patternType == DeclarationTable::constant_ || varType == DeclarationTable::constant_) {
+                        // std::cout << "Constant type not allowed in query\n";
+                        return;
+                    }
+                    // Get rid of " " if parameters are entities
+                    if (patternIsEnt) {
+                        pattern = pattern.substr(1, pattern.size()-2);
+                    }
+                    if (varIsEnt) {
+                        var = var.substr(1, var.size()-2);
+                    }
+
+                    int ret = evaluatePattern(pattern, var, expr, varIsEnt, varIsPlaceholder, pkb);
+                    if (ret == -1)
+                        return;
                 }
                 else {
-                    // std::cout << "Error parsing pattern clause\n";
+                    // std::cout << "Unknown pattern format\n";
                     return;
                 }
-
-                 // Figure out type of parameter 1 and 2
-                bool patternIsNum = false, varIsNum = false;
-                bool patternIsEnt = false, varIsEnt = false;
-                bool patternIsPlaceholder = false, varIsPlaceholder = false;
-                int patternNum = -1, varNum = -1;
-                int patternType = findTypeOf(pattern, &patternIsNum, &patternIsEnt, &patternIsPlaceholder, &patternNum);
-                int varType = findTypeOf(var, &varIsNum, &varIsEnt, &varIsPlaceholder, &varNum);
-                if (patternType == -2 || varType == -2) {   // Cannot figure out type
-                    return;
-                }
-                 // Exit if a "constant" type variable is found (not allowed)
-                if (patternType == DeclarationTable::constant_ || varType == DeclarationTable::constant_) {
-                    // std::cout << "Constant type not allowed in query\n";
-                    return;
-                }
-                // Get rid of " " if parameters are entities
-                if (patternIsEnt) {
-                    pattern = pattern.substr(1, pattern.size()-2);
-                }
-                if (varIsEnt) {
-                    var = var.substr(1, var.size()-2);
-                }
-
-                int ret = evaluatePattern(pattern, var, expr, varIsEnt, varIsPlaceholder, pkb);
-                if (ret == -1)
-                    return;
-            }
-            else {
-                // std::cout << "Unknown pattern format\n";
-                return;
             }
         }
+
+        // Evaluates with query
         if (currNode.getName().compare("with") == 0) {
             std::vector <std::string> toStore; 
             int ret;
-            QueryNode temp = tree[currNode.getChildren()[0]];
-            temp = tree[temp.getChildren()[0]];
+            QueryNode attrCompare = tree[currNode.getChildren()[0]];
 
-            if (temp.getName().compare("attrCompare_attrRef") == 0) {
-                std::string syno, attrName;
-                int synoType;
-                ret = attrRefChecker(&syno, &attrName, &synoType, tree[temp.getChildren()[0]], tree, pkb);
-                if (ret == -1)
-                    return;
-                temp = tree[temp.getChildren()[1]];
-                if (temp.getName().compare("ref_integer") == 0) {
-                    std::string integerString = tree[temp.getChildren()[0]].getName(); 
-                    int integerHolder;
-                    bool dummy, isNum = false;
-                    ret = findTypeOf(integerString, &isNum, &dummy, &dummy, &integerHolder);
-                    if (ret == -2 || !isNum) {
+            std::vector<int> clauses = attrCompare.getChildren();
+            for (int j = 0; j < (int)clauses.size(); j++) {
+                QueryNode temp = tree[clauses[j]];
+                if (temp.getName().compare("attrCompare_attrRef") == 0) {
+                    std::string syno, attrName;
+                    int synoType;
+                    ret = attrRefChecker(&syno, &attrName, &synoType, tree[temp.getChildren()[0]], tree, pkb);
+                    if (ret == -1)
+                        return;
+                    temp = tree[temp.getChildren()[1]];
+                    if (temp.getName().compare("ref_integer") == 0) {
+                        std::string integerString = tree[temp.getChildren()[0]].getName(); 
+                        int integerHolder;
+                        bool dummy, isNum = false;
+                        ret = findTypeOf(integerString, &isNum, &dummy, &dummy, &integerHolder);
+                        if (ret == -2 || !isNum) {
+                            // Error
+                            return;
+                        }
+                        toStore.push_back(integerString);
+                        ret = vvTable.insert(syno, toStore);
+                        if (ret == -1)
+                            return;
+                    }
+                    else if (temp.getName().compare("ref_ident") == 0) {
+                        std::string varName = tree[temp.getChildren()[0]].getName();
+                        toStore.push_back(varName);
+                        ret = vvTable.insert(syno, toStore);
+                        if (ret == -1)
+                            return;
+                    }
+                    else if (temp.getName().compare("ref_attrRef") == 0) {
+                        std::string syno2, attrName2;
+                        int synoType2;
+                        ret = attrRefChecker(&syno2, &attrName2, &synoType2, tree[temp.getChildren()[0]], tree, pkb);
+                        if (ret == -1)
+                            return;
+
+                        toStore = vvTable.getValues(syno);
+                        std::vector<std::pair<std::string, std::string>> toStoreTuple;
+                        for (int i = 0; i < (int)toStore.size(); i++) {
+                            std::pair<std::string, std::string> tempPair (toStore[i], toStore[i]); 
+                            toStoreTuple.push_back(tempPair);
+                        }
+                        ret = vvTupleTable.insert(syno, syno2, toStoreTuple);
+                        if (ret == -1)
+                            return;
+
+                        toStoreTuple.empty();
+                        toStore = vvTable.getValues(syno2);
+                        for (int i = 0; i < (int)toStore.size(); i++) {
+                            std::pair<std::string, std::string> tempPair (toStore[i], toStore[i]); 
+                            toStoreTuple.push_back(tempPair);
+                        }
+                        ret = vvTupleTable.insert(syno, syno2, toStoreTuple);
+                        if (ret == -1)
+                            return;
+                    }
+                    else {
                         // Error
                         return;
                     }
-                    toStore.push_back(integerString);
-                    ret = vvTable.insert(syno, toStore);
-                    if (ret == -1)
-                        return;
                 }
-                else if (temp.getName().compare("ref_ident") == 0) {
-                    std::string varName = tree[temp.getChildren()[0]].getName();
-                    toStore.push_back(varName);
-                    ret = vvTable.insert(syno, toStore);
-                    if (ret == -1)
+                else if (temp.getName().compare("attrCompare_synonym") == 0) {
+                    std::string syno = (tree[temp.getChildren()[0]]).getName();
+                    int synoType = evaluateType(pkb, syno);
+                    if (synoType != DeclarationTable::prog_line_) {
+                        // Error
                         return;
-                }
-                else if (temp.getName().compare("ref_attrRef") == 0) {
-                    std::string syno2, attrName2;
-                    int synoType2;
-                    ret = attrRefChecker(&syno2, &attrName2, &synoType2, tree[temp.getChildren()[0]], tree, pkb);
-                    if (ret == -1)
-                        return;
-
-                    toStore = vvTable.getValues(syno);
-                    std::vector<std::pair<std::string, std::string>> toStoreTuple;
-                    for (int i = 0; i < (int)toStore.size(); i++) {
-                        std::pair<std::string, std::string> tempPair (toStore[i], toStore[i]); 
-                        toStoreTuple.push_back(tempPair);
                     }
-                    ret = vvTupleTable.insert(syno, syno2, toStoreTuple);
-                    if (ret == -1)
-                        return;
-
-                    toStoreTuple.empty();
-                    toStore = vvTable.getValues(syno2);
-                    for (int i = 0; i < (int)toStore.size(); i++) {
-                        std::pair<std::string, std::string> tempPair (toStore[i], toStore[i]); 
-                        toStoreTuple.push_back(tempPair);
+                    temp = tree[temp.getChildren()[1]];
+                    if (temp.getName().compare("ref_pl_integer") == 0) {
+                        std::string integerString = tree[temp.getChildren()[0]].getName(); 
+                        int integerHolder;
+                        bool dummy, isNum = false;
+                        ret = findTypeOf(integerString, &isNum, &dummy, &dummy, &integerHolder);
+                        if (ret == -2 || !isNum) {
+                            // Error
+                            return;
+                        }
+                        toStore.push_back(integerString);
+                        ret = vvTable.insert(syno, toStore);
+                        if (ret == -1)
+                            return;
                     }
-                    ret = vvTupleTable.insert(syno, syno2, toStoreTuple);
-                    if (ret == -1)
-                        return;
+                    else if (temp.getName().compare("ref_pl_attrRef") == 0) {
+                        std::string syno2, attrName2;
+                        int synoType2;
+                        ret = attrRefChecker(&syno2, &attrName2, &synoType2, tree[temp.getChildren()[0]], tree, pkb);
+                        if (ret == -1)
+                            return;
+                        toStore = vvTable.getValues(syno2);
+                        ret = vvTable.insert(syno, toStore);
+                        if (ret == -1)
+                            return;
+                    }
                 }
                 else {
                     // Error
                     return;
                 }
-            }
-            else if (temp.getName().compare("attrCompare_synonym") == 0) {
-                std::string syno = (tree[temp.getChildren()[0]]).getName();
-                int synoType = evaluateType(pkb, syno);
-                if (synoType != DeclarationTable::prog_line_) {
-                    // Error
-                    return;
-                }
-                temp = tree[temp.getChildren()[1]];
-                if (temp.getName().compare("ref_pl_integer") == 0) {
-                    std::string integerString = tree[temp.getChildren()[0]].getName(); 
-                    int integerHolder;
-                    bool dummy, isNum = false;
-                    ret = findTypeOf(integerString, &isNum, &dummy, &dummy, &integerHolder);
-                    if (ret == -2 || !isNum) {
-                        // Error
-                        return;
-                    }
-                    toStore.push_back(integerString);
-                    ret = vvTable.insert(syno, toStore);
-                    if (ret == -1)
-                        return;
-                }
-                else if (temp.getName().compare("ref_pl_attrRef") == 0) {
-                    std::string syno2, attrName2;
-                    int synoType2;
-                    ret = attrRefChecker(&syno2, &attrName2, &synoType2, tree[temp.getChildren()[0]], tree, pkb);
-                    if (ret == -1)
-                        return;
-                    toStore = vvTable.getValues(syno2);
-                    ret = vvTable.insert(syno, toStore);
-                    if (ret == -1)
-                        return;
-                }
-            }
-            else {
-                // Error
-                return;
             }
         }
     } 
@@ -1106,13 +1119,13 @@ void QueryProcessor::processQuery(PKB pkb)
             return;
     }
 
-    // Reconcile the vvTuple in vvTupleTable
-    int ret = vvTupleTable.reconcile();
+    // "intersect" vvTupleTable with vvTable
+    int ret = vvTupleTable.restrictTo(vvTable);
     if (ret == -1)
         return;
 
-    // "intersect" vvTupleTable with vvTable
-    ret = vvTupleTable.restrictTo(vvTable);
+    // Reconcile the vvTuple in vvTupleTable
+    ret = vvTupleTable.reconcile();
     if (ret == -1)
         return;
 

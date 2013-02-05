@@ -135,3 +135,23 @@ stmt s;
 Select s such that Follows (1, s)
 2
 5000
+28 - ParentStar, Modifies ::
+stmt s; while w;
+Select s such that Parent*(w, s) and Modifies(s, "x")
+9, 12, 14
+5000
+29 - ParentStar, Follows ::
+stmt s1, s2; while w;
+Select s1 such that Parent*(w, s1) and Follows(s1, s2)
+8, 9, 10, 12
+5000
+30 - Follows, Modifies ::
+stmt s1, s2; 
+Select s1 such that Follows(s1, s2) and Modifies(s2, "x")
+1, 6, 8, 9
+5000
+31 - Follows ::
+stmt s1, s2, s3; 
+Select s1 such that Follows(s1, s2) and Follows(s2, s3)
+1, 2, 3, 4, 5, 8
+5000

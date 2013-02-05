@@ -1,7 +1,2 @@
-stmt s; assign a; while w; prog_line n; variable v;
-Select a with a.stmt# = 5
-Select a with s.stmt# = 5
-Select a with a.stmt# = s.stmt#
-Select a with a.stmt# = v.varName
-Select n with n = 5
-Select n with n = w.stmt#
+variable v; assign a; stmt s;
+Select a pattern a("x", _) and a(_, _"z"_) 
