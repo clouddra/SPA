@@ -43,6 +43,11 @@
 #include "common.hpp"
 #endif
 
+#ifndef CALLS_HEAD
+#define CALLS_HEAD
+#include "CallsTable.h"
+#endif
+
 class PKB {
 
 private:
