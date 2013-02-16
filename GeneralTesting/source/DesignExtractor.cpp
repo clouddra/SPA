@@ -45,6 +45,48 @@ void DesignExtractor::populateTables()
 			}
 		}
 	}
+
+	std::vector<int> assignNodes = _stmtt->getNodeWithType(3);
+	for(int t = 0; t<assignNodes.size(); t++)
+	{
+		int tempNode = assignNodes[t];
+		std::vector<int> childrenAssign = _ast.getNode(tempNode).getChildren();
+		std::vector<int> parents = _pkb->getParentT(_ast.getNode(tempNode).getStmtNum());//get parent and indirect parents of assign node
+		insertModifies(tempNode, childrenAssign[0]);//add the first child of the assign node to modifies table
+		for(int w = 0; w<parents.size();w++)
+		{				
+			_mt->insertModifies(parents[w], _ast.getNode(childrenAssign[0]).getValue());//indirect parents modifies this variable too				
+		}
+		if(_ast.getNode(childrenAssign[1]).getNodeType()==Node::varNode)//if 2nd child is a variable
+		{
+			insertUses(tempNode,childrenAssign[1]);//add it to the uses table
+			for(int v = 0; v<parents.size();v++)
+			{
+				_ut->insertUses(parents[v],_ast.getNode(childrenAssign[1]).getValue());//indirect parents use this variable too					
+			}
+		}
+		else//if it isn't a variable
+		{
+			checkChildrenUses(childrenAssign[1], parents);
+		}		
+	}
+	std::vector<int> controlNodes = _stmtt->getNodeWithType(4);//while node
+	std::vector<int> temp = _stmtt->getNodeWithType(5);//if node
+	for(int x=0;x<temp.size();x++)
+	{
+		controlNodes.push_back(temp[x]);
+	}
+	for(int y=0;y<controlNodes.size();y++)
+	{
+		std::vector<int> parentsIfWhile = _pkb->getParentT(_ast.getNode(y).getStmtNum());
+		std::vector<int> childrenControl = _ast.getNode(controlNodes[y]).getChildren();
+		insertUses(controlNodes[y], childrenControl[0]);
+		for(int p = 0; p<parentsIfWhile.size();p++)
+		{
+			 _ut->insertUses(parentsIfWhile[p],_ast.getNode(childrenControl[0]).getValue());//indirect parents use this variable too					
+		}
+	}
+	/* DO NOT DELETE
 	//Need to loop through again because Modifies and Uses tables require the Parent* relationship which is computed in earlier loop
 	for(int t = 0; t<_ast.getTree().size(); t++)
 	{
@@ -80,7 +122,7 @@ void DesignExtractor::populateTables()
 					 _ut->insertUses(parentsIfWhile[p],_ast.getNode(childrenAssign[0]).getValue());//indirect parents use this variable too					
 			}
 		}
-	}
+	}*/
 }
 
  void DesignExtractor::checkChildrenUses(int nodeIndex, std::vector<int> parents)
