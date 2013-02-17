@@ -9,6 +9,7 @@ PKB::PKB() {
     usesTable = UsesTable();
     procTable = ProcTable();
 	parentTable = ParentTable();
+	callsTable = CallsTable();
     ast = AST();
     stmtNodeTable = StmtNodeTable();
 }
@@ -86,6 +87,11 @@ FollowsTable* PKB::getFollowsTable() {
 UsesTable* PKB::getUsesTable() {
     return &usesTable;
 }
+
+CallsTable* PKB::getCallsTable(){
+	return &callsTable;
+}
+
 AST PKB::getAST()
 {
 	return ast;

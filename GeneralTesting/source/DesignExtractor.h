@@ -25,6 +25,11 @@
 #include "UsesTable.h"
 #endif
 
+#ifndef CALLS_HEAD
+#define CALLS_HEAD
+#include "CallsTable.h"
+#endif
+
 #ifndef STMTNODE_HEAD
 #define STMTNODE_HEAD
 #include "StmtNodeTable.h"
@@ -48,13 +53,16 @@ private:
 	ModifiesTable* _mt;
 	FollowsTable* _ft;
 	UsesTable* _ut;
+	CallsTable* _ct;
 	ParentTable* _pt;
 	StmtNodeTable* _stmtt;
 	void checkChildrenUses(int nodeIndex, std::vector<int> parents);
+	void checkChildrenCalls(int nodeIndex);
 	void DesignExtractor::insertFollows(int stmt1, int stmt2);
 	void DesignExtractor::insertParent(int stmt1, int stmt2);
 	void DesignExtractor::insertUses(int stmt1, int stmt2);
 	void DesignExtractor::insertModifies(int stmt1, int stmt2);
+	void DesignExtractor::insertCalls(int stmt1, int stmt2);
 
 public:
     DesignExtractor(PKB* pkb);

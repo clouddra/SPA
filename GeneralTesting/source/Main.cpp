@@ -66,12 +66,22 @@ int main() {
 
 	pkb = controller.parseSource(storage);
 
-    /*
-	for(int i=0;i<pkb.getUsesTable()->getSize();i++)
+    
+	/*for(int i=0;i<pkb.getUsesTable()->getSize();i++)
 	{
 		std::cout<< pkb.getUsesTable()->extractUses(i).first <<" "<<pkb.getUsesTable()->extractUses(i).second<<std::endl;
+	}*/
+	std::cout<<"Calls Table: "<<std::endl;
+	for(int i=0;i<pkb.getCallsTable()->getSize();i++)
+	{
+		std::vector <int> temp = pkb.getCallsTable()->getCalls(i);
+		for(int j=0;j<temp.size();j++)
+		{
+			std::cout<< temp.at(j)<<" ";//<<std::endl;
+		}
+		std::cout<<std::endl;
 	}
-    */
+    
 
     // pql.txt stores currently working queries, pqlShort.txt stores queries in development (may not work)
     char const* pqlFile = "..\\sample_input\\pqlShort.txt";
