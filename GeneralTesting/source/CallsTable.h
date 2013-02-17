@@ -47,6 +47,7 @@ public:
 	 * Returns the total number of relationships in Calls Table
 	 */
 	int getSize();
+
 };
 
 /*int size;

@@ -10,6 +10,7 @@ DesignExtractor::DesignExtractor(PKB* pkb)
     _pt = pkb->getParentTable();
     _ft = pkb->getFollowsTable();
     _ut = pkb->getUsesTable();
+	_ct = pkb->getCallsTable();
     _stmtt = pkb->getStmtNodeTable();
 	_pkb = pkb;
 }
@@ -24,6 +25,10 @@ void DesignExtractor::populateTables()
 	{
 		int parent = _ast.getNode(i).getParent();
 		std::vector<int> children = _ast.getNode(i).getChildren();
+		//if(_ast.getNode(i).getNodeType()==Node::procedureNode)
+		//{
+		//	checkChildrenCalls(i);
+		//}
 		if(_ast.getNode(i).getNodeType()==Node::stmtLstNode)//look for stmtLst nodes
 		{			
 			if(children.size()>1)//if the stmtLst node has more than one child
@@ -86,6 +91,11 @@ void DesignExtractor::populateTables()
 			 _ut->insertUses(parentsIfWhile[p],_ast.getNode(childrenControl[0]).getValue());//indirect parents use this variable too					
 		}
 	}
+	//std::vector<int> callNodes = _stmtt->getNodeWithType(6);//call node
+	//for(int z=0;z<callNodes.size();z++)
+	//{
+	//	checkChildrenCalls(callNodes[z]);
+	//}
 	/* DO NOT DELETE
 	//Need to loop through again because Modifies and Uses tables require the Parent* relationship which is computed in earlier loop
 	for(int t = 0; t<_ast.getTree().size(); t++)
@@ -144,7 +154,28 @@ void DesignExtractor::populateTables()
 		}
 	}
 }
-
+ void DesignExtractor::checkChildrenCalls(int nodeIndex)
+ {
+	 std::cout<< "1" <<std::endl;
+	 std::vector<int> children = _ast.getNode(nodeIndex).getChildren();
+	 std::cout<< "2" <<std::endl;
+	 if(children.size()>0)
+	 {
+		 std::cout<< "3" <<std::endl;
+		 for(int m = 0;m<children.size();m++)
+		 {
+			 std::cout<< "4" <<std::endl;
+			 if(_ast.getNode(children[m]).getNodeType()==Node::callNode)//check if each child is a procedure call
+			 {
+				 std::cout<< "5" <<std::endl;
+				 std::cout<<"children[m]"<<children[m]<<std::endl;
+				 insertCalls(nodeIndex, children[m]);//add it to Calls table
+			 }
+			 std::cout<< "6" <<std::endl;
+			 checkChildrenCalls(children[m]);
+		 }
+	 }
+ }
  void DesignExtractor::insertFollows(int stmt1, int stmt2)
  {
 	 _ft->insertFollows(_ast.getNode(stmt1).getStmtNum(), _ast.getNode(stmt2).getStmtNum());
@@ -163,4 +194,11 @@ void DesignExtractor::populateTables()
  void DesignExtractor::insertModifies(int stmt1, int stmt2)
  {
 	 _mt->insertModifies(_ast.getNode(stmt1).getStmtNum(), _ast.getNode(stmt2).getValue());
+ }
+ 
+ void DesignExtractor::insertCalls(int stmt1, int stmt2)
+ {
+	 Node n1=_ast.getNode(stmt1);
+	 Node n2=_ast.getNode(stmt2);
+	 _ct->insertCalls(_ast.getNode(stmt1).getValue(), _ast.getNode(stmt2).getValue());
  }

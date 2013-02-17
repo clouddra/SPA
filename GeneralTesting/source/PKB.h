@@ -55,6 +55,7 @@ private:
     ModifiesTable modifiesTable;
     ParentTable parentTable;
     FollowsTable followsTable;
+	CallsTable callsTable;
     VarTable varTable;
     UsesTable usesTable;
     ProcTable procTable;
@@ -101,5 +102,6 @@ public:
 	ParentTable* getParentTable();
 	FollowsTable* getFollowsTable();
 	UsesTable* getUsesTable();
+	CallsTable* getCallsTable();
 	StmtNodeTable* getStmtNodeTable();
 };

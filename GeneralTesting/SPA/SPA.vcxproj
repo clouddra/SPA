@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\AST.h" />
+    <ClInclude Include="..\source\CallsTable.h" />
     <ClInclude Include="..\source\Common.hpp" />
     <ClInclude Include="..\source\DeclarationTable.h" />
     <ClInclude Include="..\source\DesignExtractor.h" />
