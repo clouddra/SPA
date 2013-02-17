@@ -144,6 +144,7 @@ struct CommonNodeInserter : boost::static_visitor<>
         else if (node.name.compare("call") == 0)
         {
             nodeType = Node::callNode;
+            valueIsVar = true;
         }
 
         int newParent = parent;

@@ -22,9 +22,14 @@ int PKB::insertNode(int nodeType, std::string value, int parent) {
     case Node::assignNode:
     case Node::whileNode:
     case Node::ifNode:
+        newStmtFlag = true;
+        hasStmtNum = true;
+        break;
+
     case Node::callNode:
         newStmtFlag = true;
         hasStmtNum = true;
+        indexValue = procTable.insertProc(value, -1);
         break;
 
     case Node::varNode:
