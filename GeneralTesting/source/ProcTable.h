@@ -15,11 +15,11 @@ private:
 
 public:
 	ProcTable();
-	int insertProc(std::string procName, int start);
+	int insertProc(std::string procName);
+    void updateProc(int index, int first, int last);
 	int getSize();
 	std::string getProcName (int ind);
 	int getProcIndex (std::string procName);
 	int getProcFirstln(int ind);
 	int getProcLastln(int ind);
-    void setProcLastln(int ind, int lastLine);
 };

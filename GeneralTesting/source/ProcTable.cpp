@@ -7,16 +7,24 @@
 ProcTable::ProcTable() {
 }
 
-int ProcTable::insertProc(std::string procName, int start) {
-
+int ProcTable::insertProc(std::string procName) {
 	int index = getProcIndex(procName);
 
 	if (index==-1) {
-		procTable.push_back(Procedure(procName, start, -1)) ;
+		procTable.push_back(Procedure(procName, -1, -1)) ;
 		index = procTable.size() - 1;
 	}
 
 	return index;
+}
+
+void ProcTable::updateProc(int index, int first, int last) {
+    if (index < 0 || index >= (int)procTable.size()) {
+        return;
+    }
+    else {
+        procTable[index].setFirstAndLast(first, last);
+    }
 }
 
 int ProcTable::getSize() {
@@ -44,9 +52,5 @@ int ProcTable::getProcFirstln(int ind) {
 
 int ProcTable::getProcLastln(int ind) {
 	return procTable.at(ind).getLastLine() ;
-}
-
-void ProcTable::setProcLastln(int ind, int lastLine) {
-    procTable[ind].setLastLine(lastLine);
 }
 

@@ -15,5 +15,5 @@ public:
 	std::string getProcName();
 	int getFirstLine();
 	int getLastLine();
-    void setLastLine(int last);
+    void setFirstAndLast(int first, int last);
 };

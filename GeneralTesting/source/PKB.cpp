@@ -30,7 +30,7 @@ int PKB::insertNode(int nodeType, std::string value, int parent) {
     case Node::callNode:
         newStmtFlag = true;
         hasStmtNum = true;
-        indexValue = procTable.insertProc(value, -1);
+        indexValue = procTable.insertProc(value);
         break;
 
     case Node::varNode:
@@ -45,9 +45,7 @@ int PKB::insertNode(int nodeType, std::string value, int parent) {
         break;
 
     case Node::procedureNode:
-        indexValue = procTable.insertProc(value, stmtNodeTable.getSize());   // This line assumes there are no empty procedure
-        if (indexValue != 0)
-            procTable.setProcLastln(indexValue-1, stmtNodeTable.getSize()-1);
+        indexValue = procTable.insertProc(value);
         break;
 
     case Node::divideNode:
@@ -105,7 +103,27 @@ std::vector<std::string> PKB::getVarTable() {
 }
 
 void PKB::postParseCleanup() {
-    procTable.setProcLastln(procTable.getSize()-1, stmtNodeTable.getSize()-1);  //Set the lastLine of the last procedure
+    // Set the first line and last line of each procedure
+    std::vector<Node> tree = ast.getTree();
+    std::vector<int> procedures = tree[0].getChildren();
+    
+    for (int i = 0; i < (int)procedures.size(); i++) {
+        Node currProc = tree[procedures[i]];
+        Node temp = tree[currProc.getChildren()[0]];
+        temp = tree[temp.getChildren()[0]];
+        int firstStmt = temp.getStmtNum();
+        int lastStmt;
+        if ((i+1) < (int)procedures.size()) {
+            Node temp2 = tree[procedures[i+1]];
+            temp2 = tree[temp2.getChildren()[0]];
+            temp2 = tree[temp2.getChildren()[0]];
+            lastStmt = temp2.getStmtNum() - 1;
+        }
+        else {
+            lastStmt = getNumStmts();
+        }
+        procTable.updateProc(currProc.getValue(), firstStmt, lastStmt);
+    }
 }
 
 std::vector<int> PKB::getParent(int stmt) {

@@ -21,6 +21,10 @@ int Procedure::getLastLine(){
 	return lastLine;
 }
 
-void Procedure::setLastLine(int last) {
+void Procedure::setFirstAndLast(int first, int last) {
+    if (firstLine != -1 || lastLine != -1)
+        return;
+
+    firstLine = first;
     lastLine = last;
 }
