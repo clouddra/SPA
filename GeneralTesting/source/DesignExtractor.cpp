@@ -25,10 +25,10 @@ void DesignExtractor::populateTables()
 	{
 		int parent = _ast.getNode(i).getParent();
 		std::vector<int> children = _ast.getNode(i).getChildren();
-		//if(_ast.getNode(i).getNodeType()==Node::procedureNode)
-		//{
-		//	checkChildrenCalls(i);
-		//}
+		/*if(_ast.getNode(i).getNodeType()==Node::procedureNode)
+		{
+			checkChildrenCalls(i,i);
+		}*/
 		if(_ast.getNode(i).getNodeType()==Node::stmtLstNode)//look for stmtLst nodes
 		{			
 			if(children.size()>1)//if the stmtLst node has more than one child
@@ -91,11 +91,14 @@ void DesignExtractor::populateTables()
 			 _ut->insertUses(parentsIfWhile[p],_ast.getNode(childrenControl[0]).getValue());//indirect parents use this variable too					
 		}
 	}
-	//std::vector<int> callNodes = _stmtt->getNodeWithType(6);//call node
+
+	//std::vector<int> callNodes = _stmtt->getNodeWithType(6);
 	//for(int z=0;z<callNodes.size();z++)
 	//{
-	//	checkChildrenCalls(callNodes[z]);
+	//	checkParentIfProc(callNodes[z],callNodes[z]);
 	//}
+
+
 	/* DO NOT DELETE
 	//Need to loop through again because Modifies and Uses tables require the Parent* relationship which is computed in earlier loop
 	for(int t = 0; t<_ast.getTree().size(); t++)
@@ -135,6 +138,24 @@ void DesignExtractor::populateTables()
 	}*/
 }
 
+void DesignExtractor::checkParentIfProc(int nodeIndex, int callNodeIndex)
+{
+	int callsParent = _ast.getNode(nodeIndex).getParent();
+	Node n1 = _ast.getNode(callsParent);
+	if(_ast.getNode(callsParent).getNodeType()==Node::procedureNode)
+	{
+		 std::cout<< "1" <<std::endl;
+		insertCalls(callsParent, callNodeIndex);
+		 std::cout<< "2" <<std::endl;
+		return;
+	}
+	else
+	{
+		checkParentIfProc(callsParent, callNodeIndex);
+		 std::cout<< "3" <<std::endl;
+	}
+}
+
  void DesignExtractor::checkChildrenUses(int nodeIndex, std::vector<int> parents)
 {
 	std::vector<int> children1 = _ast.getNode(nodeIndex).getChildren();
@@ -154,7 +175,8 @@ void DesignExtractor::populateTables()
 		}
 	}
 }
- void DesignExtractor::checkChildrenCalls(int nodeIndex)
+ /*
+ void DesignExtractor::checkChildrenCalls(int caller, int nodeIndex)
  {
 	 std::cout<< "1" <<std::endl;
 	 std::vector<int> children = _ast.getNode(nodeIndex).getChildren();
@@ -169,13 +191,14 @@ void DesignExtractor::populateTables()
 			 {
 				 std::cout<< "5" <<std::endl;
 				 std::cout<<"children[m]"<<children[m]<<std::endl;
-				 insertCalls(nodeIndex, children[m]);//add it to Calls table
+				 insertCalls(caller, children[m]);//add it to Calls table
 			 }
 			 std::cout<< "6" <<std::endl;
-			 checkChildrenCalls(children[m]);
+			 checkChildrenCalls(caller, children[m]);
 		 }
 	 }
  }
+ */
  void DesignExtractor::insertFollows(int stmt1, int stmt2)
  {
 	 _ft->insertFollows(_ast.getNode(stmt1).getStmtNum(), _ast.getNode(stmt2).getStmtNum());
