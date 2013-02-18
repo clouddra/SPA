@@ -57,7 +57,6 @@ private:
 	ParentTable* _pt;
 	StmtNodeTable* _stmtt;
 	void checkChildrenUses(int nodeIndex, std::vector<int> parents);
-	//void checkChildrenCalls(int caller, int nodeIndex);
 	void checkParentIfProc(int nodeIndex, int callNodeIndex);
 	void DesignExtractor::insertFollows(int stmt1, int stmt2);
 	void DesignExtractor::insertParent(int stmt1, int stmt2);

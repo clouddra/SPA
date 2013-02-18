@@ -81,6 +81,16 @@ int main() {
 		}
 		std::cout<<std::endl;
 	}
+	std::cout<<"Called-by Table: "<<std::endl;
+	for(int i=0;i<pkb.getCallsTable()->getSize();i++)
+	{
+		std::vector <int> temp = pkb.getCallsTable()->getCalledBy(i);
+		for(int j=0;j<temp.size();j++)
+		{
+			std::cout<< temp.at(j)<<" ";//<<std::endl;
+		}
+		std::cout<<std::endl;
+	}
     
 
     // pql.txt stores currently working queries, pqlShort.txt stores queries in development (may not work)

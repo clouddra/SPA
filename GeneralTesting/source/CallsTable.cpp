@@ -22,11 +22,11 @@ bool CallsTable::insertCalls(int proc1, int proc2){
 
 	// expand size if index > size of vector
 	if (proc2> int(callsTable.size()-1)) {
-		callsTable.resize(proc2*2);
+		callsTable.resize(proc2*2+1);
 		notInVector = true;
 	}
 	if (proc1> int(calledByTable.size()-1)) {
-		calledByTable.resize(proc1*2);
+		calledByTable.resize(proc1*2+1);
 		notInVector = true;
 	}
 
