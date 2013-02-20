@@ -48,6 +48,11 @@
 #include "CallsTable.h"
 #endif
 
+#ifndef QUERYNODE_HEAD
+#define QUERYNODE_HEAD
+#include "QueryNode.h"
+#endif
+
 class PKB {
 
 private:
@@ -94,6 +99,8 @@ public:
     int getNumStmts();
     void postParseCleanup();
 	std::vector<int> matchPattern(int nodeType, std::string varName, std::string pattern);
+	std::vector<int> matchAssignPattern(std::string varName, std::vector<QueryNode> queryTree, int patternRoot, bool hasUnderscore);
+	Node qNodeToNode(QueryNode qNode);
     std::set<int> getConstants();
 
 	void printModifiesTable();

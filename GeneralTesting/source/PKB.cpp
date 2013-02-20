@@ -296,6 +296,8 @@ int PKB::getNumStmts() {
     return stmtNodeTable.getSize() - 1;
 }
 
+// The below function is used for pattern while, if and assign _ or _"x"_
+// varName here refers to the variable name in simple source
 std::vector<int> PKB::matchPattern(int nodeType, std::string varName, std::string expr) {
 	std::vector<int> toReturn;
 
@@ -354,6 +356,57 @@ std::vector<int> PKB::matchPattern(int nodeType, std::string varName, std::strin
 		std::cout << "I am in PKB::matchPattern" << std::endl;
 	}
 	return toReturn;
+}
+
+// The below function is used to handle assign "x+y" or _"x+y"_
+// varName here refers to the variable name in simple source
+// patternRoot should indicate the root of sub-expression, which is "+" for "x+y"
+std::vector<int> PKB::matchAssignPattern(std::string varName, std::vector<QueryNode> queryTree, int patternRoot, bool hasUnderscore)
+{
+	std::vector<int> toReturn;
+
+	std::vector<int> assignStmt = getStmtWithType(Node::assignNode);
+	for (int i=0; i<(int)assignStmt.size(); i++)
+	{
+		bool isMatch = true;
+		// Check if the assignStmt contains "varName = ..."
+		if (isModifies(assignStmt[i], varName))
+		{
+			if (hasUnderscore) // Means something like _"x+y"_
+			{
+			}
+			else // Means "x+y"
+			{
+				Node exprRoot = ast.getNode(stmtNodeTable.getNode(assignStmt[i]));
+				if (!exprRoot.equals(qNodeToNode(queryTree[patternRoot])))
+					isMatch = false;
+			}
+		}
+	}
+	
+
+	return toReturn;
+}
+
+// This is used for pattern assign, to make qNode to Node for var, plus, minus, times, divide
+Node PKB::qNodeToNode(QueryNode qNode)
+{
+	int nodeType;
+	int value = -1; // only varNode will have index value
+	if (qNode.getName() == "+")
+		nodeType = Node::plusNode;
+	else if (qNode.getName() == "-")
+		nodeType = Node::minusNode;
+	else if (qNode.getName() == "*")
+		nodeType = Node::timesNode;
+	else if (qNode.getName() == "/")
+		nodeType = Node::divideNode;
+	else // variable
+	{
+		nodeType = Node::varNode;
+		value = varTable.getVarIndex(qNode.getName());
+	}
+	return Node(nodeType, value, -1);
 }
 
 std::set<int> PKB::getConstants() {
