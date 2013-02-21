@@ -366,9 +366,10 @@ std::vector<int> PKB::matchAssignPattern(std::string varName, std::vector<QueryN
 	std::vector<int> toReturn;
 
 	std::vector<int> assignStmt = getStmtWithType(Node::assignNode);
+
+	// Loop through all assignment statements
 	for (int i=0; i<(int)assignStmt.size(); i++)
 	{
-		bool isMatch = true;
 		// Check if the assignStmt contains "varName = ..."
 		if (isModifies(assignStmt[i], varName))
 		{
@@ -377,9 +378,11 @@ std::vector<int> PKB::matchAssignPattern(std::string varName, std::vector<QueryN
 			}
 			else // Means "x+y"
 			{
-				Node exprRoot = ast.getNode(stmtNodeTable.getNode(assignStmt[i]));
-				if (!exprRoot.equals(qNodeToNode(queryTree[patternRoot])))
-					isMatch = false;
+				int assignNodeIndex = stmtNodeTable.getNode(assignStmt[i]);
+				// Right child of assignNode should be the expression (in AST)
+				int exprNodeIndex = ast.getNode(assignNodeIndex).getChildren()[1];
+				if (treeCompare(exprNodeIndex, patternRoot, queryTree))
+					toReturn.push_back(assignStmt[i]);
 			}
 		}
 	}
@@ -388,7 +391,45 @@ std::vector<int> PKB::matchAssignPattern(std::string varName, std::vector<QueryN
 	return toReturn;
 }
 
+// Does inorder traversal to compare query expression tree against AST expression tree
+// Requires exact match. query of "x+y" for expression "a+x+y" will be false
+bool PKB::treeCompare(int astNodeIndex, int qNodeIndex, std::vector<QueryNode> queryTree)
+{
+	bool left = true, right = true;
+	Node qNode = qNodeToNode(queryTree[qNodeIndex]); // qNode is now of Node type
+	Node aNode = ast.getNode(astNodeIndex); // aNode is now of Node type
+	if (aNode.equals(qNode))
+	{
+		std::vector<int> qChild = queryTree[qNodeIndex].getChildren();
+		std::vector<int> aChild = aNode.getChildren();
+		// An expression either has no children, or 2 children
+		if (qChild.size() > 0)
+		{
+			if (aChild.size() > 0)
+			{
+				// Check left child
+				left = treeCompare(aChild[0], qChild[0], queryTree);
+				// Check right child
+				right = treeCompare(aChild[1], aChild[0], queryTree);
+				return (left && right);
+			}
+			else // qNode has children but aNode has no children
+				return false;
+		}
+		else // qNode has no children
+		{
+			if (aChild.size() > 0) // aNode has children
+				return false;
+			else // aNode has no children
+				return true;
+		}
+	}
+	else // aNode and qNode are different
+		return false;
+}
+
 // This is used for pattern assign, to make qNode to Node for var, plus, minus, times, divide
+// However it does not incorporate the children of qNode
 Node PKB::qNodeToNode(QueryNode qNode)
 {
 	int nodeType;
