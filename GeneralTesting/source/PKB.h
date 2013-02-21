@@ -102,6 +102,7 @@ public:
 	std::vector<int> matchAssignPattern(std::string varName, std::vector<QueryNode> queryTree, int patternRoot, bool hasUnderscore);
 	Node qNodeToNode(QueryNode qNode);
 	bool treeCompare(int astNodeIndex, int qNodeIndex, std::vector<QueryNode> queryTree);
+	bool subtreeCompare(int astNodeIndex, int qNodeIndex, std::vector<QueryNode> queryTree);
     std::set<int> getConstants();
 
 	void printModifiesTable();

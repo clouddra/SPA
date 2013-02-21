@@ -373,20 +373,22 @@ std::vector<int> PKB::matchAssignPattern(std::string varName, std::vector<QueryN
 		// Check if the assignStmt contains "varName = ..."
 		if (isModifies(assignStmt[i], varName))
 		{
+			int assignNodeIndex = stmtNodeTable.getNode(assignStmt[i]);
+			// Right child of assignNode should be the expression root (in AST)
+			int exprNodeIndex = ast.getNode(assignNodeIndex).getChildren()[1];
+			
 			if (hasUnderscore) // Means something like _"x+y"_
 			{
+				if (subtreeCompare(exprNodeIndex, patternRoot, queryTree))
+					toReturn.push_back(assignStmt[i]);
 			}
 			else // Means "x+y"
 			{
-				int assignNodeIndex = stmtNodeTable.getNode(assignStmt[i]);
-				// Right child of assignNode should be the expression (in AST)
-				int exprNodeIndex = ast.getNode(assignNodeIndex).getChildren()[1];
 				if (treeCompare(exprNodeIndex, patternRoot, queryTree))
 					toReturn.push_back(assignStmt[i]);
 			}
 		}
 	}
-	
 
 	return toReturn;
 }
@@ -403,30 +405,43 @@ bool PKB::treeCompare(int astNodeIndex, int qNodeIndex, std::vector<QueryNode> q
 		std::vector<int> qChild = queryTree[qNodeIndex].getChildren();
 		std::vector<int> aChild = aNode.getChildren();
 		// An expression either has no children, or 2 children
-		if (qChild.size() > 0)
+		if (qChild.size() > 0 && aChild.size() > 0)
 		{
-			if (aChild.size() > 0)
-			{
-				// Check left child
-				left = treeCompare(aChild[0], qChild[0], queryTree);
-				// Check right child
-				right = treeCompare(aChild[1], aChild[0], queryTree);
-				return (left && right);
-			}
-			else // qNode has children but aNode has no children
-				return false;
+			// Check left child
+			left = treeCompare(aChild[0], qChild[0], queryTree);
+			// Check right child
+			right = treeCompare(aChild[1], qChild[1], queryTree);
+			return (left && right);
 		}
-		else // qNode has no children
+		else if (qChild.size() == 0 && aChild.size() == 0)
 		{
-			if (aChild.size() > 0) // aNode has children
-				return false;
-			else // aNode has no children
-				return true;
+			return true;
 		}
+		else // Either qNode or aNode has children but the other doesn't
+			return false;
 	}
 	else // aNode and qNode are different
 		return false;
 }
+
+// To handle pattern assign with _"x+y"_
+bool PKB::subtreeCompare(int astNodeIndex, int qNodeIndex, std::vector<QueryNode> queryTree)
+{
+	bool curr = false, left = false, right = false;
+	// Compare for subtree at current AST node
+	curr = treeCompare(astNodeIndex, qNodeIndex, queryTree);
+
+	Node aNode = ast.getNode(astNodeIndex); // aNode is now of Node type
+	std::vector<int> aChild = aNode.getChildren();
+	// An expression either has no children, or 2 children
+	if (aChild.size() > 0)
+	{
+		left = subtreeCompare(aChild[0], qNodeIndex, queryTree);
+		right = subtreeCompare(aChild[1], qNodeIndex, queryTree);
+	}
+	return (curr || left || right);
+}
+
 
 // This is used for pattern assign, to make qNode to Node for var, plus, minus, times, divide
 // However it does not incorporate the children of qNode
