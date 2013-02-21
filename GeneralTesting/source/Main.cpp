@@ -38,7 +38,7 @@ std::vector<std::string> splitQuery(std::string input) {
 int main() {
 		SPAController controller = SPAController() ;
 	std::list<std::string> result;
-    char const* simpleFile = "..\\sample_input\\simple00.txt";
+    char const* simpleFile = "..\\sample_input\\simple.txt";
     std::ifstream in(simpleFile, std::ios_base::in);
 
     if (!in)
@@ -67,9 +67,29 @@ int main() {
 	pkb = controller.parseSource(storage);
 
     
-	for(int i=0;i<pkb.getUsesTable()->getSize();i++)
+	/*for(int i=0;i<pkb.getUsesTable()->getSize();i++)
 	{
 		std::cout<< pkb.getUsesTable()->extractUses(i).first <<" "<<pkb.getUsesTable()->extractUses(i).second<<std::endl;
+	}*/
+	std::cout<<"Calls Table: "<<std::endl;
+	for(int i=0;i<pkb.getCallsTable()->getSize();i++)
+	{
+		std::vector <int> temp = pkb.getCallsTable()->getCalls(i);
+		for(int j=0;j<temp.size();j++)
+		{
+			std::cout<< temp.at(j)<<" ";//<<std::endl;
+		}
+		std::cout<<std::endl;
+	}
+	std::cout<<"Called-by Table: "<<std::endl;
+	for(int i=0;i<pkb.getCallsTable()->getSize();i++)
+	{
+		std::vector <int> temp = pkb.getCallsTable()->getCalledBy(i);
+		for(int j=0;j<temp.size();j++)
+		{
+			std::cout<< temp.at(j)<<" ";//<<std::endl;
+		}
+		std::cout<<std::endl;
 	}
     
 

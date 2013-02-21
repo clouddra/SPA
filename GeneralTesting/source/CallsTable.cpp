@@ -8,9 +8,6 @@
 #include <algorithm>
 #endif
 
-#include <set>
-
-
 
 CallsTable::CallsTable(){ 
 	size = 0;
@@ -22,11 +19,11 @@ bool CallsTable::insertCalls(int proc1, int proc2){
 
 	// expand size if index > size of vector
 	if (proc2> int(callsTable.size()-1)) {
-		callsTable.resize(proc2*2);
+		callsTable.resize(proc2*2+1);
 		notInVector = true;
 	}
 	if (proc1> int(calledByTable.size()-1)) {
-		calledByTable.resize(proc1*2);
+		calledByTable.resize(proc1*2+1);
 		notInVector = true;
 	}
 
@@ -39,17 +36,54 @@ bool CallsTable::insertCalls(int proc1, int proc2){
 	calledByTable[proc1].push_back(proc2);
 
 	size++;
+	callerCount = std::max(proc1 + 1, callerCount);
+	calleeCount = std::max(proc2 + 1, calleeCount);
+
 	return true;
 }
 
 
 std::vector<int> CallsTable::getCalls(int proc2){
+	
+	std::vector<int> results ;
+	if (proc2> int(callsTable.size()-1))
+		return results;
+
 	return callsTable.at(proc2);
 }
 
+std::vector<int> CallsTable::getCalls(){
+	
+	std::vector<int> results ;
+	for (int i = 0; i < (int)calledByTable.size() ; i++) {
+		if (!calledByTable.at(i).empty())
+			results.push_back(i);
+	}
+
+	return results;
+}
+
+
 
 std::vector<int> CallsTable::getCalledBy(int proc1){
+
+	std::vector<int> results ;
+	if (proc1> int(calledByTable.size()-1))
+		return results;
+
 	return calledByTable.at(proc1);
+}
+
+
+std::vector<int> CallsTable::getCalledBy(){
+
+	std::vector<int> results ;
+	for (int i = 0; i < (int)callsTable.size() ; i++) {
+		if (!callsTable.at(i).empty())
+			results.push_back(i);
+	}
+
+	return results;
 }
 
 bool CallsTable:: isCalls(int proc1, int proc2){
@@ -69,6 +103,10 @@ int CallsTable::getSize(){
 	return size;
 }
 
+void CallsTable::compressTables(){
+	callsTable.resize(calleeCount);
+	calledByTable.resize(callerCount);
+}
 
 // code for testing modifies procedure in case anyone needs
 /*

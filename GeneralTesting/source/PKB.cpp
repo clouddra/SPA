@@ -9,6 +9,7 @@ PKB::PKB() {
     usesTable = UsesTable();
     procTable = ProcTable();
 	parentTable = ParentTable();
+	callsTable = CallsTable();
     ast = AST();
     stmtNodeTable = StmtNodeTable();
 }
@@ -22,9 +23,14 @@ int PKB::insertNode(int nodeType, std::string value, int parent) {
     case Node::assignNode:
     case Node::whileNode:
     case Node::ifNode:
+        newStmtFlag = true;
+        hasStmtNum = true;
+        break;
+
     case Node::callNode:
         newStmtFlag = true;
         hasStmtNum = true;
+        indexValue = procTable.insertProc(value);
         break;
 
     case Node::varNode:
@@ -39,9 +45,7 @@ int PKB::insertNode(int nodeType, std::string value, int parent) {
         break;
 
     case Node::procedureNode:
-        indexValue = procTable.insertProc(value, stmtNodeTable.getSize());   // This line assumes there are no empty procedure
-        if (indexValue != 0)
-            procTable.setProcLastln(indexValue-1, stmtNodeTable.getSize()-1);
+        indexValue = procTable.insertProc(value);
         break;
 
     case Node::divideNode:
@@ -81,6 +85,11 @@ FollowsTable* PKB::getFollowsTable() {
 UsesTable* PKB::getUsesTable() {
     return &usesTable;
 }
+
+CallsTable* PKB::getCallsTable(){
+	return &callsTable;
+}
+
 AST PKB::getAST()
 {
 	return ast;
@@ -94,7 +103,27 @@ std::vector<std::string> PKB::getVarTable() {
 }
 
 void PKB::postParseCleanup() {
-    procTable.setProcLastln(procTable.getSize()-1, stmtNodeTable.getSize()-1);  //Set the lastLine of the last procedure
+    // Set the first line and last line of each procedure
+    std::vector<Node> tree = ast.getTree();
+    std::vector<int> procedures = tree[0].getChildren();
+    
+    for (int i = 0; i < (int)procedures.size(); i++) {
+        Node currProc = tree[procedures[i]];
+        Node temp = tree[currProc.getChildren()[0]];
+        temp = tree[temp.getChildren()[0]];
+        int firstStmt = temp.getStmtNum();
+        int lastStmt;
+        if ((i+1) < (int)procedures.size()) {
+            Node temp2 = tree[procedures[i+1]];
+            temp2 = tree[temp2.getChildren()[0]];
+            temp2 = tree[temp2.getChildren()[0]];
+            lastStmt = temp2.getStmtNum() - 1;
+        }
+        else {
+            lastStmt = getNumStmts();
+        }
+        procTable.updateProc(currProc.getValue(), firstStmt, lastStmt);
+    }
 }
 
 std::vector<int> PKB::getParent(int stmt) {
@@ -267,6 +296,8 @@ int PKB::getNumStmts() {
     return stmtNodeTable.getSize() - 1;
 }
 
+// The below function is used for pattern while, if and assign _ or _"x"_
+// varName here refers to the variable name in simple source
 std::vector<int> PKB::matchPattern(int nodeType, std::string varName, std::string expr) {
 	std::vector<int> toReturn;
 
@@ -325,6 +356,113 @@ std::vector<int> PKB::matchPattern(int nodeType, std::string varName, std::strin
 		std::cout << "I am in PKB::matchPattern" << std::endl;
 	}
 	return toReturn;
+}
+
+// The below function is used to handle assign "x+y" or _"x+y"_
+// varName here refers to the variable name in simple source
+// patternRoot should indicate the root of sub-expression, which is "+" for "x+y"
+std::vector<int> PKB::matchAssignPattern(std::string varName, std::vector<QueryNode> queryTree, int patternRoot, bool hasUnderscore)
+{
+	std::vector<int> toReturn;
+
+	std::vector<int> assignStmt = getStmtWithType(Node::assignNode);
+
+	// Loop through all assignment statements
+	for (int i=0; i<(int)assignStmt.size(); i++)
+	{
+		// Check if the assignStmt contains "varName = ..."
+		if (isModifies(assignStmt[i], varName))
+		{
+			int assignNodeIndex = stmtNodeTable.getNode(assignStmt[i]);
+			// Right child of assignNode should be the expression root (in AST)
+			int exprNodeIndex = ast.getNode(assignNodeIndex).getChildren()[1];
+			
+			if (hasUnderscore) // Means something like _"x+y"_
+			{
+				if (subtreeCompare(exprNodeIndex, patternRoot, queryTree))
+					toReturn.push_back(assignStmt[i]);
+			}
+			else // Means "x+y"
+			{
+				if (treeCompare(exprNodeIndex, patternRoot, queryTree))
+					toReturn.push_back(assignStmt[i]);
+			}
+		}
+	}
+
+	return toReturn;
+}
+
+// Does inorder traversal to compare query expression tree against AST expression tree
+// Requires exact match. query of "x+y" for expression "a+x+y" will be false
+bool PKB::treeCompare(int astNodeIndex, int qNodeIndex, std::vector<QueryNode> queryTree)
+{
+	bool left = true, right = true;
+	Node qNode = qNodeToNode(queryTree[qNodeIndex]); // qNode is now of Node type
+	Node aNode = ast.getNode(astNodeIndex); // aNode is now of Node type
+	if (aNode.equals(qNode))
+	{
+		std::vector<int> qChild = queryTree[qNodeIndex].getChildren();
+		std::vector<int> aChild = aNode.getChildren();
+		// An expression either has no children, or 2 children
+		if (qChild.size() > 0 && aChild.size() > 0)
+		{
+			// Check left child
+			left = treeCompare(aChild[0], qChild[0], queryTree);
+			// Check right child
+			right = treeCompare(aChild[1], qChild[1], queryTree);
+			return (left && right);
+		}
+		else if (qChild.size() == 0 && aChild.size() == 0)
+		{
+			return true;
+		}
+		else // Either qNode or aNode has children but the other doesn't
+			return false;
+	}
+	else // aNode and qNode are different
+		return false;
+}
+
+// To handle pattern assign with _"x+y"_
+bool PKB::subtreeCompare(int astNodeIndex, int qNodeIndex, std::vector<QueryNode> queryTree)
+{
+	bool curr = false, left = false, right = false;
+	// Compare for subtree at current AST node
+	curr = treeCompare(astNodeIndex, qNodeIndex, queryTree);
+
+	Node aNode = ast.getNode(astNodeIndex); // aNode is now of Node type
+	std::vector<int> aChild = aNode.getChildren();
+	// An expression either has no children, or 2 children
+	if (aChild.size() > 0)
+	{
+		left = subtreeCompare(aChild[0], qNodeIndex, queryTree);
+		right = subtreeCompare(aChild[1], qNodeIndex, queryTree);
+	}
+	return (curr || left || right);
+}
+
+
+// This is used for pattern assign, to make qNode to Node for var, plus, minus, times, divide
+// However it does not incorporate the children of qNode
+Node PKB::qNodeToNode(QueryNode qNode)
+{
+	int nodeType;
+	int value = -1; // only varNode will have index value
+	if (qNode.getName() == "+")
+		nodeType = Node::plusNode;
+	else if (qNode.getName() == "-")
+		nodeType = Node::minusNode;
+	else if (qNode.getName() == "*")
+		nodeType = Node::timesNode;
+	else if (qNode.getName() == "/")
+		nodeType = Node::divideNode;
+	else // variable
+	{
+		nodeType = Node::varNode;
+		value = varTable.getVarIndex(qNode.getName());
+	}
+	return Node(nodeType, value, -1);
 }
 
 std::set<int> PKB::getConstants() {

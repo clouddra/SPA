@@ -48,6 +48,11 @@
 #include "CallsTable.h"
 #endif
 
+#ifndef QUERYNODE_HEAD
+#define QUERYNODE_HEAD
+#include "QueryNode.h"
+#endif
+
 class PKB {
 
 private:
@@ -55,6 +60,7 @@ private:
     ModifiesTable modifiesTable;
     ParentTable parentTable;
     FollowsTable followsTable;
+	CallsTable callsTable;
     VarTable varTable;
     UsesTable usesTable;
     ProcTable procTable;
@@ -93,6 +99,10 @@ public:
     int getNumStmts();
     void postParseCleanup();
 	std::vector<int> matchPattern(int nodeType, std::string varName, std::string pattern);
+	std::vector<int> matchAssignPattern(std::string varName, std::vector<QueryNode> queryTree, int patternRoot, bool hasUnderscore);
+	Node qNodeToNode(QueryNode qNode);
+	bool treeCompare(int astNodeIndex, int qNodeIndex, std::vector<QueryNode> queryTree);
+	bool subtreeCompare(int astNodeIndex, int qNodeIndex, std::vector<QueryNode> queryTree);
     std::set<int> getConstants();
 
 	void printModifiesTable();
@@ -101,5 +111,6 @@ public:
 	ParentTable* getParentTable();
 	FollowsTable* getFollowsTable();
 	UsesTable* getUsesTable();
+	CallsTable* getCallsTable();
 	StmtNodeTable* getStmtNodeTable();
 };

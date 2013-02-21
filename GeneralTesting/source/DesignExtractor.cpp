@@ -10,6 +10,7 @@ DesignExtractor::DesignExtractor(PKB* pkb)
     _pt = pkb->getParentTable();
     _ft = pkb->getFollowsTable();
     _ut = pkb->getUsesTable();
+	_ct = pkb->getCallsTable();
     _stmtt = pkb->getStmtNodeTable();
 	_pkb = pkb;
 }
@@ -86,6 +87,14 @@ void DesignExtractor::populateTables()
 			 _ut->insertUses(parentsIfWhile[p],_ast.getNode(childrenControl[0]).getValue());//indirect parents use this variable too					
 		}
 	}
+
+	std::vector<int> callNodes = _stmtt->getNodeWithType(6);//call node
+	for(int z=0;z<callNodes.size();z++)
+	{
+		checkParentIfProc(callNodes[z],callNodes[z]);
+	}
+
+
 	/* DO NOT DELETE
 	//Need to loop through again because Modifies and Uses tables require the Parent* relationship which is computed in earlier loop
 	for(int t = 0; t<_ast.getTree().size(); t++)
@@ -125,6 +134,20 @@ void DesignExtractor::populateTables()
 	}*/
 }
 
+void DesignExtractor::checkParentIfProc(int nodeIndex, int callNodeIndex)
+{
+	int callsParent = _ast.getNode(nodeIndex).getParent();//get parent of the callNode
+	if(_ast.getNode(callsParent).getNodeType()==Node::procedureNode)//find the caller
+	{
+		insertCalls(callsParent, callNodeIndex);
+		return;
+	}
+	else//not the caller, continue traversing upwards to find caller
+	{
+		checkParentIfProc(callsParent, callNodeIndex);
+	}
+}
+
  void DesignExtractor::checkChildrenUses(int nodeIndex, std::vector<int> parents)
 {
 	std::vector<int> children1 = _ast.getNode(nodeIndex).getChildren();
@@ -144,7 +167,6 @@ void DesignExtractor::populateTables()
 		}
 	}
 }
-
  void DesignExtractor::insertFollows(int stmt1, int stmt2)
  {
 	 _ft->insertFollows(_ast.getNode(stmt1).getStmtNum(), _ast.getNode(stmt2).getStmtNum());
@@ -163,4 +185,9 @@ void DesignExtractor::populateTables()
  void DesignExtractor::insertModifies(int stmt1, int stmt2)
  {
 	 _mt->insertModifies(_ast.getNode(stmt1).getStmtNum(), _ast.getNode(stmt2).getValue());
+ }
+ 
+ void DesignExtractor::insertCalls(int stmt1, int stmt2)
+ {
+	 _ct->insertCalls(_ast.getNode(stmt1).getValue(), _ast.getNode(stmt2).getValue());
  }

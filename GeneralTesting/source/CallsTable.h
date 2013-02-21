@@ -15,7 +15,8 @@ private:
 	 * Stores procedures called by vector index.
 	 */
 	std::vector<std::vector <int>> calledByTable;
-	int size;
+	int size, calleeCount, callerCount;
+
 
 public:
 
@@ -28,14 +29,23 @@ public:
 	bool insertCalls(int proc1, int proc2);
 
 	/**
-	 * Return all procedures calling procedure2.
+	 * Return all procedures which calls procedure2.
 	 */
 	std::vector<int> getCalls(int proc2);
 
 	/**
+	 * Return all procedures which calls another procedure.
+	 */
+	std::vector<int> getCalls();
+	/**
 	 * Return all procedures called by procedure1.
 	 */
   	std::vector<int> getCalledBy(int proc1);
+
+	/**
+	 * Return all procedures which are called by another procedure.
+	 */
+	std::vector<int> getCalledBy();
 
 	/**
 	 * Returns TRUE if proc uses var.
@@ -47,20 +57,41 @@ public:
 	 * Returns the total number of relationships in Calls Table
 	 */
 	int getSize();
+	
+	/**
+	 * Remove empty entries in Calls Table. To be invoked after extraction of calls relationship
+	 */
+	void compressTables();
 };
 
-/*int size;
-	CallsTable test ;
-	vector<int> result, result2 ;
-	//test.insertCalls(100,2);
-	bool val = test.insertCalls(1,2);
-	val =	test.insertCalls(1,2);
-	val =  test.insertCalls(1,9);
-	val = test. insertCalls(1,50);
-	val = false ;
-	result = test.getCalls(2);
-	result2 = test.getCalledBy(1) ;
-	val = test.isCalls(1,50);
-	val = test.isCalls(1,5); 
-	size = test.getSize();
+/*
+INDEX[] insertCalls (PROC procedure1 , PROC procedure2);
+Description:
+
+If the call relationship between procedure 1 and procedure 2 is not in the Parent Table, inserts it to the Calls Table and returns its index.
+    Otherwise, returns its INDEX and the table remain unchanged
+
+INTEGER getSize()
+Description:
+    
+
+INDEX getCallsIndex (STMT statement1 , STMT statement2)
+Description:
+
+If the Calls relationship between procedure 1 and procedure 2 is in the Calls Table, returns its index.
+    Otherwise, returns -1 (special value)
+
+PAIR<PROC, PROC> extractCalls (INDEX ind)
+Description:
+    Returns the relationship of two statements at Calls Table [ind]
+If “ind” is out of range:
+Throws:
+    InvalidReferenceException.
+
+PROC[] getCalls (PROC procedure2)
+Description:
+    Return all procedures calling procedure procedure2.
+
+PROC[] getCalledBy (PROC procedure1)
+    Return all procedures called by procedure procedure1.
 */    
