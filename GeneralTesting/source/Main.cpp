@@ -94,7 +94,7 @@ int main() {
 	}
     */
 	std::cout<<"Modified by proc table: "<<std::endl;
-	for(int i=0;i<pkb.getModifiesTable()->getModifiesProcTableSize();i++)
+	for(int i=0;i<pkb.getProcTable()->getSize();i++)
 	{
 		std::vector<int> temp = pkb.getModifiesTable()->extractModifiesProc(i);
 		for(int j=0;j<temp.size();j++)
@@ -105,7 +105,7 @@ int main() {
 	}
 
 	std::cout<<"Used by proc table: "<<std::endl;
-	for(int i=0;i<pkb.getUsesTable()->getSizeProc();i++)
+	for(int i=0;i<pkb.getProcTable()->getSize();i++)
 	{
 		std::vector<int> temp = pkb.getUsesTable()->getUsedByProc(i);
 		for(int j=0;j<temp.size();j++)

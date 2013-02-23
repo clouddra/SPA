@@ -34,5 +34,4 @@ public:
 	std::pair <int ,int> extractModifies (int ind);
 	std::vector<int> extractModifiesProc (int ind);
 	int getModifiesTableSize();
-	int getModifiesProcTableSize();
 };

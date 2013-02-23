@@ -164,10 +164,6 @@ int ModifiesTable::getModifiesTableSize(){
 	return modifiesTable.size();
 }
 
-int ModifiesTable::getModifiesProcTableSize(){
-	return modifiesProcTable.size();
-}
-
 
 // code for testing modifies procedure in case anyone needs
 /*
