@@ -56,6 +56,7 @@ private:
 	CallsTable* _ct;
 	ParentTable* _pt;
 	StmtNodeTable* _stmtt;
+	ProcTable* _proct;
 	void checkChildrenUses(int nodeIndex, std::vector<int> parents);
 	void checkParentIfProc(int nodeIndex, int callNodeIndex);
 	void DesignExtractor::insertFollows(int stmt1, int stmt2);

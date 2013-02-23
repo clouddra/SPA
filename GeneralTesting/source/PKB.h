@@ -62,8 +62,8 @@ private:
     FollowsTable followsTable;
 	CallsTable callsTable;
     VarTable varTable;
+	ProcTable procTable;
     UsesTable usesTable;
-    ProcTable procTable;
     StmtNodeTable stmtNodeTable;
     std::set<int> constantList;
 
@@ -113,4 +113,6 @@ public:
 	UsesTable* getUsesTable();
 	CallsTable* getCallsTable();
 	StmtNodeTable* getStmtNodeTable();
+	ProcTable* getProcTable();
+		
 };

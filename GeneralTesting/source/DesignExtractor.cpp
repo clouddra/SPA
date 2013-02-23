@@ -11,6 +11,7 @@ DesignExtractor::DesignExtractor(PKB* pkb)
     _ft = pkb->getFollowsTable();
     _ut = pkb->getUsesTable();
 	_ct = pkb->getCallsTable();
+	_proct = pkb->getProcTable();
     _stmtt = pkb->getStmtNodeTable();
 	_pkb = pkb;
 }
@@ -94,6 +95,27 @@ void DesignExtractor::populateTables()
 		checkParentIfProc(callNodes[z],callNodes[z]);
 	}
 
+	for(int q=0;q<_proct->getSize();q++)
+	{
+		int firstLine = _proct->getProcFirstln(q);
+		int lastLine = _proct->getProcLastln(q);
+		for(int r = firstLine;r<lastLine+1;r++)
+		{
+			if(_stmtt->getType(r)==3)//assign node
+			{
+				std::vector<int> varsModified = _mt->getModifiedBy(r);
+				std::vector<int> varsUsed = _ut->getUsedBy(r);
+				for(int s=0;s<varsModified.size();s++)
+				{
+					_mt->insertProcModifies(q, varsModified[s]);
+				}
+				for(int m=0;m<varsUsed.size();m++)
+				{
+					_ut->insertProcUses(q, varsUsed[m]);
+				}
+			}
+		}
+	}
 
 	/* DO NOT DELETE
 	//Need to loop through again because Modifies and Uses tables require the Parent* relationship which is computed in earlier loop
