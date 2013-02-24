@@ -3,7 +3,7 @@
 #include "ValidValue.h"
 #endif
 
-ValidValue::ValidValue(std::string var, std::vector<std::string> val) {
+ValidValue::ValidValue(std::string var, std::set<std::string> val) {
     variable = var;
     values = val;
 }
@@ -12,33 +12,15 @@ std::string ValidValue::getVariable() {
     return variable;
 }
 
-std::vector<std::string> ValidValue::getValues() {
+std::set<std::string> ValidValue::getValues() {
     return values;
 }
 
-// Does an intersection between valid and values, storing the result back in values
-// A return value of -1 indicates all values have been deleted (No valid value for the parameter = query evaluates to false)
-int ValidValue::restrictTo(std::vector<std::string> valid) {  
-    std::vector<int> toDelete;
-    for (int i = 0; i < (int)values.size(); i++) {
-        bool found = false;
-        for (int j = 0; j < (int)valid.size(); j++) {
-            if (values[i].compare(valid[j]) == 0) {
-                found = true;
-                break;
-            }
-        }
-        if (!found)
-            toDelete.push_back(i);
-    }
-
-    for (int i = toDelete.size()-1; i > -1; i--) {
-        values.erase(values.begin() + toDelete[i]);
-    }
-
-    if (values.size() == 0) {
-        // std::cout << variable << " has no valid values\n";
+// Straight swap, intersection no longer done here
+int ValidValue::restrictTo(std::string var, std::set<std::string> valid) { 
+    if (variable.compare(var) != 0)
         return -1;
-    }
+
+    values = valid;
     return 0;
 }

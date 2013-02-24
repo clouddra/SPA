@@ -36,9 +36,9 @@ std::vector<std::string> splitQuery(std::string input) {
 }
 
 int main() {
-		SPAController controller = SPAController() ;
+	SPAController controller = SPAController() ;
 	std::list<std::string> result;
-    char const* simpleFile = "..\\sample_input\\simple.txt";
+    char const* simpleFile = "..\\sample_input\\simple00.txt";
     std::ifstream in(simpleFile, std::ios_base::in);
 
     if (!in)

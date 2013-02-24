@@ -13,14 +13,9 @@
 #include "PKB.h"
 #endif
 
-#ifndef VVTABLE_HEAD
-#define VVTABLE_HEAD
-#include "ValidValueTable.h"
-#endif
-
-#ifndef VVTUPLETABLE_HEAD
-#define VVTUPLETABLE_HEAD
-#include "ValidValueTupleTable.h"
+#ifndef RS_HEAD
+#define RS_HEAD
+#include "ResultStorage.h"
 #endif
 
 #ifndef STD_HEAD
@@ -35,8 +30,7 @@ class QueryProcessor {
 private:
 	QueryTree queryTree;
 	DeclarationTable declarationTable;
-    ValidValueTable vvTable;
-    ValidValueTupleTable vvTupleTable;
+    ResultStorage resultStore;
 	std::vector<std::string> result;
     void loadDeclaration(std::vector<QueryNode> tree, int* curr);
     int findTypeOf(std::string para, bool* paraIsNum, bool* paraIsEnt,bool* paraIsPlaceholder, int* paraNum);
