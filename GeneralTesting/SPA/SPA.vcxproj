@@ -13,6 +13,8 @@
   <ItemGroup>
     <ClInclude Include="..\source\AST.h" />
     <ClInclude Include="..\source\CallsTable.h" />
+    <ClInclude Include="..\source\CFG.h" />
+    <ClInclude Include="..\source\CFGNode.h" />
     <ClInclude Include="..\source\Common.hpp" />
     <ClInclude Include="..\source\DeclarationTable.h" />
     <ClInclude Include="..\source\DesignExtractor.h" />
@@ -42,6 +44,8 @@
   <ItemGroup>
     <ClCompile Include="..\source\AST.cpp" />
     <ClCompile Include="..\source\CallsTable.cpp" />
+    <ClCompile Include="..\source\CFG.cpp" />
+    <ClCompile Include="..\source\CFGNode.cpp" />
     <ClCompile Include="..\source\DeclarationTable.cpp" />
     <ClCompile Include="..\source\DesignExtractor.cpp" />
     <ClCompile Include="..\source\FollowsTable.cpp" />
