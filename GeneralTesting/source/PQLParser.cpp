@@ -321,7 +321,8 @@ namespace pqlparser
 
 			attrCond_ = 
 				attrCompare_				[at_c<0>(_val) = "attrCompare"][push_back(at_c<2>(_val), _1)]
-				>> *("and" >> attrCompare_  [push_back(at_c<2>(_val), _1)])	
+				>> *(string("and")			[push_back(at_c<2>(_val), _1)] 
+				>> attrCompare_				[push_back(at_c<2>(_val), _1)])	
 				;
 
 			attrCompare_ = 
@@ -356,7 +357,8 @@ namespace pqlparser
 				
 			patternCond_ =
 				pattern_					[at_c<0>(_val) = "patternCond"][push_back(at_c<2>(_val), _1)]
-				>> *("and" >> pattern_      [push_back(at_c<2>(_val), _1)])
+				>> *(string("and")			[push_back(at_c<2>(_val), _1)]
+				>> pattern_					[push_back(at_c<2>(_val), _1)])		
 				;
 
 			pattern_ %= assign_or_while_ | if_;
@@ -407,7 +409,8 @@ namespace pqlparser
 
 			relCond_ =
 				relRef_						[at_c<0>(_val) = "relcond_"][push_back(at_c<2>(_val), _1)]
-				>> *("and" >> relRef_       [push_back(at_c<2>(_val), _1)])
+				>> *(string("and")			[push_back(at_c<2>(_val), _1)]
+				>> relRef_					[push_back(at_c<2>(_val), _1)])		
 				;
 
 			relRef_ %= ModifiesS_ | ModifiesP_ | UsesS_ | UsesP_ | Parent_ | ParentT_ | Follows_ | FollowsT_;
