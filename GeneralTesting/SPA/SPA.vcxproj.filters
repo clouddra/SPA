@@ -199,5 +199,6 @@
     <None Include="..\sample_input\simple00.txt">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>

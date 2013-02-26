@@ -211,36 +211,26 @@ namespace pqlparser
 
 		void operator()(binaryOp const& expr) const
         {
-		/* We shall not handle expressions for PQL yet
             std::string value(1, expr.op);
-            int nodeType;
 
-            if (value.compare("*") == 0)
-            {
-                nodeType = Node::timesNode;
-            }
-            else if (value.compare("/") == 0)
-            {
-                nodeType = Node::divideNode;
-            }
-            else if (value.compare("+") == 0)
-            {
-                nodeType = Node::plusNode;
-            }
-            else if (value.compare("-") == 0)
-            {
-                nodeType = Node::minusNode;
-            }
-
-            int newParent = pkb->insertNode(nodeType, value, true, parent);
-            boost::apply_visitor(CommonNodeInserter(pkb, newParent), expr.left.expr);
-            boost::apply_visitor(CommonNodeInserter(pkb, newParent), expr.right.expr);
-		*/
+            int newParent = queryProcessor->insertNode(value, value, parent);
+            boost::apply_visitor(CommonNodeInserter(queryProcessor, newParent), expr.left.expr);
+            boost::apply_visitor(CommonNodeInserter(queryProcessor, newParent), expr.right.expr);
         }
 
-        void operator()(std::string n) const {     
-			queryProcessor->insertNode(n, "", parent);
+        void operator()(std::string n) const {   
+            std::istringstream convert(n);
+            int temp;
+            std::string type;
 
+            if (!(convert >> temp)) {
+                type = "variable";
+            }
+            else {
+                type = "constant";
+            }
+
+			queryProcessor->insertNode(n, type, parent);
         }
 
 	private:

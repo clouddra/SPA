@@ -84,6 +84,13 @@ public:
     std::vector<int> getFollowedBy();
     std::vector<int> getFollowedByT(int stmt);
     bool isFollow(int first, int second);
+    std::vector<int> getCalls(int stmt);
+    std::vector<int> getCalls();
+    std::vector<int> getCallsT(int stmt);
+	std::vector<int> getCalledBy(int stmt);
+    std::vector<int> getCalledBy();
+    std::vector<int> getCalledByT(int stmt);
+    bool isCalls(int first, int second);
     std::vector<int> getModifiesVar(std::string var);
     std::vector<int> getModifiesVar();
 	std::vector<std::string> getModifiedBy(int stmt);
@@ -98,7 +105,7 @@ public:
     std::vector<std::string> getVarTable();
     int getNumStmts();
     void postParseCleanup();
-	std::vector<int> matchPattern(int nodeType, std::string varName, std::string pattern);
+	std::vector<int> matchIfWhilePattern(int nodeType, std::string varName);
 	std::vector<int> matchAssignPattern(std::string varName, std::vector<QueryNode> queryTree, int patternRoot, bool hasUnderscore);
 	Node qNodeToNode(QueryNode qNode);
 	bool treeCompare(int astNodeIndex, int qNodeIndex, std::vector<QueryNode> queryTree);

@@ -1,4 +1,6 @@
-assign a; variable v; 
-Select v such that Uses(a, v)
+assign a; variable v; if ifs;
+Select v pattern ifs(v, _, _)
+
+
  
 

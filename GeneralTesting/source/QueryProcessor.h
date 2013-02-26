@@ -39,8 +39,9 @@ private:
     int evaluateModifiesS(bool para1IsNum, bool para1IsPlaceholder, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, PKB pkb);
     int evaluateUsesS(bool para1IsNum, bool para1IsPlaceholder, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, PKB pkb);
     int evaluateType(PKB pkb, std::string target);
-	int evaluatePattern(std::string pattern, std::string var, std::string expr, bool varIsEnt, bool varIsPlaceholder, PKB pkb);
-    int attrRefChecker(std::string* synonym, std::string* attrName, int* synoType, QueryNode attrRef, std::vector<QueryNode> tree, PKB pkb);
+	int evaluateAssignPattern(std::string pattern, std::string var, int exprRoot, bool varIsEnt, bool varIsPlaceholder, bool hasUnderscore, PKB pkb);
+    int evaluateIfWhilePattern(std::string pattern, std::string var, bool varIsEnt, bool varIsPlaceholder, PKB pkb);
+    int attrRefChecker(std::string* synonym, std::string* attrName, int* synoType, QueryNode attrRef, PKB pkb);
 
 public:
 	QueryProcessor();
