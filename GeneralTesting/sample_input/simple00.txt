@@ -1,19 +1,39 @@
-procedure Bill {
-z = 10;
-x = z + 5;
-y = x * z + 4;
-d = x + y * 12;    
-d = d + z + x;
-e = d + z * x;
-while e {
- e = x - y;
- et = te;
- te = et;
-  if z then {
-   y = y + z;
-   i = y + 1; }
-  else {
-   x = y + z; 
-   i = i - 1; }
- x = y + z; }
+procedure crazylongish123NAME321z {
+	Another300crazy200name100 = z + 3 + z;
+	z = Another300crazy200name100 + z;
+	x = 5 + z + 5 + z + 5 + z;
+	while Another300crazy200name100 {
+		x = 12345678 + 5;
+		while cs3213isAwesome {
+			while i {
+				z = z; 
+			}
+			while z {
+				i = i; }
+			a = b + c + d + e + f + g + 1;
+			while a {
+				c = 1 + a + 2 + b;
+			}
+			while c {
+				while d {
+					while e {
+						while f {
+							c = 1 + 1;
+						}
+					}
+					while g {
+						while h {
+							while i {
+								G = gg;
+							}
+						}
+					}
+				}
+				z = cs3213isawesome;
+				z = cs3213isawesome;
+				cs3213isawesome = z;
+			}
+			x = z + 12345678 + x;
+		}
+	}
 }

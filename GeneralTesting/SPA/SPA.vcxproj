@@ -13,6 +13,8 @@
   <ItemGroup>
     <ClInclude Include="..\source\AST.h" />
     <ClInclude Include="..\source\CallsTable.h" />
+    <ClInclude Include="..\source\CFG.h" />
+    <ClInclude Include="..\source\CFGNode.h" />
     <ClInclude Include="..\source\Common.hpp" />
     <ClInclude Include="..\source\DeclarationTable.h" />
     <ClInclude Include="..\source\DesignExtractor.h" />
@@ -30,19 +32,20 @@
     <ClInclude Include="..\source\QueryNode.h" />
     <ClInclude Include="..\source\QueryProcessor.h" />
     <ClInclude Include="..\source\QueryTree.h" />
+    <ClInclude Include="..\source\ResultStorage.h" />
     <ClInclude Include="..\source\SimpleGrammar.h" />
     <ClInclude Include="..\source\SPAController.h" />
     <ClInclude Include="..\source\StmtNodeTable.h" />
+    <ClInclude Include="..\source\TupleTable.h" />
     <ClInclude Include="..\source\UsesTable.h" />
     <ClInclude Include="..\source\ValidValue.h" />
-    <ClInclude Include="..\source\ValidValueTable.h" />
-    <ClInclude Include="..\source\ValidValueTuple.h" />
-    <ClInclude Include="..\source\ValidValueTupleTable.h" />
     <ClInclude Include="..\source\VarTable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\AST.cpp" />
     <ClCompile Include="..\source\CallsTable.cpp" />
+    <ClCompile Include="..\source\CFG.cpp" />
+    <ClCompile Include="..\source\CFGNode.cpp" />
     <ClCompile Include="..\source\DeclarationTable.cpp" />
     <ClCompile Include="..\source\DesignExtractor.cpp" />
     <ClCompile Include="..\source\FollowsTable.cpp" />
@@ -59,13 +62,12 @@
     <ClCompile Include="..\source\QueryNode.cpp" />
     <ClCompile Include="..\source\QueryProcessor.cpp" />
     <ClCompile Include="..\source\QueryTree.cpp" />
+    <ClCompile Include="..\source\ResultStorage.cpp" />
     <ClCompile Include="..\source\SPAController.cpp" />
     <ClCompile Include="..\source\StmtNodeTable.cpp" />
+    <ClCompile Include="..\source\TupleTable.cpp" />
     <ClCompile Include="..\source\UsesTable.cpp" />
     <ClCompile Include="..\source\ValidValue.cpp" />
-    <ClCompile Include="..\source\ValidValueTable.cpp" />
-    <ClCompile Include="..\source\ValidValueTuple.cpp" />
-    <ClCompile Include="..\source\ValidValueTupleTable.cpp" />
     <ClCompile Include="..\source\VarTable.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -80,7 +82,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>

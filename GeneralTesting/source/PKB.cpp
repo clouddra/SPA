@@ -6,8 +6,8 @@
 PKB::PKB() {
     modifiesTable = ModifiesTable();
     varTable = VarTable();
+	procTable = ProcTable();
     usesTable = UsesTable();
-    procTable = ProcTable();
 	parentTable = ParentTable();
 	callsTable = CallsTable();
     ast = AST();
@@ -86,20 +86,24 @@ UsesTable* PKB::getUsesTable() {
     return &usesTable;
 }
 
-CallsTable* PKB::getCallsTable(){
+CallsTable* PKB::getCallsTable() {
 	return &callsTable;
 }
 
-AST PKB::getAST()
-{
+AST PKB::getAST() {
 	return ast;
 }
-StmtNodeTable* PKB::getStmtNodeTable()
-{
+
+StmtNodeTable* PKB::getStmtNodeTable() {
 	return &stmtNodeTable;
 }
-std::vector<std::string> PKB::getVarTable() {
+
+std::vector<std::string> PKB::getVarTable()  {
     return varTable.getTable();
+}
+
+ProcTable* PKB::getProcTable() {
+	return &procTable;
 }
 
 void PKB::postParseCleanup() {

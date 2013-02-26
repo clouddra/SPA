@@ -32,5 +32,6 @@ public:
 	int getModifiesProcIndex(int procIndex, int var);
 
 	std::pair <int ,int> extractModifies (int ind);
-	int getSize();
+	std::vector<int> extractModifiesProc (int ind);
+	int getModifiesTableSize();
 };

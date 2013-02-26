@@ -30,7 +30,7 @@ int ModifiesTable::insertProcModifies(int procIndex, int var){
 
 	// expand size if index > size of vector
 	if (procIndex > (int)modifiesProcTable.size()-1)
-		 modifiesProcTable.resize(procIndex*2);
+		 modifiesProcTable.resize(procIndex*2+1);
 	else
 		index = getModifiesProcIndex(procIndex, var);
 
@@ -156,7 +156,11 @@ std::pair <int ,int> ModifiesTable::extractModifies (int ind){
 	return modifiesTable.at(ind) ;
 }
 
-int ModifiesTable::getSize(){
+std::vector<int> ModifiesTable::extractModifiesProc (int ind){
+	return modifiesProcTable.at(ind);
+}
+
+int ModifiesTable::getModifiesTableSize(){
 	return modifiesTable.size();
 }
 

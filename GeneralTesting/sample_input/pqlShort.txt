@@ -1,2 +1,4 @@
-variable v; assign a; stmt s;
-Select a pattern a("x", _) and a(_, _"z"_) 
+assign a; variable v; 
+Select v such that Uses(a, v)
+ 
+
