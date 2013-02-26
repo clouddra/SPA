@@ -1,5 +1,5 @@
-assign a; variable v; if ifs;
-Select v pattern ifs(v, _, _)
+stmt s1, s2; 
+Select s1 such that Follows(s1, s2) and Modifies(s2, "x")
 
 
  
