@@ -46,7 +46,22 @@ namespace pqlparser
 		std::string value;						// Value
         std::vector<combinedNode> children;    // Children
     };
-    
+
+	// Used by boost spirit to roll back partial push_backs.
+	void swap(common_node &a, common_node &b)
+	{
+		common_node t;
+		t.name = a.name;
+		t.value = a.value;
+		t.children = a.children;
+		a.name = b.name;
+		a.value = b.value;
+		a.children = b.children;
+		b.name = t.name;
+		b.value = t.value;
+		b.children = t.children;
+	}
+
 	// Expression representation
 	struct binaryOp;
     struct nil {};
@@ -359,7 +374,7 @@ namespace pqlparser
 				>> *("and" >> pattern_      [push_back(at_c<2>(_val), _1)])	
 				;
 
-			pattern_ %= assign_or_while_ | if_;
+			pattern_ %= hold[if_] | assign_or_while_;
 			
 			expression_spec_ = 
 				(('"' >> expr_ [at_c<0>(_val) = "expr_no_underscore"][push_back(at_c<2>(_val), _1)] >> '"') 
