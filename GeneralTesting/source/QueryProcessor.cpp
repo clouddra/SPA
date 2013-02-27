@@ -924,40 +924,88 @@ void QueryProcessor::processQuery(PKB pkb)
                     para2 = para2.substr(1, para2.size()-2);
                 }
 
-                // follows query, assuming no entities
+                // follows query
                 if (relation.getName().compare("follows") == 0) {
-                    int ret = evaluateFollows(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
-                    if (ret == -1)
+                    if (para1IsNum || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {
+                        if (para2IsNum || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
+                            int ret = evaluateFollows(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                            if (ret == -1)
+                                return;
+                        }
+                        else
+                            return;
+                    }
+                    else
                         return;
                 }
-                // follows* query, assuming no entities
-                if (relation.getName().compare("followst") == 0) {
-                    int ret = evaluateFollows(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
-                    if (ret == -1)
+                // follows* query
+                else if (relation.getName().compare("followst") == 0) {
+                    if (para1IsNum || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                
+                        if (para2IsNum || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {   
+                            int ret = evaluateFollows(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                            if (ret == -1)
+                                return;
+                        }
+                        else
+                            return;
+                    }
+                    else
                         return;
                 }
-                // parent query, assuming no entities
-                if (relation.getName().compare("parent") == 0) {
-                    int ret = evaluateParent(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
-                    if (ret == -1)
+                // parent query
+                else if (relation.getName().compare("parent") == 0) {
+                    if (para1IsNum || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                        
+                        if (para2IsNum || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
+                            int ret = evaluateParent(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                            if (ret == -1)
+                                return;
+                        }
+                        else
+                            return;
+                    }
+                    else
                         return;
                 }
-                // parent* query, assuming no entities
-                if (relation.getName().compare("parentt") == 0) {
-                    int ret = evaluateParent(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
-                    if (ret == -1)
+                // parent* query
+                else if (relation.getName().compare("parentt") == 0) {
+                    if (para1IsNum || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                        
+                        if (para2IsNum || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
+                            int ret = evaluateParent(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                            if (ret == -1)
+                                return;
+                        }
+                        else
+                            return;
+                    }
+                    else
                         return;
                 }
-                // modifies query, only doing for statements
-                if (relation.getName().compare("modifiess") == 0) {
-                    int ret = evaluateModifiesS(para1IsNum, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
-                    if (ret == -1)
+                // modifies query, statements
+                else if (relation.getName().compare("modifiess") == 0) {
+                    if (para1IsNum || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                       
+                        if (para2IsNum || para2Type == DeclarationTable::variable_) {
+                            int ret = evaluateModifiesS(para1IsNum, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
+                            if (ret == -1)
+                                return;
+                        }
+                        else
+                            return;
+                    }
+                    else
                         return;
                 }
-                // uses query, only doing for statements
-                if (relation.getName().compare("usess") == 0) {
-                    int ret = evaluateUsesS(para1IsNum, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
-                    if (ret == -1)
+                // uses query, statements
+                else if (relation.getName().compare("usess") == 0) {
+                    if (para1IsNum || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) { 
+                        if (para2IsNum || para2Type == DeclarationTable::variable_) {
+                            int ret = evaluateUsesS(para1IsNum, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
+                            if (ret == -1)
+                                return;
+                        }
+                        else
+                            return;
+                    }
+                    else
                         return;
                 }
             }
@@ -1006,11 +1054,8 @@ void QueryProcessor::processQuery(PKB pkb)
                         return;
                     }
                     
-                    // Get rid of " " if parameters are entities
-                    if (patternIsEnt) {
-                        pattern = pattern.substr(1, pattern.size()-2);
-                    }
-                    else if (patternType == DeclarationTable::while_) {
+                    // Check that patternType is assign or while
+                    if (patternType == DeclarationTable::while_) {
                         if (expressionRoot != -1) {
                             return;
                         }
@@ -1018,11 +1063,15 @@ void QueryProcessor::processQuery(PKB pkb)
                             isWhile = true;
                         }
                     }
+                    else if (patternType != DeclarationTable::assign_) {
+                        return;
+                    }
 
-                    // Get rid of " " if parameters are entities
+                    // Get rid of " " if var is entitity
                     if (varIsEnt) {
                         var = var.substr(1, var.size()-2);
                     }
+                    // Return if var is the wrong type
                     else if (!varIsPlaceholder && varType != DeclarationTable::variable_) {
                         return;
                     }

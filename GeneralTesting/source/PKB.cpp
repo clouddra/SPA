@@ -228,20 +228,33 @@ bool PKB::isFollow(int first, int second) {
     return followsTable.isFollows(first, second);
 }
 
-std::vector<int> PKB::getCalls(int stmt) {
-    return callsTable.getCalls(stmt);
+std::vector<std::string> PKB::getCalls(int stmt) {
+    std::vector<int> temp = callsTable.getCalls(stmt);
+    std::vector<std::string> ret;
+
+    for (int i = 0; i < (int)temp.size(); i++) {
+        ret.push_back(procTable.getProcName(temp[i]));
+    }
+    return ret;
 }
 
-std::vector<int> PKB::getCalls() {
-    return callsTable.getCalls();
+std::vector<std::string> PKB::getCalls() {
+    std::vector<int> temp = callsTable.getCalls();
+    std::vector<std::string> ret;
+
+    for (int i = 0; i < (int)temp.size(); i++) {
+        ret.push_back(procTable.getProcName(temp[i]));
+    }
+    return ret;
 }
 
-std::vector<int> PKB::getCallsT(int stmt) {
+std::vector<std::string> PKB::getCallsT(int stmt) {
     int curr = 0;
-    std::vector<int> ans = getCalls(stmt);
+    std::vector<std::string> ans = getCalls(stmt);
+    std::vector<int> intTemp = callsTable.getCalls(stmt);
     
     while (curr < (int)ans.size()) {
-        std::vector<int> temp = getCalls(ans[curr]);
+        std::vector<std::string> temp = getCalls(intTemp[curr]);
         for (int i = 0; i < (int)temp.size(); i++) {
             ans.push_back(temp[i]);
         }
@@ -250,20 +263,33 @@ std::vector<int> PKB::getCallsT(int stmt) {
     return ans;
 }
 
-std::vector<int> PKB::getCalledBy(int stmt) {
-    return callsTable.getCalledBy(stmt);
+std::vector<std::string> PKB::getCalledBy(int stmt) {
+    std::vector<int> temp = callsTable.getCalledBy(stmt);
+    std::vector<std::string> ret;
+
+    for (int i = 0; i < (int)temp.size(); i++) {
+        ret.push_back(procTable.getProcName(temp[i]));
+    }
+    return ret;
 }
 
-std::vector<int> PKB::getCalledBy() {
-    return callsTable.getCalledBy();
+std::vector<std::string> PKB::getCalledBy() {
+    std::vector<int> temp = callsTable.getCalledBy();
+    std::vector<std::string> ret;
+
+    for (int i = 0; i < (int)temp.size(); i++) {
+        ret.push_back(procTable.getProcName(temp[i]));
+    }
+    return ret;
 }
 
-std::vector<int> PKB::getCalledByT(int stmt) {
+std::vector<std::string> PKB::getCalledByT(int stmt) {
     int curr = 0;
-    std::vector<int> ans = getCalledBy(stmt);
+    std::vector<std::string> ans = getCalledBy(stmt);
+    std::vector<int> intTemp = callsTable.getCalledBy(stmt);
     
     while (curr < (int)ans.size()) {
-        std::vector<int> temp = getCalledBy(ans[curr]);
+        std::vector<std::string> temp = getCalledBy(intTemp[curr]);
         for (int i = 0; i < (int)temp.size(); i++) {
             ans.push_back(temp[i]);
         }

@@ -40,7 +40,7 @@
 
 #ifndef STD_HEAD
 #define STD_HEAD
-#include "common.hpp"
+#include "Common.hpp"
 #endif
 
 #ifndef CALLS_HEAD
@@ -84,12 +84,12 @@ public:
     std::vector<int> getFollowedBy();
     std::vector<int> getFollowedByT(int stmt);
     bool isFollow(int first, int second);
-    std::vector<int> getCalls(int stmt);
-    std::vector<int> getCalls();
-    std::vector<int> getCallsT(int stmt);
-	std::vector<int> getCalledBy(int stmt);
-    std::vector<int> getCalledBy();
-    std::vector<int> getCalledByT(int stmt);
+    std::vector<std::string> getCalls(int stmt);
+    std::vector<std::string> getCalls();
+    std::vector<std::string> getCallsT(int stmt);
+	std::vector<std::string> getCalledBy(int stmt);
+    std::vector<std::string> getCalledBy();
+    std::vector<std::string> getCalledByT(int stmt);
     bool isCalls(int first, int second);
     std::vector<int> getModifiesVar(std::string var);
     std::vector<int> getModifiesVar();
