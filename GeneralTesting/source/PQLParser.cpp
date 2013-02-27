@@ -340,10 +340,12 @@ namespace pqlparser
 				;
 
 			attrCompare_ = 
+				hold[
 				(attrRef_					[at_c<0>(_val) = "attrCompare_attrRef"][push_back(at_c<2>(_val), _1)]
 				>> string("=")
 				>> ref_						[push_back(at_c<2>(_val), _1)]
 				)
+				]
 				|
 				(
 				synonym_					[at_c<0>(_val) = "attrCompare_synonym"][push_back(at_c<2>(_val), _1)]
