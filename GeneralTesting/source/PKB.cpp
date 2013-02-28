@@ -12,6 +12,7 @@ PKB::PKB() {
 	callsTable = CallsTable();
     ast = AST();
     stmtNodeTable = StmtNodeTable();
+	cfg = CFG();
 }
 
 int PKB::insertNode(int nodeType, std::string value, int parent) {
@@ -228,6 +229,80 @@ bool PKB::isFollow(int first, int second) {
     return followsTable.isFollows(first, second);
 }
 
+std::vector<std::string> PKB::getCalls(int stmt) {
+    std::vector<int> temp = callsTable.getCalls(stmt);
+    std::vector<std::string> ret;
+
+    for (int i = 0; i < (int)temp.size(); i++) {
+        ret.push_back(procTable.getProcName(temp[i]));
+    }
+    return ret;
+}
+
+std::vector<std::string> PKB::getCalls() {
+    std::vector<int> temp = callsTable.getCalls();
+    std::vector<std::string> ret;
+
+    for (int i = 0; i < (int)temp.size(); i++) {
+        ret.push_back(procTable.getProcName(temp[i]));
+    }
+    return ret;
+}
+
+std::vector<std::string> PKB::getCallsT(int stmt) {
+    int curr = 0;
+    std::vector<std::string> ans = getCalls(stmt);
+    std::vector<int> intTemp = callsTable.getCalls(stmt);
+    
+    while (curr < (int)ans.size()) {
+        std::vector<std::string> temp = getCalls(intTemp[curr]);
+        for (int i = 0; i < (int)temp.size(); i++) {
+            ans.push_back(temp[i]);
+        }
+        curr++;
+    }
+    return ans;
+}
+
+std::vector<std::string> PKB::getCalledBy(int stmt) {
+    std::vector<int> temp = callsTable.getCalledBy(stmt);
+    std::vector<std::string> ret;
+
+    for (int i = 0; i < (int)temp.size(); i++) {
+        ret.push_back(procTable.getProcName(temp[i]));
+    }
+    return ret;
+}
+
+std::vector<std::string> PKB::getCalledBy() {
+    std::vector<int> temp = callsTable.getCalledBy();
+    std::vector<std::string> ret;
+
+    for (int i = 0; i < (int)temp.size(); i++) {
+        ret.push_back(procTable.getProcName(temp[i]));
+    }
+    return ret;
+}
+
+std::vector<std::string> PKB::getCalledByT(int stmt) {
+    int curr = 0;
+    std::vector<std::string> ans = getCalledBy(stmt);
+    std::vector<int> intTemp = callsTable.getCalledBy(stmt);
+    
+    while (curr < (int)ans.size()) {
+        std::vector<std::string> temp = getCalledBy(intTemp[curr]);
+        for (int i = 0; i < (int)temp.size(); i++) {
+            ans.push_back(temp[i]);
+        }
+        curr++;
+    }
+    return ans;
+}
+
+bool PKB::isCalls(int first, int second) {
+    return callsTable.isCalls(first, second);
+}
+
 std::vector<int> PKB::getModifiesVar(std::string var) {
     int varIndex = varTable.getVarIndex(var);
     return modifiesTable.getModifiesVar(varIndex);
@@ -300,35 +375,12 @@ int PKB::getNumStmts() {
     return stmtNodeTable.getSize() - 1;
 }
 
-// The below function is used for pattern while, if and assign _ or _"x"_
+// The below function is used for pattern while, if and assign _
 // varName here refers to the variable name in simple source
-std::vector<int> PKB::matchPattern(int nodeType, std::string varName, std::string expr) {
+std::vector<int> PKB::matchIfWhilePattern(int nodeType, std::string varName) {
 	std::vector<int> toReturn;
 
-	if (nodeType == Node::assignNode)
-	{
-		std::vector<int> assignStmt = getStmtWithType(Node::assignNode); // Get all assignment statements
-		if (expr == "_")
-		{
-			for (int i=0; i<(int)assignStmt.size(); i++)
-			{
-				// Check if the assignStmt contains "varName = ..."
-				if (isModifies(assignStmt[i], varName))
-					toReturn.push_back(assignStmt[i]);
-			}
-		}
-		else // This means expr = _"var"_
-		{
-			std::string var = expr.substr(2, expr.length() - 4); // extract the var by removing _" and "_
-			for (int i=0; i<(int)assignStmt.size(); i++)
-			{
-				// Check if the assignStmt contains "varName = ...var..."
-				if (isModifies(assignStmt[i], varName) && isUses(assignStmt[i], var))
-					toReturn.push_back(assignStmt[i]);
-			}
-		}
-	}
-	else if (nodeType == Node::whileNode)
+	if (nodeType == Node::whileNode)
 	{
 		std::vector<int> whileStmt = getStmtWithType(Node::whileNode);
 		// Loop through all while loops, get only those with "while varName"
@@ -362,7 +414,7 @@ std::vector<int> PKB::matchPattern(int nodeType, std::string varName, std::strin
 	return toReturn;
 }
 
-// The below function is used to handle assign "x+y" or _"x+y"_
+// The below function is used to handle all assign pattern
 // varName here refers to the variable name in simple source
 // patternRoot should indicate the root of sub-expression, which is "+" for "x+y"
 std::vector<int> PKB::matchAssignPattern(std::string varName, std::vector<QueryNode> queryTree, int patternRoot, bool hasUnderscore)
@@ -381,9 +433,11 @@ std::vector<int> PKB::matchAssignPattern(std::string varName, std::vector<QueryN
 			// Right child of assignNode should be the expression root (in AST)
 			int exprNodeIndex = ast.getNode(assignNodeIndex).getChildren()[1];
 			
-			if (hasUnderscore) // Means something like _"x+y"_
+			if (hasUnderscore)
 			{
-				if (subtreeCompare(exprNodeIndex, patternRoot, queryTree))
+                if (patternRoot == -1) // Means _
+                    toReturn.push_back(assignStmt[i]);
+				else if (subtreeCompare(exprNodeIndex, patternRoot, queryTree)) // Means something like _"x+y"_
 					toReturn.push_back(assignStmt[i]);
 			}
 			else // Means "x+y"
@@ -461,14 +515,172 @@ Node PKB::qNodeToNode(QueryNode qNode)
 		nodeType = Node::timesNode;
 	else if (qNode.getName() == "/")
 		nodeType = Node::divideNode;
-	else // variable
+    else if (qNode.getValue().compare("variable") == 0)
 	{
 		nodeType = Node::varNode;
 		value = varTable.getVarIndex(qNode.getName());
 	}
+    else
+    {
+        nodeType = Node::constNode;
+        value = atoi(qNode.getName().c_str());
+    }
 	return Node(nodeType, value, -1);
 }
 
 std::set<int> PKB::getConstants() {
     return constantList;
+}
+
+void PKB::startBuildCfg() {
+	for (int i=0; i<(int)ast.getTree().size(); i++)
+	{
+		Node astNode = ast.getNode(i);
+		// Each procedure builds a CFG
+		if (astNode.getNodeType() == Node::procedureNode)
+		{
+			// Insert an empty CFG Node and let buildCFG add in the first statement
+			int cfgIndex = cfg.insertCFGNode();
+			buildCfg(astNode.getChildren()[0], cfgIndex);
+		}
+	}
+	// Print the cfg for debugging
+	// cfg.print();
+}
+
+// Takes in the ASTnode of stmtList and the CFGNode of the first child of stmtList
+// Returns the ending CFGNodes
+std::vector<int> PKB::buildCfg(int stmtListAst, int cfgIndex) {
+	std::vector<int> toReturn;
+
+	// Ensure the astNode passed in is of stmtLst type
+	Node stmtListNode = ast.getNode(stmtListAst);
+	if (stmtListNode.getNodeType() != Node::stmtLstNode)
+		std::cout << "I am in PKB::buildCFG" << std::endl;
+		
+	int currCfg = cfgIndex;
+	int nextCfg = -1;
+	int currAst = -1;
+	
+	std::vector<int> children = stmtListNode.getChildren();
+	for (int i=0; i<(int)children.size(); i++)
+	{
+		currAst = children[i];
+
+		// Add the stmtNum into the empty CFG Node created earlier by someone else
+		cfg.getCFGNode(currCfg).addStmt(ast.getNode(currAst).getStmtNum());
+
+		// If the current child has a right sibling (Not the last child)
+		if (i != children.size()-1)
+		{
+			if (ast.getNode(currAst).getNodeType() == Node::assignNode || ast.getNode(currAst).getNodeType() == Node::callNode)
+			{
+				// Create and link CFG node for the right sibling
+				nextCfg = cfg.insertCFGNode();
+				cfg.getCFGNode(currCfg).addNext(nextCfg);
+				cfg.getCFGNode(nextCfg).addPrev(currCfg);
+				// Update current Cfg pointer
+				currCfg = nextCfg;
+			}
+			else if (ast.getNode(currAst).getNodeType() == Node::whileNode)
+			{
+				// Handle the children of whileNode
+				int childCfg = cfg.insertCFGNode();
+				cfg.getCFGNode(currCfg).addNext(childCfg);
+				cfg.getCFGNode(childCfg).addPrev(currCfg);
+				int whileStmtLst = ast.getNode(currAst).getChildren()[1];
+				std::vector<int> endWhile = buildCfg(whileStmtLst, childCfg);
+				for (int j=0; j<(int)endWhile.size(); j++)
+				{
+					cfg.getCFGNode(endWhile[j]).addNext(currCfg);
+					cfg.getCFGNode(currCfg).addPrev(endWhile[j]);
+				}
+				// Create and link CFG node for the right sibling
+				nextCfg = cfg.insertCFGNode();
+				cfg.getCFGNode(currCfg).addNext(nextCfg);
+				cfg.getCFGNode(nextCfg).addPrev(currCfg);
+				// Update current Cfg pointer
+				currCfg = nextCfg;
+			}
+			else if (ast.getNode(currAst).getNodeType() == Node::ifNode)
+			{
+				// Handle the children of ifNode
+				int thenCfg = cfg.insertCFGNode();
+				cfg.getCFGNode(currCfg).addNext(thenCfg);
+				cfg.getCFGNode(thenCfg).addPrev(currCfg);
+				int thenStmtLst = ast.getNode(currAst).getChildren()[1];
+				std::vector<int> endThen = buildCfg(thenStmtLst, thenCfg);
+
+				int elseCfg = cfg.insertCFGNode();
+				cfg.getCFGNode(currCfg).addNext(elseCfg);
+				cfg.getCFGNode(elseCfg).addPrev(currCfg);
+				int elseStmtLst = ast.getNode(currAst).getChildren()[2];
+				std::vector<int> endElse = buildCfg(elseStmtLst, elseCfg);
+
+				// Create and link then/else nodes to the right sibling
+				nextCfg = cfg.insertCFGNode();
+
+				for (int j=0; j<(int)endThen.size(); j++)
+				{
+					cfg.getCFGNode(endThen[j]).addNext(nextCfg);
+					cfg.getCFGNode(nextCfg).addPrev(endThen[j]);
+				}
+				for (int j=0; j<(int)endElse.size(); j++)
+				{
+					cfg.getCFGNode(endElse[j]).addNext(nextCfg);
+					cfg.getCFGNode(nextCfg).addPrev(endElse[j]);
+				}
+				// Update current Cfg pointer
+				currCfg = nextCfg;
+			}
+			else
+				std::cout << "I am in PKB::buildCFG (1)" << std::endl;
+		}
+		else // Last child of stmtList
+		{
+			if (ast.getNode(currAst).getNodeType() == Node::assignNode || ast.getNode(currAst).getNodeType() == Node::callNode)
+			{
+				toReturn.push_back(currCfg);
+			}
+			else if (ast.getNode(currAst).getNodeType() == Node::whileNode)
+			{
+				// Handle the children of whileNode
+				int childCfg = cfg.insertCFGNode();
+				cfg.getCFGNode(currCfg).addNext(childCfg);
+				cfg.getCFGNode(childCfg).addPrev(currCfg);
+				int whileStmtLst = ast.getNode(currAst).getChildren()[1];
+				std::vector<int> endWhile = buildCfg(whileStmtLst, childCfg);
+				for (int j=0; j<(int)endWhile.size(); j++)
+				{
+					cfg.getCFGNode(endWhile[j]).addNext(currCfg);
+					cfg.getCFGNode(currCfg).addPrev(endWhile[j]);
+				}
+				toReturn.push_back(currCfg);
+			}
+			else if (ast.getNode(currAst).getNodeType() == Node::ifNode)
+			{
+				// Handle the children of ifNode
+				int thenCfg = cfg.insertCFGNode();
+				cfg.getCFGNode(currCfg).addNext(thenCfg);
+				cfg.getCFGNode(thenCfg).addPrev(currCfg);
+				int thenStmtLst = ast.getNode(currAst).getChildren()[1];
+				std::vector<int> endThen = buildCfg(thenStmtLst, thenCfg);
+
+				int elseCfg = cfg.insertCFGNode();
+				cfg.getCFGNode(currCfg).addNext(elseCfg);
+				cfg.getCFGNode(elseCfg).addPrev(currCfg);
+				int elseStmtLst = ast.getNode(currAst).getChildren()[2];
+				std::vector<int> endElse = buildCfg(elseStmtLst, elseCfg);
+
+				for (int j=0; j<(int)endThen.size(); j++)
+					toReturn.push_back(endThen[j]);
+				for (int j=0; j<(int)endElse.size(); j++)
+					toReturn.push_back(endElse[j]);
+			}
+			else
+				std::cout << "I am in PKB::buildCFG (2)" << std::endl;
+		}
+	}
+
+	return toReturn;
 }

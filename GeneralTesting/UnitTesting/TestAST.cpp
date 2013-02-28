@@ -28,6 +28,7 @@ AST myAST = AST();
 
 }
 
+// method to test insertions
 void ASTTest::testInsertion(){
 // create an AST
 AST myAST = AST();

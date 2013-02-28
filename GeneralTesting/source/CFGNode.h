@@ -28,6 +28,8 @@ private:
 
 	public:
 	CFGNode::CFGNode(int startStmt, int endStmt, std::vector<int> prevNodes);
+	CFGNode::CFGNode();
+	void addStmt(int stmtNum);
 	int getStart();
 	int getEnd();
 	std::vector<int> getNext();
@@ -39,7 +41,7 @@ private:
 /*
 GNODE createGNode (TNODE astNode, INDEX nodeType, STMT stmtNum, GNODE prevNode)
 Description:
-    Creates a CFG node with the given nodeType. eg. “assign”, “call”
+    Creates a CFG node with the given nodeType. eg. “assign? “call?
     stmtNum corresponds to the statement number represented by this node.
     Creates a reference to corresponding astNode.
     Add this GNODE object to prevNode.nextArray[].

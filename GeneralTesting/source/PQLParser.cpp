@@ -46,7 +46,22 @@ namespace pqlparser
 		std::string value;						// Value
         std::vector<combinedNode> children;    // Children
     };
-    
+
+	// Used by boost spirit to roll back partial push_backs.
+	void swap(commonNode &a, commonNode &b)
+	{
+		commonNode t;
+		t.name = a.name;
+		t.value = a.value;
+		t.children = a.children;
+		a.name = b.name;
+		a.value = b.value;
+		a.children = b.children;
+		b.name = t.name;
+		b.value = t.value;
+		b.children = t.children;
+	}
+
 	// Expression representation
 	struct binaryOp;
     struct nil {};
@@ -211,36 +226,26 @@ namespace pqlparser
 
 		void operator()(binaryOp const& expr) const
         {
-		/* We shall not handle expressions for PQL yet
             std::string value(1, expr.op);
-            int nodeType;
 
-            if (value.compare("*") == 0)
-            {
-                nodeType = Node::timesNode;
-            }
-            else if (value.compare("/") == 0)
-            {
-                nodeType = Node::divideNode;
-            }
-            else if (value.compare("+") == 0)
-            {
-                nodeType = Node::plusNode;
-            }
-            else if (value.compare("-") == 0)
-            {
-                nodeType = Node::minusNode;
-            }
-
-            int newParent = pkb->insertNode(nodeType, value, true, parent);
-            boost::apply_visitor(CommonNodeInserter(pkb, newParent), expr.left.expr);
-            boost::apply_visitor(CommonNodeInserter(pkb, newParent), expr.right.expr);
-		*/
+            int newParent = queryProcessor->insertNode(value, value, parent);
+            boost::apply_visitor(CommonNodeInserter(queryProcessor, newParent), expr.left.expr);
+            boost::apply_visitor(CommonNodeInserter(queryProcessor, newParent), expr.right.expr);
         }
 
-        void operator()(std::string n) const {     
-			queryProcessor->insertNode(n, "", parent);
+        void operator()(std::string n) const {   
+            std::istringstream convert(n);
+            int temp;
+            std::string type;
 
+            if (!(convert >> temp)) {
+                type = "variable";
+            }
+            else {
+                type = "constant";
+            }
+
+			queryProcessor->insertNode(n, type, parent);
         }
 
 	private:
@@ -263,8 +268,9 @@ namespace pqlparser
             using ascii::char_;
 			using qi::uint_;
             using ascii::string;
+			using boost::spirit::qi::hold;
             using namespace qi::labels;
-
+			
             using phoenix::at_c;
             using phoenix::push_back;
 
@@ -331,14 +337,16 @@ namespace pqlparser
 
 			attrCond_ = 
 				attrCompare_				[at_c<0>(_val) = "attrCompare"][push_back(at_c<2>(_val), _1)]
-				>> *("and" >> attrCompare_  [push_back(at_c<2>(_val), _1)])	
+				>> *("and" >> attrCompare_  [push_back(at_c<2>(_val), _1)])		
 				;
 
 			attrCompare_ = 
+				hold[
 				(attrRef_					[at_c<0>(_val) = "attrCompare_attrRef"][push_back(at_c<2>(_val), _1)]
 				>> string("=")
 				>> ref_						[push_back(at_c<2>(_val), _1)]
 				)
+				]
 				|
 				(
 				synonym_					[at_c<0>(_val) = "attrCompare_synonym"][push_back(at_c<2>(_val), _1)]
@@ -366,10 +374,10 @@ namespace pqlparser
 				
 			patternCond_ =
 				pattern_					[at_c<0>(_val) = "patternCond"][push_back(at_c<2>(_val), _1)]
-				>> *("and" >> pattern_      [push_back(at_c<2>(_val), _1)])
+				>> *("and" >> pattern_      [push_back(at_c<2>(_val), _1)])	
 				;
 
-			pattern_ %= assign_or_while_ | if_;
+			pattern_ %= hold[if_] | assign_or_while_;
 			
 			expression_spec_ = 
 				(('"' >> expr_ [at_c<0>(_val) = "expr_no_underscore"][push_back(at_c<2>(_val), _1)] >> '"') 
@@ -417,7 +425,7 @@ namespace pqlparser
 
 			relCond_ =
 				relRef_						[at_c<0>(_val) = "relcond_"][push_back(at_c<2>(_val), _1)]
-				>> *("and" >> relRef_       [push_back(at_c<2>(_val), _1)])
+				>> *("and" >> relRef_       [push_back(at_c<2>(_val), _1)])		
 				;
 
 			relRef_ %= ModifiesS_ | ModifiesP_ | UsesS_ | UsesP_ | Parent_ | ParentT_ | Follows_ | FollowsT_;

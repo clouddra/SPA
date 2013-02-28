@@ -3,6 +3,11 @@
 #include <vector>
 #endif
 
+#ifndef STD_HEAD
+#define STD_HEAD
+#include "Common.hpp"
+#endif
+
 #include "CFGNode.h"
 
 class CFG{
@@ -20,11 +25,13 @@ private:
 	CFGNode getCFGNode(int nodeIndex);
 	std::vector<CFGNode> getCFG();
 	int insertCFGNode(int start, int end, std::vector<int> prev);
+	int insertCFGNode();
+	void print();
 };
 /*
 GNODE createGNode (TNODE astNode, INDEX nodeType, STMT stmtNum, GNODE prevNode)
 Description:
-    Creates a CFG node with the given nodeType. eg. “assign”, “call”
+    Creates a CFG node with the given nodeType. eg. “assign? “call?
     stmtNum corresponds to the statement number represented by this node.
     Creates a reference to corresponding astNode.
     Add this GNODE object to prevNode.nextArray[].

@@ -60,3 +60,27 @@ int CFG::insertCFGNode(int start, int end, std::vector<int> prev){
 
 	return newNode;
 }
+
+int CFG::insertCFGNode(){
+	CFGNode temp = CFGNode();
+	cfg.push_back(temp);
+	int newNode = cfg.size() - 1;
+	return newNode;
+}
+
+// For debugging
+void CFG::print()
+{
+	for (int i=0; i<(int)cfg.size(); i++)
+	{
+		std::cout << i << " => Start: " << cfg[i].getStart() << ", End: " << cfg[i].getEnd() << std::endl;
+		std::cout << "Next: ";
+		for (int j=0; j<(int)cfg[i].getNext().size(); j++)
+			std::cout << cfg[i].getNext()[j] << ", ";
+		std::cout << std::endl;
+		std::cout << "Prev: ";
+		for (int j=0; j<(int)cfg[i].getPrev().size(); j++)
+			std::cout << cfg[i].getPrev()[j] << ", ";
+		std::cout << std::endl;
+	}
+}
