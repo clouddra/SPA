@@ -3,33 +3,45 @@
 #include <vector>
 #endif
 
-#ifndef STD_HEAD
-#define STD_HEAD
-#include "Common.hpp"
-#endif
-
-#include "CFGNode.h"
-
-class CFG{
+class CFGNode{
 
 private:
 	/**
 	 * Indicates the earliest that can be reached from the current node
 	 */
-	std::vector<CFGNode> cfg;
-	std::vector<int> fillStmtInNode(std::vector<int> stmtList, CFGNode nextNode);
+	/**
+	 * Index of this node in the CFG. can remove if not needed.
+	 */
+	int nodeIndex;
+	/**
+	 * Indicates the first statement of the node
+	 */
+	int start;
+	/**
+	 * Indicates the last statement of the node
+	 */
+	int end;
+
+
+	std::vector<int> next;
+	std::vector<int> prev;
 
 	public:
-
-	std::vector<int> getNext(int stmt1, int nodeIndex);
-	std::vector<int> getNextT(int stmt1, int nodeIndex);
-	std::vector<int> getPrev(int stmt2, int nodeIndex);
-	CFGNode getCFGNode(int nodeIndex);
-	std::vector<CFGNode> getCFG();
-	int insertCFGNode(int start, int end, std::vector<int> prev);
-	int insertCFGNode();
-	void print();
+	CFGNode::CFGNode(int startStmt, int endStmt, std::vector<int> prevNodes);
+<<<<<<< HEAD
+=======
+	CFGNode::CFGNode();
+	void addStmt(int stmtNum);
+	int getTop();
+>>>>>>> 86d7d9bfe0c793248564cfcfe4441bdb943da4f4
+	int getStart();
+	int getEnd();
+	std::vector<int> getNext();
+	std::vector<int> getPrev();
+	void addNext(int nextNode);
+	void addPrev(int prevNode);
 };
+
 /*
 GNODE createGNode (TNODE astNode, INDEX nodeType, STMT stmtNum, GNODE prevNode)
 Description:

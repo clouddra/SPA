@@ -6,6 +6,8 @@ CFGNode::CFGNode(int startStmt, int endStmt, std::vector<int> prevNodes){
 	prev = prevNodes;
 }
 
+<<<<<<< HEAD
+=======
 CFGNode::CFGNode(){
 	start = -1;
 	end = -1;
@@ -21,6 +23,10 @@ void CFGNode::addStmt(int stmtNum){
 		end = stmtNum;
 }
 
+int CFGNode::getTop(){
+	return top;
+>>>>>>> 86d7d9bfe0c793248564cfcfe4441bdb943da4f4
+
 int CFGNode::getStart(){
 	return start;
 }
@@ -35,6 +41,7 @@ std::vector<int> CFGNode::getNext(){
 std::vector<int> CFGNode::getPrev(){
 	return prev;
 }
+
 
 void CFGNode::addNext(int nextNode){
 	next.push_back(nextNode);
