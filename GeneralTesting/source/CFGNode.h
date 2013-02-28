@@ -9,7 +9,6 @@ private:
 	/**
 	 * Indicates the earliest that can be reached from the current node
 	 */
-	int top;
 	/**
 	 * Index of this node in the CFG. can remove if not needed.
 	 */
@@ -29,12 +28,10 @@ private:
 
 	public:
 	CFGNode::CFGNode(int startStmt, int endStmt, std::vector<int> prevNodes);
-	int getTop();
 	int getStart();
 	int getEnd();
 	std::vector<int> getNext();
 	std::vector<int> getPrev();
-	void setTop(int topNode);
 	void addNext(int nextNode);
 	void addPrev(int prevNode);
 };
