@@ -9,6 +9,7 @@ y = 99;
 while NobodyReason {
 	h = 1;
 	z = h + x;
+	call GambleRumble;
 	y = y + h * 8;
 	if RomancingTrain then {
 		g = 7 * 8 + 52; }
@@ -26,5 +27,6 @@ else {
 	while Motsu {
 		x = x + 2 + y - t * 52;
 		s = f - x; } }
+		call Dogfight;
 t = kimura;
 }

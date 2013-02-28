@@ -31,4 +31,6 @@ void QueryTest::testConstructor() {
 // create a query object
 QueryProcessor myQuery = QueryProcessor();
 
+CPPUNIT_ASSERT_EQUAL(0 , myQuery.insertNode("test", "test", -1));
+
 }
