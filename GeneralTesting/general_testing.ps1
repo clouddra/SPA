@@ -28,7 +28,7 @@ $args_integration = @($integration_relative_path);
 $args_autoTester = @($autoTester_relative_path + "tests\simple00.txt " + $autoTester_relative_path + "tests\query00.txt " + $autoTester_relative_path + "tests\out00.xml");
 $args_autoTester1 = @($autoTester_relative_path + "tests\simple01.txt " + $autoTester_relative_path + "tests\query01.txt " + $autoTester_relative_path + "tests\out01.xml");
 $args_autoTester2 = @($autoTester_relative_path + "tests\simple02.txt " + $autoTester_relative_path + "tests\query02.txt " + $autoTester_relative_path + "tests\out02.xml");
-$args_autoTester3 = @($autoTester_relative_path + "tests\simple04.txt " + $autoTester_relative_path + "tests\query05.txt " + $autoTester_relative_path + "tests\out03.xml");
+$args_autoTester3 = @($autoTester_relative_path + "tests\simple03.txt " + $autoTester_relative_path + "tests\query03.txt " + $autoTester_relative_path + "tests\out03.xml");
 #$args_autoTester3 = @($autoTester_relative_path + "tests\simple03.txt " + $autoTester_relative_path + "tests\query03.txt " + $autoTester_relative_path + "tests\out03.xml");
 
 #change directory to the $solution_path

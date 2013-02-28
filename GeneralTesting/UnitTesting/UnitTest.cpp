@@ -12,6 +12,7 @@ int main(int argc, char* argv[])
     unitSuite->addTest(CppUnit::TestFactoryRegistry::getRegistry("ParserTest").makeTest());
     unitSuite->addTest(CppUnit::TestFactoryRegistry::getRegistry("QueryPreprocessorTest").makeTest());
     unitSuite->addTest(CppUnit::TestFactoryRegistry::getRegistry("ProcTableTest").makeTest());	
+	unitSuite->addTest(CppUnit::TestFactoryRegistry::getRegistry("CallsTableTest").makeTest());
     CppUnit::TestFactoryRegistry::getRegistry().addTestToSuite(unitSuite);
     CppUnit::TextUi::TestRunner runner;
 

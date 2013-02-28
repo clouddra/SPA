@@ -20,3 +20,5 @@ simple.sdf
 # Exclude other directories
 ipch/
 GeneralTesting/cppunit-1.12.1/
+GeneralTesting/AutoTester/tests/out*.xml
+GeneralTesting/AutoTester/autoTester*.out
