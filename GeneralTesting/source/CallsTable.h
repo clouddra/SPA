@@ -84,7 +84,7 @@ If the Calls relationship between procedure 1 and procedure 2 is in the Calls Ta
 PAIR<PROC, PROC> extractCalls (INDEX ind)
 Description:
     Returns the relationship of two statements at Calls Table [ind]
-If “ind” is out of range:
+If ind is out of range:
 Throws:
     InvalidReferenceException.
 

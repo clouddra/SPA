@@ -1,4 +1,6 @@
-assign a; variable v; 
-Select v such that Uses(a, v)
+if ifs; variable v; procedure p; call c;
+Select p such that Calls(p, "Mary")
+
+
  
 

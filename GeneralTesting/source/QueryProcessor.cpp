@@ -141,6 +141,12 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para1IsPlaceho
             return -1;
     }
 
+    if (para1IsPlaceholder && para2IsPlaceholder) {
+        if (pkb.getFollowsTable() -> getSize() > 0)
+            return 0;
+        else
+            return -1;
+    }
     // Inserting valid values based on PKB tables 
     if (!T) {
         if (para1IsNum) {
@@ -201,9 +207,8 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para1IsPlaceho
         else {
             // Double variable e.g Follows(s1, s2)
             if (para1.compare(para2) == 0) {
-                // Follows (s1, s1) 
-                std::set<std::string> tempSet = resultStore.getValuesFor(para1);
-                std::vector<int> para1Val = stringVecToIntVec(std::vector<std::string> (tempSet.begin(), tempSet.end()));
+                // Follows (s1, s1)           
+                std::vector<int> para1Val = stringVecToIntVec(resultStore.getValuesFor(para1));
                 if (para1Val.size() == 0) {
                     return -1;
                 }
@@ -219,8 +224,7 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para1IsPlaceho
                 }
             }
             else {
-                std::set<std::string> tempSet = resultStore.getValuesFor(para1);
-                std::vector<std::string> para1ValString = std::vector<std::string> (tempSet.begin(), tempSet.end());
+                std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
                 std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
                 std::vector<std::vector<std::string>> toStoreTuple;
                 if (para1ValInt.size() == 0) {
@@ -236,10 +240,7 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para1IsPlaceho
                         toStoreTuple.push_back(holder);
                     }
                 }
-                std::vector<std::string> vars;
-                vars.push_back(para1);
-                vars.push_back(para2);
-                int ret = resultStore.insertResult(vars, toStoreTuple);
+                int ret = resultStore.insertResult(para1, para2, toStoreTuple);
                 if (ret == -1)
                     return -1;
             }
@@ -313,8 +314,7 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para1IsPlaceho
             // Double variable e.g Follows*(s1, s2)
             if (para1.compare(para2) == 0) {
                 // Follows* (s1, s1)
-                std::set<std::string> tempSet = resultStore.getValuesFor(para1);
-                std::vector<int> para1Val = stringVecToIntVec(std::vector<std::string> (tempSet.begin(), tempSet.end()));
+                std::vector<int> para1Val = stringVecToIntVec(resultStore.getValuesFor(para1));
                 if (para1Val.size() == 0) {
                     return -1;
                 }
@@ -337,8 +337,7 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para1IsPlaceho
                 }
             }
             else {
-                std::set<std::string> tempSet = resultStore.getValuesFor(para1);
-                std::vector<std::string> para1ValString = std::vector<std::string> (tempSet.begin(), tempSet.end());
+                std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
                 std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
                 std::vector<std::vector<std::string>> toStoreTuple;
                 if (para1ValInt.size() == 0) {
@@ -354,10 +353,7 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para1IsPlaceho
                         toStoreTuple.push_back(holder);
                     }
                 }
-                std::vector<std::string> vars;
-                vars.push_back(para1);
-                vars.push_back(para2);
-                int ret = resultStore.insertResult(vars, toStoreTuple);
+                int ret = resultStore.insertResult(para1, para2, toStoreTuple);
                 if (ret == -1)
                     return -1;
             }
@@ -384,6 +380,12 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para1IsPlacehol
             return -1;
     }
 
+    if (para1IsPlaceholder && para2IsPlaceholder) {
+        if (pkb.getParentTable() -> getSize() > 0)
+            return 0;
+        else
+            return -1;
+    }
     // Inserting valid values based on PKB tables 
     if (!T) {
         if (para1IsNum) {
@@ -445,8 +447,7 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para1IsPlacehol
             // Double variable e.g Parent(s1, s2)
             if (para1.compare(para2) == 0) {
                 // Parent (s1, s1)
-                std::set<std::string> tempSet = resultStore.getValuesFor(para1);
-                std::vector<int> para1Val = stringVecToIntVec(std::vector<std::string> (tempSet.begin(), tempSet.end()));
+                std::vector<int> para1Val = stringVecToIntVec(resultStore.getValuesFor(para1));
                 if (para1Val.size() == 0) {
                     return -1;
                 }
@@ -462,8 +463,7 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para1IsPlacehol
                 }
             }
             else {
-                std::set<std::string> tempSet = resultStore.getValuesFor(para2);
-                std::vector<std::string> para2ValString = std::vector<std::string> (tempSet.begin(), tempSet.end());
+                std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
                 std::vector<int> para2ValInt = stringVecToIntVec(para2ValString);
                 std::vector<std::vector<std::string>> toStoreTuple;
                 if (para2ValInt.size() == 0) {
@@ -479,10 +479,7 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para1IsPlacehol
                         toStoreTuple.push_back(holder);
                     }
                 }
-                std::vector<std::string> vars;
-                vars.push_back(para1);
-                vars.push_back(para2);
-                int ret = resultStore.insertResult(vars, toStoreTuple);
+                int ret = resultStore.insertResult(para1, para2, toStoreTuple);
                 if (ret == -1)
                     return -1;
             }
@@ -556,8 +553,7 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para1IsPlacehol
             // Double variable e.g Parent*(s1, s2)
             if (para1.compare(para2) == 0) {
                 // Parent* (s1, s1)
-                std::set<std::string> tempSet = resultStore.getValuesFor(para2);
-                std::vector<int> para2Val = stringVecToIntVec(std::vector<std::string> (tempSet.begin(), tempSet.end()));
+                std::vector<int> para2Val = stringVecToIntVec(resultStore.getValuesFor(para2));
                 if (para2Val.size() == 0) {
                     return -1;
                 }
@@ -580,8 +576,7 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para1IsPlacehol
                 }
             }
             else {
-                std::set<std::string> tempSet = resultStore.getValuesFor(para2);
-                std::vector<std::string> para2ValString = std::vector<std::string> (tempSet.begin(), tempSet.end());
+                std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
                 std::vector<int> para2ValInt = stringVecToIntVec(para2ValString);
                 std::vector<std::vector<std::string>> toStoreTuple;
                 if (para2ValInt.size() == 0) {
@@ -597,10 +592,7 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para1IsPlacehol
                         toStoreTuple.push_back(holder);
                     }
                 }
-                std::vector<std::string> vars;
-                vars.push_back(para1);
-                vars.push_back(para2);
-                int ret = resultStore.insertResult(vars, toStoreTuple);
+                int ret = resultStore.insertResult(para1, para2, toStoreTuple);
                 if (ret == -1)
                     return -1;
             }
@@ -677,8 +669,7 @@ int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para1IsPlaceholder, 
             return -1;
         }
         else {
-            std::set<std::string> tempSet = resultStore.getValuesFor(para1);
-            std::vector<std::string> para1ValString = std::vector<std::string> (tempSet.begin(), tempSet.end());
+            std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
             std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
             std::vector<std::vector<std::string>> toStoreTuple;
             if (para1ValInt.size() == 0) {
@@ -693,10 +684,7 @@ int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para1IsPlaceholder, 
                     toStoreTuple.push_back(holder);
                 }
             }
-            std::vector<std::string> vars;
-            vars.push_back(para1);
-            vars.push_back(para2);
-            int ret = resultStore.insertResult(vars, toStoreTuple);
+            int ret = resultStore.insertResult(para1, para2, toStoreTuple);
             if (ret == -1)
                 return -1;
         }
@@ -772,8 +760,7 @@ int QueryProcessor::evaluateUsesS(bool para1IsNum, bool para1IsPlaceholder, bool
             return -1;
         }
         else {
-            std::set<std::string> tempSet = resultStore.getValuesFor(para1);
-            std::vector<std::string> para1ValString = std::vector<std::string> (tempSet.begin(), tempSet.end());
+            std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
             std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
             std::vector<std::vector<std::string>> toStoreTuple;
             if (para1ValInt.size() == 0) {
@@ -788,10 +775,7 @@ int QueryProcessor::evaluateUsesS(bool para1IsNum, bool para1IsPlaceholder, bool
                     toStoreTuple.push_back(holder);
                 }
             }
-            std::vector<std::string> vars;
-            vars.push_back(para1);
-            vars.push_back(para2);
-            int ret = resultStore.insertResult(vars, toStoreTuple);
+            int ret = resultStore.insertResult(para1, para2, toStoreTuple);
             if (ret == -1)
                 return -1;
         }
@@ -940,40 +924,88 @@ void QueryProcessor::processQuery(PKB pkb)
                     para2 = para2.substr(1, para2.size()-2);
                 }
 
-                // follows query, assuming no entities
+                // follows query
                 if (relation.getName().compare("follows") == 0) {
-                    int ret = evaluateFollows(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
-                    if (ret == -1)
+                    if (para1IsNum || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {
+                        if (para2IsNum || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
+                            int ret = evaluateFollows(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                            if (ret == -1)
+                                return;
+                        }
+                        else
+                            return;
+                    }
+                    else
                         return;
                 }
-                // follows* query, assuming no entities
-                if (relation.getName().compare("followst") == 0) {
-                    int ret = evaluateFollows(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
-                    if (ret == -1)
+                // follows* query
+                else if (relation.getName().compare("followst") == 0) {
+                    if (para1IsNum || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                
+                        if (para2IsNum || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {   
+                            int ret = evaluateFollows(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                            if (ret == -1)
+                                return;
+                        }
+                        else
+                            return;
+                    }
+                    else
                         return;
                 }
-                // parent query, assuming no entities
-                if (relation.getName().compare("parent") == 0) {
-                    int ret = evaluateParent(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
-                    if (ret == -1)
+                // parent query
+                else if (relation.getName().compare("parent") == 0) {
+                    if (para1IsNum || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                        
+                        if (para2IsNum || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
+                            int ret = evaluateParent(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                            if (ret == -1)
+                                return;
+                        }
+                        else
+                            return;
+                    }
+                    else
                         return;
                 }
-                // parent* query, assuming no entities
-                if (relation.getName().compare("parentt") == 0) {
-                    int ret = evaluateParent(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
-                    if (ret == -1)
+                // parent* query
+                else if (relation.getName().compare("parentt") == 0) {
+                    if (para1IsNum || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                        
+                        if (para2IsNum || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
+                            int ret = evaluateParent(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                            if (ret == -1)
+                                return;
+                        }
+                        else
+                            return;
+                    }
+                    else
                         return;
                 }
-                // modifies query, only doing for statements
-                if (relation.getName().compare("modifiess") == 0) {
-                    int ret = evaluateModifiesS(para1IsNum, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
-                    if (ret == -1)
+                // modifies query, statements
+                else if (relation.getName().compare("modifiess") == 0) {
+                    if (para1IsNum || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                       
+                        if (para2IsNum || para2Type == DeclarationTable::variable_) {
+                            int ret = evaluateModifiesS(para1IsNum, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
+                            if (ret == -1)
+                                return;
+                        }
+                        else
+                            return;
+                    }
+                    else
                         return;
                 }
-                // uses query, only doing for statements
-                if (relation.getName().compare("usess") == 0) {
-                    int ret = evaluateUsesS(para1IsNum, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
-                    if (ret == -1)
+                // uses query, statements
+                else if (relation.getName().compare("usess") == 0) {
+                    if (para1IsNum || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) { 
+                        if (para2IsNum || para2Type == DeclarationTable::variable_) {
+                            int ret = evaluateUsesS(para1IsNum, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
+                            if (ret == -1)
+                                return;
+                        }
+                        else
+                            return;
+                    }
+                    else
                         return;
                 }
             }
@@ -993,13 +1025,17 @@ void QueryProcessor::processQuery(PKB pkb)
                     std::string var = tree[temp.getChildren()[1]].getName();
 
                     temp = tree[temp.getChildren()[2]];
-                    std::string expr;
-                    if (temp.getName().compare("_") == 0) {
-                        expr = "_";
+                    int expressionRoot = -1;
+                    bool hasUnderscore = false;
+                    if (temp.getName().compare("expr_with_underscore") == 0) {
+                        expressionRoot = temp.getChildren()[0];
+                        hasUnderscore = true;
                     }
-                    else if (temp.getName().compare("expr_with_underscore") == 0) {
-                        temp = tree[temp.getChildren()[0]];
-                        expr = "_\"" + temp.getName() + "\"_";
+                    else if (temp.getName().compare("expr_no_underscore") == 0) {
+                        expressionRoot = temp.getChildren()[0];
+                    }
+                    else if (temp.getName().compare("_") == 0) {
+                        hasUnderscore = true;
                     }
                     else {
                         // std::cout << "Error parsing pattern clause\n";
@@ -1010,28 +1046,46 @@ void QueryProcessor::processQuery(PKB pkb)
                     bool patternIsNum = false, varIsNum = false;
                     bool patternIsEnt = false, varIsEnt = false;
                     bool patternIsPlaceholder = false, varIsPlaceholder = false;
+                    bool isWhile = false;
                     int patternNum = -1, varNum = -1;
                     int patternType = findTypeOf(pattern, &patternIsNum, &patternIsEnt, &patternIsPlaceholder, &patternNum);
                     int varType = findTypeOf(var, &varIsNum, &varIsEnt, &varIsPlaceholder, &varNum);
                     if (patternType == -2 || varType == -2) {   // Cannot figure out type
                         return;
                     }
-                     // Exit if a "constant" type variable is found (not allowed)
-                    if (patternType == DeclarationTable::constant_ || varType == DeclarationTable::constant_) {
-                        // std::cout << "Constant type not allowed in query\n";
+                    
+                    // Check that patternType is assign or while
+                    if (patternType == DeclarationTable::while_) {
+                        if (expressionRoot != -1) {
+                            return;
+                        }
+                        else {
+                            isWhile = true;
+                        }
+                    }
+                    else if (patternType != DeclarationTable::assign_) {
                         return;
                     }
-                    // Get rid of " " if parameters are entities
-                    if (patternIsEnt) {
-                        pattern = pattern.substr(1, pattern.size()-2);
-                    }
+
+                    // Get rid of " " if var is entitity
                     if (varIsEnt) {
                         var = var.substr(1, var.size()-2);
                     }
-
-                    int ret = evaluatePattern(pattern, var, expr, varIsEnt, varIsPlaceholder, pkb);
-                    if (ret == -1)
+                    // Return if var is the wrong type
+                    else if (!varIsPlaceholder && varType != DeclarationTable::variable_) {
                         return;
+                    }
+
+                    if (!isWhile) {
+                        int ret = evaluateAssignPattern(pattern, var, expressionRoot, varIsEnt, varIsPlaceholder, hasUnderscore, pkb);
+                        if (ret == -1)
+                            return;
+                    }
+                    else {
+                        int ret = evaluateIfWhilePattern(pattern, var, varIsEnt, varIsPlaceholder, pkb);
+                        if (ret == -1)
+                            return;
+                    }
                 }
                 else {
                     // std::cout << "Unknown pattern format\n";
@@ -1052,7 +1106,7 @@ void QueryProcessor::processQuery(PKB pkb)
                 if (temp.getName().compare("attrCompare_attrRef") == 0) {
                     std::string syno, attrName;
                     int synoType;
-                    ret = attrRefChecker(&syno, &attrName, &synoType, tree[temp.getChildren()[0]], tree, pkb);
+                    ret = attrRefChecker(&syno, &attrName, &synoType, tree[temp.getChildren()[0]], pkb);
                     if (ret == -1)
                         return;
                     temp = tree[temp.getChildren()[1]];
@@ -1080,23 +1134,19 @@ void QueryProcessor::processQuery(PKB pkb)
                     else if (temp.getName().compare("ref_attrRef") == 0) {
                         std::string syno2, attrName2;
                         int synoType2;
-                        ret = attrRefChecker(&syno2, &attrName2, &synoType2, tree[temp.getChildren()[0]], tree, pkb);
+                        ret = attrRefChecker(&syno2, &attrName2, &synoType2, tree[temp.getChildren()[0]], pkb);
                         if (ret == -1)
                             return;
 
-                        std::set<std::string> tempSet = resultStore.getValuesFor(syno);
-                        toStore = std::vector<std::string> (tempSet.begin(), tempSet.end());
+                        toStore = resultStore.getValuesFor(syno);
                         std::vector<std::vector<std::string>> toStoreTuple;
                         for (int i = 0; i < (int)toStore.size(); i++) {
                             std::vector<std::string> tempVec;
                             tempVec.push_back(toStore[i]);
                             tempVec.push_back(toStore[i]); 
                             toStoreTuple.push_back(tempVec);
-                        }
-                        std::vector<std::string> tempVec;
-                        tempVec.push_back(syno);
-                        tempVec.push_back(syno2); 
-                        ret = resultStore.insertResult(tempVec, toStoreTuple);
+                        } 
+                        ret = resultStore.insertResult(syno, syno2, toStoreTuple);
                         if (ret == -1)
                             return;
                     }
@@ -1130,11 +1180,10 @@ void QueryProcessor::processQuery(PKB pkb)
                     else if (temp.getName().compare("ref_pl_attrRef") == 0) {
                         std::string syno2, attrName2;
                         int synoType2;
-                        ret = attrRefChecker(&syno2, &attrName2, &synoType2, tree[temp.getChildren()[0]], tree, pkb);
+                        ret = attrRefChecker(&syno2, &attrName2, &synoType2, tree[temp.getChildren()[0]], pkb);
                         if (ret == -1)
                             return;
-                        std::set<std::string> tempSet = resultStore.getValuesFor(syno2);
-                        toStore = std::vector<std::string> (tempSet.begin(), tempSet.end());
+                        toStore = resultStore.getValuesFor(syno2);
                         ret = resultStore.insertResult(syno, toStore);
                         if (ret == -1)
                             return;
@@ -1162,12 +1211,12 @@ void QueryProcessor::processQuery(PKB pkb)
     if (isBool) 
         result.push_back("true");
     else {
-        std::set<std::string> tempSet = resultStore.getValuesFor(target);
-        result = std::vector<std::string> (tempSet.begin(), tempSet.end());
+        result = resultStore.getValuesFor(target);
     }
 }
 
-int QueryProcessor::attrRefChecker(std::string* synonym, std::string* attrName, int* synoType, QueryNode attrRef, std::vector<QueryNode> tree, PKB pkb) {
+int QueryProcessor::attrRefChecker(std::string* synonym, std::string* attrName, int* synoType, QueryNode attrRef, PKB pkb) {
+    std::vector<QueryNode> tree = queryTree.getTree();
     *synonym = (tree[attrRef.getChildren()[0]]).getName();
     *synoType = evaluateType(pkb, *synonym);
     if (*synoType == DeclarationTable::prog_line_ || *synoType == -1) {
@@ -1227,8 +1276,9 @@ void QueryProcessor::printResult()
 // Evaluates pattern query Eg. "pattern a1(x, _"y"_)" ===> a1 = pattern, x = var, _"y"_ = expr
 // Eg. "pattern w1(x, _)" ===> w1 = pattern, x = var
 // Eg. "pattern if1(x, _, _)" ===> if1 = pattern, x = var
-int QueryProcessor::evaluatePattern(std::string pattern, std::string var, std::string expr, bool varIsEnt, bool varIsPlaceholder, PKB pkb)
+int QueryProcessor::evaluateAssignPattern(std::string pattern, std::string var, int exprRoot, bool varIsEnt, bool varIsPlaceholder, bool hasUnderscore, PKB pkb)
 {
+    std::vector<QueryNode> tree = queryTree.getTree();
     // Inserting valid values based on parameter type (if variable)
     int patternType, varType, ret;
     patternType = evaluateType(pkb, pattern);
@@ -1243,10 +1293,10 @@ int QueryProcessor::evaluatePattern(std::string pattern, std::string var, std::s
     std::vector<std::string> toStore;
     std::vector<std::vector<std::string>> toStoreTuple;
     std::vector<int> statements;
-	// For now we only need to handle assign
+	
     if (patternType == DeclarationTable::assign_) {
         if (varIsEnt) {     // The var == "var", where var is in our simple source code
-            statements = pkb.matchPattern(Node::assignNode, var, expr);
+            statements = pkb.matchAssignPattern(var, tree, exprRoot, hasUnderscore);
             toStore = intVecToStringVec(statements);
             ret = resultStore.insertResult(pattern, toStore);
             if (ret == -1)
@@ -1257,7 +1307,7 @@ int QueryProcessor::evaluatePattern(std::string pattern, std::string var, std::s
             std::set<int> temp;
             for (int i=0; i<(int)varList.size(); i++)
 			{
-				statements = pkb.matchPattern(Node::assignNode, varList[i], expr);
+				statements = pkb.matchAssignPattern(varList[i], tree, exprRoot, hasUnderscore);
                 temp.insert(statements.begin(), statements.end());  // Set ensures no duplicates
 			}
             statements.clear();
@@ -1268,11 +1318,10 @@ int QueryProcessor::evaluatePattern(std::string pattern, std::string var, std::s
                 return -1; 
         }
         else if (varType == DeclarationTable::variable_) {  
-            std::set<std::string> tempSet = resultStore.getValuesFor(var);
-            std::vector<std::string> varList = std::vector<std::string> (tempSet.begin(), tempSet.end());
+            std::vector<std::string> varList = resultStore.getValuesFor(var);
             for (int i=0; i<(int)varList.size(); i++)
 			{
-				statements = pkb.matchPattern(Node::assignNode, varList[i], expr);
+				statements = pkb.matchAssignPattern(varList[i], tree, exprRoot, hasUnderscore);
                 toStore = intVecToStringVec(statements);
                 for (int j = 0; j < (int)toStore.size(); j++) {
                     std::vector<std::string> temp;
@@ -1281,10 +1330,7 @@ int QueryProcessor::evaluatePattern(std::string pattern, std::string var, std::s
                     toStoreTuple.push_back(temp);
                 }
 			}
-            std::vector<std::string> temp;
-            temp.push_back(pattern);
-            temp.push_back(var);
-            int ret = resultStore.insertResult(temp, toStoreTuple);
+            int ret = resultStore.insertResult(pattern, var, toStoreTuple);
             if (ret == -1)
                 return -1;
         }
@@ -1293,16 +1339,80 @@ int QueryProcessor::evaluatePattern(std::string pattern, std::string var, std::s
             return -1;
         }
     }
-	else if (patternType == DeclarationTable::while_)
-	{
-		// Evaluate while patterns
-	}
-	else if (patternType == DeclarationTable::if_)
-	{
-		// Evaluate if patterns
-	}
     else {
         // std::cout << pattern << " is not declared as an assign, query cannot be evaluated/n"; 
+        return -1;
+    }
+    return 0;
+}
+
+int QueryProcessor::evaluateIfWhilePattern(std::string pattern, std::string var, bool varIsEnt, bool varIsPlaceholder, PKB pkb) {
+    std::vector<QueryNode> tree = queryTree.getTree();
+    // Inserting valid values based on parameter type (if variable)
+    int patternType, varType, ret;
+    patternType = evaluateType(pkb, pattern);
+    if (patternType == -1) 
+        return -1;
+    if (!varIsEnt && !varIsPlaceholder) {
+        varType = evaluateType(pkb, var);
+        if (varType == -1)
+            return -1;
+    }
+
+    std::vector<std::string> toStore;
+    std::vector<std::vector<std::string>> toStoreTuple;
+    std::vector<int> statements;
+	
+    if (varIsEnt) {     // The var == "var", where var is in our simple source code
+        if (patternType == DeclarationTable::while_)
+            statements = pkb.matchIfWhilePattern(Node::whileNode, var);
+        else
+            statements = pkb.matchIfWhilePattern(Node::ifNode, var);
+        toStore = intVecToStringVec(statements);
+        ret = resultStore.insertResult(pattern, toStore);
+        if (ret == -1)
+            return -1;  
+    }
+    else if (varIsPlaceholder) {
+        std::vector<std::string> varList = pkb.getVarTable();
+        std::set<int> temp;
+        for (int i=0; i<(int)varList.size(); i++)
+		{
+            if (patternType == DeclarationTable::while_)
+			    statements = pkb.matchIfWhilePattern(Node::whileNode, varList[i]);
+            else
+                statements = pkb.matchIfWhilePattern(Node::ifNode, varList[i]);
+            temp.insert(statements.begin(), statements.end());  // Set ensures no duplicates
+		}
+        statements.clear();
+        statements.insert(statements.begin(), temp.begin(), temp.end());
+        toStore = intVecToStringVec(statements);
+        ret = resultStore.insertResult(pattern, toStore);
+        if (ret == -1)
+            return -1; 
+    }
+    else if (varType == DeclarationTable::variable_) {  
+        std::vector<std::string> varList = resultStore.getValuesFor(var);
+        for (int i=0; i<(int)varList.size(); i++)
+		{
+            if (patternType == DeclarationTable::while_)
+			    statements = pkb.matchIfWhilePattern(Node::whileNode, varList[i]);
+            else
+                statements = pkb.matchIfWhilePattern(Node::ifNode, varList[i]);
+            toStore = intVecToStringVec(statements);
+            for (int j = 0; j < (int)toStore.size(); j++) {
+                std::vector<std::string> temp;
+                temp.push_back(toStore[j]);
+                temp.push_back(varList[i]);
+                toStoreTuple.push_back(temp);
+            }
+		}
+        int ret = resultStore.insertResult(pattern, var, toStoreTuple);
+        if (ret == -1)
+            return -1;
+    }
+    else {
+        // std::cout << var << " is not declared as a variable, query cannot be evaluated/n"; 
         return -1;
     }
     return 0;

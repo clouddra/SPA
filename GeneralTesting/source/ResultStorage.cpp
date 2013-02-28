@@ -19,6 +19,13 @@ int ResultStorage::insertResult(std::string var, std::vector<std::string> vals) 
     return insertResult(tempVars, tempVals);
 }
 
+int ResultStorage::insertResult(std::string var1, std::string var2, std::vector<std::vector<std::string>> vals) {
+    std::vector<std::string> tempVars;
+    tempVars.push_back(var1);
+    tempVars.push_back(var2);
+    return insertResult(tempVars, vals);
+}
+
 int ResultStorage::insertResult(std::vector<std::string> vars, std::vector<std::vector<std::string>> vals) {
     TupleTable tempTT = TupleTable(vars, vals);
     int ret, merge1 = -1, toDelete = -1;
@@ -82,11 +89,12 @@ int ResultStorage::insertResult(std::vector<std::string> vars, std::vector<std::
     return 0;
 }
 
-std::set<std::string> ResultStorage::getValuesFor(std::string var) {
-    std::set<std::string> ret;
+std::vector<std::string> ResultStorage::getValuesFor(std::string var) {
+    std::vector<std::string> ret;
     for (int i = 0; i < (int)vvVector.size(); i++) {
         if (vvVector[i].getVariable().compare(var) == 0) {
-            ret = vvVector[i].getValues();  
+            std::set<std::string> tempSet = vvVector[i].getValues(); 
+            ret = std::vector<std::string> (tempSet.begin(), tempSet.end());
             return ret;
         }
     }
