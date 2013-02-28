@@ -35,6 +35,7 @@
     <ClInclude Include="..\source\ResultStorage.h" />
     <ClInclude Include="..\source\SimpleGrammar.h" />
     <ClInclude Include="..\source\SPAController.h" />
+    <ClInclude Include="..\source\StmtNode.h" />
     <ClInclude Include="..\source\StmtNodeTable.h" />
     <ClInclude Include="..\source\TupleTable.h" />
     <ClInclude Include="..\source\UsesTable.h" />
@@ -64,6 +65,7 @@
     <ClCompile Include="..\source\QueryTree.cpp" />
     <ClCompile Include="..\source\ResultStorage.cpp" />
     <ClCompile Include="..\source\SPAController.cpp" />
+    <ClCompile Include="..\source\StmtNode.cpp" />
     <ClCompile Include="..\source\StmtNodeTable.cpp" />
     <ClCompile Include="..\source\TupleTable.cpp" />
     <ClCompile Include="..\source\UsesTable.cpp" />

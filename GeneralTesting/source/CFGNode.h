@@ -10,10 +10,6 @@ private:
 	 * Indicates the earliest that can be reached from the current node
 	 */
 	/**
-	 * Index of this node in the CFG. can remove if not needed.
-	 */
-	int nodeIndex;
-	/**
 	 * Indicates the first statement of the node
 	 */
 	int start;

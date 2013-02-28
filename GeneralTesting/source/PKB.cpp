@@ -386,7 +386,7 @@ std::vector<int> PKB::matchIfWhilePattern(int nodeType, std::string varName) {
 		// Loop through all while loops, get only those with "while varName"
 		for (int i=0; i<(int)whileStmt.size(); i++)
 		{
-			Node whileAstNode = ast.getNode(stmtNodeTable.getNode(whileStmt[i]));
+			Node whileAstNode = ast.getNode(stmtNodeTable.getAST(whileStmt[i]));
 			std::vector<int> children = whileAstNode.getChildren();
 			Node varAstNode = ast.getNode(children[0]); // First AST child of "while" should be variable
 			if (varAstNode.getValue() == varTable.getVarIndex(varName))
@@ -399,7 +399,7 @@ std::vector<int> PKB::matchIfWhilePattern(int nodeType, std::string varName) {
 		// Loop through all if statements, get only those with "if varName"
 		for (int i=0; i<(int)ifStmt.size(); i++)
 		{
-			Node ifAstNode = ast.getNode(stmtNodeTable.getNode(ifStmt[i]));
+			Node ifAstNode = ast.getNode(stmtNodeTable.getAST(ifStmt[i]));
 			std::vector<int> children = ifAstNode.getChildren();
 			Node varAstNode = ast.getNode(children[0]);
 			if (varAstNode.getValue() == varTable.getVarIndex(varName))
@@ -429,7 +429,7 @@ std::vector<int> PKB::matchAssignPattern(std::string varName, std::vector<QueryN
 		// Check if the assignStmt contains "varName = ..."
 		if (isModifies(assignStmt[i], varName))
 		{
-			int assignNodeIndex = stmtNodeTable.getNode(assignStmt[i]);
+			int assignNodeIndex = stmtNodeTable.getAST(assignStmt[i]);
 			// Right child of assignNode should be the expression root (in AST)
 			int exprNodeIndex = ast.getNode(assignNodeIndex).getChildren()[1];
 			

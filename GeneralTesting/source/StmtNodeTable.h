@@ -6,17 +6,26 @@
 #include <vector>
 #endif
 
+#include "StmtNode.h"
+
+
 class StmtNodeTable {
 
 private:
-	std::vector<std::pair <int ,int>> stmtNodeTable;
+	std::vector<StmtNode> stmtNodeTable;
 
 public:
 	StmtNodeTable();
+	int insertStmtNode(int stmt, int astNode, int cfgNode, int nodeType);
 	int insertStmtNode(int stmt, int astNode, int nodeType);
-    std::vector<int> getNodeWithType(int nodeType);
+    std::vector<int> getASTWithType(int nodeType);
+	std::vector<int> getCFGWithType(int nodeType);
 	std::vector<int> getStmtWithType(int nodeType);
-    int getNode(int stmt);
+    int getAST(int stmt);
+    int getCFG(int stmt);
     int getType(int stmt);
+    void setAST(int stmt, int ast);
+    void setCFG(int stmt, int cfg);
+    void setType(int stmt, int type);
 	int getSize();
 };
