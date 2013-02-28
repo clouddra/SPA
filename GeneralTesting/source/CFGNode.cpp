@@ -11,14 +11,15 @@ CFGNode::CFGNode(){
 	end = -1;
 }
 
-void CFGNode::addStmt(int stmtNum){
+// This function below needs to be updated for compression
+void CFGNode::addStmt(int stmt){
 	if (start == -1)
 	{
-		start = stmtNum;
-		end = stmtNum;
+		start = stmt;
+		end = stmt;
 	}
 	else
-		end = stmtNum;
+		end = stmt;
 }
 
 int CFGNode::getStart(){

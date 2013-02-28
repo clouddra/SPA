@@ -24,6 +24,9 @@ private:
 	std::vector<int> getNext(int stmt1, int nodeIndex);
 	std::vector<int> getNextT(int stmt1, int nodeIndex);
 	std::vector<int> getPrev(int stmt2, int nodeIndex);
+	void addStmt(int nodeIndex, int stmtNum);
+	void addNext(int nodeIndex, int nextIndex);
+	void addPrev(int nodeIndex, int prevIndex); 
 	CFGNode getCFGNode(int nodeIndex);
 	std::vector<CFGNode> getCFG();
 	int insertCFGNode(int start, int end, std::vector<int> prev);

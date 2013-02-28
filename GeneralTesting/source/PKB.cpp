@@ -543,9 +543,11 @@ void PKB::startBuildCfg() {
 			int cfgIndex = cfg.insertCFGNode();
 			buildCfg(astNode.getChildren()[0], cfgIndex);
 		}
+
 	}
 	// Print the cfg for debugging
 	// cfg.print();
+
 }
 
 // Takes in the ASTnode of stmtList and the CFGNode of the first child of stmtList
@@ -568,7 +570,10 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int cfgIndex) {
 		currAst = children[i];
 
 		// Add the stmtNum into the empty CFG Node created earlier by someone else
-		cfg.getCFGNode(currCfg).addStmt(ast.getNode(currAst).getStmtNum());
+		int stmtNum = ast.getNode(currAst).getStmtNum();
+		cfg.addStmt(currCfg, stmtNum);
+		// (cfg.getCFG()[currCfg]).addStmt(stmtNum);
+		// std::cout << cfg.getCFGNode(currCfg).getStart();
 
 		// If the current child has a right sibling (Not the last child)
 		if (i != children.size()-1)
@@ -577,8 +582,8 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int cfgIndex) {
 			{
 				// Create and link CFG node for the right sibling
 				nextCfg = cfg.insertCFGNode();
-				cfg.getCFGNode(currCfg).addNext(nextCfg);
-				cfg.getCFGNode(nextCfg).addPrev(currCfg);
+				cfg.addNext(currCfg, nextCfg);
+				cfg.addPrev(nextCfg, currCfg);
 				// Update current Cfg pointer
 				currCfg = nextCfg;
 			}
@@ -586,19 +591,19 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int cfgIndex) {
 			{
 				// Handle the children of whileNode
 				int childCfg = cfg.insertCFGNode();
-				cfg.getCFGNode(currCfg).addNext(childCfg);
-				cfg.getCFGNode(childCfg).addPrev(currCfg);
+				cfg.addNext(currCfg, childCfg);
+				cfg.addPrev(childCfg, currCfg);
 				int whileStmtLst = ast.getNode(currAst).getChildren()[1];
 				std::vector<int> endWhile = buildCfg(whileStmtLst, childCfg);
 				for (int j=0; j<(int)endWhile.size(); j++)
 				{
-					cfg.getCFGNode(endWhile[j]).addNext(currCfg);
-					cfg.getCFGNode(currCfg).addPrev(endWhile[j]);
+					cfg.addNext(endWhile[j], currCfg);
+					cfg.addPrev(currCfg, endWhile[j]);
 				}
 				// Create and link CFG node for the right sibling
 				nextCfg = cfg.insertCFGNode();
-				cfg.getCFGNode(currCfg).addNext(nextCfg);
-				cfg.getCFGNode(nextCfg).addPrev(currCfg);
+				cfg.addNext(currCfg, nextCfg);
+				cfg.addPrev(nextCfg, currCfg);
 				// Update current Cfg pointer
 				currCfg = nextCfg;
 			}
@@ -606,14 +611,14 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int cfgIndex) {
 			{
 				// Handle the children of ifNode
 				int thenCfg = cfg.insertCFGNode();
-				cfg.getCFGNode(currCfg).addNext(thenCfg);
-				cfg.getCFGNode(thenCfg).addPrev(currCfg);
+				cfg.addNext(currCfg, thenCfg);
+				cfg.addPrev(thenCfg, currCfg);
 				int thenStmtLst = ast.getNode(currAst).getChildren()[1];
 				std::vector<int> endThen = buildCfg(thenStmtLst, thenCfg);
 
 				int elseCfg = cfg.insertCFGNode();
-				cfg.getCFGNode(currCfg).addNext(elseCfg);
-				cfg.getCFGNode(elseCfg).addPrev(currCfg);
+				cfg.addNext(currCfg, elseCfg);
+				cfg.addPrev(elseCfg, currCfg);
 				int elseStmtLst = ast.getNode(currAst).getChildren()[2];
 				std::vector<int> endElse = buildCfg(elseStmtLst, elseCfg);
 
@@ -622,13 +627,13 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int cfgIndex) {
 
 				for (int j=0; j<(int)endThen.size(); j++)
 				{
-					cfg.getCFGNode(endThen[j]).addNext(nextCfg);
-					cfg.getCFGNode(nextCfg).addPrev(endThen[j]);
+					cfg.addNext(endThen[j], nextCfg);
+					cfg.addPrev(nextCfg, endThen[j]);
 				}
 				for (int j=0; j<(int)endElse.size(); j++)
 				{
-					cfg.getCFGNode(endElse[j]).addNext(nextCfg);
-					cfg.getCFGNode(nextCfg).addPrev(endElse[j]);
+					cfg.addNext(endElse[j], nextCfg);
+					cfg.addPrev(nextCfg, endElse[j]);
 				}
 				// Update current Cfg pointer
 				currCfg = nextCfg;
@@ -646,14 +651,14 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int cfgIndex) {
 			{
 				// Handle the children of whileNode
 				int childCfg = cfg.insertCFGNode();
-				cfg.getCFGNode(currCfg).addNext(childCfg);
-				cfg.getCFGNode(childCfg).addPrev(currCfg);
+				cfg.addNext(currCfg, childCfg);
+				cfg.addPrev(childCfg, currCfg);
 				int whileStmtLst = ast.getNode(currAst).getChildren()[1];
 				std::vector<int> endWhile = buildCfg(whileStmtLst, childCfg);
 				for (int j=0; j<(int)endWhile.size(); j++)
 				{
-					cfg.getCFGNode(endWhile[j]).addNext(currCfg);
-					cfg.getCFGNode(currCfg).addPrev(endWhile[j]);
+					cfg.addNext(endWhile[j], currCfg);
+					cfg.addPrev(currCfg, endWhile[j]);
 				}
 				toReturn.push_back(currCfg);
 			}
@@ -661,14 +666,14 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int cfgIndex) {
 			{
 				// Handle the children of ifNode
 				int thenCfg = cfg.insertCFGNode();
-				cfg.getCFGNode(currCfg).addNext(thenCfg);
-				cfg.getCFGNode(thenCfg).addPrev(currCfg);
+				cfg.addNext(currCfg, thenCfg);
+				cfg.addPrev(thenCfg, currCfg);
 				int thenStmtLst = ast.getNode(currAst).getChildren()[1];
 				std::vector<int> endThen = buildCfg(thenStmtLst, thenCfg);
 
 				int elseCfg = cfg.insertCFGNode();
-				cfg.getCFGNode(currCfg).addNext(elseCfg);
-				cfg.getCFGNode(elseCfg).addPrev(currCfg);
+				cfg.addNext(currCfg, elseCfg);
+				cfg.addPrev(elseCfg, currCfg);
 				int elseStmtLst = ast.getNode(currAst).getChildren()[2];
 				std::vector<int> endElse = buildCfg(elseStmtLst, elseCfg);
 

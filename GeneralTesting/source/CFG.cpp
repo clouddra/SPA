@@ -117,6 +117,21 @@ int CFG::insertCFGNode(){
 	return newNode;
 }
 
+void CFG::addStmt(int nodeIndex, int stmtNum)
+{
+	cfg[nodeIndex].addStmt(stmtNum);
+}
+
+void CFG::addNext(int nodeIndex, int nextIndex)
+{
+	cfg[nodeIndex].addNext(nextIndex);
+}
+
+void CFG::addPrev(int nodeIndex, int prevIndex)
+{
+	cfg[nodeIndex].addPrev(prevIndex);
+}
+
 // For debugging
 void CFG::print()
 {
