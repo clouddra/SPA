@@ -48,9 +48,9 @@ namespace pqlparser
     };
 
 	// Used by boost spirit to roll back partial push_backs.
-	void swap(common_node &a, common_node &b)
+	void swap(commonNode &a, commonNode &b)
 	{
-		common_node t;
+		commonNode t;
 		t.name = a.name;
 		t.value = a.value;
 		t.children = a.children;
@@ -268,8 +268,9 @@ namespace pqlparser
             using ascii::char_;
 			using qi::uint_;
             using ascii::string;
+			using boost::spirit::qi::hold;
             using namespace qi::labels;
-
+			
             using phoenix::at_c;
             using phoenix::push_back;
 
