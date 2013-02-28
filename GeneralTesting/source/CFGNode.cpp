@@ -8,6 +8,21 @@ CFGNode::CFGNode(int startStmt, int endStmt, std::vector<int> prevNodes){
 
 }
 
+CFGNode::CFGNode(){
+	start = -1;
+	end = -1;
+}
+
+void CFGNode::addStmt(int stmtNum){
+	if (start == -1)
+	{
+		start = stmtNum;
+		end = stmtNum;
+	}
+	else
+		end = stmtNum;
+}
+
 int CFGNode::getTop(){
 	return top;
 

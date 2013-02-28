@@ -29,6 +29,8 @@ private:
 
 	public:
 	CFGNode::CFGNode(int startStmt, int endStmt, std::vector<int> prevNodes);
+	CFGNode::CFGNode();
+	void addStmt(int stmtNum);
 	int getTop();
 	int getStart();
 	int getEnd();

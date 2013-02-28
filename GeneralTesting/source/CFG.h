@@ -3,6 +3,11 @@
 #include <vector>
 #endif
 
+#ifndef STD_HEAD
+#define STD_HEAD
+#include "Common.hpp"
+#endif
+
 #include "CFGNode.h"
 
 class CFG{
@@ -20,6 +25,8 @@ private:
 	CFGNode getCFGNode(int nodeIndex);
 	std::vector<CFGNode> getCFG();
 	int insertCFGNode(int start, int end, std::vector<int> prev);
+	int insertCFGNode();
+	void print();
 };
 /*
 GNODE createGNode (TNODE astNode, INDEX nodeType, STMT stmtNum, GNODE prevNode)

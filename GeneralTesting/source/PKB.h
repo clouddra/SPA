@@ -53,10 +53,16 @@
 #include "QueryNode.h"
 #endif
 
+#ifndef CFG_HEAD
+#define CFG_HEAD
+#include "CFG.h"
+#endif
+
 class PKB {
 
 private:
     AST ast;
+	CFG cfg;
     ModifiesTable modifiesTable;
     ParentTable parentTable;
     FollowsTable followsTable;
@@ -111,6 +117,8 @@ public:
 	bool treeCompare(int astNodeIndex, int qNodeIndex, std::vector<QueryNode> queryTree);
 	bool subtreeCompare(int astNodeIndex, int qNodeIndex, std::vector<QueryNode> queryTree);
     std::set<int> getConstants();
+	void startBuildCfg();
+	std::vector<int> buildCfg(int stmtListAst, int cfgIndex);
 
 	void printModifiesTable();
 	AST PKB::getAST();
