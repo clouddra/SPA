@@ -11,6 +11,13 @@ CFGNode::CFGNode(){
 	end = -1;
 }
 
+
+CFGNode::CFGNode(int startStmt, int endStmt, int prevNode){
+	start = startStmt;
+	end = endStmt;
+	prev.push_back(prevNode);
+}
+
 // This function below needs to be updated for compression
 void CFGNode::addStmt(int stmt){
 	if (start == -1)

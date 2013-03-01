@@ -1,17 +1,28 @@
 procedure Bill {
-z = 10;
-x = z + 5;
-y = x * z + 4;
-d = x + y * 12;    
-d = d + z + x;
-e = d + z * x;
-while i {
-	e = x - y;
-		if z then {
-			y = y + z;
-			i = y + 1; }
-		else {
-			x = y + z; 
-			i = i - 1; }
-	x = y + z; }
+ if i then{
+   if z then {
+    i = y + 1; }
+   else {
+     if z then {
+      i = y + 1; }
+    else {
+      i = i - 1; }
+   }
+ }
+ else{
+  if z then{
+   y = i;
+  }
+  
+  else {
+   i = y;
+  }
+ }
+ while x{
+ x = y;
+ }
+ 
+  while x{
+ x = y;
+ }
 }

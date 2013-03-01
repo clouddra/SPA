@@ -104,8 +104,20 @@ int CFG::insertCFGNode(int start, int end, std::vector<int> prev){
 	int newNode = cfg.size() - 1;
 
 	// find all previous nodes and add index of new node to their next
-	for (int i=0; i<(int)prev.size(); i++)
+	for (int i=0; i<(int)prev.size(); i++){
 		cfg[prev[i]].addNext(newNode);
+	}
+	return newNode;
+}
+
+int CFG::insertCFGNode(int start, int end, int prev){
+	CFGNode temp = CFGNode(start, end, prev);
+	cfg.push_back(temp);
+	int newNode = cfg.size() - 1;
+
+	// find previous node and add index of new node to their next
+	if (prev>0 && prev <cfg.size())
+		cfg[prev].addNext(newNode);
 
 	return newNode;
 }

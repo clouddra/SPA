@@ -30,6 +30,7 @@ private:
 	CFGNode getCFGNode(int nodeIndex);
 	std::vector<CFGNode> getCFG();
 	int insertCFGNode(int start, int end, std::vector<int> prev);
+	int insertCFGNode(int start, int end, int prev);
 	int insertCFGNode();
 	void print();
 };
