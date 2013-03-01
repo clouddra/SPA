@@ -287,6 +287,7 @@ namespace pqlparser
 			varRef_ %= synonym_ | char_('_') | (char_('"') >> IDENT_ >> char_('"'));
 			entRef_ %= synonym_ | char_('_') | (char_('"') >> IDENT_ >> char_('"')) | INTEGER_;
 			stmtRef_ %= synonym_ | char_('_') | INTEGER_;
+			lineRef_ %= synonym_ | char_('_') | INTEGER_;
 
 			design_entity_ %= 
 				string ("procedure")
@@ -521,6 +522,24 @@ namespace pqlparser
 				>> entRef_					[push_back(at_c<2>(_val), _1)]	
 				>> ')'
 				;
+
+			Next_ =
+				string("Next")				[at_c<0>(_val) = "next"]
+				>> '('
+				>> lineRef_					[push_back(at_c<2>(_val), _1)]
+				>> ','
+				>> lineRef_					[push_back(at_c<2>(_val), _1)]
+				>> ')'
+				;
+
+			NextT_ =
+				string("Next*")				[at_c<0>(_val) = "nextt"]
+				>> '('
+				>> lineRef_					[push_back(at_c<2>(_val), _1)]
+				>> ','
+				>> lineRef_					[push_back(at_c<2>(_val), _1)]
+				>> ')'
+				;
         }
 
 		// Lexical Rules
@@ -536,6 +555,7 @@ namespace pqlparser
 		qi::rule<Iterator, std::string(), ascii::space_type> entRef_;
 		qi::rule<Iterator, std::string(), ascii::space_type> stmtRef_;
 		qi::rule<Iterator, std::string(), ascii::space_type> varRef_;
+		qi::rule<Iterator, std::string(), ascii::space_type> lineRef_;
 		qi::rule<Iterator, std::string(), ascii::space_type> design_entity_;
 
 		// Grammar rules for select clause
@@ -571,6 +591,8 @@ namespace pqlparser
 		qi::rule<Iterator, commonNode(), ascii::space_type> FollowsT_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> Calls_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> CallsT_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> Next_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> NextT_;
     };
 
     //]
