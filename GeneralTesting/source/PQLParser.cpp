@@ -289,8 +289,10 @@ namespace pqlparser
 			stmtRef_ %= synonym_ | char_('_') | INTEGER_;
 
 			design_entity_ %= 
-				string("stmt")
+				string ("procedure")
+                | string("stmt")
 				| string("assign")
+                | string ("call")
 				| string("while")
                 | string("if")
 				| string("variable")

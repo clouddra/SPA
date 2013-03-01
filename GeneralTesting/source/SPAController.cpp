@@ -22,7 +22,9 @@ PKB SPAController::parseSource(std::string program) {
 
 std::list<std::string> SPAController::evaluateQuery(std::string query){
 	qp = QueryProcessor();  // Reset qp to empty for next query
-	pqlParser.parseQuery(query, &qp);
+	int temp = pqlParser.parseQuery(query, &qp);
+    if (temp == -1)
+        return std::list<std::string> ();
     qp.processQuery(pkb);
     return qp.getResult();
 }

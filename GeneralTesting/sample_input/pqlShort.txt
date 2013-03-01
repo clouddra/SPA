@@ -1,5 +1,6 @@
 if ifs; variable v; procedure p; call c;
-Select p such that Calls(p, "Mary")
+Select ifs pattern ifs(v, _, _)
+
 
 
  

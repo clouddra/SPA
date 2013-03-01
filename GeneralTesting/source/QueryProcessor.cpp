@@ -1042,7 +1042,7 @@ void QueryProcessor::processQuery(PKB pkb)
                         return;
                     }
 
-                     // Figure out type of parameter 1 and 2
+                    // Figure out type of parameter 1 and 2
                     bool patternIsNum = false, varIsNum = false;
                     bool patternIsEnt = false, varIsEnt = false;
                     bool patternIsPlaceholder = false, varIsPlaceholder = false;
@@ -1086,6 +1086,38 @@ void QueryProcessor::processQuery(PKB pkb)
                         if (ret == -1)
                             return;
                     }
+                }
+                else if (temp.getName().compare("pattern_if_") == 0) {
+                    std::string pattern = tree[temp.getChildren()[0]].getName();
+                    std::string var = tree[temp.getChildren()[1]].getName();
+
+                    // Figure out type of parameter 1 and 2
+                    bool patternIsNum = false, varIsNum = false;
+                    bool patternIsEnt = false, varIsEnt = false;
+                    bool patternIsPlaceholder = false, varIsPlaceholder = false;
+                    int patternNum = -1, varNum = -1;
+                    int patternType = findTypeOf(pattern, &patternIsNum, &patternIsEnt, &patternIsPlaceholder, &patternNum);
+                    int varType = findTypeOf(var, &varIsNum, &varIsEnt, &varIsPlaceholder, &varNum);
+                    if (patternType == -2 || varType == -2) {   // Cannot figure out type
+                        return;
+                    }
+
+                    if (patternType != DeclarationTable::if_) {
+                        return;
+                    }
+
+                    // Get rid of " " if var is entitity
+                    if (varIsEnt) {
+                        var = var.substr(1, var.size()-2);
+                    }
+                    // Return if var is the wrong type
+                    else if (!varIsPlaceholder && varType != DeclarationTable::variable_) {
+                        return;
+                    }
+
+                    int ret = evaluateIfWhilePattern(pattern, var, varIsEnt, varIsPlaceholder, pkb);
+                    if (ret == -1)
+                        return;
                 }
                 else {
                     // std::cout << "Unknown pattern format\n";
