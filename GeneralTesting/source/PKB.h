@@ -72,6 +72,7 @@ private:
     UsesTable usesTable;
     StmtNodeTable stmtNodeTable;
     std::set<int> constantList;
+	void addCFGtoStmtNodeTable(int cfgNode, int startStmt, int endStmt);
 
 public:
     PKB();
