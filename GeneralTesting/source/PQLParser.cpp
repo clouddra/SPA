@@ -503,6 +503,24 @@ namespace pqlparser
 				>> stmtRef_					[push_back(at_c<2>(_val), _1)]	
 				>> char_(')')
 				;
+
+			Calls_ =
+				string("Calls")				[at_c<0>(_val) = "calls"]
+				>> '('
+				>> entRef_					[push_back(at_c<2>(_val), _1)]	
+				>> ','
+				>> entRef_					[push_back(at_c<2>(_val), _1)]	
+				>> ')'
+				;
+
+			CallsT_ =
+				string("Calls*")			[at_c<0>(_val) = "callst"]
+				>> '('
+				>> entRef_					[push_back(at_c<2>(_val), _1)]	
+				>> ','
+				>> entRef_					[push_back(at_c<2>(_val), _1)]	
+				>> ')'
+				;
         }
 
 		// Lexical Rules
@@ -551,6 +569,8 @@ namespace pqlparser
 		qi::rule<Iterator, commonNode(), ascii::space_type> ParentT_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> Follows_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> FollowsT_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> Calls_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> CallsT_;
     };
 
     //]
