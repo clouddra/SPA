@@ -431,7 +431,7 @@ namespace pqlparser
 				>> *("and" >> relRef_       [push_back(at_c<2>(_val), _1)])		
 				;
 
-			relRef_ %= ModifiesS_ | ModifiesP_ | UsesS_ | UsesP_ | Parent_ | ParentT_ | Follows_ | FollowsT_;
+			relRef_ %= ModifiesS_ | ModifiesP_ | UsesS_ | UsesP_ | Parent_ | ParentT_ | Follows_ | FollowsT_ | Calls_ | CallsT_ | Next_ | NextT_;
 			
 			ModifiesS_ = 
 				string("Modifies")			[at_c<0>(_val) = "modifiess"]
