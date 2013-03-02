@@ -1,2 +1,2 @@
 stmt s; assign a; if ifs; variable v; procedure p; call c;
-Select p such that Uses(p, "d")
+Select v such that Uses("Bill", v)
