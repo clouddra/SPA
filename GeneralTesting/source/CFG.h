@@ -10,6 +10,8 @@
 
 #include "CFGNode.h"
 
+#include <unordered_set>
+
 class CFG{
 
 private:
@@ -18,13 +20,14 @@ private:
      * Indicates the furthest node that can return to the current node
 	 */
 	std::vector<CFGNode> cfg;
-	std::vector<int> fillStmtInNode(std::vector<int> stmtList, CFGNode nextNode);
+	std::unordered_set<int> fillStmtInNode(std::unordered_set<int> stmtList, CFGNode nextNode);
 
 	public:
 
 	std::vector<int> getNext(int stmt1, int nodeIndex);
 	std::vector<int> getNextT(int stmt1, int nodeIndex);
 	std::vector<int> getPrev(int stmt2, int nodeIndex);
+	bool isNext(int stmt1, int node1, int stmt2);
 	void addStmt(int nodeIndex, int stmtNum);
 	void addNext(int nodeIndex, int nextIndex);
 	void addPrev(int nodeIndex, int prevIndex); 

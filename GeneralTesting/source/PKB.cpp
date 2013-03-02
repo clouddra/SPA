@@ -679,7 +679,6 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int startCFG) {
 					addCFGtoStmtNodeTable(currNode, startStmt, endStmt);
 					prevCFG.clear();
 					prevCFG.push_back(currNode);
-					std::cout<<"inside nonwhile" << std::endl;
 				}
 				// while is always single node
 				startStmt = ast.getNode(currAst).getStmtNum();
@@ -691,9 +690,6 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int startCFG) {
 				cfg.addNext(currCfg, childCfg);	
 				cfg.addPrev(childCfg, currCfg);
 				*/
-
-				if (endStmt==10)
-						std::cout<<"lol" << std::endl;
 
 				int whileStmtLst = ast.getNode(currAst).getChildren()[1];
 				std::vector<int> endWhile = buildCfg(whileStmtLst, whileCFG);
@@ -800,7 +796,7 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int startCFG) {
 					addCFGtoStmtNodeTable(currNode, startStmt, endStmt);
 					prevCFG.clear();
 					prevCFG.push_back(currNode);
-					std::cout<<"inside nonwhile" << std::endl;
+
 				}
 				// insert node sequence before while
 				startStmt = ast.getNode(currAst).getStmtNum();
@@ -813,8 +809,6 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int startCFG) {
 				cfg.addPrev(childCfg, currCfg);
 				*/
 
-				if (endStmt==10)
-						std::cout<<"lol" << std::endl;
 
 				int whileStmtLst = ast.getNode(currAst).getChildren()[1];
 				std::vector<int> endWhile = buildCfg(whileStmtLst, whileCFG);

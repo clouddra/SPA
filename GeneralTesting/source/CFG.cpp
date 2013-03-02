@@ -1,5 +1,6 @@
 #include "CFG.h"
 #include <queue>
+#include <unordered_set>
 
 std::vector<int> CFG::getNext(int stmt1, int nodeIndex){
 	std::vector<int> stmtList;
@@ -21,9 +22,31 @@ std::vector<int> CFG::getNext(int stmt1, int nodeIndex){
 
 }
 
+bool CFG::isNext(int stmt1, int node1, int stmt2){
+	std::vector<int> stmtList;
+
+	// if fall in range
+	if (stmt1>=cfg[node1].getStart() && stmt1 < cfg[node1].getEnd()) {
+		if (stmt1+1 == stmt2)
+			return true;
+	}
+
+	else {
+		for (int i=0, nextNode; i<(int)cfg[node1].getNext().size(); i++) {
+			nextNode = cfg[node1].getNext().at(i);
+			if (cfg[nextNode].getStart() == stmt2)
+				return true;
+		}
+	}
+
+	return false;
+}
+
+
+
 // non-recursive cause i hate recursion
 std::vector<int> CFG::getNextT(int stmt1, int nodeIndex){
-	std::vector<int> stmtList;
+	std::unordered_set<int> stmtList;
 	std::vector<bool> visited(cfg.size(), false);	//initialising cfg
 	std::queue<int> nodesToVisit;
 	int nextNode;
@@ -31,9 +54,9 @@ std::vector<int> CFG::getNextT(int stmt1, int nodeIndex){
 
 	// push statements of current node
 	for (int i=stmt1+1; i<=cfg[nodeIndex].getEnd(); i++)
-		stmtList.push_back(i);
+		stmtList.emplace(i);
 
-	visited[nodeIndex] = true;
+//	visited[nodeIndex] = true;
 	// push next nodes to nodesToVisit
 	for (int i=0; i<(int)cfg[nodeIndex].getNext().size(); i++) {
 		nextNode = cfg[nodeIndex].getNext().at(i);
@@ -51,20 +74,24 @@ std::vector<int> CFG::getNextT(int stmt1, int nodeIndex){
 			stmtList = fillStmtInNode(stmtList, cfg[nextNode]);
 
 			// get next nodes to visit
-			for (int i=0; i<(int)cfg[nodeIndex].getNext().size(); i++) {
-				nextNode = cfg[nodeIndex].getNext().at(i);
-				nodesToVisit.push(nextNode);
+			for (int i=0; i<(int)cfg[nextNode].getNext().size(); i++) {
+				nodesToVisit.push(cfg[nextNode].getNext().at(i));
 			}
+		}
+
+		else {
+			stmtList = fillStmtInNode(stmtList, cfg[nextNode]);
 		}
 	}
 
-	return stmtList;
+	std::vector<int> results(stmtList.cbegin(), stmtList.cend());
+	return results;
 }
 
 
-std::vector<int> CFG::fillStmtInNode(std::vector<int> stmtList, CFGNode nextNode){
+std::unordered_set<int> CFG::fillStmtInNode(std::unordered_set<int> stmtList, CFGNode nextNode){
 	for (int i=nextNode.getStart(); i<=nextNode.getEnd(); i++)
-		stmtList.push_back(i);
+		stmtList.emplace(i);
 
 	return stmtList;
 }
@@ -116,7 +143,7 @@ int CFG::insertCFGNode(int start, int end, int prev){
 	int newNode = cfg.size() - 1;
 
 	// find previous node and add index of new node to their next
-	if (prev>0 && prev <cfg.size())
+	if (prev>0 && prev < (int)cfg.size())
 		cfg[prev].addNext(newNode);
 
 	return newNode;
