@@ -56,7 +56,7 @@ std::vector<int> CFG::getNextT(int stmt1, int nodeIndex){
 	for (int i=stmt1+1; i<=cfg[nodeIndex].getEnd(); i++)
 		stmtList.emplace(i);
 
-//	visited[nodeIndex] = true;
+	//visited[nodeIndex] = true;
 	// push next nodes to nodesToVisit
 	for (int i=0; i<(int)cfg[nodeIndex].getNext().size(); i++) {
 		nextNode = cfg[nodeIndex].getNext().at(i);
@@ -80,7 +80,7 @@ std::vector<int> CFG::getNextT(int stmt1, int nodeIndex){
 		}
 
 		else {
-			stmtList = fillStmtInNode(stmtList, cfg[nextNode]);
+			//stmtList = fillStmtInNode(stmtList, cfg[nextNode]);
 		}
 	}
 
