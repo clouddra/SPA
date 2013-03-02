@@ -16,14 +16,15 @@ public:
 
 	std::vector<int> getModifiesVar(int var);
     std::vector<int> getModifiesVar();
-	//returns all variables modified by procedure of procIndex
-	std::vector<int> getModifiesVarProc(int procIndex);
+	//returns all procedures which modifies var
+	std::vector<int> getModifiesVarProc(int var);
+    std::vector<int> getModifiesVarProc();
 
 	std::vector<int> getModifiedBy(int stmt);
     std::vector<int> getModifiedBy();
-
-	//returns all procedures which modifies var
-	std::vector<int> getModifiedByProc(int var);
+    //returns all variables modified by procedure of procIndex
+	std::vector<int> getModifiedByProc(int procIndex);
+    std::vector<int> getModifiedByProc();
 
 	bool isModifies(int stmt, int var);
 	bool isModifiesProc(int procIndex, int var);

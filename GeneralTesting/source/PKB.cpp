@@ -355,6 +355,111 @@ bool PKB::isModifies(int stmt, std::string var) {
     return modifiesTable.isModifies(stmt, varIndex);
 }
 
+std::vector<std::string> PKB::getModifiesVarP(std::string var) {
+    std::vector<std::string> ret;
+    int varIndex = varTable.getVarIndex(var);
+    if (varIndex == -1)
+        return ret;
+
+    std::vector<int> temp = modifiesTable.getModifiesVarProc(varIndex);
+    for (int i = 0; i < (int)temp.size(); i++) {
+        ret.push_back(procTable.getProcName(temp[i]));
+    }
+    return ret;
+}
+
+std::vector<std::string> PKB::getModifiesVarP() {
+    std::vector<std::string> ret;
+    std::vector<int> temp = modifiesTable.getModifiesVarProc();
+    for (int i = 0; i < (int)temp.size(); i++) {
+        ret.push_back(procTable.getProcName(temp[i]));
+    }
+    return ret;
+}
+
+std::vector<std::string> PKB::getModifiedByP(std::string proc) {
+    std::vector<std::string> toReturn;
+    int procIndex = procTable.getProcIndex(proc);
+    if (procIndex == -1)
+        return toReturn;
+    std::vector<int> answer = modifiesTable.getModifiedByProc(procIndex);
+    for (int i = 0; i < (int)answer.size(); i++) {
+        toReturn.push_back(varTable.getVarName(answer[i]));
+    }
+    return toReturn;
+}
+
+std::vector<std::string> PKB::getModifiedByP() {
+    std::vector<std::string> toReturn;
+    std::vector<int> answer = modifiesTable.getModifiedByProc();
+    for (int i = 0; i < (int)answer.size(); i++) {
+        toReturn.push_back(varTable.getVarName(answer[i]));
+    }
+    return toReturn;
+}
+
+bool PKB::isModifiesP(std::string proc, std::string var) {
+    int varIndex = varTable.getVarIndex(var);
+    if (varIndex == -1)
+        return false;
+    int procIndex = procTable.getProcIndex(proc);
+    if (procIndex == -1)
+        return false;
+    return modifiesTable.isModifiesProc(procIndex, varIndex);
+}
+
+std::vector<std::string> PKB::getUsesVarP(std::string var) {
+    std::vector<std::string> ret;
+    int varIndex = varTable.getVarIndex(var);
+    if (varIndex == -1)
+        return ret;
+    std::vector<int> temp = usesTable.getUsesVarProc(varIndex);
+    for (int i = 0; i < (int)temp.size(); i++) {
+        ret.push_back(procTable.getProcName(temp[i]));
+    }
+    return ret;
+}
+
+std::vector<std::string> PKB::getUsesVarP() {
+    std::vector<std::string> ret;
+    std::vector<int> temp = usesTable.getUsesVarProc();
+    for (int i = 0; i < (int)temp.size(); i++) {
+        ret.push_back(procTable.getProcName(temp[i]));
+    }
+    return ret;
+}
+
+std::vector<std::string> PKB::getUsedByP(std::string proc) {
+    std::vector<std::string> toReturn;
+    int procIndex = procTable.getProcIndex(proc);
+    if (procIndex == -1)
+        return toReturn;
+    std::vector<int> answer = usesTable.getUsedByProc(procIndex);
+    for (int i = 0; i < (int)answer.size(); i++) {
+        toReturn.push_back(varTable.getVarName(answer[i]));
+    }
+    return toReturn;
+}
+
+std::vector<std::string> PKB::getUsedByP() {
+    std::vector<std::string> toReturn;
+    std::vector<int> answer = usesTable.getUsedByProc();
+    for (int i = 0; i < (int)answer.size(); i++) {
+        toReturn.push_back(varTable.getVarName(answer[i]));
+    }
+    return toReturn;
+}
+
+bool PKB::isUsesP(std::string proc, std::string var) {
+    int varIndex = varTable.getVarIndex(var);
+    if (varIndex == -1)
+        return false;
+    int procIndex = procTable.getProcIndex(proc);
+    if (procIndex == -1)
+        return false;
+    return usesTable.isUsesProc(procIndex, varIndex);
+}
+
 std::vector<int> PKB::getUsesVar(std::string var) {
     int varIndex = varTable.getVarIndex(var);
     if (varIndex == -1)
@@ -435,7 +540,7 @@ std::vector<int> PKB::getPrevT(int stmt) {
 }
 
 bool PKB::isNext(int stmt1, int stmt2) {
-    return false;
+    return cfg.isNext(stmt1, stmtNodeTable.getCFG(stmt1), stmt2);
 }
 
 std::vector<int> PKB::getStmtWithType(int nodeType) {

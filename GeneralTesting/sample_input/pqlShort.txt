@@ -1,6 +1,2 @@
-stmt s; assign a; if ifs; variable v; procedure p1, p2; call c;
-Select s such that Next(4, s)
-Select s such that Next*(13, s)
-Select s such that Next*(12, s)
-Select s such that Next*(10, s)
-Select s such that Next*(11, s)
+stmt s; assign a; if ifs; variable v; procedure p; call c;
+Select p such that Uses(p, "d")
