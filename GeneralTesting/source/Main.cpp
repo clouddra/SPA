@@ -38,7 +38,7 @@ std::vector<std::string> splitQuery(std::string input) {
 int main() {
 	SPAController controller = SPAController() ;
 	std::list<std::string> result;
-    char const* simpleFile = "..\\sample_input\\simple00.txt";
+    char const* simpleFile = "..\\sample_input\\simple.txt";
     std::ifstream in(simpleFile, std::ios_base::in);
 
     if (!in)
@@ -65,7 +65,6 @@ int main() {
 	*/
 
 	pkb = controller.parseSource(storage);
-	pkb.startBuildCfg();
 	/*
     std::cout<<"Uses for each stmt: "<<std::endl;
 	for(int i=0;i<pkb.getUsesTable()->getSize();i++)

@@ -17,6 +17,7 @@ PKB SPAController::parseSource(std::string program) {
 	codeParser.parseCode(program, &pkb);
 	de = DesignExtractor(&pkb);
 	de.populateTables();
+    pkb.startBuildCfg();
 	return pkb;
 }
 

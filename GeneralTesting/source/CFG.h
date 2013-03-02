@@ -14,7 +14,8 @@ class CFG{
 
 private:
 	/**
-	 * Indicates the earliest that can be reached from the current node
+	 * Indicates the earliest node that can be reached from the current node
+     * Indicates the furthest node that can return to the current node
 	 */
 	std::vector<CFGNode> cfg;
 	std::vector<int> fillStmtInNode(std::vector<int> stmtList, CFGNode nextNode);
@@ -37,7 +38,7 @@ private:
 /*
 GNODE createGNode (TNODE astNode, INDEX nodeType, STMT stmtNum, GNODE prevNode)
 Description:
-    Creates a CFG node with the given nodeType. eg. “assign? “call?
+    Creates a CFG node with the given nodeType. eg. assign? call?
     stmtNum corresponds to the statement number represented by this node.
     Creates a reference to corresponding astNode.
     Add this GNODE object to prevNode.nextArray[].

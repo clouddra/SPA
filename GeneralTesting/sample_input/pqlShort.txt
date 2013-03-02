@@ -1,6 +1,6 @@
-if ifs; variable v; procedure p; call c;
-Select ifs pattern ifs(v, _, _)
-
+stmt s; assign a; if ifs; variable v; procedure p1, p2; call c;
+Select s such that Next(s, a)
+Select s such that Next*(s, a)
 
 
  
