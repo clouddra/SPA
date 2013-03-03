@@ -47,8 +47,8 @@ void DesignExtractor::populateTables()
 			}
 		}
 	}
-
-	std::vector<int> assignNodes = _stmtt->getASTWithType(3);
+		
+	std::vector<int> assignNodes = _stmtt->getASTWithType(Node::assignNode);
 	for(int t = 0; t<assignNodes.size(); t++)
 	{
 		int tempNode = assignNodes[t];
@@ -72,15 +72,15 @@ void DesignExtractor::populateTables()
 			checkChildrenUses(childrenAssign[1], parents);
 		}		
 	}
-	std::vector<int> controlNodes = _stmtt->getASTWithType(4);//while node
-	std::vector<int> temp = _stmtt->getASTWithType(5);//if node
+	std::vector<int> controlNodes = _stmtt->getASTWithType(Node::whileNode);//while node
+	std::vector<int> temp = _stmtt->getASTWithType(Node::ifNode);//if node
 	for(int x=0;x<temp.size();x++)
 	{
 		controlNodes.push_back(temp[x]);
 	}
 	for(int y=0;y< (int)controlNodes.size();y++)
 	{
-		std::vector<int> parentsIfWhile = _pkb->getParentT(_ast.getNode(y).getStmtNum());
+		std::vector<int> parentsIfWhile = _pkb->getParentT(_ast.getNode(controlNodes[y]).getStmtNum());
 		std::vector<int> childrenControl = _ast.getNode(controlNodes[y]).getChildren();
 		insertUses(controlNodes[y], childrenControl[0]);
 		for(int p = 0; p< (int)parentsIfWhile.size();p++)
@@ -88,20 +88,22 @@ void DesignExtractor::populateTables()
 			 _ut->insertUses(parentsIfWhile[p],_ast.getNode(childrenControl[0]).getValue());//indirect parents use this variable too					
 		}
 	}
-
-	std::vector<int> callNodes = _stmtt->getASTWithType(6);//call node
+	//insert calls
+	std::vector<int> callNodes = _stmtt->getASTWithType(Node::callNode);//call node
 	for(int z=0;z< (int)callNodes.size();z++)
 	{
 		checkParentIfProc(callNodes[z],callNodes[z]);
 	}
-
+	
+	
+	//inserts modifies and uses for procs (assign, control stmts)
 	for(int q=0;q< (int)_proct->getSize();q++)//go through all procs in the proc table
 	{
 		int firstLine = _proct->getProcFirstln(q);//get first line of proc
 		int lastLine = _proct->getProcLastln(q);//get last line of proc
 		for(int r = firstLine;r<lastLine+1;r++)//go through every stmt of proc
 		{
-			if(_stmtt->getType(r)==3)//assign node
+			if(_stmtt->getType(r)==Node::assignNode)//assign node
 			{
 				std::vector<int> varsModified = _mt->getModifiedBy(r);//get vars modified by the stmt
 				std::vector<int> varsUsed = _ut->getUsedBy(r);//get vars used by the stmt
@@ -114,16 +116,27 @@ void DesignExtractor::populateTables()
 					_ut->insertProcUses(q, varsUsed[m]);
 				}
 			}
+			if(_stmtt->getType(r)==Node::whileNode||_stmtt->getType(r)==Node::ifNode)//control node
+			{
+				std::vector<int> varsUsed = _ut->getUsedBy(r);//get vars used by the stmt
+				for(int m=0;m< (int)varsUsed.size();m++)
+				{
+					_ut->insertProcUses(q, varsUsed[m]);
+				}
+			}
 		}
 	}
-	/*//Need to go through again because it needs the values calculated in earlier loop
+	
+	//inserts modifies and uses for procs (for procs called directly or indirectly)
 	for(int q=0;q<_proct->getSize();q++)//go through all procs in the proc table
 	{
-		std::vector<int> procsCalled = _ct->getCalledBy(q);//get all procs called directly or indirectly from q
+		std::vector<std::string> procsCalled = _pkb->getCalledByT(_proct->getProcName(q));//get all procs called directly or indirectly from q
 		for(int n=0;n<procsCalled.size();n++)
 		{
-			std::vector<int> varsModified = _mt->getModifiesVarProc(procsCalled[n]);//get all vars modified by that particular proc
-			std::vector<int> varsUsed = _ut->getUsesVarProc(procsCalled[n]);//get all vars used by that particular proc
+			std::string procName = procsCalled[n];
+			int procIndex = _proct->getProcIndex(procName);
+			std::vector<int> varsModified = _mt->getModifiesVarProc(_proct->getProcIndex(procsCalled[n]));//get all vars modified by that particular proc
+			std::vector<int> varsUsed = _ut->getUsedByProc(_proct->getProcIndex(procsCalled[n]));//get all vars used by that particular proc
 			for(int a=0;a<varsModified.size();a++)
 			{
 				_mt->insertProcModifies(q, varsModified[a]);//insert all the vars modified
@@ -134,21 +147,35 @@ void DesignExtractor::populateTables()
 			}
 		}		
 	}
-	*/
-	/*
-	std::vector<int> callNodes = _stmtt->getNodeWithType(6);//call nodes
+	
+	//insert modifies and uses for call stmts and their parents (control stmts)
 	for(int z=0;z<callNodes.size();z++)
 	{
+		int stmtNum = _ast.getNode(callNodes[z]).getStmtNum();
+		std::vector<int> parents = _pkb->getParentT(stmtNum);
 		int procCalled = _ast.getNode(callNodes[z]).getValue();
-		addModifiesUsesForCallsStmt(callNodes[z], procCalled);
+		addModifiesUsesForCallsStmt(stmtNum, procCalled);
 
-		std::vector<int> procsCalled = _ct->getCalledBy(procCalled);//get all procs called directly or indirectly 
+		std::vector<std::string> procsCalled = _pkb->getCalledByT(_proct->getProcName(procCalled));//get all procs called indirectly 
 		for(int x=0;x<procsCalled.size();x++)
 		{
-			addModifiesUsesForCallsStmt(callNodes[z], procsCalled[x]);
+			addModifiesUsesForCallsStmt(stmtNum, _proct->getProcIndex(procsCalled[x]));
+		}
+		std::vector<int> varsModified = _mt->getModifiedBy(stmtNum);
+		std::vector<int> varsUsed = _ut->getUsedBy(stmtNum);
+		for(int y=0;y<parents.size();y++)
+		{
+			for(int w=0;w<varsModified.size();w++)
+			{
+				_mt->insertModifies(parents[y],varsModified[w]);
+			}
+			for(int v=0;v<varsUsed.size();v++)
+			{
+				_ut->insertUses(parents[y],varsUsed[v]);
+			}
+
 		}
 	}
-	*/
 
 	/* DO NOT DELETE
 	//Need to loop through again because Modifies and Uses tables require the Parent* relationship which is computed in earlier loop
@@ -191,15 +218,15 @@ void DesignExtractor::populateTables()
 	
 void DesignExtractor::addModifiesUsesForCallsStmt(int callStmt, int proc)
 {
-	std::vector<int> varsModified = _mt->getModifiedByProc(proc);
+	std::vector<int> varsModified = _mt->getModifiesVarProc(proc);
 	std::vector<int> varsUsed = _ut->getUsedByProc(proc);
 	for(int y=0;y < (int)varsModified.size();y++)
 	{
-		insertModifies(callStmt,varsModified[y]);
+		_mt->insertModifies(callStmt,varsModified[y]);
 	}
-	for(int y1=0;y1< (int)varsModified.size();y1++)
+	for(int y1=0;y1< (int)varsUsed.size();y1++)
 	{
-		insertUses(callStmt,varsUsed[y1]);
+		_ut->insertUses(callStmt,varsUsed[y1]);
 	}
 }
 void DesignExtractor::checkParentIfProc(int nodeIndex, int callNodeIndex)

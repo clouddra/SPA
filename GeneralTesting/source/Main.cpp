@@ -38,7 +38,7 @@ std::vector<std::string> splitQuery(std::string input) {
 int main() {
 	SPAController controller = SPAController() ;
 	std::list<std::string> result;
-    char const* simpleFile = "..\\sample_input\\simple00.txt";
+    char const* simpleFile = "..\\sample_input\\simple.txt";
     std::ifstream in(simpleFile, std::ios_base::in);
 
     if (!in)
@@ -65,18 +65,19 @@ int main() {
 	*/
 
 	pkb = controller.parseSource(storage);
+	
 	/*
-    std::cout<<"Uses for each stmt: "<<std::endl;
-	for(int i=0;i<pkb.getUsesTable()->getSize();i++)
+    std::cout<<"Modifies for each stmt: "<<std::endl;
+	for(int i=0;i<pkb.getModifiesTable()->getModifiesTableSize();i++)
 	{
-		std::vector <int> temp = pkb.getUsesTable()->getUsedBy(i);
+		std::vector <int> temp = pkb.getModifiesTable()->getModifiedBy(i);
 		for(int j=0;j<temp.size();j++)
 		{
 		std::cout << temp.at(j)<<" ";
 		}
 		std::cout<<std::endl;
-	}	
-	
+	}
+		
 	std::cout<<"Calls Table: "<<std::endl;
 	for(int i=0;i<pkb.getCallsTable()->getSize();i++)
 	{
@@ -98,7 +99,7 @@ int main() {
 		}
 		std::cout<<std::endl;
 	}
-    	
+    
 	std::cout<<"Modified by proc table: "<<std::endl;
 	for(int i=0;i<pkb.getProcTable()->getSize();i++)
 	{
@@ -121,6 +122,7 @@ int main() {
 		std::cout<<std::endl;
 	}
 	*/
+	
     // pql.txt stores currently working queries, pqlShort.txt stores queries in development (may not work)
     char const* pqlFile = "..\\sample_input\\pqlShort.txt";
     std::ifstream in2(pqlFile, std::ios_base::in);
