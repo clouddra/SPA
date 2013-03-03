@@ -11,8 +11,9 @@ int main(int argc, char* argv[])
     unitSuite->addTest(CppUnit::TestFactoryRegistry::getRegistry("VarTableTest").makeTest());	
     unitSuite->addTest(CppUnit::TestFactoryRegistry::getRegistry("ParserTest").makeTest());
     unitSuite->addTest(CppUnit::TestFactoryRegistry::getRegistry("QueryPreprocessorTest").makeTest());
-    unitSuite->addTest(CppUnit::TestFactoryRegistry::getRegistry("ProcTableTest").makeTest());	
 	unitSuite->addTest(CppUnit::TestFactoryRegistry::getRegistry("CallsTableTest").makeTest());
+	unitSuite->addTest(CppUnit::TestFactoryRegistry::getRegistry("FollowsTableTest").makeTest());
+	// unitSuite->addTest(CppUnit::TestFactoryRegistry::getRegistry("ProcTableTest").makeTest());	
     CppUnit::TestFactoryRegistry::getRegistry().addTestToSuite(unitSuite);
     CppUnit::TextUi::TestRunner runner;
 
