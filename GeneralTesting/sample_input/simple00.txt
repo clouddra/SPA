@@ -1,28 +1,5 @@
 procedure Bill {
-x = y;
-
-  while x{
- x = y;
-  x = y;
-   x = y;
-    x = y;
- }
-if x then {
-x = y;
-}
-else{
-	x=y;
-}
-  while x{
- x = y;
-  x = y;
-   x = y;
-    x = y;
- }
- 
- 
- x = y;
-  x = y;
-   x = y;
-    x = y;
+    while i {
+        x = 1;
+    }
 }

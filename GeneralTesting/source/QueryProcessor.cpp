@@ -839,7 +839,7 @@ int QueryProcessor::evaluateNext(bool T, bool para1IsNum, bool para1IsPlaceholde
     return 0;
 }
 
-// Evaluating modifies query
+// Evaluating modifies query, statements
 int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, PKB pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
@@ -928,7 +928,93 @@ int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para2IsEnt, bool par
     return 0;
 }
 
-// Evaluating uses query
+// Evaluating modifies query, procedure
+int QueryProcessor::evaluateModifiesP(bool para1IsEnt, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, PKB pkb) {
+    std::vector<int> temp;
+    std::vector<std::string> toStore;
+
+    // Inserting valid values based on parameter type (if variable)
+    int ret;
+    if (!para1IsEnt) {
+        ret = evaluateType(pkb, para1);
+        if (ret == -1) 
+            return -1;
+    }
+    if (!para2IsEnt && !para2IsPlaceholder) {
+        int ret2 = evaluateType(pkb, para2);
+        if (ret2 == -1)
+            return -1;
+    }
+
+    // Inserting valid values based on PKB tables 
+    if (para1IsEnt) {
+        if (para2IsEnt) {
+            if (!pkb.isModifiesP(para1, para2)) {  // Modifies(ent, ent) is false, whole query is false
+                // std::cout << "Modifies(" << para1 << ",\"" << para2 << "\") is false" << std::endl;
+                return -1;
+            }
+            // Modifies(ent, ent) is true, do nothing
+        }
+        else if (para2IsPlaceholder) {
+            toStore = pkb.getModifiedByP(para1);
+            if (toStore.size() > 0)
+                return 0;
+            else
+                return -1;
+        }
+        else {
+            toStore = pkb.getModifiedByP(para1);
+            int ret = resultStore.insertResult(para2, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+    }
+    else if (para2IsEnt) {
+        toStore = pkb.getModifiesVarP(para2);
+        int ret = resultStore.insertResult(para1, toStore);
+        if (ret == -1) {  // Exit cond
+            return -1;
+        }
+    }
+    else if (para2IsPlaceholder) {
+        toStore = pkb.getModifiesVarP();
+        int ret = resultStore.insertResult(para1, toStore);
+        if (ret == -1) {  // Exit cond
+            return -1;
+        }
+    }
+    else {
+        // Double variable e.g Modifies(p, v)
+        if (para1.compare(para2) == 0) {
+            // Modifies (p, p)
+            // std::cout << "Parameters of Modifies(" << para1 << "," << para2 << ") are the wrong type\n";
+            return -1;
+        }
+        else {
+            std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
+            std::vector<std::vector<std::string>> toStoreTuple;
+            if (para1ValString.size() == 0) {
+                return -1;
+            }
+            for (int i = 0; i < (int)para1ValString.size(); i++) {
+                toStore = pkb.getModifiedByP(para1ValString[i]);
+                for (int j = 0; j < (int)toStore.size(); j++) {
+                    std::vector<std::string> holder;
+                    holder.push_back(para1ValString[i]);
+                    holder.push_back(toStore[j]); 
+                    toStoreTuple.push_back(holder);
+                }
+            }
+            int ret = resultStore.insertResult(para1, para2, toStoreTuple);
+            if (ret == -1)
+                return -1;
+        }
+    }
+    return 0;
+}
+
+// Evaluating uses query, statements
 int QueryProcessor::evaluateUsesS(bool para1IsNum, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, PKB pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
@@ -1002,6 +1088,92 @@ int QueryProcessor::evaluateUsesS(bool para1IsNum, bool para2IsEnt, bool para2Is
             }
             for (int i = 0; i < (int)para1ValInt.size(); i++) {
                 toStore = pkb.getUsedBy(para1ValInt[i]);
+                for (int j = 0; j < (int)toStore.size(); j++) {
+                    std::vector<std::string> holder;
+                    holder.push_back(para1ValString[i]); 
+                    holder.push_back(toStore[j]);
+                    toStoreTuple.push_back(holder);
+                }
+            }
+            int ret = resultStore.insertResult(para1, para2, toStoreTuple);
+            if (ret == -1)
+                return -1;
+        }
+    }
+    return 0;
+}
+
+// Evaluating uses query, procedure
+int QueryProcessor::evaluateUsesP(bool para1IsEnt, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, PKB pkb) {
+    std::vector<int> temp;
+    std::vector<std::string> toStore;
+
+    // Inserting valid values based on parameter type (if variable)
+    int ret;
+    if (!para1IsEnt) {
+        ret = evaluateType(pkb, para1);
+        if (ret == -1) 
+            return -1;
+    }
+    if (!para2IsEnt && !para2IsPlaceholder) {
+        int ret2 = evaluateType(pkb, para2);
+        if (ret2 == -1)
+            return -1;
+    }
+
+    // Inserting valid values based on PKB tables 
+    if (para1IsEnt) {
+        if (para2IsEnt) {
+            if (!pkb.isUsesP(para1, para2)) {  // Uses(ent, ent) is false, whole query is false
+                // std::cout << "Uses(" << para1 << ",\"" << para2 << "\") is false" << std::endl;
+                return -1;
+            }
+            // Uses(num, ent) is true, do nothing
+        }
+        else if (para2IsPlaceholder) {
+            toStore = pkb.getUsedByP(para1);
+            if (toStore.size() > 0)
+                return 0;
+            else 
+                return -1;
+        }
+        else {
+            toStore = pkb.getUsedByP(para1);
+            int ret = resultStore.insertResult(para2, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+    }
+    else if (para2IsEnt) {
+        toStore = pkb.getUsesVarP(para2);
+        int ret = resultStore.insertResult(para1, toStore);
+        if (ret == -1) {  // Exit cond
+            return -1;
+        }
+    }
+    else if (para2IsPlaceholder) {
+        toStore = pkb.getUsesVarP();
+        int ret = resultStore.insertResult(para1, toStore);
+        if (ret == -1) {  // Exit cond
+            return -1;
+        }
+    }
+    else {
+        // Double variable e.g Uses(p, v)
+        if (para1.compare(para2) == 0) {
+            // Uses (p, p)
+            // std::cout << "Parameters of Uses(" << para1 << "," << para2 << ") are the wrong type\n";
+            return -1;
+        }
+        else {
+            std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
+            std::vector<std::vector<std::string>> toStoreTuple;
+            if (para1ValString.size() == 0) {
+                return -1;
+            }
+            for (int i = 0; i < (int)para1ValString.size(); i++) {
+                toStore = pkb.getUsedByP(para1ValString[i]);
                 for (int j = 0; j < (int)toStore.size(); j++) {
                     std::vector<std::string> holder;
                     holder.push_back(para1ValString[i]); 
@@ -1318,9 +1490,29 @@ void QueryProcessor::processQuery(PKB pkb)
                 }
                 // modifies query, statements
                 else if (relation.getName().compare("modifiess") == 0) {
-                    if (para1IsNum || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                       
-                        if (para2IsEnt || para2IsPlaceholder || para2IsEnt || para2Type == DeclarationTable::variable_) {
+                    if (para2IsEnt || para2IsPlaceholder || para2Type == DeclarationTable::variable_) {
+                        if (para1IsNum || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {   
                             int ret = evaluateModifiesS(para1IsNum, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
+                            if (ret == -1)
+                                return;
+                        }
+                        // modifies query, procedures, parser misclassification
+                        else if (para1Type == DeclarationTable::procedure_) {
+                            int ret = evaluateModifiesP(para1IsEnt, para2IsEnt, para2IsPlaceholder, para1, para2, pkb); 
+                            if (ret == -1)
+                                return;
+                        }
+                        else
+                            return;
+                    }
+                    else
+                        return;
+                }
+                // modifies query, procedures
+                else if (relation.getName().compare("modifiesp") == 0) {
+                    if (para1IsEnt) {                       
+                        if (para2IsEnt || para2IsPlaceholder || para2Type == DeclarationTable::variable_) {
+                            int ret = evaluateModifiesP(para1IsEnt, para2IsEnt, para2IsPlaceholder, para1, para2, pkb); 
                             if (ret == -1)
                                 return;
                         }
@@ -1332,9 +1524,29 @@ void QueryProcessor::processQuery(PKB pkb)
                 }
                 // uses query, statements
                 else if (relation.getName().compare("usess") == 0) {
-                    if (para1IsNum || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) { 
-                        if (para2IsNum || para1IsPlaceholder || para2IsEnt || para2Type == DeclarationTable::variable_) {
+                    if (para2IsEnt || para2IsPlaceholder || para2Type == DeclarationTable::variable_) {
+                        if (para1IsNum || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) { 
                             int ret = evaluateUsesS(para1IsNum, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
+                            if (ret == -1)
+                                return;
+                        }
+                        // uses query, procedures, parser misclassification
+                        else if (para1Type == DeclarationTable::procedure_) {
+                            int ret = evaluateUsesP(para1IsEnt, para2IsEnt, para2IsPlaceholder, para1, para2, pkb); 
+                            if (ret == -1)
+                                return;
+                        }
+                        else
+                            return;
+                    }
+                    else
+                        return;
+                }
+                // uses query, procedures
+                else if (relation.getName().compare("usesp") == 0) {
+                    if (para1IsEnt) { 
+                        if (para2IsEnt || para2IsPlaceholder || para2Type == DeclarationTable::variable_) {
+                            int ret = evaluateUsesP(para1IsEnt, para2IsEnt, para2IsPlaceholder, para1, para2, pkb); 
                             if (ret == -1)
                                 return;
                         }
