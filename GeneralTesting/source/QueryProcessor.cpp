@@ -1190,7 +1190,7 @@ int QueryProcessor::evaluateUsesP(bool para1IsEnt, bool para2IsEnt, bool para2Is
 }
 
 // Evaluating calls query
-int QueryProcessor::evaluateCalls(bool para1IsEnt, bool para1IsPlaceholder, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, PKB pkb) {
+int QueryProcessor::evaluateCalls(bool T, bool para1IsEnt, bool para1IsPlaceholder, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, PKB pkb) {
     std::vector<std::string> toStore;
 
     // Inserting valid values based on parameter type (if variable)
@@ -1206,67 +1206,142 @@ int QueryProcessor::evaluateCalls(bool para1IsEnt, bool para1IsPlaceholder, bool
             return -1;
     }
 
-    if (para1IsEnt) {
-        if (para2IsEnt) {
-            if (!pkb.isCalls(para1, para2)) {  
-                // std::cout << "Calls(" << para1 << ",\"" << para2 << "\") is false" << std::endl;
-                return -1;
+    if (!T) {
+        if (para1IsEnt) {
+            if (para2IsEnt) {
+                if (!pkb.isCalls(para1, para2)) {  
+                    // std::cout << "Calls(" << para1 << ",\"" << para2 << "\") is false" << std::endl;
+                    return -1;
+                }
+                // Calls(ent, ent) is true, do nothing
             }
-            // Calls(ent, ent) is true, do nothing
+            else if (para2IsPlaceholder) {
+                toStore = pkb.getCalledBy(para1);
+                if (toStore.size() > 0)
+                    return 0;
+                else 
+                    return -1;
+            }
+            else {
+                toStore = pkb.getCalledBy(para1);
+                int ret = resultStore.insertResult(para2, toStore);
+                if (ret == -1) {  // Exit cond
+                    return -1;
+                }
+            }
         }
-        else if (para2IsPlaceholder) {
-            toStore = pkb.getCalledBy(para1);
-            if (toStore.size() > 0)
-                return 0;
-            else 
-                return -1;
-        }
-        else {
-            toStore = pkb.getCalledBy(para1);
-            int ret = resultStore.insertResult(para2, toStore);
+        else if (para2IsEnt) {
+            toStore = pkb.getCalls(para2);
+            int ret = resultStore.insertResult(para1, toStore);
             if (ret == -1) {  // Exit cond
                 return -1;
             }
         }
-    }
-    else if (para2IsEnt) {
-        toStore = pkb.getCalls(para2);
-        int ret = resultStore.insertResult(para1, toStore);
-        if (ret == -1) {  // Exit cond
-            return -1;
+        else if (para2IsPlaceholder) {
+            toStore = pkb.getCalls();
+            int ret = resultStore.insertResult(para1, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
         }
-    }
-    else if (para2IsPlaceholder) {
-        toStore = pkb.getCalls();
-        int ret = resultStore.insertResult(para1, toStore);
-        if (ret == -1) {  // Exit cond
-            return -1;
+        else {
+            // Double variable e.g Calls(p1, p2)
+            if (para1.compare(para2) == 0) {
+                // Calls (p1, p1)
+                return -1;
+            }
+            else {
+                std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
+                std::vector<std::vector<std::string>> toStoreTuple;
+                if (para1ValString.size() == 0) {
+                    return -1;
+                }
+                for (int i = 0; i < (int)para1ValString.size(); i++) {
+                    toStore = pkb.getCalledBy(para1ValString[i]);
+                    for (int j = 0; j < (int)toStore.size(); j++) {
+                        std::vector<std::string> holder;
+                        holder.push_back(para1ValString[i]); 
+                        holder.push_back(toStore[j]);
+                        toStoreTuple.push_back(holder);
+                    }
+                }
+                int ret = resultStore.insertResult(para1, para2, toStoreTuple);
+                if (ret == -1)
+                    return -1;
+            }
         }
     }
     else {
-        // Double variable e.g Calls(p1, p2)
-        if (para1.compare(para2) == 0) {
-            // Calls (p1, p1)
-            return -1;
-        }
-        else {
-            std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
-            std::vector<std::vector<std::string>> toStoreTuple;
-            if (para1ValString.size() == 0) {
-                return -1;
+        if (para1IsEnt) {
+            if (para2IsEnt) {
+                bool found = false;
+                std::vector<std::string> temp2 = pkb.getCalledByT(para1);
+                for (int i = 0; i < (int)temp2.size(); i++) {
+                    if (para2.compare(temp2[i]) == 0) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {  
+                    // std::cout << "Calls*(" << para1 << ",\"" << para2 << "\") is false" << std::endl;
+                    return -1;
+                }
+                // Calls*(ent, ent) is true, do nothing
             }
-            for (int i = 0; i < (int)para1ValString.size(); i++) {
-                toStore = pkb.getCalledBy(para1ValString[i]);
-                for (int j = 0; j < (int)toStore.size(); j++) {
-                    std::vector<std::string> holder;
-                    holder.push_back(para1ValString[i]); 
-                    holder.push_back(toStore[j]);
-                    toStoreTuple.push_back(holder);
+            else if (para2IsPlaceholder) {
+                toStore = pkb.getCalledBy(para1);
+                if (toStore.size() > 0)
+                    return 0;
+                else 
+                    return -1;
+            }
+            else {
+                toStore = pkb.getCalledByT(para1);
+                int ret = resultStore.insertResult(para2, toStore);
+                if (ret == -1) {  // Exit cond
+                    return -1;
                 }
             }
-            int ret = resultStore.insertResult(para1, para2, toStoreTuple);
-            if (ret == -1)
+        }
+        else if (para2IsEnt) {
+            toStore = pkb.getCallsT(para2);
+            int ret = resultStore.insertResult(para1, toStore);
+            if (ret == -1) {  // Exit cond
                 return -1;
+            }
+        }
+        else if (para2IsPlaceholder) {
+            toStore = pkb.getCalls();
+            int ret = resultStore.insertResult(para1, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        else {
+            // Double variable e.g Calls*(p1, p2)
+            if (para1.compare(para2) == 0) {
+                // Calls* (p1, p1)
+                return -1;
+            }
+            else {
+                std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
+                std::vector<std::vector<std::string>> toStoreTuple;
+                if (para1ValString.size() == 0) {
+                    return -1;
+                }
+                for (int i = 0; i < (int)para1ValString.size(); i++) {
+                    toStore = pkb.getCalledByT(para1ValString[i]);
+                    for (int j = 0; j < (int)toStore.size(); j++) {
+                        std::vector<std::string> holder;
+                        holder.push_back(para1ValString[i]); 
+                        holder.push_back(toStore[j]);
+                        toStoreTuple.push_back(holder);
+                    }
+                }
+                int ret = resultStore.insertResult(para1, para2, toStoreTuple);
+                if (ret == -1)
+                    return -1;
+            }
         }
     }
     return 0;
@@ -1563,7 +1638,21 @@ void QueryProcessor::processQuery(PKB pkb)
             else if (relation.getName().compare("calls") == 0) {
                 if (para1IsEnt || para1IsPlaceholder || para1Type == DeclarationTable::procedure_) {
                     if (para2IsEnt || para2IsPlaceholder || para2Type == DeclarationTable::procedure_) {
-                        int ret = evaluateCalls(para1IsEnt, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2,pkb);
+                        int ret = evaluateCalls(false, para1IsEnt, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2,pkb);
+                        if (ret == -1)
+                            return;
+                    }
+                    else
+                        return;
+                }
+                else
+                    return;
+            }
+            // calls* query
+            else if (relation.getName().compare("callst") == 0) {
+                if (para1IsEnt || para1IsPlaceholder || para1Type == DeclarationTable::procedure_) {
+                    if (para2IsEnt || para2IsPlaceholder || para2Type == DeclarationTable::procedure_) {
+                        int ret = evaluateCalls(true, para1IsEnt, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2,pkb);
                         if (ret == -1)
                             return;
                     }
