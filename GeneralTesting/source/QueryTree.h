@@ -17,4 +17,5 @@ public:
 	QueryTree();
 	int insertNode(std::string, std::string, int);
 	std::vector<QueryNode> getTree();
+    void reorgTree();
 };
