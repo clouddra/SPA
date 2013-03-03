@@ -701,19 +701,19 @@ int QueryProcessor::evaluateNext(bool T, bool para1IsNum, bool para1IsPlaceholde
                 }
             }
             else {
-                std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
-                std::vector<int> para2ValInt = stringVecToIntVec(para2ValString);
+                std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
+                std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
                 std::vector<std::vector<std::string>> toStoreTuple;
-                if (para2ValInt.size() == 0) {
+                if (para1ValInt.size() == 0) {
                     return -1;
                 }
-                for (int i = 0; i < (int)para2ValInt.size(); i++) {
-                    temp = pkb.getNext(para2ValInt[i]);
+                for (int i = 0; i < (int)para1ValInt.size(); i++) {
+                    temp = pkb.getNext(para1ValInt[i]);
                     toStore = intVecToStringVec(temp);
                     for (int j = 0; j < (int)toStore.size(); j++) {
                         std::vector<std::string> holder;
+                        holder.push_back(para1ValString[i]);
                         holder.push_back(toStore[j]); 
-                        holder.push_back(para2ValString[i]);
                         toStoreTuple.push_back(holder);
                     }
                 }
