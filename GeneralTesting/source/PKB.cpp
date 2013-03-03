@@ -535,8 +535,7 @@ std::vector<int> PKB::getPrev() {
 }
 
 std::vector<int> PKB::getPrevT(int stmt) {
-    std::vector<int> ret;
-    return ret;
+    return cfg.getPrevT(stmt, stmtNodeTable.getCFG(stmt));
 }
 
 bool PKB::isNext(int stmt1, int stmt2) {

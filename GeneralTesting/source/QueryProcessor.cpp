@@ -1971,7 +1971,6 @@ void QueryProcessor::printTree()
 		std::cout << "Name: " << temp[i].getName() << ", Value: " << temp[i].getValue() << std::endl;
 }
 
-// Note: Most of the time result should be sorted if its stmtNum, but no guarantee
 void QueryProcessor::printResult()
 {
 	for (int i=0; i<(int)result.size(); i++) {
