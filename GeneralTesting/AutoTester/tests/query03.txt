@@ -17,6 +17,6 @@ Select a pattern a ("y", "y+h*8")
 5000
 4 - Pattern :: 
 while w;
-Select w pattern w ("NobodyReasons", _)
+Select w pattern w ("NobodyReason", _)
 5
 5000

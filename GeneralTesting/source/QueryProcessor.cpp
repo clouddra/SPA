@@ -1374,6 +1374,9 @@ int QueryProcessor::evaluateType(PKB pkb, std::string target) {
 // Walk our Query Tree and store results in result vector
 void QueryProcessor::processQuery(PKB pkb)
 {
+    // Reorganize query tree
+    queryTree.reorgTree();
+
     std::vector<QueryNode> tree = queryTree.getTree();
     std::string target = tree[0].getValue(); 
     std::vector<int> rootChildren = tree[0].getChildren();   
@@ -1400,204 +1403,203 @@ void QueryProcessor::processQuery(PKB pkb)
         // Evaluating such that
         if (currNode.getName().compare("such that") == 0) {
             QueryNode relCon = tree[currNode.getChildren()[0]];
-            std::vector<int> clauses = relCon.getChildren();
-            for (int j = 0; j < (int)clauses.size(); j++) {
-                QueryNode relation = tree[clauses[j]];
-                int paraNode1 = relation.getChildren()[0];
-                std::string para1 = tree[paraNode1].getName();
-                int paraNode2 = relation.getChildren()[1];
-                std::string para2 = tree[paraNode2].getName();
+            std::vector<int> clause = relCon.getChildren();
 
-                // Figure out type of parameter 1 and 2
-                bool para1IsNum = false, para2IsNum = false;
-                bool para1IsEnt = false, para2IsEnt = false;
-                bool para1IsPlaceholder = false, para2IsPlaceholder = false;
-                int para1Num = -1, para2Num = -1;
-                int para1Type = findTypeOf(para1, &para1IsNum, &para1IsEnt, &para1IsPlaceholder, &para1Num);
-                int para2Type = findTypeOf(para2, &para2IsNum, &para2IsEnt, &para2IsPlaceholder, &para2Num);
-                if (para1Type == -2 || para2Type == -2) {   // Cannot figure out parameter type
+            QueryNode relation = tree[clause[0]];
+            int paraNode1 = relation.getChildren()[0];
+            std::string para1 = tree[paraNode1].getName();
+            int paraNode2 = relation.getChildren()[1];
+            std::string para2 = tree[paraNode2].getName();
+
+            // Figure out type of parameter 1 and 2
+            bool para1IsNum = false, para2IsNum = false;
+            bool para1IsEnt = false, para2IsEnt = false;
+            bool para1IsPlaceholder = false, para2IsPlaceholder = false;
+            int para1Num = -1, para2Num = -1;
+            int para1Type = findTypeOf(para1, &para1IsNum, &para1IsEnt, &para1IsPlaceholder, &para1Num);
+            int para2Type = findTypeOf(para2, &para2IsNum, &para2IsEnt, &para2IsPlaceholder, &para2Num);
+            if (para1Type == -2 || para2Type == -2) {   // Cannot figure out parameter type
+                return;
+            }
+                // Exit if a "constant" type variable is found (not allowed)
+            if (para1Type == DeclarationTable::constant_ || para1Type == DeclarationTable::constant_) {
+                // std::cout << "Constant type not allowed in query\n";
+                return;
+            }
+
+            // Get rid of " " if parameters are entities
+            if (para1IsEnt) {
+                para1 = para1.substr(1, para1.size()-2);
+            }
+            if (para2IsEnt) {
+                para2 = para2.substr(1, para2.size()-2);
+            }
+
+            // follows query
+            if (relation.getName().compare("follows") == 0) {
+                if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {
+                    if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
+                        int ret = evaluateFollows(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                        if (ret == -1)
+                            return;
+                    }
+                    else
+                        return;
+                }
+                else
                     return;
+            }
+            // follows* query
+            else if (relation.getName().compare("followst") == 0) {
+                if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                
+                    if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {   
+                        int ret = evaluateFollows(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                        if (ret == -1)
+                            return;
+                    }
+                    else
+                        return;
                 }
-                 // Exit if a "constant" type variable is found (not allowed)
-                if (para1Type == DeclarationTable::constant_ || para1Type == DeclarationTable::constant_) {
-                    // std::cout << "Constant type not allowed in query\n";
+                else
                     return;
-                }
-
-                // Get rid of " " if parameters are entities
-                if (para1IsEnt) {
-                    para1 = para1.substr(1, para1.size()-2);
-                }
-                if (para2IsEnt) {
-                    para2 = para2.substr(1, para2.size()-2);
-                }
-
-                // follows query
-                if (relation.getName().compare("follows") == 0) {
-                    if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {
-                        if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
-                            int ret = evaluateFollows(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
-                            if (ret == -1)
-                                return;
-                        }
-                        else
+            }
+            // parent query
+            else if (relation.getName().compare("parent") == 0) {
+                if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                        
+                    if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
+                        int ret = evaluateParent(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                        if (ret == -1)
                             return;
                     }
                     else
                         return;
                 }
-                // follows* query
-                else if (relation.getName().compare("followst") == 0) {
-                    if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                
-                        if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {   
-                            int ret = evaluateFollows(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
-                            if (ret == -1)
-                                return;
-                        }
-                        else
+                else
+                    return;
+            }
+            // parent* query
+            else if (relation.getName().compare("parentt") == 0) {
+                if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                        
+                    if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
+                        int ret = evaluateParent(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                        if (ret == -1)
                             return;
                     }
                     else
                         return;
                 }
-                // parent query
-                else if (relation.getName().compare("parent") == 0) {
-                    if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                        
-                        if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
-                            int ret = evaluateParent(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
-                            if (ret == -1)
-                                return;
-                        }
-                        else
+                else
+                    return;
+            }
+            // modifies query, statements
+            else if (relation.getName().compare("modifiess") == 0) {
+                if (para2IsEnt || para2IsPlaceholder || para2Type == DeclarationTable::variable_) {
+                    if (para1IsNum || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {   
+                        int ret = evaluateModifiesS(para1IsNum, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
+                        if (ret == -1)
+                            return;
+                    }
+                    // modifies query, procedures, parser misclassification
+                    else if (para1Type == DeclarationTable::procedure_) {
+                        int ret = evaluateModifiesP(para1IsEnt, para2IsEnt, para2IsPlaceholder, para1, para2, pkb); 
+                        if (ret == -1)
                             return;
                     }
                     else
                         return;
                 }
-                // parent* query
-                else if (relation.getName().compare("parentt") == 0) {
-                    if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                        
-                        if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
-                            int ret = evaluateParent(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
-                            if (ret == -1)
-                                return;
-                        }
-                        else
-                            return;
-                    }
-                    else
-                        return;
-                }
-                // modifies query, statements
-                else if (relation.getName().compare("modifiess") == 0) {
+                else
+                    return;
+            }
+            // modifies query, procedures
+            else if (relation.getName().compare("modifiesp") == 0) {
+                if (para1IsEnt) {                       
                     if (para2IsEnt || para2IsPlaceholder || para2Type == DeclarationTable::variable_) {
-                        if (para1IsNum || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {   
-                            int ret = evaluateModifiesS(para1IsNum, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
-                            if (ret == -1)
-                                return;
-                        }
-                        // modifies query, procedures, parser misclassification
-                        else if (para1Type == DeclarationTable::procedure_) {
-                            int ret = evaluateModifiesP(para1IsEnt, para2IsEnt, para2IsPlaceholder, para1, para2, pkb); 
-                            if (ret == -1)
-                                return;
-                        }
-                        else
+                        int ret = evaluateModifiesP(para1IsEnt, para2IsEnt, para2IsPlaceholder, para1, para2, pkb); 
+                        if (ret == -1)
                             return;
                     }
                     else
                         return;
                 }
-                // modifies query, procedures
-                else if (relation.getName().compare("modifiesp") == 0) {
-                    if (para1IsEnt) {                       
-                        if (para2IsEnt || para2IsPlaceholder || para2Type == DeclarationTable::variable_) {
-                            int ret = evaluateModifiesP(para1IsEnt, para2IsEnt, para2IsPlaceholder, para1, para2, pkb); 
-                            if (ret == -1)
-                                return;
-                        }
-                        else
+                else
+                    return;
+            }
+            // uses query, statements
+            else if (relation.getName().compare("usess") == 0) {
+                if (para2IsEnt || para2IsPlaceholder || para2Type == DeclarationTable::variable_) {
+                    if (para1IsNum || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) { 
+                        int ret = evaluateUsesS(para1IsNum, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
+                        if (ret == -1)
+                            return;
+                    }
+                    // uses query, procedures, parser misclassification
+                    else if (para1Type == DeclarationTable::procedure_) {
+                        int ret = evaluateUsesP(para1IsEnt, para2IsEnt, para2IsPlaceholder, para1, para2, pkb); 
+                        if (ret == -1)
                             return;
                     }
                     else
                         return;
                 }
-                // uses query, statements
-                else if (relation.getName().compare("usess") == 0) {
+                else
+                    return;
+            }
+            // uses query, procedures
+            else if (relation.getName().compare("usesp") == 0) {
+                if (para1IsEnt) { 
                     if (para2IsEnt || para2IsPlaceholder || para2Type == DeclarationTable::variable_) {
-                        if (para1IsNum || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) { 
-                            int ret = evaluateUsesS(para1IsNum, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
-                            if (ret == -1)
-                                return;
-                        }
-                        // uses query, procedures, parser misclassification
-                        else if (para1Type == DeclarationTable::procedure_) {
-                            int ret = evaluateUsesP(para1IsEnt, para2IsEnt, para2IsPlaceholder, para1, para2, pkb); 
-                            if (ret == -1)
-                                return;
-                        }
-                        else
+                        int ret = evaluateUsesP(para1IsEnt, para2IsEnt, para2IsPlaceholder, para1, para2, pkb); 
+                        if (ret == -1)
                             return;
                     }
                     else
                         return;
                 }
-                // uses query, procedures
-                else if (relation.getName().compare("usesp") == 0) {
-                    if (para1IsEnt) { 
-                        if (para2IsEnt || para2IsPlaceholder || para2Type == DeclarationTable::variable_) {
-                            int ret = evaluateUsesP(para1IsEnt, para2IsEnt, para2IsPlaceholder, para1, para2, pkb); 
-                            if (ret == -1)
-                                return;
-                        }
-                        else
+                else
+                    return;
+            }
+            // calls query
+            else if (relation.getName().compare("calls") == 0) {
+                if (para1IsEnt || para1IsPlaceholder || para1Type == DeclarationTable::procedure_) {
+                    if (para2IsEnt || para2IsPlaceholder || para2Type == DeclarationTable::procedure_) {
+                        int ret = evaluateCalls(para1IsEnt, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2,pkb);
+                        if (ret == -1)
                             return;
                     }
                     else
                         return;
                 }
-                // calls query
-                else if (relation.getName().compare("calls") == 0) {
-                    if (para1IsEnt || para1IsPlaceholder || para1Type == DeclarationTable::procedure_) {
-                        if (para2IsEnt || para2IsPlaceholder || para2Type == DeclarationTable::procedure_) {
-                            int ret = evaluateCalls(para1IsEnt, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2,pkb);
-                            if (ret == -1)
-                                return;
-                        }
-                        else
+                else
+                    return;
+            }
+            // next query
+            else if (relation.getName().compare("next") == 0) {
+                if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                        
+                    if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
+                        int ret = evaluateNext(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                        if (ret == -1)
                             return;
                     }
                     else
                         return;
                 }
-                // next query
-                else if (relation.getName().compare("next") == 0) {
-                    if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                        
-                        if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
-                            int ret = evaluateNext(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
-                            if (ret == -1)
-                                return;
-                        }
-                        else
+                else
+                    return;
+            }
+            // next* query
+            else if (relation.getName().compare("nextt") == 0) {
+                if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                        
+                    if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
+                        int ret = evaluateNext(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                        if (ret == -1)
                             return;
                     }
                     else
                         return;
                 }
-                // next* query
-                else if (relation.getName().compare("nextt") == 0) {
-                    if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                        
-                        if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
-                            int ret = evaluateNext(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
-                            if (ret == -1)
-                                return;
-                        }
-                        else
-                            return;
-                    }
-                    else
-                        return;
-                }
+                else
+                    return;
             }
         }
 
@@ -1606,113 +1608,111 @@ void QueryProcessor::processQuery(PKB pkb)
 		// Eg. "pattern if1(x, _, _)" ===> if1 = pattern, x = var
         if (currNode.getName().compare("pattern") == 0) {
             QueryNode patternCond = tree[currNode.getChildren()[0]];
-            std::vector<int> clauses = patternCond.getChildren();
+            std::vector<int> clause = patternCond.getChildren();
             
-            for (int j = 0; j < (int)clauses.size(); j++) {
-                QueryNode temp = tree[clauses[j]];
-                if (temp.getName().compare("pattern_assign_or_while_") == 0) {
-                    std::string pattern = tree[temp.getChildren()[0]].getName();
-                    std::string var = tree[temp.getChildren()[1]].getName();
+            QueryNode temp = tree[clause[0]];
+            if (temp.getName().compare("pattern_assign_or_while_") == 0) {
+                std::string pattern = tree[temp.getChildren()[0]].getName();
+                std::string var = tree[temp.getChildren()[1]].getName();
 
-                    temp = tree[temp.getChildren()[2]];
-                    int expressionRoot = -1;
-                    bool hasUnderscore = false;
-                    if (temp.getName().compare("expr_with_underscore") == 0) {
-                        expressionRoot = temp.getChildren()[0];
-                        hasUnderscore = true;
-                    }
-                    else if (temp.getName().compare("expr_no_underscore") == 0) {
-                        expressionRoot = temp.getChildren()[0];
-                    }
-                    else if (temp.getName().compare("_") == 0) {
-                        hasUnderscore = true;
-                    }
-                    else {
-                        // std::cout << "Error parsing pattern clause\n";
-                        return;
-                    }
+                temp = tree[temp.getChildren()[2]];
+                int expressionRoot = -1;
+                bool hasUnderscore = false;
+                if (temp.getName().compare("expr_with_underscore") == 0) {
+                    expressionRoot = temp.getChildren()[0];
+                    hasUnderscore = true;
+                }
+                else if (temp.getName().compare("expr_no_underscore") == 0) {
+                    expressionRoot = temp.getChildren()[0];
+                }
+                else if (temp.getName().compare("_") == 0) {
+                    hasUnderscore = true;
+                }
+                else {
+                    // std::cout << "Error parsing pattern clause\n";
+                    return;
+                }
 
-                    // Figure out type of parameter 1 and 2
-                    bool patternIsNum = false, varIsNum = false;
-                    bool patternIsEnt = false, varIsEnt = false;
-                    bool patternIsPlaceholder = false, varIsPlaceholder = false;
-                    bool isWhile = false;
-                    int patternNum = -1, varNum = -1;
-                    int patternType = findTypeOf(pattern, &patternIsNum, &patternIsEnt, &patternIsPlaceholder, &patternNum);
-                    int varType = findTypeOf(var, &varIsNum, &varIsEnt, &varIsPlaceholder, &varNum);
-                    if (patternType == -2 || varType == -2) {   // Cannot figure out type
-                        return;
-                    }
+                // Figure out type of parameter 1 and 2
+                bool patternIsNum = false, varIsNum = false;
+                bool patternIsEnt = false, varIsEnt = false;
+                bool patternIsPlaceholder = false, varIsPlaceholder = false;
+                bool isWhile = false;
+                int patternNum = -1, varNum = -1;
+                int patternType = findTypeOf(pattern, &patternIsNum, &patternIsEnt, &patternIsPlaceholder, &patternNum);
+                int varType = findTypeOf(var, &varIsNum, &varIsEnt, &varIsPlaceholder, &varNum);
+                if (patternType == -2 || varType == -2) {   // Cannot figure out type
+                    return;
+                }
                     
-                    // Check that patternType is assign or while
-                    if (patternType == DeclarationTable::while_) {
-                        if (expressionRoot != -1) {
-                            return;
-                        }
-                        else {
-                            isWhile = true;
-                        }
-                    }
-                    else if (patternType != DeclarationTable::assign_) {
+                // Check that patternType is assign or while
+                if (patternType == DeclarationTable::while_) {
+                    if (expressionRoot != -1) {
                         return;
-                    }
-
-                    // Get rid of " " if var is entitity
-                    if (varIsEnt) {
-                        var = var.substr(1, var.size()-2);
-                    }
-                    // Return if var is the wrong type
-                    else if (!varIsPlaceholder && varType != DeclarationTable::variable_) {
-                        return;
-                    }
-
-                    if (!isWhile) {
-                        int ret = evaluateAssignPattern(pattern, var, expressionRoot, varIsEnt, varIsPlaceholder, hasUnderscore, pkb);
-                        if (ret == -1)
-                            return;
                     }
                     else {
-                        int ret = evaluateIfWhilePattern(pattern, var, varIsEnt, varIsPlaceholder, pkb);
-                        if (ret == -1)
-                            return;
+                        isWhile = true;
                     }
                 }
-                else if (temp.getName().compare("pattern_if_") == 0) {
-                    std::string pattern = tree[temp.getChildren()[0]].getName();
-                    std::string var = tree[temp.getChildren()[1]].getName();
+                else if (patternType != DeclarationTable::assign_) {
+                    return;
+                }
 
-                    // Figure out type of parameter 1 and 2
-                    bool patternIsNum = false, varIsNum = false;
-                    bool patternIsEnt = false, varIsEnt = false;
-                    bool patternIsPlaceholder = false, varIsPlaceholder = false;
-                    int patternNum = -1, varNum = -1;
-                    int patternType = findTypeOf(pattern, &patternIsNum, &patternIsEnt, &patternIsPlaceholder, &patternNum);
-                    int varType = findTypeOf(var, &varIsNum, &varIsEnt, &varIsPlaceholder, &varNum);
-                    if (patternType == -2 || varType == -2) {   // Cannot figure out type
-                        return;
-                    }
+                // Get rid of " " if var is entitity
+                if (varIsEnt) {
+                    var = var.substr(1, var.size()-2);
+                }
+                // Return if var is the wrong type
+                else if (!varIsPlaceholder && varType != DeclarationTable::variable_) {
+                    return;
+                }
 
-                    if (patternType != DeclarationTable::if_) {
-                        return;
-                    }
-
-                    // Get rid of " " if var is entitity
-                    if (varIsEnt) {
-                        var = var.substr(1, var.size()-2);
-                    }
-                    // Return if var is the wrong type
-                    else if (!varIsPlaceholder && varType != DeclarationTable::variable_) {
-                        return;
-                    }
-
-                    int ret = evaluateIfWhilePattern(pattern, var, varIsEnt, varIsPlaceholder, pkb);
+                if (!isWhile) {
+                    int ret = evaluateAssignPattern(pattern, var, expressionRoot, varIsEnt, varIsPlaceholder, hasUnderscore, pkb);
                     if (ret == -1)
                         return;
                 }
                 else {
-                    // std::cout << "Unknown pattern format\n";
+                    int ret = evaluateIfWhilePattern(pattern, var, varIsEnt, varIsPlaceholder, pkb);
+                    if (ret == -1)
+                        return;
+                }
+            }
+            else if (temp.getName().compare("pattern_if_") == 0) {
+                std::string pattern = tree[temp.getChildren()[0]].getName();
+                std::string var = tree[temp.getChildren()[1]].getName();
+
+                // Figure out type of parameter 1 and 2
+                bool patternIsNum = false, varIsNum = false;
+                bool patternIsEnt = false, varIsEnt = false;
+                bool patternIsPlaceholder = false, varIsPlaceholder = false;
+                int patternNum = -1, varNum = -1;
+                int patternType = findTypeOf(pattern, &patternIsNum, &patternIsEnt, &patternIsPlaceholder, &patternNum);
+                int varType = findTypeOf(var, &varIsNum, &varIsEnt, &varIsPlaceholder, &varNum);
+                if (patternType == -2 || varType == -2) {   // Cannot figure out type
                     return;
                 }
+
+                if (patternType != DeclarationTable::if_) {
+                    return;
+                }
+
+                // Get rid of " " if var is entitity
+                if (varIsEnt) {
+                    var = var.substr(1, var.size()-2);
+                }
+                // Return if var is the wrong type
+                else if (!varIsPlaceholder && varType != DeclarationTable::variable_) {
+                    return;
+                }
+
+                int ret = evaluateIfWhilePattern(pattern, var, varIsEnt, varIsPlaceholder, pkb);
+                if (ret == -1)
+                    return;
+            }
+            else {
+                // std::cout << "Unknown pattern format\n";
+                return;
             }
         }
 
@@ -1721,111 +1721,101 @@ void QueryProcessor::processQuery(PKB pkb)
             std::vector <std::string> toStore; 
             int ret;
             QueryNode attrCompare = tree[currNode.getChildren()[0]];
+            std::vector<int> clause = attrCompare.getChildren();
 
-            std::vector<int> clauses = attrCompare.getChildren();
-            for (int j = 0; j < (int)clauses.size(); j++) {
-                QueryNode temp = tree[clauses[j]];
-                if (temp.getName().compare("attrCompare_attrRef") == 0) {
-                    std::string syno, attrName;
-                    int synoType;
-                    ret = attrRefChecker(&syno, &attrName, &synoType, tree[temp.getChildren()[0]], pkb);
+            QueryNode temp = tree[clause[0]];
+            if (temp.getName().compare("attrCompare_attrRef") == 0) {
+                std::string syno, attrName;
+                int synoType;
+                ret = attrRefChecker(&syno, &attrName, &synoType, tree[temp.getChildren()[0]], pkb);
+                if (ret == -1)
+                    return;
+                temp = tree[temp.getChildren()[1]];
+                if (temp.getName().compare("ref_integer") == 0) {
+                    std::string integerString = tree[temp.getChildren()[0]].getName(); 
+                    int integerHolder;
+                    bool dummy, isNum = false;
+                    ret = findTypeOf(integerString, &isNum, &dummy, &dummy, &integerHolder);
+                    if (ret == -2 || !isNum) {
+                        // Error
+                        return;
+                    }
+                    toStore.push_back(integerString);
+                    ret = resultStore.insertResult(syno, toStore);
                     if (ret == -1)
                         return;
-                    temp = tree[temp.getChildren()[1]];
-                    if (temp.getName().compare("ref_integer") == 0) {
-                        std::string integerString = tree[temp.getChildren()[0]].getName(); 
-                        int integerHolder;
-                        bool dummy, isNum = false;
-                        ret = findTypeOf(integerString, &isNum, &dummy, &dummy, &integerHolder);
-                        if (ret == -2 || !isNum) {
-                            // Error
-                            return;
-                        }
-                        toStore.push_back(integerString);
-                        ret = resultStore.insertResult(syno, toStore);
-                        if (ret == -1)
-                            return;
-                    }
-                    else if (temp.getName().compare("ref_ident") == 0) {
-                        std::string varName = tree[temp.getChildren()[0]].getName();
-                        toStore.push_back(varName);
-                        ret = resultStore.insertResult(syno, toStore);
-                        if (ret == -1)
-                            return;
-                    }
-                    else if (temp.getName().compare("ref_attrRef") == 0) {
-                        std::string syno2, attrName2;
-                        int synoType2;
-                        ret = attrRefChecker(&syno2, &attrName2, &synoType2, tree[temp.getChildren()[0]], pkb);
-                        if (ret == -1)
-                            return;
-
-                        toStore = resultStore.getValuesFor(syno);
-                        std::vector<std::vector<std::string>> toStoreTuple;
-                        for (int i = 0; i < (int)toStore.size(); i++) {
-                            std::vector<std::string> tempVec;
-                            tempVec.push_back(toStore[i]);
-                            tempVec.push_back(toStore[i]); 
-                            toStoreTuple.push_back(tempVec);
-                        } 
-                        ret = resultStore.insertResult(syno, syno2, toStoreTuple);
-                        if (ret == -1)
-                            return;
-                    }
-                    else {
-                        // Error
-                        return;
-                    }
                 }
-                else if (temp.getName().compare("attrCompare_synonym") == 0) {
-                    std::string syno = (tree[temp.getChildren()[0]]).getName();
-                    int synoType = evaluateType(pkb, syno);
-                    if (synoType != DeclarationTable::prog_line_) {
-                        // Error
+                else if (temp.getName().compare("ref_ident") == 0) {
+                    std::string varName = tree[temp.getChildren()[0]].getName();
+                    toStore.push_back(varName);
+                    ret = resultStore.insertResult(syno, toStore);
+                    if (ret == -1)
                         return;
-                    }
-                    temp = tree[temp.getChildren()[1]];
-                    if (temp.getName().compare("ref_pl_integer") == 0) {
-                        std::string integerString = tree[temp.getChildren()[0]].getName(); 
-                        int integerHolder;
-                        bool dummy, isNum = false;
-                        ret = findTypeOf(integerString, &isNum, &dummy, &dummy, &integerHolder);
-                        if (ret == -2 || !isNum) {
-                            // Error
-                            return;
-                        }
-                        toStore.push_back(integerString);
-                        ret = resultStore.insertResult(syno, toStore);
-                        if (ret == -1)
-                            return;
-                    }
-                    else if (temp.getName().compare("ref_pl_attrRef") == 0) {
-                        std::string syno2, attrName2;
-                        int synoType2;
-                        ret = attrRefChecker(&syno2, &attrName2, &synoType2, tree[temp.getChildren()[0]], pkb);
-                        if (ret == -1)
-                            return;
-                        toStore = resultStore.getValuesFor(syno2);
-                        ret = resultStore.insertResult(syno, toStore);
-                        if (ret == -1)
-                            return;
-                    }
+                }
+                else if (temp.getName().compare("ref_attrRef") == 0) {
+                    std::string syno2, attrName2;
+                    int synoType2;
+                    ret = attrRefChecker(&syno2, &attrName2, &synoType2, tree[temp.getChildren()[0]], pkb);
+                    if (ret == -1)
+                        return;
+
+                    toStore = resultStore.getValuesFor(syno);
+                    std::vector<std::vector<std::string>> toStoreTuple;
+                    for (int i = 0; i < (int)toStore.size(); i++) {
+                        std::vector<std::string> tempVec;
+                        tempVec.push_back(toStore[i]);
+                        tempVec.push_back(toStore[i]); 
+                        toStoreTuple.push_back(tempVec);
+                    } 
+                    ret = resultStore.insertResult(syno, syno2, toStoreTuple);
+                    if (ret == -1)
+                        return;
                 }
                 else {
                     // Error
                     return;
                 }
             }
+            else if (temp.getName().compare("attrCompare_synonym") == 0) {
+                std::string syno = (tree[temp.getChildren()[0]]).getName();
+                int synoType = evaluateType(pkb, syno);
+                if (synoType != DeclarationTable::prog_line_) {
+                    // Error
+                    return;
+                }
+                temp = tree[temp.getChildren()[1]];
+                if (temp.getName().compare("ref_pl_integer") == 0) {
+                    std::string integerString = tree[temp.getChildren()[0]].getName(); 
+                    int integerHolder;
+                    bool dummy, isNum = false;
+                    ret = findTypeOf(integerString, &isNum, &dummy, &dummy, &integerHolder);
+                    if (ret == -2 || !isNum) {
+                        // Error
+                        return;
+                    }
+                    toStore.push_back(integerString);
+                    ret = resultStore.insertResult(syno, toStore);
+                    if (ret == -1)
+                        return;
+                }
+                else if (temp.getName().compare("ref_pl_attrRef") == 0) {
+                    std::string syno2, attrName2;
+                    int synoType2;
+                    ret = attrRefChecker(&syno2, &attrName2, &synoType2, tree[temp.getChildren()[0]], pkb);
+                    if (ret == -1)
+                        return;
+                    toStore = resultStore.getValuesFor(syno2);
+                    ret = resultStore.insertResult(syno, toStore);
+                    if (ret == -1)
+                        return;
+                }
+            }
+            else {
+                // Error
+                return;
+            }
         }
     } 
-
-    // Evaluating select
-    // Note that this step is actually only necessary if the target did not appear in the clauses, might want to have a flag for performance
-    if (!isBool) {
-        int ret = evaluateType(pkb, target);
-        if (ret == -1)
-            return;
-    }
 
     // This is the final step, inserting into result, please do not do any evaluation after this
     // Only insert into result here (besides the false at the start) as results will be cleared here
@@ -1834,6 +1824,13 @@ void QueryProcessor::processQuery(PKB pkb)
         result.push_back("true");
     else {
         result = resultStore.getValuesFor(target);
+        // If empty, should mean that target did not appear in query
+        if (result.size() == 0) {
+            int ret = evaluateType(pkb, target);
+            if (ret == -1)
+                return;
+            result = resultStore.getValuesFor(target);
+        }
     }
 }
 
