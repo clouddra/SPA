@@ -135,7 +135,7 @@ void DesignExtractor::populateTables()
 		{
 			std::string procName = procsCalled[n];
 			int procIndex = _proct->getProcIndex(procName);
-			std::vector<int> varsModified = _mt->getModifiesVarProc(_proct->getProcIndex(procsCalled[n]));//get all vars modified by that particular proc
+			std::vector<int> varsModified = _mt->getModifiedByProc(_proct->getProcIndex(procsCalled[n]));//get all vars modified by that particular proc
 			std::vector<int> varsUsed = _ut->getUsedByProc(_proct->getProcIndex(procsCalled[n]));//get all vars used by that particular proc
 			for(int a=0;a<varsModified.size();a++)
 			{
@@ -218,7 +218,7 @@ void DesignExtractor::populateTables()
 	
 void DesignExtractor::addModifiesUsesForCallsStmt(int callStmt, int proc)
 {
-	std::vector<int> varsModified = _mt->getModifiesVarProc(proc);
+	std::vector<int> varsModified = _mt->getModifiedByProc(proc);
 	std::vector<int> varsUsed = _ut->getUsedByProc(proc);
 	for(int y=0;y < (int)varsModified.size();y++)
 	{

@@ -66,7 +66,7 @@ int main() {
 
 	pkb = controller.parseSource(storage);
 	
-	/*
+	
     std::cout<<"Modifies for each stmt: "<<std::endl;
 	for(int i=0;i<pkb.getModifiesTable()->getModifiesTableSize();i++)
 	{
@@ -77,7 +77,7 @@ int main() {
 		}
 		std::cout<<std::endl;
 	}
-		
+	/*	
 	std::cout<<"Calls Table: "<<std::endl;
 	for(int i=0;i<pkb.getCallsTable()->getSize();i++)
 	{
