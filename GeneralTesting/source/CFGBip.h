@@ -8,6 +8,11 @@
 #include "Common.hpp"
 #endif
 
+#ifndef PROCTABLE_HEAD
+#define PROCTABLE_HEAD
+#include "ProcTable.h"
+#endif
+
 #include "CFGBipNode.h"
 
 #include <map>
@@ -27,10 +32,10 @@ private:
 
 	public:
 
-	std::vector<int> getNext(int stmt1, int nodeIndex);
-	std::vector<int> getNextT(int stmt1, int nodeIndex);
-	std::vector<int> getPrev(int stmt2, int nodeIndex);
-	bool isNext(int stmt1, int node1, int stmt2);
+	std::vector<int> getNext(int stmt1, int nodeIndex, ProcTable procT);
+	std::vector<int> getNextT(int stmt1, int nodeIndex, ProcTable procT);
+	std::vector<int> getPrev(int stmt2, int nodeIndex, ProcTable procT);
+	bool isNext(int stmt1, int node1, int stmt2, ProcTable procT);
 	void addStmt(int nodeIndex, int stmtNum);
 	void addNext(int nodeIndex, int nextIndex);
 	void addPrev(int nodeIndex, int prevIndex); 

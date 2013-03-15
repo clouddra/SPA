@@ -1,14 +1,43 @@
 procedure Bill {
 x = y;
+x=y;
+x = y;
+
+while x{
+x=y;
+x = y;
 call a;
+x=y;
+x = y;
 call b;
+x=y;
+x = y;
+}
+call a;
+
+x = y;
+
+x=y;
+if z then {
+call b;
+}
+else{
+x=y;
+}
 }
 
 procedure a{
 	x=y;
+	x = y;
+x=y;
+
 	call b;
 }
 
 procedure b{
 	x=y;
+}
+
+procedure c{
+	call Bill;
 }

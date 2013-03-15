@@ -148,7 +148,7 @@ std::vector<int> CFG::getPrev(int stmt2, int nodeIndex){
 	}
 
 	else {
-		for (int i=0, nextNode; i<(int)cfg[nodeIndex].getNext().size(); i++) {
+		for (int i=0, nextNode; i<(int)cfg[nodeIndex].getPrev().size(); i++) {
 			nextNode = cfg[nodeIndex].getPrev().at(i);
 			stmtList.push_back(cfg[nextNode].getEnd());
 		}

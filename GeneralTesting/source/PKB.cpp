@@ -902,6 +902,8 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int startCFG) {
 void PKB::startBuildCfgBip() {
 
 	std::vector<std::pair<int,int>> bip;
+	int start = 0;
+	int end=0;
 	for (int i=0; i<(int)ast.getTree().size(); i++)
 	{
 		Node astNode = ast.getNode(i);
@@ -910,8 +912,12 @@ void PKB::startBuildCfgBip() {
 		{
 			// Insert an empty CFG Node and let buildCFG add in the first statement
 			// add dummy end node
-			int end = cfgBip.insertCFGNode(-1, -1, buildCfgBip(astNode.getChildren()[0], -1, bip));			
+			procTable.getProc(astNode.getValue()).setCFGStart(start);
+			end = cfgBip.insertCFGNode(-1, -1, buildCfgBip(astNode.getChildren()[0], -1, bip));			
 			procTable.getProc(astNode.getValue()).setCFGEnd(end);
+			
+			// start of next procedure
+			start = end+1; 
 		}
 
 	}
@@ -1002,12 +1008,14 @@ std::vector<int> PKB::buildCfgBip(int stmtListAst, int startCFG, std::vector<std
 				endStmt = ast.getNode(currAst).getStmtNum();
 				int callCFG = cfgBip.insertCFGNode(startStmt, endStmt, prevCFG);
 				addCFGBiptoStmtNodeTable(callCFG, startStmt, endStmt);
-				cfgBip.addBip(callCFG);
+				cfgBip.addBip(callCFG, ast.getNode(currAst).getValue());
 
 				// dummy node for call return
 				//callCFG = cfgBip.insertCFGNode(startStmt, endStmt, callCFG);
 				
 				//bip.push_back(std::pair<int,int>(startStmt, ast.getNode(currAst).getValue()));
+								startStmt = ast.getNode(children[i+1]).getStmtNum();
+				endStmt = ast.getNode(children[i+1]).getStmtNum();
 				prevCFG.clear();
 				prevCFG.push_back(callCFG);
 
@@ -1099,11 +1107,12 @@ std::vector<int> PKB::buildCfgBip(int stmtListAst, int startCFG, std::vector<std
 				endStmt = ast.getNode(currAst).getStmtNum();
 				int callCFG = cfgBip.insertCFGNode(startStmt, endStmt, prevCFG);
 				addCFGBiptoStmtNodeTable(callCFG, startStmt, endStmt);
-				cfgBip.addBip(callCFG);
+				cfgBip.addBip(callCFG, ast.getNode(currAst).getValue());
 
 				// dummy node for call return
 				//callCFG = cfgBip.insertCFGNode(startStmt, endStmt, callCFG);
 				//bip.push_back(std::pair<int,int>(startStmt, ast.getNode(currAst).getValue()));
+
 
 				prevCFG.clear();
 				toReturn.push_back(callCFG);
