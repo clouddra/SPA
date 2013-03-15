@@ -147,6 +147,16 @@ std::vector<int> UsesTable::getUsesVarProc(int var){
 }
 
 
+std::vector<int> UsesTable::getUsesVarProc(){
+
+	std::vector<int> results ;
+	for (int i = 0; i < (int)procToVarTable.size() ; i++) {
+		if (!procToVarTable.at(i).empty())
+			results.push_back(i);
+	}
+
+	return results;
+}
 
 /*
 std::vector<int> UsesTable::getUsedBy(int stmt){
@@ -206,6 +216,16 @@ std::vector<int> UsesTable::getUsedByProc(int proc){
 }
 
 
+std::vector<int> UsesTable::getUsedByProc(){
+
+	std::vector<int> results ;
+	for (int i = 0; i < (int)varToProcTable.size() ; i++) {
+		if (!varToProcTable.at(i).empty())
+			results.push_back(i);
+	}
+
+	return results;
+}
 
 /*
 bool UsesTable::isUses(int stmt, int var){

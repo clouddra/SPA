@@ -30,3 +30,13 @@ else {
 		call Dogfight;
 t = kimura;
 }
+
+procedure SystematicFantasy {
+call Dogfight;
+call GHETTOBLASTER;
+call BlazinBeat;
+}
+
+procedure BlazinBeat {
+call GambleRumble;
+}

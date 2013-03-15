@@ -53,17 +53,38 @@ std::vector<int> ModifiesTable::getModifiesVar(int var){
 }
 
 std::vector<int> ModifiesTable::getModifiesVar(){
-	std::set<int> stmtList;
+	std::set<int> stmtSet;
 	for (int i=0; i < (int)modifiesTable.size(); i++){
-        stmtList.insert(modifiesTable[i].first) ;
+        stmtSet.insert(modifiesTable[i].first) ;
 	}
-    std::vector<int> ret(stmtList.begin(), stmtList.end());
+    std::vector<int> ret(stmtSet.begin(), stmtSet.end());
 	return ret;	//not sure how to return null. I guess its good enuough if the list is empty
 }
 
 //throews exception if procIndex >= size
-std::vector<int> ModifiesTable::getModifiesVarProc(int procIndex){
-	return modifiesProcTable.at(procIndex);
+std::vector<int> ModifiesTable::getModifiesVarProc(int var){
+	std::vector<int> procList;
+
+	// for each procedure and all variables in each procedure
+	for (int i=0; i<(int)modifiesProcTable.size(); i++) {		
+		for (int j=0; j<(int)modifiesProcTable[i].size(); j++) {
+			if (modifiesProcTable[i][j] == var) {
+				procList.push_back(i) ;
+				break;
+			}
+		}
+	}
+	return procList;
+}
+
+std::vector<int> ModifiesTable::getModifiesVarProc(){
+	std::vector<int> ret;
+	for (int i=0; i < (int)modifiesProcTable.size(); i++){
+        if (modifiesProcTable[i].size() > 0) {
+            ret.push_back(i);
+        }
+	}  
+	return ret;	
 }
 
 std::vector<int> ModifiesTable::getModifiedBy(int stmt){
@@ -79,32 +100,28 @@ std::vector<int> ModifiesTable::getModifiedBy(int stmt){
 
 std::vector<int> ModifiesTable::getModifiedBy(){
 
-	std::set<int> varList;
+	std::set<int> varSet;
 	for (int i=0; i < (int)modifiesTable.size(); i++){
-        varList.insert(modifiesTable[i].second) ;
+        varSet.insert(modifiesTable[i].second) ;
 	}
-    std::vector<int> ret(varList.begin(), varList.end());
+    std::vector<int> ret(varSet.begin(), varSet.end());
 
 	return ret;	//not sure how to return null. I guess its good enuough if the list is empty
 }
 
 
-std::vector<int> ModifiesTable::getModifiedByProc(int var){
+std::vector<int> ModifiesTable::getModifiedByProc(int procIndex){
+    return modifiesProcTable.at(procIndex);
+}
 
-	std::vector<int> procList;
-
-	// for each procedure and all variables in each procedure
-	for (int i=0; i<(int)modifiesProcTable.size(); i++) {		
-		for (int j=0; j<(int)modifiesProcTable[i].size(); j++) {
-			if (modifiesProcTable[i][j] == var) {
-				procList.push_back(i) ;
-				break;
-			}
-		}
-
+std::vector<int> ModifiesTable::getModifiedByProc(){
+    std::set<int> varSet;
+    for (int i=0; i < (int)modifiesProcTable.size(); i++){
+        std::vector<int> temp = modifiesProcTable[i];
+        varSet.insert(temp.begin(), temp.end());
 	}
-
-	return procList;
+    std::vector<int> ret(varSet.begin(), varSet.end());
+    return ret;
 }
 
 bool ModifiesTable::isModifies(int stmt, int var){

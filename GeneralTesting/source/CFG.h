@@ -27,6 +27,7 @@ private:
 	std::vector<int> getNext(int stmt1, int nodeIndex);
 	std::vector<int> getNextT(int stmt1, int nodeIndex);
 	std::vector<int> getPrev(int stmt2, int nodeIndex);
+    std::vector<int> getPrevT(int stmt2, int nodeIndex);
 	bool isNext(int stmt1, int node1, int stmt2);
 	void addStmt(int nodeIndex, int stmtNum);
 	void addNext(int nodeIndex, int nextIndex);

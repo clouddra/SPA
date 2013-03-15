@@ -29,6 +29,16 @@ void QueryNode::addChild(int child)
 	children.push_back(child);
 }
 
+void QueryNode::keep1Child()
+{
+    if (children.size() == 0)
+        return;
+
+	int temp = children[0];
+    children.clear();
+    children.push_back(temp);
+}
+
 void QueryNode::setParent(int _parent)
 {
 	parent = _parent;

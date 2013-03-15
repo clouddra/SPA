@@ -73,6 +73,8 @@
     <ClCompile Include="TestCallsTableMain.cpp" />
     <ClCompile Include="TestDeclaration.cpp" />
     <ClCompile Include="TestDeclarationMain.cpp" />
+    <ClCompile Include="TestFollowsTable.cpp" />
+    <ClCompile Include="TestFollowsTableMain.cpp" />
     <ClCompile Include="TestParser.cpp" />
     <ClCompile Include="TestParserMain.cpp" />
     <ClCompile Include="TestPKB.cpp" />
@@ -86,6 +88,7 @@
     <ClInclude Include="TestAST.h" />
     <ClInclude Include="TestCallsTable.h" />
     <ClInclude Include="TestDeclaration.h" />
+    <ClInclude Include="TestFollowsTable.h" />
     <ClInclude Include="TestParser.h" />
     <ClInclude Include="TestPKB.h" />
     <ClInclude Include="TestQuery.h" />

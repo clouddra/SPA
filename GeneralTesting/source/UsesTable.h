@@ -68,10 +68,20 @@ public:
 	 */
 	std::vector<int> getUsesVarProc(int var);
 
+    /**
+	 * Returns all procedures that uses any variables.
+	 */
+    std::vector<int> getUsesVarProc();
+
 	/**
 	 * Returns all variables used by procedure proc
 	 */
   	std::vector<int> getUsedByProc(int proc);
+
+    /**
+	 * Returns all variables that is used by any procedures.
+	 */
+    std::vector<int> getUsedByProc();
 
 	/**
 	 * Returns TRUE if proc uses var.
@@ -126,7 +136,7 @@ If the Uses relationship between the statement and the variable is in the Uses T
 PAIR<STMT, VAR> extractUses (INDEX ind)
 Description:
     Returns the relationship of two statements at Uses Table [ind]
-If “ind” is out of range:
+If ind is out of range:
 Throws:
     InvalidReferenceException
 

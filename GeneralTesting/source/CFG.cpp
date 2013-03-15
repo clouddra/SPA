@@ -88,6 +88,48 @@ std::vector<int> CFG::getNextT(int stmt1, int nodeIndex){
 	return results;
 }
 
+std::vector<int> CFG::getPrevT(int stmt2, int nodeIndex){
+	std::unordered_set<int> stmtList;
+	std::vector<bool> visited(cfg.size(), false);	//initialising cfg
+	std::queue<int> nodesToVisit;
+	int prevNode;
+
+
+	// push statements of current node
+    for (int i=stmt2-1; i>=cfg[nodeIndex].getStart(); i--)
+		stmtList.emplace(i);
+
+	//visited[nodeIndex] = true;
+	// push next nodes to nodesToVisit
+	for (int i=0; i<(int)cfg[nodeIndex].getPrev().size(); i++) {
+		prevNode = cfg[nodeIndex].getPrev().at(i);
+		nodesToVisit.push(prevNode);
+	}
+
+	while (!nodesToVisit.empty())
+	{
+		prevNode = nodesToVisit.front() ;
+		nodesToVisit.pop();
+		if (visited[prevNode] == false)
+		{
+			visited[prevNode]=true;
+			// add statements to list
+			stmtList = fillStmtInNode(stmtList, cfg[prevNode]);
+
+			// get next nodes to visit
+			for (int i=0; i<(int)cfg[prevNode].getPrev().size(); i++) {
+				nodesToVisit.push(cfg[prevNode].getPrev().at(i));
+			}
+		}
+
+		else {
+			//stmtList = fillStmtInNode(stmtList, cfg[nextNode]);
+		}
+	}
+
+	std::vector<int> results(stmtList.cbegin(), stmtList.cend());
+	return results;
+}
 
 std::unordered_set<int> CFG::fillStmtInNode(std::unordered_set<int> stmtList, CFGNode nextNode){
 	for (int i=nextNode.getStart(); i<=nextNode.getEnd(); i++)

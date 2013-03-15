@@ -24,5 +24,6 @@ public:
 	std::string getValue();
 	std::vector<int> getChildren();
 	void addChild(int);
+    void keep1Child();
 	void setParent(int);
 };
