@@ -8,6 +8,7 @@ Procedure::Procedure(std::string pName, int first, int last)
 	procName = pName;
 	firstLine = first;
 	lastLine =  last;
+	cfgEnd = -1;
 }
 
 std::string Procedure::getProcName(){
@@ -27,4 +28,9 @@ void Procedure::setFirstAndLast(int first, int last) {
 
     firstLine = first;
     lastLine = last;
+}
+
+void Procedure::setCFGEnd(int end)
+{
+	cfgEnd = end;
 }

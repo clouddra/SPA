@@ -65,6 +65,7 @@ int main() {
 	*/
 
 	pkb = controller.parseSource(storage);
+	pkb.startBuildCfgBip();
 	/*
     std::cout<<"Uses for each stmt: "<<std::endl;
 	for(int i=0;i<pkb.getUsesTable()->getSize();i++)

@@ -54,6 +54,7 @@ int ProcTable::getProcLastln(int ind) {
 	return procTable.at(ind).getLastLine() ;
 }
 
+
 std::vector<std::string> ProcTable::getAllProc() {
     std::vector<std::string> ret;
 
@@ -61,4 +62,8 @@ std::vector<std::string> ProcTable::getAllProc() {
         ret.push_back(procTable[i].getProcName());
     }
     return ret;
+}
+
+Procedure ProcTable::getProc(int ind){
+	return procTable.at(ind);
 }

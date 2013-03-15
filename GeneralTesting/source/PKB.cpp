@@ -13,6 +13,7 @@ PKB::PKB() {
     ast = AST();
     stmtNodeTable = StmtNodeTable();
 	cfg = CFG();
+	cfgBip = CFGBip();
 }
 
 int PKB::insertNode(int nodeType, std::string value, int parent) {
@@ -660,14 +661,6 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int startCFG) {
 		{
 			if (ast.getNode(currAst).getNodeType() == Node::assignNode || ast.getNode(currAst).getNodeType() == Node::callNode)
 			{
-				// Create and link CFG node for the right sibling
-				//nextCfg = cfg.insertCFGNode();
-				//cfg.addNext(currCfg, nextCfg);
-				//cfg.addPrev(nextCfg, currCfg);
-				// Update current Cfg pointer
-				//currCfg = nextCfg;
-				
-
 				// shift the end. start don't change since its 1 whole block
 				endStmt = ast.getNode(currAst).getStmtNum();
 			}
@@ -685,11 +678,6 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int startCFG) {
 				endStmt = ast.getNode(currAst).getStmtNum();
 				int whileCFG = cfg.insertCFGNode(startStmt, endStmt, prevCFG);
 				addCFGtoStmtNodeTable(whileCFG, startStmt, endStmt);
-				/*
-				int childCfg = cfg.insertCFGNode();
-				cfg.addNext(currCfg, childCfg);	
-				cfg.addPrev(childCfg, currCfg);
-				*/
 
 				int whileStmtLst = ast.getNode(currAst).getChildren()[1];
 				std::vector<int> endWhile = buildCfg(whileStmtLst, whileCFG);
@@ -700,14 +688,6 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int startCFG) {
 					cfg.addPrev(whileCFG, endWhile[j]);
 				}
 				// Create and link CFG node for the right sibling
-
-				/*
-				nextCfg = cfg.insertCFGNode();
-				cfg.addNext(currCfg, nextCfg);
-				cfg.addPrev(nextCfg, currCfg);
-				// Update current Cfg pointer
-				currCfg = nextCfg;
-				*/
 
 				// start, end = statement following while, while node becomes prev cfg
 				// following statement is the start of next node
@@ -730,38 +710,6 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int startCFG) {
 				int elseStmtLst = ast.getNode(currAst).getChildren()[2];
 				std::vector<int> endElse = buildCfg(elseStmtLst, forkCFG);
 
-				/*
-				// Handle the children of ifNode
-				int thenCfg = cfg.insertCFGNode();
-				cfg.addNext(currCfg, thenCfg);
-				cfg.addPrev(thenCfg, currCfg);
-				int thenStmtLst = ast.getNode(currAst).getChildren()[1];
-				std::vector<int> endThen = buildCfg(thenStmtLst, thenCfg);
-
-				int elseCfg = cfg.insertCFGNode();
-				cfg.addNext(currCfg, elseCfg);
-				cfg.addPrev(elseCfg, currCfg);
-				int elseStmtLst = ast.getNode(currAst).getChildren()[2];
-				std::vector<int> endElse = buildCfg(elseStmtLst, elseCfg);
-				*/
-
-				/*
-				// Create and link then/else nodes to the right sibling
-				nextCfg = cfg.insertCFGNode();
-
-				for (int j=0; j<(int)endThen.size(); j++)
-				{
-					//cfg.addNext(endThen[j], nextCfg);
-					cfg.addPrev(nextCfg, endThen[j]);
-				}
-				for (int j=0; j<(int)endElse.size(); j++)
-				{
-					cfg.addNext(endElse[j], nextCfg);
-					cfg.addPrev(nextCfg, endElse[j]);
-				}
-				// Update current Cfg pointer
-				currCfg = nextCfg;
-				*/
 				prevCFG.clear();
 				for (int j=0; j<(int)endThen.size(); j++)
 				{
@@ -803,12 +751,6 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int startCFG) {
 				endStmt = ast.getNode(currAst).getStmtNum();
 				int whileCFG = cfg.insertCFGNode(startStmt, endStmt, prevCFG);
 				addCFGtoStmtNodeTable(whileCFG, startStmt, endStmt);
-				/*
-				int childCfg = cfg.insertCFGNode();
-				cfg.addNext(currCfg, childCfg);	
-				cfg.addPrev(childCfg, currCfg);
-				*/
-
 
 				int whileStmtLst = ast.getNode(currAst).getChildren()[1];
 				std::vector<int> endWhile = buildCfg(whileStmtLst, whileCFG);
@@ -818,15 +760,6 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int startCFG) {
 					cfg.addNext(endWhile[j], whileCFG);
 					cfg.addPrev(whileCFG, endWhile[j]);
 				}
-				// Create and link CFG node for the right sibling
-
-				/*
-				nextCfg = cfg.insertCFGNode();
-				cfg.addNext(currCfg, nextCfg);
-				cfg.addPrev(nextCfg, currCfg);
-				// Update current Cfg pointer
-				currCfg = nextCfg;
-				*/
 
 				// start, end = statement following while, while node becomes prev cfg
 				// following statement is the start of next node
@@ -834,20 +767,6 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int startCFG) {
 				prevCFG.push_back(whileCFG);
 				toReturn.push_back(whileCFG);
 
-				/*
-				// Handle the children of whileNode
-				int childCfg = cfg.insertCFGNode();
-				cfg.addNext(currCfg, childCfg);
-				cfg.addPrev(childCfg, currCfg);
-				int whileStmtLst = ast.getNode(currAst).getChildren()[1];
-				std::vector<int> endWhile = buildCfg(whileStmtLst, childCfg);
-				for (int j=0; j<(int)endWhile.size(); j++)
-				{
-					cfg.addNext(endWhile[j], currCfg);
-					cfg.addPrev(currCfg, endWhile[j]);
-				}
-				toReturn.push_back(currCfg);
-				*/
 			}
 			else if (ast.getNode(currAst).getNodeType() == Node::ifNode)
 			{
@@ -866,25 +785,6 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int startCFG) {
 					toReturn.push_back(endThen[j]);
 				for (int j=0; j<(int)endElse.size(); j++)
 					toReturn.push_back(endElse[j]);
-				/*
-				// Handle the children of ifNode
-				int thenCfg = cfg.insertCFGNode();
-				cfg.addNext(currCfg, thenCfg);
-				cfg.addPrev(thenCfg, currCfg);
-				int thenStmtLst = ast.getNode(currAst).getChildren()[1];
-				std::vector<int> endThen = buildCfg(thenStmtLst, thenCfg);
-
-				int elseCfg = cfg.insertCFGNode();
-				cfg.addNext(currCfg, elseCfg);
-				cfg.addPrev(elseCfg, currCfg);
-				int elseStmtLst = ast.getNode(currAst).getChildren()[2];
-				std::vector<int> endElse = buildCfg(elseStmtLst, elseCfg);
-
-				for (int j=0; j<(int)endThen.size(); j++)
-					toReturn.push_back(endThen[j]);
-				for (int j=0; j<(int)endElse.size(); j++)
-					toReturn.push_back(endElse[j]);
-					*/
 			}
 			else
 				std::cout << "I am in PKB::buildCFG (2)" << std::endl;
@@ -894,7 +794,278 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int startCFG) {
 	return toReturn;
 }
 
+
+void PKB::startBuildCfgBip() {
+
+	std::vector<std::pair<int,int>> bip;
+	for (int i=0; i<(int)ast.getTree().size(); i++)
+	{
+		Node astNode = ast.getNode(i);
+		// Each procedure builds a CFG
+		if (astNode.getNodeType() == Node::procedureNode)
+		{
+			// Insert an empty CFG Node and let buildCFG add in the first statement
+			// add dummy end node
+			int end = cfgBip.insertCFGNode(-1, -1, buildCfgBip(astNode.getChildren()[0], -1, bip));			
+			procTable.getProc(astNode.getValue()).setCFGEnd(end);
+		}
+
+	}
+
+
+}
+
+
+
+// Takes in the ASTnode of stmtList and the CFGNode of the first child of stmtList
+// Returns the ending CFGNodes
+std::vector<int> PKB::buildCfgBip(int stmtListAst, int startCFG, std::vector<std::pair<int,int>> &bip) {
+	std::vector<int> toReturn;
+
+	// Ensure the astNode passed in is of stmtLst type
+	Node stmtListNode = ast.getNode(stmtListAst);
+	if (stmtListNode.getNodeType() != Node::stmtLstNode)
+		std::cout << "I am in PKB::buildCFG" << std::endl;
+	
+	std::vector<int> children = stmtListNode.getChildren();	
+	int startStmt = ast.getNode(children[0]).getStmtNum();
+	int endStmt = startStmt;
+	int currAst = -1;
+
+	// more than 1 node
+	std::vector<int> prevCFG; 
+	if (startCFG!=-1)
+		prevCFG.push_back(startCFG);
+
+	for (int i=0; i<(int)children.size(); i++)
+	{
+		currAst = children[i];
+
+		// Add the stmtNum into the empty CFG Node created earlier by someone else
+
+		// If the current child has a right sibling (Not the last child)
+		if (i != children.size()-1)
+		{
+			if (ast.getNode(currAst).getNodeType() == Node::assignNode )
+			{
+				// shift the end. start don't change since its 1 whole block
+				endStmt = ast.getNode(currAst).getStmtNum();
+			}
+			else if (ast.getNode(currAst).getNodeType() == Node::whileNode)
+			{
+				// insert node sequence before while if they are not control nodes. Else there is no sequence to insert
+				if (i>0 && ast.getNode(children[i-1]).getNodeType() == Node::assignNode) {
+					int currNode = cfgBip.insertCFGNode(startStmt, endStmt, prevCFG);
+					addCFGBiptoStmtNodeTable(currNode, startStmt, endStmt);
+					prevCFG.clear();
+					prevCFG.push_back(currNode);
+				}
+				// while is always single node
+				startStmt = ast.getNode(currAst).getStmtNum();
+				endStmt = ast.getNode(currAst).getStmtNum();
+				int whileCFG = cfgBip.insertCFGNode(startStmt, endStmt, prevCFG);
+				addCFGBiptoStmtNodeTable(whileCFG, startStmt, endStmt);
+
+
+				int whileStmtLst = ast.getNode(currAst).getChildren()[1];
+				std::vector<int> endWhile = buildCfgBip(whileStmtLst, whileCFG, bip);
+				
+				for (int j=0; j<(int)endWhile.size(); j++)
+				{
+					cfgBip.addNext(endWhile[j], whileCFG);
+					cfgBip.addPrev(whileCFG, endWhile[j]);
+				}
+	
+				// start, end = statement following while, while node becomes prev cfg
+				// following statement is the start of next node
+				startStmt = ast.getNode(children[i+1]).getStmtNum();
+				endStmt = ast.getNode(children[i+1]).getStmtNum();
+				prevCFG.clear();
+				prevCFG.push_back(whileCFG);
+			}
+
+			else if (ast.getNode(currAst).getNodeType() == Node::callNode)
+			{
+				// insert node sequence before while if they are not control nodes. Else there is no sequence to insert
+				if (i>0 && ast.getNode(children[i-1]).getNodeType() == Node::assignNode) {
+					int currNode = cfgBip.insertCFGNode(startStmt, endStmt, prevCFG);
+					addCFGBiptoStmtNodeTable(currNode, startStmt, endStmt);
+					prevCFG.clear();
+					prevCFG.push_back(currNode);
+				}
+
+				startStmt = ast.getNode(currAst).getStmtNum();
+				endStmt = ast.getNode(currAst).getStmtNum();
+				int callCFG = cfgBip.insertCFGNode(startStmt, endStmt, prevCFG);
+				addCFGBiptoStmtNodeTable(callCFG, startStmt, endStmt);
+				cfgBip.addBip(callCFG);
+
+				// dummy node for call return
+				//callCFG = cfgBip.insertCFGNode(startStmt, endStmt, callCFG);
+				
+				//bip.push_back(std::pair<int,int>(startStmt, ast.getNode(currAst).getValue()));
+				prevCFG.clear();
+				prevCFG.push_back(callCFG);
+
+			}
+
+			else if (ast.getNode(currAst).getNodeType() == Node::ifNode)
+			{
+
+				// insert node sequence before if, save the node index as forkCFG
+				endStmt = ast.getNode(currAst).getStmtNum();
+				int forkCFG = cfgBip.insertCFGNode(startStmt, endStmt, prevCFG);
+				addCFGBiptoStmtNodeTable(forkCFG, startStmt, endStmt);
+
+				int thenStmtLst = ast.getNode(currAst).getChildren()[1];
+				std::vector<int> endThen = buildCfgBip(thenStmtLst, forkCFG, bip);
+
+				int elseStmtLst = ast.getNode(currAst).getChildren()[2];
+				std::vector<int> endElse = buildCfgBip(elseStmtLst, forkCFG, bip);
+
+				prevCFG.clear();
+				for (int j=0; j<(int)endThen.size(); j++)
+				{
+					prevCFG.push_back(endThen[j]);
+				}
+				for (int j=0; j<(int)endElse.size(); j++)
+				{
+					prevCFG.push_back(endElse[j]);
+				}
+
+				// following statement is the start of next node
+				startStmt = endStmt = ast.getNode(children[i+1]).getStmtNum();
+
+			}
+			else
+				std::cout << "I am in PKB::buildCFG (1)" << std::endl;
+		}
+		else // Last child of stmtList
+		{
+			if (ast.getNode(currAst).getNodeType() == Node::assignNode)
+			{
+				endStmt = ast.getNode(currAst).getStmtNum();
+				int endCFG = cfgBip.insertCFGNode(startStmt, endStmt, prevCFG);
+				addCFGBiptoStmtNodeTable(endCFG, startStmt, endStmt);
+				toReturn.push_back(endCFG);
+			}
+			else if (ast.getNode(currAst).getNodeType() == Node::whileNode)
+			{
+
+				if (i>0 && ast.getNode(children[i-1]).getNodeType() == Node::assignNode) {
+					int currNode = cfgBip.insertCFGNode(startStmt, endStmt, prevCFG);
+					addCFGBiptoStmtNodeTable(currNode, startStmt, endStmt);
+					prevCFG.clear();
+					prevCFG.push_back(currNode);
+
+				}
+				// insert node sequence before while
+				startStmt = ast.getNode(currAst).getStmtNum();
+				endStmt = ast.getNode(currAst).getStmtNum();
+				int whileCFG = cfgBip.insertCFGNode(startStmt, endStmt, prevCFG);
+				addCFGBiptoStmtNodeTable(whileCFG, startStmt, endStmt);
+
+
+				int whileStmtLst = ast.getNode(currAst).getChildren()[1];
+				std::vector<int> endWhile = buildCfgBip(whileStmtLst, whileCFG, bip);
+				
+				for (int j=0; j<(int)endWhile.size(); j++)
+				{
+					cfgBip.addNext(endWhile[j], whileCFG);
+					cfgBip.addPrev(whileCFG, endWhile[j]);
+				}
+
+				prevCFG.clear();
+				prevCFG.push_back(whileCFG);
+				toReturn.push_back(whileCFG);
+
+			}
+
+			else if (ast.getNode(currAst).getNodeType() == Node::callNode)
+			{
+				// insert node sequence before while if they are not control nodes. Else there is no sequence to insert
+				if (i>0 && ast.getNode(children[i-1]).getNodeType() == Node::assignNode) {
+					int currNode = cfgBip.insertCFGNode(startStmt, endStmt, prevCFG);
+					addCFGBiptoStmtNodeTable(currNode, startStmt, endStmt);
+					prevCFG.clear();
+					prevCFG.push_back(currNode);
+				}
+
+				startStmt = ast.getNode(currAst).getStmtNum();
+				endStmt = ast.getNode(currAst).getStmtNum();
+				int callCFG = cfgBip.insertCFGNode(startStmt, endStmt, prevCFG);
+				addCFGBiptoStmtNodeTable(callCFG, startStmt, endStmt);
+				cfgBip.addBip(callCFG);
+
+				// dummy node for call return
+				//callCFG = cfgBip.insertCFGNode(startStmt, endStmt, callCFG);
+				//bip.push_back(std::pair<int,int>(startStmt, ast.getNode(currAst).getValue()));
+
+				prevCFG.clear();
+				toReturn.push_back(callCFG);
+
+			}
+
+			else if (ast.getNode(currAst).getNodeType() == Node::ifNode)
+			{
+
+				endStmt = ast.getNode(currAst).getStmtNum();
+				int forkCFG = cfgBip.insertCFGNode(startStmt, endStmt, prevCFG);
+				addCFGBiptoStmtNodeTable(forkCFG, startStmt, endStmt);
+
+				int thenStmtLst = ast.getNode(currAst).getChildren()[1];
+				std::vector<int> endThen = buildCfgBip(thenStmtLst, forkCFG, bip);
+
+				int elseStmtLst = ast.getNode(currAst).getChildren()[2];
+				std::vector<int> endElse = buildCfgBip(elseStmtLst, forkCFG, bip);
+
+				for (int j=0; j<(int)endThen.size(); j++)
+					toReturn.push_back(endThen[j]);
+				for (int j=0; j<(int)endElse.size(); j++)
+					toReturn.push_back(endElse[j]);
+
+			}
+			else
+				std::cout << "I am in PKB::buildCFG (2)" << std::endl;
+		}
+	}
+
+	return toReturn;
+}
+
+/*
+void PKB::setBip(std::vector<std::pair<int,int>> bip)
+{
+	//
+	CFGBipNode callStart;
+	std::vector<int> tempNext;
+	std::vector<int> callsNext;
+
+	for (int i=0; i<bip.size(); i++){
+		callStart = cfgBip.getCFGNode(bip[i].first);
+		tempNext = callStart.getNext();
+
+		// branch to the 1st stmt of procedure
+		Procedure procBranch = procTable.getProc(bip[i].second);
+		int branchOutStart = stmtNodeTable.getCFG(procBranch.getFirstLine());
+		int branchOutEnd = bip[i].second;
+ 
+
+
+		callStart.setNext(callsNext);
+		callsNext.clear();
+	}
+}
+*/
+
+
+
 void PKB::addCFGtoStmtNodeTable(int cfgNode, int startStmt, int endStmt){
 	for (int i=startStmt; i<=endStmt; i++)
 		stmtNodeTable.setCFG(i, cfgNode);
+}
+
+void PKB::addCFGBiptoStmtNodeTable(int cfgBipNode, int startStmt, int endStmt){
+	for (int i=startStmt; i<=endStmt; i++)
+		stmtNodeTable.setCFGBip(i, cfgBipNode);
 }

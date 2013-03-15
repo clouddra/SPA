@@ -58,11 +58,17 @@
 #include "CFG.h"
 #endif
 
+#ifndef CFG_BIP
+#define CFG_BIP
+#include "CFGBip.h"
+#endif
+
 class PKB {
 
 private:
     AST ast;
 	CFG cfg;
+	CFGBip cfgBip;
     ModifiesTable modifiesTable;
     ParentTable parentTable;
     FollowsTable followsTable;
@@ -73,7 +79,7 @@ private:
     StmtNodeTable stmtNodeTable;
     std::set<int> constantList;
 	void addCFGtoStmtNodeTable(int cfgNode, int startStmt, int endStmt);
-
+		void addCFGBiptoStmtNodeTable(int cfgBipNode, int startStmt, int endStmt);
 public:
     PKB();
     int insertNode(int nodeType, std::string value, int parent);
@@ -127,7 +133,10 @@ public:
 	bool subtreeCompare(int astNodeIndex, int qNodeIndex, std::vector<QueryNode> queryTree);
     std::set<int> getConstants();
 	void startBuildCfg();
+	void startBuildCfgBip();
 	std::vector<int> buildCfg(int stmtListAst, int cfgIndex);
+	std::vector<int> buildCfgBip(int stmtListAst, int cfgIndex, std::vector<std::pair<int,int>> &bip);
+	//void setBip(std::vector<std::pair<int,int>> bip);
 
 	void printModifiesTable();
 	AST PKB::getAST();

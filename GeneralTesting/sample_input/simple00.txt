@@ -1,28 +1,14 @@
 procedure Bill {
 x = y;
+call a;
+call b;
+}
 
-  while x{
- x = y;
-  x = y;
-   x = y;
-    x = y;
- }
-if x then {
-x = y;
-}
-else{
+procedure a{
 	x=y;
+	call b;
 }
-  while x{
- x = y;
-  x = y;
-   x = y;
-    x = y;
- }
- 
- 
- x = y;
-  x = y;
-   x = y;
-    x = y;
+
+procedure b{
+	x=y;
 }
