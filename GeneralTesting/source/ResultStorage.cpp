@@ -100,3 +100,42 @@ std::vector<std::string> ResultStorage::getValuesFor(std::string var) {
     }
     return ret;
 }
+
+std::vector<std::vector<std::string>> ResultStorage::getValuesFor(std::vector<std::string> vars) {
+    std::vector<std::vector<std::string>> temp;
+    std::vector<std::vector<std::vector<std::string>>> intResults;
+
+    for (int i = 0; i < (int)ttVector.size(); i++) {
+        std::vector<std::string> match;
+        std::vector<std::string> tempVec = ttVector[i].getVars();
+        for (int j = 0; j < (int)vars.size(); j++) {
+            for (int k = 0; k < (int)tempVec.size(); k++) {
+                if (vars[j].compare(tempVec[k]) == 0) {
+                    match.push_back(vars[j]);
+                    break;
+                }
+            }
+        }
+        if (match.size() > 0)
+            intResults.push_back(ttVector[i].getValuesFor(match));
+    }
+    if (intResults.size() == 0) 
+        return temp;
+
+    while ((int)intResults.size() > 1) {
+        temp.clear();
+        for (int i = 0; i < (int)intResults[0].size(); i++) {
+            for (int j = 0; j < (int)intResults[1].size(); j++) {
+                std::vector<std::string> tempVec = intResults[0][i];
+                for (int k = 0; k < (int)intResults[1][j].size(); k++) {
+                    tempVec.push_back(intResults[1][j][k]);
+                }
+                temp.push_back(tempVec);
+            }
+        }
+        intResults[0] = temp;
+        intResults.erase(intResults.begin()+1);
+    }
+
+    return intResults[0];
+}

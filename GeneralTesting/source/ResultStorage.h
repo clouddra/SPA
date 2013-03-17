@@ -20,4 +20,5 @@ public:
     int insertResult(std::string var1, std::string var2, std::vector<std::vector<std::string>> vals);
     int insertResult(std::string var, std::vector<std::string> vals);
     std::vector<std::string> getValuesFor(std::string var);
+    std::vector<std::vector<std::string>> getValuesFor(std::vector<std::string> vars);
 };

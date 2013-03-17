@@ -116,3 +116,48 @@ std::set<std::string> TupleTable::getValuesFor(std::string var) {
     }
     return ret;
 }
+
+struct vecComp {
+    bool operator() (std::vector<std::string> a, std::vector<std::string> b) const {
+        if (a.size() != b.size())
+            return (a.size() > b.size());
+        else {
+            for (int i = 0; i < (int)a.size(); i++) {
+                int temp = a[i].compare(b[i]);
+                if (temp != 0)
+                    return (temp > 0);
+            }
+        }
+        return false;
+    }
+};
+
+std::vector<std::vector<std::string>> TupleTable::getValuesFor(std::vector<std::string> vars) {
+    std::vector<std::vector<std::string>> ret;
+    std::vector<int> match;
+    bool found;
+
+    for (int i = 0; i < (int)vars.size(); i++) {
+        found = false;
+        for (int j = 0; i < (int)variables.size(); i++) {
+            if (vars[i].compare(variables[j]) == 0) {
+                match.push_back(j);
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+            return ret;
+    }
+
+    std::set<std::vector<std::string>, vecComp> tempSet;
+    for (int i = 0; i < (int)values.size(); i++) {
+        std::vector<std::string> tempVec;
+        for (int j = 0; j < (int)match.size(); j++) {
+            tempVec.push_back(values[i][match[j]]);
+        }
+        tempSet.insert(tempVec);
+    }
+    ret = std::vector<std::vector<std::string>> (tempSet.begin(), tempSet.end());
+    return ret;
+}

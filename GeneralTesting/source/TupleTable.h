@@ -19,4 +19,5 @@ public:
     std::vector<std::string> getVars();
     int merge(TupleTable other);
     std::set<std::string> getValuesFor(std::string var); 
+    std::vector<std::vector<std::string>> getValuesFor(std::vector<std::string> vars); 
 };
