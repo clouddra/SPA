@@ -282,6 +282,12 @@ namespace pqlparser
 			NAME_ = lexeme[+(char_ - ')' - '(' - qi::space - '+' - '-' - '*' - '/' - '=' - ';' - '"' - '{' - '}')			[_val += _1]];
 
 			// Auxiliary grammar rules
+			tuple_ = elem_					[at_c<0>(_val) = "elem"][push_back(at_c<2>(_val), _1)]
+				| '<' >> elem_				[at_c<0>(_val) = "elem"][push_back(at_c<2>(_val), _1)]
+				>> *(',' >> elem_			[at_c<0>(_val) = "tuple"][push_back(at_c<2>(_val), _1)]) 
+				>> '>';
+			elem_ = hold[synonym_[at_c<0>(_val) = "synonym"][push_back(at_c<2>(_val), _1)]] 
+				| attrRef_ [at_c<0>(_val) = "attrRef"][push_back(at_c<2>(_val), _1)];
 			synonym_ %= IDENT_;
 			attrName_ %= string("procName") | string("varName") | string("value") | string("stmt#");
 			varRef_ %= synonym_ | char_('_') | (char_('"') >> IDENT_ >> char_('"'));
@@ -307,6 +313,10 @@ namespace pqlparser
 				>> string("Select")			[at_c<0>(_val) = "select"]
 				>> synonym_					[at_c<1>(_val) = _1]
 				>> *(suchthat_cl_ | with_cl_ | pattern_cl_)	[push_back(at_c<2>(_val), _1)]
+				;
+
+			result_cl_ = 
+				tuple_						[at_c<0>(_val) = "result"][push_back(at_c<2>(_val), _1)]
 				;
 
 			declaration_ = 
@@ -550,6 +560,8 @@ namespace pqlparser
 		qi::rule<Iterator, std::string()> NAME_;
 
 		// Auxiliary grammar rules
+		qi::rule<Iterator, commonNode(), ascii::space_type> tuple_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> elem_;
 		qi::rule<Iterator, std::string(), ascii::space_type> synonym_;
 		qi::rule<Iterator, std::string(), ascii::space_type> attrName_;
 		qi::rule<Iterator, std::string(), ascii::space_type> entRef_;
@@ -560,6 +572,7 @@ namespace pqlparser
 
 		// Grammar rules for select clause
 		qi::rule<Iterator, commonNode(), ascii::space_type> select_cl_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> result_cl_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> declaration_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> with_cl_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> attrCond_;
