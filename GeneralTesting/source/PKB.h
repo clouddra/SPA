@@ -63,6 +63,11 @@
 #include "CFGBip.h"
 #endif
 
+#ifndef QUEUE_HEAD
+#define QUEUE_HEAD
+#include <queue>
+#endif
+
 class PKB {
 
 private:
@@ -147,6 +152,9 @@ public:
 	std::vector<int> buildCfg(int stmtListAst, int cfgIndex);
 	std::vector<int> buildCfgBip(int stmtListAst, int cfgIndex, std::vector<std::pair<int,int>> &bip);
 	//void setBip(std::vector<std::pair<int,int>> bip);
+	std::vector<int> getAffectsStart(int start, std::vector<int> endVec); // Note the parameters are purposely made different
+	std::vector<int> getAffectsEnd(std::vector<int> startVec, int end);
+
 
 	void printModifiesTable();
 	AST PKB::getAST();

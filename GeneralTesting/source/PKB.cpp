@@ -898,6 +898,133 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int startCFG) {
 	return toReturn;
 }
 
+std::vector<int> PKB::getAffectsStart(int start, std::vector<int> endVec)
+{
+	std::vector<int> toReturn;
+	std::unordered_set<int> endSet(endVec.begin(), endVec.end());
+
+	// Check if start is an assignment statement
+	if (stmtNodeTable.getType(start) != Node::assignNode)
+		return toReturn;
+
+	// Keep track of visited stmts
+	int numOfStmts = stmtNodeTable.getSize();
+	std::vector<int> visited(numOfStmts, -1); // "-1" means unvisited
+	std::queue<int> stmtQueue; // for Breadth First Search
+
+	int var = modifiesTable.getModifiedBy(start)[0]; // An assignment statement will only modify 1 variable
+
+	int cfgIndex = stmtNodeTable.getCFG(start);
+	std::vector<int> nextStmt = cfg.getNext(start, cfgIndex);
+
+	// Mark start stmt as visited, add next statement(s) into stmtQueue
+	visited[start] = 1;
+	for (int i=0; i<(int)nextStmt.size(); i++)
+		stmtQueue.push(nextStmt[i]);
+
+	while (stmtQueue.size() > 0)
+	{
+		int currStmt = stmtQueue.front(); // Access first element
+		stmtQueue.pop(); // Delete first element
+
+		if (visited[currStmt] == -1) // currStmt has not been visited
+		{
+			if (stmtNodeTable.getType(currStmt) == Node::assignNode)
+			{
+				// currStmt uses "var" and is part of the given endSet
+				if (usesTable.isUses(currStmt, var) && endSet.count(currStmt) > 0)
+					toReturn.push_back(currStmt);
+
+				// currStmt did not modify "var"
+				if (!modifiesTable.isModifies(currStmt, var))
+				{
+					// Add the next statements to stmtQueue
+					cfgIndex = stmtNodeTable.getCFG(currStmt);
+					std::vector<int> temp = cfg.getNext(currStmt, cfgIndex);
+					for (int i=0; i<(int)temp.size(); i++)
+						stmtQueue.push(temp[i]);
+				}
+			}
+			else // currStmt is either "while", "if" or "call"
+			{
+				// Add the next statements to stmtQueue
+				cfgIndex = stmtNodeTable.getCFG(currStmt);
+				std::vector<int> temp1 = cfg.getNext(currStmt, cfgIndex);
+				for (int i=0; i<(int)temp1.size(); i++)
+					stmtQueue.push(temp1[i]);
+			}
+
+			visited[currStmt] = 1; // Mark currStmt as visited
+		}
+	}
+
+	return toReturn;
+}
+
+std::vector<int> PKB::getAffectsEnd(std::vector<int> startVec, int end)
+{
+	std::vector<int> toReturn;
+	std::unordered_set<int> startSet(startVec.begin(), startVec.end());
+
+	// Check if start is an assignment statement
+	if (stmtNodeTable.getType(end) != Node::assignNode)
+		return toReturn;
+
+	// Keep track of visited stmts
+	int numOfStmts = stmtNodeTable.getSize();
+	std::vector<int> visited(numOfStmts, -1); // "-1" means unvisited
+	std::queue<int> stmtQueue; // for Breadth First Search
+
+	// Multiple variables may be used in the "end" statement
+	std::vector<int> varVec = usesTable.getUsedBy(end);
+	std::unordered_set<int> varSet(varVec.begin(), varVec.end());
+
+	int cfgIndex = stmtNodeTable.getCFG(end);
+	std::vector<int> prevStmt = cfg.getPrev(end, cfgIndex);
+
+	// Mark end stmt as visited, add prev statement(s) into stmtQueue
+	visited[end] = 1;
+	for (int i=0; i<(int)prevStmt.size(); i++)
+		stmtQueue.push(prevStmt[i]);
+
+	while (stmtQueue.size() > 0 && varSet.size() > 0)
+	{
+		int currStmt = stmtQueue.front(); // Access first element
+		stmtQueue.pop(); // Delete first element
+
+		if (visited[currStmt] == -1) // currStmt has not been visited
+		{
+			if (stmtNodeTable.getType(currStmt) == Node::assignNode)
+			{			
+				int var = modifiesTable.getModifiedBy(currStmt)[0]; // An assignment statement will only modify 1 variable
+
+				// currStmt modifies a variable in varSet and is part of given startSet
+				if (varSet.count(var) > 0 && startSet.count(currStmt) > 0)
+				{
+					toReturn.push_back(currStmt);
+					varSet.erase(var);
+				}
+				// Add the prev statements to stmtQueue
+				cfgIndex = stmtNodeTable.getCFG(currStmt);
+				std::vector<int> temp = cfg.getPrev(currStmt, cfgIndex);
+				for (int i=0; i<(int)temp.size(); i++)
+					stmtQueue.push(temp[i]);
+			}
+			else // currStmt is either "while", "if" or "call"
+			{
+				// Add the prev statements to stmtQueue
+				cfgIndex = stmtNodeTable.getCFG(currStmt);
+				std::vector<int> temp1 = cfg.getPrev(currStmt, cfgIndex);
+				for (int i=0; i<(int)temp1.size(); i++)
+					stmtQueue.push(temp1[i]);
+			}
+
+			visited[currStmt] = 1; // Mark currStmt as visited
+		}
+	}
+
+	return toReturn;
+}
 
 void PKB::startBuildCfgBip() {
 
