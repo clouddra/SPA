@@ -311,7 +311,7 @@ namespace pqlparser
 			select_cl_ = 
 				*declaration_				[push_back(at_c<2>(_val), _1)]
 				>> string("Select")			[at_c<0>(_val) = "select"]
-				>> result_cl_				[at_c<1>(_val) = _1]
+				>> result_cl_				[push_back(at_c<2>(_val), _1)]
 				>> *(suchthat_cl_ | with_cl_ | pattern_cl_)	[push_back(at_c<2>(_val), _1)]
 				;
 
