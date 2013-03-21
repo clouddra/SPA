@@ -930,7 +930,8 @@ std::vector<int> PKB::getAffectsStart(int start, std::vector<int> endVec)
 
 		if (visited[currStmt] == -1) // currStmt has not been visited
 		{
-			if (stmtNodeTable.getType(currStmt) == Node::assignNode)
+			int nodeType = stmtNodeTable.getType(currStmt);
+			if (nodeType == Node::assignNode)
 			{
 				// currStmt uses "var" and is part of the given endSet
 				if (usesTable.isUses(currStmt, var) && endSet.count(currStmt) > 0)
@@ -946,7 +947,19 @@ std::vector<int> PKB::getAffectsStart(int start, std::vector<int> endVec)
 						stmtQueue.push(temp[i]);
 				}
 			}
-			else // currStmt is either "while", "if" or "call"
+			else if (nodeType == Node::callNode)
+			{
+				// procedure call did not modify "var"
+				if (!modifiesTable.isModifies(currStmt, var))
+				{
+					// Add the next statements to stmtQueue
+					cfgIndex = stmtNodeTable.getCFG(currStmt);
+					std::vector<int> temp = cfg.getNext(currStmt, cfgIndex);
+					for (int i=0; i<(int)temp.size(); i++)
+						stmtQueue.push(temp[i]);
+				}
+			}
+			else // currStmt is either "while" or "if"
 			{
 				// Add the next statements to stmtQueue
 				cfgIndex = stmtNodeTable.getCFG(currStmt);
@@ -1004,7 +1017,8 @@ std::vector<int> PKB::depthUp(int currStmt, std::unordered_set<int> varSet, std:
 
 	visited[currStmt] = 1; // Mark currStmt as visited
 
-	if (stmtNodeTable.getType(currStmt) == Node::assignNode)
+	int nodeType = stmtNodeTable.getType(currStmt);
+	if (nodeType == Node::assignNode)
 	{			
 		int var = modifiesTable.getModifiedBy(currStmt)[0]; // An assignment statement will only modify 1 variable
 		
@@ -1024,7 +1038,26 @@ std::vector<int> PKB::depthUp(int currStmt, std::unordered_set<int> varSet, std:
 			toReturn.insert(toReturn.end(), temp.begin(), temp.end());
 		}
 	}
-	else // currStmt is either "while", "if" or "call"
+	else if (nodeType == Node::callNode)
+	{
+		// Check if the procedure call modifies any of the variables in varSet
+		std::vector<int> modifiedVars = modifiesTable.getModifiedBy(currStmt);
+		for (int i=0; i<(int)modifiedVars.size(); i++)
+		{
+			if (varSet.count(modifiedVars[i]) > 0)
+				varSet.erase(modifiedVars[i]); // This modified variable will be taken out of varSet
+		}
+
+		// Depth first search the previous statements
+		int cfgIndex = stmtNodeTable.getCFG(currStmt);
+		std::vector<int> prevStmt = cfg.getPrev(currStmt, cfgIndex);
+		for (int i=0; i<(int)prevStmt.size(); i++)
+		{
+			std::vector<int> temp = depthUp(prevStmt[i], varSet, visited, startSet);
+			toReturn.insert(toReturn.end(), temp.begin(), temp.end());
+		}
+	}
+	else // currStmt is either "while" or "if"
 	{
 		// Depth first search the previous statements
 		int cfgIndex = stmtNodeTable.getCFG(currStmt);
