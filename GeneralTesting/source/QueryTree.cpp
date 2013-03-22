@@ -35,7 +35,7 @@ void QueryTree::reorgTree() {
         currNode = tree[curr];
         std::string relation = currNode.getName();
         
-        if (relation.compare("declaration") != 0) {
+        if (relation.compare("declaration") != 0 && relation.compare("result") != 0) {
             int cond = currNode.getChildren()[0];
             std::string condName = tree[cond].getName();
             std::vector<int> clauses = tree[cond].getChildren();

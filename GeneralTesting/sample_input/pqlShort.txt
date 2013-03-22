@@ -1,3 +1,2 @@
 stmt s; assign a; if ifs; variable v; procedure p; call c;
-Select s such that Next*(11, s)
-Select s such that Next*(s, 11)
+Select a such that Affects(1, a)
