@@ -1880,10 +1880,12 @@ void QueryProcessor::processQuery(PKB pkb) {
 
     // Initial Query Optimizing
     std::vector<std::vector<int>> queryOrder = optimizeQuery(tree, curr+1);
+    if (queryOrder.size() == 0)
+        return;
 
     // Evaluating clauses
     for (int i = 0; i < (int)queryOrder.size(); i++) {
-        for (int j = 0; j < (int)queryOrder[i].size(); i++) {
+        for (int j = 0; j < (int)queryOrder[i].size(); j++) {
             /*
             // Autotester timeout
             if (AbstractWrapper::GlobalStop) {
@@ -2376,6 +2378,25 @@ void QueryProcessor::processQuery(PKB pkb) {
                 if (ret == -1)
                     return;
                 result = resultStore.getValuesFor(target);
+            }
+        }
+        else {
+            std::vector<std::vector<std::string>> holder = resultStore.getValuesFor(tupleTarget);
+            // If empty, should mean that target did not appear in query
+            if (holder.size() == 0) {
+                for (int i = 0; i < (int)tupleTarget.size(); i++) {
+                    int ret = evaluateType(pkb, tupleTarget[i]);
+                    if (ret == -1)
+                        return;
+                }
+                holder = resultStore.getValuesFor(tupleTarget);
+            }
+            for (int i = 0; i < (int)holder.size(); i++) {
+                std::string tupleResult = holder[i][0];
+                for (int j = 1; j < (int)holder[i].size(); j++) {
+                    tupleResult = tupleResult + " ," + holder[i][j];
+                }
+                result.push_back(tupleResult);
             }
         }
     }

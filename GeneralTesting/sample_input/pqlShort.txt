@@ -1,2 +1,7 @@
-stmt s; assign a; if ifs; variable v; procedure p; call c;
-Select a such that Affects(1, a)
+variable v; 
+Select v such that Modifies(23, v) pattern a ("z", _)
+ 
+
+ 
+
+
