@@ -6,12 +6,12 @@ class FollowsTable {
 
 private:
 	/**
-	 * Stores procedure which calls vector index.
+	 * Stores stmts which is follows vector index.
 	 */
 	std::vector<std::vector <int>> followsTable;
 
 	/**
-	 * Stores procedures called by vector index.
+	 * Stores stmts which lead vector index.
 	 */
 	std::vector<std::vector <int>> followedByTable;
 	int size, followerCount, leaderCount;

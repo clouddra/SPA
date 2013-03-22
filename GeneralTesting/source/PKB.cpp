@@ -133,12 +133,7 @@ void PKB::postParseCleanup() {
 }
 
 std::vector<int> PKB::getParent(int stmt) {
-    std::vector<int> ans;
-    int temp = parentTable.getParent(stmt);
-    if (temp == -1) 
-        return ans;
-    ans.push_back(temp); 
-    return ans;
+	return parentTable.getParent(stmt);
 }
 
 std::vector<int> PKB::getParent() {
@@ -146,12 +141,14 @@ std::vector<int> PKB::getParent() {
 }
 
 std::vector<int> PKB::getParentT(int stmt) {
-    std::vector<int> ans;
-    int curr = stmt;
-    while (curr != -1) {
-        curr = parentTable.getParent(curr);
-        if (curr != -1)
-            ans.push_back(curr);
+	int curr = 0;
+    std::vector<int> ans = getParent(stmt);
+	while (curr < (int)ans.size()) {
+        std::vector<int> temp = getParent(ans[curr]);
+        for (int i = 0; i < (int)temp.size(); i++) {
+            ans.push_back(temp[i]);
+        }
+        curr++;
     }
     return ans;
 }
