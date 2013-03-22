@@ -111,6 +111,12 @@
     <ClInclude Include="..\source\CFGBipNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SiblingTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ContainsTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\AST.cpp">
@@ -201,6 +207,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\source\CFGBipNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ContainsTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SiblingTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

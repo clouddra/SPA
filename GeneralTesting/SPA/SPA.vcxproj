@@ -43,6 +43,8 @@
     <ClInclude Include="..\source\UsesTable.h" />
     <ClInclude Include="..\source\ValidValue.h" />
     <ClInclude Include="..\source\VarTable.h" />
+    <ClInclude Include="ContainsTable.h" />
+    <ClInclude Include="SiblingTable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\AST.cpp" />
@@ -75,6 +77,8 @@
     <ClCompile Include="..\source\UsesTable.cpp" />
     <ClCompile Include="..\source\ValidValue.cpp" />
     <ClCompile Include="..\source\VarTable.cpp" />
+    <ClCompile Include="ContainsTable.cpp" />
+    <ClCompile Include="SiblingTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\sample_input\pql.txt" />

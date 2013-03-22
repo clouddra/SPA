@@ -7,12 +7,12 @@ class ParentTable {
 
 private:
 	/**
-	 * Stores stmts which calls vector index.
+	 * Stores stmts which are parents of vector index.
 	 */
 	std::vector<std::vector <int>> parentTable;
 
 	/**
-	 * Stores procedures called by vector index.
+	 * Stores stmts which are children of vector index.
 	 */
 	std::vector<std::vector <int>> childTable;
 	int size, parentCount, childCount;
