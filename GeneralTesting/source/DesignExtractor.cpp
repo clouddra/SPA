@@ -2,7 +2,7 @@
 #define DE_HEAD
 #include "DesignExtractor.h"
 #endif
-//currently adds modifies & uses for statements, parent and follows relationship
+//currently adds modifies & uses, calls, parent and follows relationship
 DesignExtractor::DesignExtractor(PKB* pkb)
 {
     _ast = pkb->getAST();
@@ -176,44 +176,6 @@ void DesignExtractor::populateTables()
 
 		}
 	}
-
-	/* DO NOT DELETE
-	//Need to loop through again because Modifies and Uses tables require the Parent* relationship which is computed in earlier loop
-	for(int t = 0; t<_ast.getTree().size(); t++)
-	{
-		std::vector<int> childrenAssign = _ast.getNode(t).getChildren();		
-		if(_ast.getNode(t).getNodeType()==Node::assignNode)//look for assign nodes
-		{		
-			std::vector<int> parents = _pkb->getParentT(_ast.getNode(t).getStmtNum());//get parent and indirect parents of assign node
-			
-			insertModifies(t, childrenAssign[0]);//add the first child of the assign node to modifies table
-			for(int w = 0; w<parents.size();w++)
-			{				
-				_mt->insertModifies(parents[w], _ast.getNode(childrenAssign[0]).getValue());//indirect parents modifies this variable too				
-			}
-			if(_ast.getNode(childrenAssign[1]).getNodeType()==Node::varNode)//if 2nd child is a variable
-			{
-				insertUses(t,childrenAssign[1]);//add it to the uses table
-				for(int v = 0; v<parents.size();v++)
-				{
-					 _ut->insertUses(parents[v],_ast.getNode(childrenAssign[1]).getValue());//indirect parents use this variable too					
-				}
-			}
-			else//if it isn't a variable
-			{
-				checkChildrenUses(childrenAssign[1], parents);
-			}
-		}
-		if(_ast.getNode(t).getNodeType()==Node::ifNode||_ast.getNode(t).getNodeType()==Node::whileNode)//child is a control variable
-		{
-			std::vector<int> parentsIfWhile = _pkb->getParentT(_ast.getNode(t).getStmtNum());
-			insertUses(t, childrenAssign[0]);
-			for(int p = 0; p<parentsIfWhile.size();p++)
-			{
-					 _ut->insertUses(parentsIfWhile[p],_ast.getNode(childrenAssign[0]).getValue());//indirect parents use this variable too					
-			}
-		}
-	}*/
 }
 	
 void DesignExtractor::addModifiesUsesForCallsStmt(int callStmt, int proc)
