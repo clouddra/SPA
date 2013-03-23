@@ -10,6 +10,8 @@ PKB::PKB() {
     usesTable = UsesTable();
 	parentTable = ParentTable();
 	callsTable = CallsTable();
+	containsTable = ContainsTable();
+	siblingTable = SiblingTable();
     ast = AST();
     stmtNodeTable = StmtNodeTable();
 	cfg = CFG();
@@ -90,6 +92,14 @@ UsesTable* PKB::getUsesTable() {
 
 CallsTable* PKB::getCallsTable() {
 	return &callsTable;
+}
+
+ContainsTable* PKB::getContainsTable() {
+	return &containsTable;
+}
+
+SiblingTable* PKB::getSiblingTable() {
+	return &siblingTable;
 }
 
 AST PKB::getAST() {

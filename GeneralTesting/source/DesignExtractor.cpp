@@ -11,6 +11,8 @@ DesignExtractor::DesignExtractor(PKB* pkb)
     _ft = pkb->getFollowsTable();
     _ut = pkb->getUsesTable();
 	_ct = pkb->getCallsTable();
+	_cont = pkb->getContainsTable();
+	_st = pkb->getSiblingTable();
 	_proct = pkb->getProcTable();
     _stmtt = pkb->getStmtNodeTable();
 	_pkb = pkb;

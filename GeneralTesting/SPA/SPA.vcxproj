@@ -18,6 +18,7 @@
     <ClInclude Include="..\source\CFGBipNode.h" />
     <ClInclude Include="..\source\CFGNode.h" />
     <ClInclude Include="..\source\Common.hpp" />
+    <ClInclude Include="..\source\ContainsTable.h" />
     <ClInclude Include="..\source\DeclarationTable.h" />
     <ClInclude Include="..\source\DesignExtractor.h" />
     <ClInclude Include="..\source\FollowsTable.h" />
@@ -35,6 +36,7 @@
     <ClInclude Include="..\source\QueryProcessor.h" />
     <ClInclude Include="..\source\QueryTree.h" />
     <ClInclude Include="..\source\ResultStorage.h" />
+    <ClInclude Include="..\source\SiblingTable.h" />
     <ClInclude Include="..\source\SimpleGrammar.h" />
     <ClInclude Include="..\source\SPAController.h" />
     <ClInclude Include="..\source\StmtNode.h" />
@@ -43,8 +45,6 @@
     <ClInclude Include="..\source\UsesTable.h" />
     <ClInclude Include="..\source\ValidValue.h" />
     <ClInclude Include="..\source\VarTable.h" />
-    <ClInclude Include="ContainsTable.h" />
-    <ClInclude Include="SiblingTable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\AST.cpp" />
@@ -53,6 +53,7 @@
     <ClCompile Include="..\source\CFGBip.cpp" />
     <ClCompile Include="..\source\CFGBipNode.cpp" />
     <ClCompile Include="..\source\CFGNode.cpp" />
+    <ClCompile Include="..\source\ContainsTable.cpp" />
     <ClCompile Include="..\source\DeclarationTable.cpp" />
     <ClCompile Include="..\source\DesignExtractor.cpp" />
     <ClCompile Include="..\source\FollowsTable.cpp" />
@@ -70,6 +71,7 @@
     <ClCompile Include="..\source\QueryProcessor.cpp" />
     <ClCompile Include="..\source\QueryTree.cpp" />
     <ClCompile Include="..\source\ResultStorage.cpp" />
+    <ClCompile Include="..\source\SiblingTable.cpp" />
     <ClCompile Include="..\source\SPAController.cpp" />
     <ClCompile Include="..\source\StmtNode.cpp" />
     <ClCompile Include="..\source\StmtNodeTable.cpp" />
@@ -77,8 +79,6 @@
     <ClCompile Include="..\source\UsesTable.cpp" />
     <ClCompile Include="..\source\ValidValue.cpp" />
     <ClCompile Include="..\source\VarTable.cpp" />
-    <ClCompile Include="ContainsTable.cpp" />
-    <ClCompile Include="SiblingTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\sample_input\pql.txt" />
