@@ -1735,10 +1735,10 @@ int QueryProcessor::evaluateType(PKB pkb, std::string target) {
 /*
 By vector index
 0: 0 variables + with
-1: 1 variable, not affects
-2: 2 variable, not affects
-3: 1 variable affects
-4: 2 variable affects
+1: 1 variable, not affects/next*
+2: 2 variable, not affects/next*
+3: 1 variable affects/next*
+4: 2 variable affects/next*
 5: 1 variable affects*
 6: 2 variable affects*
 */
@@ -1778,7 +1778,7 @@ std::vector<std::vector<int>> QueryProcessor::optimizeQuery(std::vector<QueryNod
             }
             // 1 variable
             else if (para1Type == -1 || para2Type == -1) {
-                if (relation.getName().compare("affects") == 0) {
+                if (relation.getName().compare("affects") == 0 || relation.getName().compare("nextt") == 0) {
                     queryOrder[3].push_back(i);
                 }
                 else if (relation.getName().compare("affectst") == 0) {
@@ -1790,7 +1790,7 @@ std::vector<std::vector<int>> QueryProcessor::optimizeQuery(std::vector<QueryNod
             }
             // 2 variables
             else {
-                if (relation.getName().compare("affects") == 0) {
+                if (relation.getName().compare("affects") == 0 || relation.getName().compare("nextt") == 0) {
                     queryOrder[4].push_back(i);
                 }
                 else if (relation.getName().compare("affectst") == 0) {
