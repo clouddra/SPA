@@ -13,14 +13,24 @@
 #include "ModifiesTable.h"
 #endif
 
-#ifndef VARTABLE_HEAD
-#define VARTABLE_HEAD
-#include "VarTable.h"
-#endif
-
 #ifndef USESTABLE_HEAD
 #define USESTABLE_HEAD
 #include "UsesTable.h"
+#endif
+
+#ifndef CONTAINS_HEAD
+#define CONTAINS_HEAD
+#include "ContainsTable.h"
+#endif
+
+#ifndef SIBLING_HEAD
+#define SIBLING_HEAD
+#include "SiblingTable.h"
+#endif
+
+#ifndef VARTABLE_HEAD
+#define VARTABLE_HEAD
+#include "VarTable.h"
 #endif
 
 #ifndef PROCTABLE_HEAD
@@ -78,6 +88,8 @@ private:
     ParentTable parentTable;
     FollowsTable followsTable;
 	CallsTable callsTable;
+	ContainsTable containsTable;
+	SiblingTable siblingTable;
     VarTable varTable;
 	ProcTable procTable;
     UsesTable usesTable;
@@ -165,5 +177,7 @@ public:
 	CallsTable* getCallsTable();
 	StmtNodeTable* getStmtNodeTable();
 	ProcTable* getProcTable();
+	ContainsTable* getContainsTable();
+	SiblingTable* getSiblingTable();
 		
 };

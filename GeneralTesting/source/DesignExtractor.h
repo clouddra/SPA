@@ -30,6 +30,16 @@
 #include "CallsTable.h"
 #endif
 
+#ifndef CONTAINS_HEAD
+#define CONTAINS_HEAD
+#include "ContainsTable.h"
+#endif
+
+#ifndef SIBLING_HEAD
+#define SIBLING_HEAD
+#include "SiblingTable.h"
+#endif
+
 #ifndef STMTNODE_HEAD
 #define STMTNODE_HEAD
 #include "StmtNodeTable.h"
@@ -55,6 +65,8 @@ private:
 	UsesTable* _ut;
 	CallsTable* _ct;
 	ParentTable* _pt;
+	ContainsTable* _cont;
+	SiblingTable* _st;
 	StmtNodeTable* _stmtt;
 	ProcTable* _proct;
 	void addModifiesUsesForCallsStmt(int callStmt, int proc);
