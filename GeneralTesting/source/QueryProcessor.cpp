@@ -2394,7 +2394,7 @@ void QueryProcessor::processQuery(PKB pkb) {
             for (int i = 0; i < (int)holder.size(); i++) {
                 std::string tupleResult = holder[i][0];
                 for (int j = 1; j < (int)holder[i].size(); j++) {
-                    tupleResult = tupleResult + " ," + holder[i][j];
+                    tupleResult = tupleResult + " " + holder[i][j];
                 }
                 result.push_back(tupleResult);
             }
