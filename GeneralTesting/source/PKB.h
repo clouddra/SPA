@@ -167,6 +167,9 @@ public:
 	std::vector<int> getAffectsStart(int start, std::vector<int> endVec); // Note the parameters are purposely made different
 	std::vector<int> getAffectsEnd(std::vector<int> startVec, int end);
 	std::vector<int> depthUp(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::unordered_set<int> startSet);
+	std::vector<int> getAffectsTStart(int start);
+	std::vector<int> getAffectsTEnd(int end);
+	std::vector<int> depthUpT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::unordered_set<int> ignoreSet);
 
 	void printModifiesTable();
 	AST PKB::getAST();
