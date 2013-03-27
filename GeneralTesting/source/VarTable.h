@@ -8,10 +8,17 @@
 #include <vector>
 #endif
 
+#ifndef UNORDERED_HEAD
+#define UNORDERED_HEAD
+#include <unordered_map>
+#endif
+
+
 class VarTable {
 
 private:
-	std::vector<std::string> varTable;
+	std::vector<std::string> numToVar;
+	std::unordered_map<std::string, int> varToNum;
 
 public:
 	VarTable();
