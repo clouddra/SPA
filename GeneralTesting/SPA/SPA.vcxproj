@@ -25,6 +25,7 @@
     <ClInclude Include="..\source\HelperFunctions.h" />
     <ClInclude Include="..\source\ModifiesTable.h" />
     <ClInclude Include="..\source\Node.h" />
+    <ClInclude Include="..\source\QueryGraph.h" />
     <ClInclude Include="..\source\ParentTable.h" />
     <ClInclude Include="..\source\Parser.h" />
     <ClInclude Include="..\source\ParserNode.h" />
@@ -32,6 +33,7 @@
     <ClInclude Include="..\source\PQLParser.h" />
     <ClInclude Include="..\source\Procedure.h" />
     <ClInclude Include="..\source\ProcTable.h" />
+    <ClInclude Include="..\source\Query.h" />
     <ClInclude Include="..\source\QueryNode.h" />
     <ClInclude Include="..\source\QueryProcessor.h" />
     <ClInclude Include="..\source\QueryTree.h" />
@@ -67,6 +69,7 @@
     <ClCompile Include="..\source\PQLParser.cpp" />
     <ClCompile Include="..\source\Procedure.cpp" />
     <ClCompile Include="..\source\ProcTable.cpp" />
+    <ClCompile Include="..\source\QueryGraph.cpp" />
     <ClCompile Include="..\source\QueryNode.cpp" />
     <ClCompile Include="..\source\QueryProcessor.cpp" />
     <ClCompile Include="..\source\QueryTree.cpp" />
@@ -93,7 +96,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>

@@ -1,5 +1,6 @@
-variable v; 
-Select v such that Modifies(23, v) pattern a ("z", _)
+assign a; variable v; 
+Select a such that Uses(3, v) pattern a(v, _)
+
  
 
  

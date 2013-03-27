@@ -226,18 +226,37 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para1IsPlaceho
             else {
                 std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
                 std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
+                std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
+                std::vector<int> para2ValInt = stringVecToIntVec(para2ValString);
+                bool isPara1;
+                if (para1ValString.size() < para2ValString.size())
+                    isPara1 = true;
+                else
+                    isPara1 = false;
+
                 std::vector<std::vector<std::string>> toStoreTuple;
-                if (para1ValInt.size() == 0) {
-                    return -1;
+                if (isPara1) {
+                    for (int i = 0; i < (int)para1ValInt.size(); i++) {
+                        temp = pkb.getFollowedBy(para1ValInt[i]);
+                        toStore = intVecToStringVec(temp);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(para1ValString[i]);
+                            holder.push_back(toStore[j]);
+                            toStoreTuple.push_back(holder);
+                        }
+                    }
                 }
-                for (int i = 0; i < (int)para1ValInt.size(); i++) {
-                    temp = pkb.getFollowedBy(para1ValInt[i]);
-                    toStore = intVecToStringVec(temp);
-                    for (int j = 0; j < (int)toStore.size(); j++) {
-                        std::vector<std::string> holder;
-                        holder.push_back(para1ValString[i]);
-                        holder.push_back(toStore[j]);
-                        toStoreTuple.push_back(holder);
+                else {
+                    for (int i = 0; i < (int)para2ValInt.size(); i++) {
+                        temp = pkb.getFollows(para2ValInt[i]);
+                        toStore = intVecToStringVec(temp);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(toStore[j]);
+                            holder.push_back(para2ValString[i]);
+                            toStoreTuple.push_back(holder);
+                        }
                     }
                 }
                 int ret = resultStore.insertResult(para1, para2, toStoreTuple);
@@ -339,18 +358,37 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para1IsPlaceho
             else {
                 std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
                 std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
+                std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
+                std::vector<int> para2ValInt = stringVecToIntVec(para2ValString);
+                bool isPara1;
+                if (para1ValString.size() < para2ValString.size())
+                    isPara1 = true;
+                else
+                    isPara1 = false;
+
                 std::vector<std::vector<std::string>> toStoreTuple;
-                if (para1ValInt.size() == 0) {
-                    return -1;
+                if (isPara1) {
+                    for (int i = 0; i < (int)para1ValInt.size(); i++) {
+                        temp = pkb.getFollowedByT(para1ValInt[i]);
+                        toStore = intVecToStringVec(temp);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(para1ValString[i]);
+                            holder.push_back(toStore[j]);
+                            toStoreTuple.push_back(holder);
+                        }
+                    }
                 }
-                for (int i = 0; i < (int)para1ValInt.size(); i++) {
-                    temp = pkb.getFollowedByT(para1ValInt[i]);
-                    toStore = intVecToStringVec(temp);
-                    for (int j = 0; j < (int)toStore.size(); j++) {
-                        std::vector<std::string> holder;
-                        holder.push_back(para1ValString[i]);
-                        holder.push_back(toStore[j]);
-                        toStoreTuple.push_back(holder);
+                else {
+                    for (int i = 0; i < (int)para2ValInt.size(); i++) {
+                        temp = pkb.getFollowsT(para2ValInt[i]);
+                        toStore = intVecToStringVec(temp);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(toStore[j]);
+                            holder.push_back(para2ValString[i]);
+                            toStoreTuple.push_back(holder);
+                        }
                     }
                 }
                 int ret = resultStore.insertResult(para1, para2, toStoreTuple);
@@ -463,20 +501,39 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para1IsPlacehol
                 }
             }
             else {
+                std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
+                std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
                 std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
                 std::vector<int> para2ValInt = stringVecToIntVec(para2ValString);
+                bool isPara1;
+                if (para1ValString.size() < para2ValString.size())
+                    isPara1 = true;
+                else
+                    isPara1 = false;
+
                 std::vector<std::vector<std::string>> toStoreTuple;
-                if (para2ValInt.size() == 0) {
-                    return -1;
+                if (isPara1) {
+                    for (int i = 0; i < (int)para1ValInt.size(); i++) {
+                        temp = pkb.getChild(para1ValInt[i]);
+                        toStore = intVecToStringVec(temp);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(para1ValString[i]);
+                            holder.push_back(toStore[j]); 
+                            toStoreTuple.push_back(holder);
+                        }
+                    }
                 }
-                for (int i = 0; i < (int)para2ValInt.size(); i++) {
-                    temp = pkb.getParent(para2ValInt[i]);
-                    toStore = intVecToStringVec(temp);
-                    for (int j = 0; j < (int)toStore.size(); j++) {
-                        std::vector<std::string> holder;
-                        holder.push_back(toStore[j]); 
-                        holder.push_back(para2ValString[i]);
-                        toStoreTuple.push_back(holder);
+                else {
+                    for (int i = 0; i < (int)para2ValInt.size(); i++) {
+                        temp = pkb.getParent(para2ValInt[i]);
+                        toStore = intVecToStringVec(temp);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(toStore[j]); 
+                            holder.push_back(para2ValString[i]);
+                            toStoreTuple.push_back(holder);
+                        }
                     }
                 }
                 int ret = resultStore.insertResult(para1, para2, toStoreTuple);
@@ -576,20 +633,39 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para1IsPlacehol
                 }
             }
             else {
+                std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
+                std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
                 std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
                 std::vector<int> para2ValInt = stringVecToIntVec(para2ValString);
+                bool isPara1;
+                if (para1ValString.size() < para2ValString.size())
+                    isPara1 = true;
+                else
+                    isPara1 = false;
+
                 std::vector<std::vector<std::string>> toStoreTuple;
-                if (para2ValInt.size() == 0) {
-                    return -1;
+                if (isPara1) {
+                    for (int i = 0; i < (int)para1ValInt.size(); i++) {
+                        temp = pkb.getChildT(para1ValInt[i]);
+                        toStore = intVecToStringVec(temp);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(para1ValString[i]);
+                            holder.push_back(toStore[j]); 
+                            toStoreTuple.push_back(holder);
+                        }
+                    }
                 }
-                for (int i = 0; i < (int)para2ValInt.size(); i++) {
-                    temp = pkb.getParentT(para2ValInt[i]);
-                    toStore = intVecToStringVec(temp);
-                    for (int j = 0; j < (int)toStore.size(); j++) {
-                        std::vector<std::string> holder;
-                        holder.push_back(toStore[j]); 
-                        holder.push_back(para2ValString[i]);
-                        toStoreTuple.push_back(holder);
+                else {
+                    for (int i = 0; i < (int)para2ValInt.size(); i++) {
+                        temp = pkb.getParentT(para2ValInt[i]);
+                        toStore = intVecToStringVec(temp);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(toStore[j]); 
+                            holder.push_back(para2ValString[i]);
+                            toStoreTuple.push_back(holder);
+                        }
                     }
                 }
                 int ret = resultStore.insertResult(para1, para2, toStoreTuple);
@@ -703,18 +779,37 @@ int QueryProcessor::evaluateNext(bool T, bool para1IsNum, bool para1IsPlaceholde
             else {
                 std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
                 std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
+                std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
+                std::vector<int> para2ValInt = stringVecToIntVec(para2ValString);
+                bool isPara1;
+                if (para1ValString.size() < para2ValString.size())
+                    isPara1 = true;
+                else
+                    isPara1 = false;
+
                 std::vector<std::vector<std::string>> toStoreTuple;
-                if (para1ValInt.size() == 0) {
-                    return -1;
+                if (isPara1) {
+                    for (int i = 0; i < (int)para1ValInt.size(); i++) {
+                        temp = pkb.getNext(para1ValInt[i]);
+                        toStore = intVecToStringVec(temp);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(para1ValString[i]);
+                            holder.push_back(toStore[j]); 
+                            toStoreTuple.push_back(holder);
+                        }
+                    }
                 }
-                for (int i = 0; i < (int)para1ValInt.size(); i++) {
-                    temp = pkb.getNext(para1ValInt[i]);
-                    toStore = intVecToStringVec(temp);
-                    for (int j = 0; j < (int)toStore.size(); j++) {
-                        std::vector<std::string> holder;
-                        holder.push_back(para1ValString[i]);
-                        holder.push_back(toStore[j]); 
-                        toStoreTuple.push_back(holder);
+                else {
+                    for (int i = 0; i < (int)para2ValInt.size(); i++) {
+                        temp = pkb.getPrev(para2ValInt[i]);
+                        toStore = intVecToStringVec(temp);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(toStore[j]); 
+                            holder.push_back(para2ValString[i]);
+                            toStoreTuple.push_back(holder);
+                        }
                     }
                 }
                 int ret = resultStore.insertResult(para1, para2, toStoreTuple);
@@ -816,18 +911,37 @@ int QueryProcessor::evaluateNext(bool T, bool para1IsNum, bool para1IsPlaceholde
             else {
                 std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
                 std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
+                std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
+                std::vector<int> para2ValInt = stringVecToIntVec(para2ValString);
+                bool isPara1;
+                if (para1ValString.size() < para2ValString.size())
+                    isPara1 = true;
+                else
+                    isPara1 = false;
+
                 std::vector<std::vector<std::string>> toStoreTuple;
-                if (para1ValInt.size() == 0) {
-                    return -1;
+                if (isPara1) {
+                    for (int i = 0; i < (int)para1ValInt.size(); i++) {
+                        temp = pkb.getNextT(para1ValInt[i]);
+                        toStore = intVecToStringVec(temp);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(para1ValString[i]);
+                            holder.push_back(toStore[j]); 
+                            toStoreTuple.push_back(holder);
+                        }
+                    }
                 }
-                for (int i = 0; i < (int)para1ValInt.size(); i++) {
-                    temp = pkb.getNextT(para1ValInt[i]);
-                    toStore = intVecToStringVec(temp);
-                    for (int j = 0; j < (int)toStore.size(); j++) {
-                        std::vector<std::string> holder;
-                        holder.push_back(para1ValString[i]);
-                        holder.push_back(toStore[j]); 
-                        toStoreTuple.push_back(holder);
+                else {
+                    for (int i = 0; i < (int)para2ValInt.size(); i++) {
+                        temp = pkb.getPrevT(para2ValInt[i]);
+                        toStore = intVecToStringVec(temp);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(toStore[j]);
+                            holder.push_back(para2ValString[i]);
+                            toStoreTuple.push_back(holder);
+                        }
                     }
                 }
                 int ret = resultStore.insertResult(para1, para2, toStoreTuple);
@@ -1216,18 +1330,41 @@ int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para2IsEnt, bool par
         }
         else {
             std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
-            std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
+            std::vector<int> para1ValInt;
+            std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
             std::vector<std::vector<std::string>> toStoreTuple;
-            if (para1ValInt.size() == 0) {
+            if (para1ValString.size() == 0 || para2ValString.size() == 0) {
                 return -1;
             }
-            for (int i = 0; i < (int)para1ValInt.size(); i++) {
-                toStore = pkb.getModifiedBy(para1ValInt[i]);
-                for (int j = 0; j < (int)toStore.size(); j++) {
-                    std::vector<std::string> holder;
-                    holder.push_back(para1ValString[i]);
-                    holder.push_back(toStore[j]); 
-                    toStoreTuple.push_back(holder);
+            bool isPara1;
+            if (para1ValString.size() < para2ValString.size()) {
+                isPara1 = true;
+                para1ValInt = stringVecToIntVec(para1ValString);
+            }
+            else
+                isPara1 = false;
+
+            if (isPara1) {
+                for (int i = 0; i < (int)para1ValInt.size(); i++) {
+                    toStore = pkb.getModifiedBy(para1ValInt[i]);
+                    for (int j = 0; j < (int)toStore.size(); j++) {
+                        std::vector<std::string> holder;
+                        holder.push_back(para1ValString[i]);
+                        holder.push_back(toStore[j]); 
+                        toStoreTuple.push_back(holder);
+                    }
+                }
+            }
+            else {
+                for (int i = 0; i < (int)para2ValString.size(); i++) {
+                    temp = pkb.getModifiesVar(para2ValString[i]);
+                    toStore = intVecToStringVec(temp);
+                    for (int j = 0; j < (int)toStore.size(); j++) {
+                        std::vector<std::string> holder;
+                        holder.push_back(toStore[j]);
+                        holder.push_back(para2ValString[i]);
+                        toStoreTuple.push_back(holder);
+                    }
                 }
             }
             int ret = resultStore.insertResult(para1, para2, toStoreTuple);
@@ -1303,17 +1440,37 @@ int QueryProcessor::evaluateModifiesP(bool para1IsEnt, bool para2IsEnt, bool par
         }
         else {
             std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
+            std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
             std::vector<std::vector<std::string>> toStoreTuple;
-            if (para1ValString.size() == 0) {
+            if (para1ValString.size() == 0 || para2ValString.size() == 0) {
                 return -1;
             }
-            for (int i = 0; i < (int)para1ValString.size(); i++) {
-                toStore = pkb.getModifiedByP(para1ValString[i]);
-                for (int j = 0; j < (int)toStore.size(); j++) {
-                    std::vector<std::string> holder;
-                    holder.push_back(para1ValString[i]);
-                    holder.push_back(toStore[j]); 
-                    toStoreTuple.push_back(holder);
+            bool isPara1;
+            if (para1ValString.size() < para2ValString.size())
+                isPara1 = true;
+            else
+                isPara1 = false;
+
+            if (isPara1) {
+                for (int i = 0; i < (int)para1ValString.size(); i++) {
+                    toStore = pkb.getModifiedByP(para1ValString[i]);
+                    for (int j = 0; j < (int)toStore.size(); j++) {
+                        std::vector<std::string> holder;
+                        holder.push_back(para1ValString[i]);
+                        holder.push_back(toStore[j]); 
+                        toStoreTuple.push_back(holder);
+                    }
+                }
+            }
+            else {
+                for (int i = 0; i < (int)para2ValString.size(); i++) {
+                    toStore = pkb.getModifiesVarP(para2ValString[i]);
+                    for (int j = 0; j < (int)toStore.size(); j++) {
+                        std::vector<std::string> holder;
+                        holder.push_back(toStore[j]);
+                        holder.push_back(para2ValString[i]); 
+                        toStoreTuple.push_back(holder);
+                    }
                 }
             }
             int ret = resultStore.insertResult(para1, para2, toStoreTuple);
@@ -1391,18 +1548,41 @@ int QueryProcessor::evaluateUsesS(bool para1IsNum, bool para2IsEnt, bool para2Is
         }
         else {
             std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
-            std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
+            std::vector<int> para1ValInt;
+            std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
             std::vector<std::vector<std::string>> toStoreTuple;
-            if (para1ValInt.size() == 0) {
+            if (para1ValString.size() == 0 || para2ValString.size() == 0) {
                 return -1;
             }
-            for (int i = 0; i < (int)para1ValInt.size(); i++) {
-                toStore = pkb.getUsedBy(para1ValInt[i]);
-                for (int j = 0; j < (int)toStore.size(); j++) {
-                    std::vector<std::string> holder;
-                    holder.push_back(para1ValString[i]); 
-                    holder.push_back(toStore[j]);
-                    toStoreTuple.push_back(holder);
+            bool isPara1;
+            if (para1ValString.size() < para2ValString.size()) {
+                isPara1 = true;
+                para1ValInt = stringVecToIntVec(para1ValString);
+            }
+            else
+                isPara1 = false;
+
+            if (isPara1) {
+                for (int i = 0; i < (int)para1ValInt.size(); i++) {
+                    toStore = pkb.getUsedBy(para1ValInt[i]);
+                    for (int j = 0; j < (int)toStore.size(); j++) {
+                        std::vector<std::string> holder;
+                        holder.push_back(para1ValString[i]); 
+                        holder.push_back(toStore[j]);
+                        toStoreTuple.push_back(holder);
+                    }
+                }
+            }
+            else {
+                for (int i = 0; i < (int)para2ValString.size(); i++) {
+                    temp = pkb.getUsesVar(para2ValString[i]);
+                    toStore = intVecToStringVec(temp);
+                    for (int j = 0; j < (int)toStore.size(); j++) {
+                        std::vector<std::string> holder;
+                        holder.push_back(toStore[j]);
+                        holder.push_back(para2ValString[i]);
+                        toStoreTuple.push_back(holder);
+                    }
                 }
             }
             int ret = resultStore.insertResult(para1, para2, toStoreTuple);
@@ -1478,17 +1658,37 @@ int QueryProcessor::evaluateUsesP(bool para1IsEnt, bool para2IsEnt, bool para2Is
         }
         else {
             std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
+            std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
             std::vector<std::vector<std::string>> toStoreTuple;
-            if (para1ValString.size() == 0) {
+            if (para1ValString.size() == 0 || para2ValString.size() == 0) {
                 return -1;
             }
-            for (int i = 0; i < (int)para1ValString.size(); i++) {
-                toStore = pkb.getUsedByP(para1ValString[i]);
-                for (int j = 0; j < (int)toStore.size(); j++) {
-                    std::vector<std::string> holder;
-                    holder.push_back(para1ValString[i]); 
-                    holder.push_back(toStore[j]);
-                    toStoreTuple.push_back(holder);
+            bool isPara1;
+            if (para1ValString.size() < para2ValString.size())
+                isPara1 = true;
+            else
+                isPara1 = false;
+
+            if (isPara1) {
+                for (int i = 0; i < (int)para1ValString.size(); i++) {
+                    toStore = pkb.getUsedByP(para1ValString[i]);
+                    for (int j = 0; j < (int)toStore.size(); j++) {
+                        std::vector<std::string> holder;
+                        holder.push_back(para1ValString[i]); 
+                        holder.push_back(toStore[j]);
+                        toStoreTuple.push_back(holder);
+                    }
+                }
+            }
+            else {
+                for (int i = 0; i < (int)para2ValString.size(); i++) {
+                    toStore = pkb.getUsesVarP(para2ValString[i]);
+                    for (int j = 0; j < (int)toStore.size(); j++) {
+                        std::vector<std::string> holder; 
+                        holder.push_back(toStore[j]);
+                        holder.push_back(para2ValString[i]);
+                        toStoreTuple.push_back(holder);
+                    }
                 }
             }
             int ret = resultStore.insertResult(para1, para2, toStoreTuple);
@@ -1562,17 +1762,37 @@ int QueryProcessor::evaluateCalls(bool T, bool para1IsEnt, bool para1IsPlacehold
             }
             else {
                 std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
+                std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
                 std::vector<std::vector<std::string>> toStoreTuple;
-                if (para1ValString.size() == 0) {
+                if (para1ValString.size() == 0 || para2ValString.size() == 0) {
                     return -1;
                 }
-                for (int i = 0; i < (int)para1ValString.size(); i++) {
-                    toStore = pkb.getCalledBy(para1ValString[i]);
-                    for (int j = 0; j < (int)toStore.size(); j++) {
-                        std::vector<std::string> holder;
-                        holder.push_back(para1ValString[i]); 
-                        holder.push_back(toStore[j]);
-                        toStoreTuple.push_back(holder);
+                bool isPara1;
+                if (para1ValString.size() < para2ValString.size())
+                    isPara1 = true;
+                else
+                    isPara1 = false;
+
+                if (isPara1) {
+                    for (int i = 0; i < (int)para1ValString.size(); i++) {
+                        toStore = pkb.getCalledBy(para1ValString[i]);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(para1ValString[i]); 
+                            holder.push_back(toStore[j]);
+                            toStoreTuple.push_back(holder);
+                        }
+                    }
+                }
+                else {
+                    for (int i = 0; i < (int)para2ValString.size(); i++) {
+                        toStore = pkb.getCalls(para2ValString[i]);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;              
+                            holder.push_back(toStore[j]);
+                            holder.push_back(para2ValString[i]); 
+                            toStoreTuple.push_back(holder);
+                        }
                     }
                 }
                 int ret = resultStore.insertResult(para1, para2, toStoreTuple);
@@ -1635,17 +1855,37 @@ int QueryProcessor::evaluateCalls(bool T, bool para1IsEnt, bool para1IsPlacehold
             }
             else {
                 std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
+                std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
                 std::vector<std::vector<std::string>> toStoreTuple;
-                if (para1ValString.size() == 0) {
+                if (para1ValString.size() == 0 || para2ValString.size() == 0) {
                     return -1;
                 }
-                for (int i = 0; i < (int)para1ValString.size(); i++) {
-                    toStore = pkb.getCalledByT(para1ValString[i]);
-                    for (int j = 0; j < (int)toStore.size(); j++) {
-                        std::vector<std::string> holder;
-                        holder.push_back(para1ValString[i]); 
-                        holder.push_back(toStore[j]);
-                        toStoreTuple.push_back(holder);
+                bool isPara1;
+                if (para1ValString.size() < para2ValString.size())
+                    isPara1 = true;
+                else
+                    isPara1 = false;
+
+                if (isPara1) {
+                    for (int i = 0; i < (int)para1ValString.size(); i++) {
+                        toStore = pkb.getCalledByT(para1ValString[i]);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(para1ValString[i]); 
+                            holder.push_back(toStore[j]);
+                            toStoreTuple.push_back(holder);
+                        }
+                    }
+                }
+                else {
+                    for (int i = 0; i < (int)para2ValString.size(); i++) {
+                        toStore = pkb.getCallsT(para2ValString[i]);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(toStore[j]);
+                            holder.push_back(para2ValString[i]); 
+                            toStoreTuple.push_back(holder);
+                        }
                     }
                 }
                 int ret = resultStore.insertResult(para1, para2, toStoreTuple);
@@ -1822,6 +2062,7 @@ std::vector<std::vector<int>> QueryProcessor::optimizeQuery(std::vector<QueryNod
                 }
                 else {
                     queryOrder[2].push_back(i);
+                    optiGraph.insertQuery(para1, para2);
                 }
             }
         }
@@ -1854,6 +2095,7 @@ std::vector<std::vector<int>> QueryProcessor::optimizeQuery(std::vector<QueryNod
             // 2 variables
             else {
                 queryOrder[2].push_back(i);
+                optiGraph.insertQuery(para1, para2);
             }
         }
 
@@ -1907,16 +2149,49 @@ void QueryProcessor::processQuery(PKB pkb) {
     if (queryOrder.size() == 0)
         return;
 
+    std::unordered_set<int> queryChoices;
     // Evaluating clauses
     for (int i = 0; i < (int)queryOrder.size(); i++) {
-        for (int j = 0; j < (int)queryOrder[i].size(); j++) {
+        if (i == 2) 
+            optiGraph.setWeight(resultStore.getVVVector());
+        
+        while (queryOrder[i].size() > 0) {
             /*
             // Autotester timeout
             if (AbstractWrapper::GlobalStop) {
                 return;
             } */
 
-            currNode = tree[rootChildren[queryOrder[i][j]]];
+            int nextQuery;
+            if (i != 2) {
+                nextQuery = queryOrder[i].back();
+                queryOrder[i].pop_back();
+            }
+            else {
+                if (queryChoices.size() == 0) {
+                    int ret = optiGraph.findMinWeight();
+                    if (ret != -1)
+                        queryChoices.insert(ret);
+                    else    
+                        break;  // Exit while loop
+                }
+
+                int min = *queryChoices.begin();
+                for (auto it = queryChoices.begin(); it != queryChoices.end(); ++it) {
+                    if (optiGraph.graph[*it].weight < optiGraph.graph[min].weight)
+                        min = *it;
+                }
+                nextQuery = queryOrder[i][min];
+                std::vector<int> connect = optiGraph.graph[min].connections;
+                for (int j = 0; j < (int)connect.size(); j++) {
+                    if (!optiGraph.graph[connect[j]].evaluated)
+                        queryChoices.insert(connect[j]);
+                }
+                queryChoices.erase(min);
+                optiGraph.graph[min].evaluated = true;
+            }
+
+            currNode = tree[rootChildren[nextQuery]];
             // Evaluating such that
             if (currNode.getName().compare("such that") == 0) {
                 QueryNode relCon = tree[currNode.getChildren()[0]];
@@ -2148,7 +2423,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                 }
                 // affects* query
                 else if (relation.getName().compare("affectst") == 0) {
-                   if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::assign_) {                        
+                    if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::assign_) {                        
                         if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::assign_) {
                             int ret = evaluateAffects(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
                             if (ret == -1)
@@ -2160,6 +2435,13 @@ void QueryProcessor::processQuery(PKB pkb) {
                     else
                         return;
                 }
+
+                if (i == 2) {
+                    for (auto it = queryChoices.begin(); it != queryChoices.end(); ++it) {
+                        optiGraph.graph[*it].setWeight(para1, resultStore.getValuesFor(para1).size());
+                        optiGraph.graph[*it].setWeight(para2, resultStore.getValuesFor(para2).size());
+                    }
+                }
             }
 
             // Evaluates pattern query Eg. "pattern a1(x, _"y"_)" ===> a1 = pattern, x = var, _"y"_ = expr
@@ -2168,12 +2450,12 @@ void QueryProcessor::processQuery(PKB pkb) {
             else if (currNode.getName().compare("pattern") == 0) {
                 QueryNode patternCond = tree[currNode.getChildren()[0]];
                 std::vector<int> clause = patternCond.getChildren();
-            
+        
                 QueryNode temp = tree[clause[0]];
-                if (temp.getName().compare("pattern_assign_or_while_") == 0) {
-                    std::string pattern = tree[temp.getChildren()[0]].getName();
-                    std::string var = tree[temp.getChildren()[1]].getName();
+                std::string pattern = tree[temp.getChildren()[0]].getName();
+                std::string var = tree[temp.getChildren()[1]].getName();
 
+                if (temp.getName().compare("pattern_assign_or_while_") == 0) {
                     temp = tree[temp.getChildren()[2]];
                     int expressionRoot = -1;
                     bool hasUnderscore = false;
@@ -2238,9 +2520,6 @@ void QueryProcessor::processQuery(PKB pkb) {
                     }
                 }
                 else if (temp.getName().compare("pattern_if_") == 0) {
-                    std::string pattern = tree[temp.getChildren()[0]].getName();
-                    std::string var = tree[temp.getChildren()[1]].getName();
-
                     // Figure out type of parameter 1 and 2
                     bool patternIsNum = false, varIsNum = false;
                     bool patternIsEnt = false, varIsEnt = false;
@@ -2272,6 +2551,13 @@ void QueryProcessor::processQuery(PKB pkb) {
                 else {
                     // std::cout << "Unknown pattern format\n";
                     return;
+                }
+
+                if (i == 2) {
+                    for (auto it = queryChoices.begin(); it != queryChoices.end(); ++it) {
+                        optiGraph.graph[*it].setWeight(pattern, resultStore.getValuesFor(pattern).size());
+                        optiGraph.graph[*it].setWeight(var, resultStore.getValuesFor(var).size());
+                    }
                 }
             }
 

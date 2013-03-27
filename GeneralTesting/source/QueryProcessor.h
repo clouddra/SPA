@@ -23,6 +23,11 @@
 #include "Common.hpp"
 #endif
 
+#ifndef QUERYGRAPH_HEAD
+#define QUERYGRAPH_HEAD
+#include "QueryGraph.h"
+#endif
+
 #include "AbstractWrapper.h"
 
 class QueryProcessor {
@@ -32,6 +37,8 @@ private:
 	DeclarationTable declarationTable;
     ResultStorage resultStore;
 	std::vector<std::string> result;
+    QueryGraph optiGraph;
+
     void loadDeclaration(std::vector<QueryNode> tree, int* curr);
     int findTypeOf(std::string para, bool* paraIsNum, bool* paraIsEnt,bool* paraIsPlaceholder, int* paraNum);
     int evaluateFollows(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB pkb);

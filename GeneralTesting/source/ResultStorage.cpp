@@ -139,3 +139,7 @@ std::vector<std::vector<std::string>> ResultStorage::getValuesFor(std::vector<st
 
     return intResults[0];
 }
+
+std::vector<ValidValue> ResultStorage::getVVVector() {
+    return vvVector;
+}
