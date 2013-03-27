@@ -164,8 +164,8 @@ public:
 	std::vector<int> buildCfg(int stmtListAst, int cfgIndex);
 	std::vector<int> buildCfgBip(int stmtListAst, int cfgIndex, std::vector<std::pair<int,int>> &bip);
 	//void setBip(std::vector<std::pair<int,int>> bip);
-	std::vector<int> getAffectsStart(int start, std::vector<int> endVec); // Note the parameters are purposely made different
-	std::vector<int> getAffectsEnd(std::vector<int> startVec, int end);
+	std::vector<int> getAffectsStart(int start); 
+	std::vector<int> getAffectsEnd(int end);
 	std::vector<int> depthUp(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::unordered_set<int> startSet);
 	std::vector<int> getAffectsTStart(int start);
 	std::vector<int> getAffectsTEnd(int end);
