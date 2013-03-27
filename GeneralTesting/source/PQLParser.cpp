@@ -441,7 +441,8 @@ namespace pqlparser
 				>> *("and" >> relRef_       [push_back(at_c<2>(_val), _1)])		
 				;
 
-			relRef_ %= ModifiesS_ | ModifiesP_ | UsesS_ | UsesP_ | Parent_ | ParentT_ | Follows_ | FollowsT_ | Calls_ | CallsT_ | Next_ | NextT_ | Affects_ | AffectsT_;
+			relRef_ %= ModifiesS_ | ModifiesP_ | UsesS_ | UsesP_ | Parent_ | ParentT_ | Follows_ 
+				| FollowsT_ | Calls_ | CallsT_ | Next_ | NextT_ | Affects_ | AffectsT_ | NextBip_ | NextBipT_;
 
 			ModifiesS_ = 
 				string("Modifies")			[at_c<0>(_val) = "modifiess"]
@@ -568,6 +569,24 @@ namespace pqlparser
 				>> stmtRef_					[push_back(at_c<2>(_val), _1)]
 				>> ')'
 				;
+
+			NextBip_ =
+				string("NextBip")			[at_c<0>(_val) = "nextbip"]
+				>> '('
+				>> lineRef_					[push_back(at_c<2>(_val), _1)]
+				>> ','
+				>> lineRef_					[push_back(at_c<2>(_val), _1)]
+				>> ')'
+				;
+
+			NextBipT_ =
+				string("NextBip*")			[at_c<0>(_val) = "nextbipt"]
+				>> '('
+				>> lineRef_					[push_back(at_c<2>(_val), _1)]
+				>> ','
+				>> lineRef_					[push_back(at_c<2>(_val), _1)]
+				>> ')'
+				;
         }
 
 		// Lexical Rules
@@ -626,6 +645,8 @@ namespace pqlparser
 		qi::rule<Iterator, commonNode(), ascii::space_type> NextT_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> Affects_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> AffectsT_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> NextBip_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> NextBipT_;
     };
 
     //]

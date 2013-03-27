@@ -8,10 +8,17 @@
 #include <vector>
 #endif
 
+#ifndef UNORDERED_HEAD
+#define UNORDERED_HEAD
+#include <unordered_map>
+#endif
+
 class ProcTable {
 
 private:
-	std::vector<Procedure> procTable;
+	std::vector<Procedure> numToProc;
+	std::unordered_map<std::string, int> procToNum;
+	
 
 public:
 	ProcTable();

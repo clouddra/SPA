@@ -15,33 +15,35 @@ int VarTable::insertVar(std::string varName) {
 
 	int index = getVarIndex(varName);
 	if (index==-1) {
-		varTable.push_back(varName) ;
-		index = varTable.size() - 1;
+		numToVar.push_back(varName) ;
+		index = numToVar.size() - 1;
 	}
-
+	varToNum.emplace(std::make_pair(varName, index));
+	
 	return index;
 }
 
 int VarTable::getSize() {
-	return (int) varTable.size();
+	return (int) numToVar.size();
 }
 
 std::string VarTable::getVarName (int ind){
-	return varTable.at(ind) ;
+
+	return numToVar.at(ind) ;
 }
 
 int VarTable::getVarIndex (std::string varName)  {
-
-	std::vector<std::string>::iterator it;
-	it = std::find (varTable.begin(), varTable.end(), varName);
-
-	if (it != varTable.end())	// found
-		return (int) (it - varTable.begin()) ;
-
-	else			// not found
-		return -1 ;
+	int ret;
+	try
+	{
+		 ret = varToNum.at(varName);
+	}
+	catch (const std::out_of_range& oor) {
+		return -1;
+	}
+	return ret;
 }
 
 std::vector<std::string> VarTable::getTable() {
-    return varTable;
+	return numToVar;
 }
