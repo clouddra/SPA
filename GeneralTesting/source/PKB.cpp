@@ -905,10 +905,9 @@ std::vector<int> PKB::buildCfg(int stmtListAst, int startCFG) {
 	return toReturn;
 }
 
-std::vector<int> PKB::getAffectsStart(int start, std::vector<int> endVec)
+std::vector<int> PKB::getAffectsStart(int start)
 {
 	std::vector<int> toReturn;
-	std::unordered_set<int> endSet(endVec.begin(), endVec.end());
 
 	// Check if start is an assignment statement
 	if (stmtNodeTable.getType(start) != Node::assignNode)
@@ -940,8 +939,8 @@ std::vector<int> PKB::getAffectsStart(int start, std::vector<int> endVec)
 			int nodeType = stmtNodeTable.getType(currStmt);
 			if (nodeType == Node::assignNode)
 			{
-				// currStmt uses "var" and is part of the given endSet
-				if (usesTable.isUses(currStmt, var) && endSet.count(currStmt) > 0)
+				// currStmt uses "var"
+				if (usesTable.isUses(currStmt, var))
 					toReturn.push_back(currStmt);
 
 				// currStmt did not modify "var"
@@ -982,10 +981,11 @@ std::vector<int> PKB::getAffectsStart(int start, std::vector<int> endVec)
 	return toReturn;
 }
 
-std::vector<int> PKB::getAffectsEnd(std::vector<int> startVec, int end)
+std::vector<int> PKB::getAffectsEnd(int end)
 {
 	std::vector<int> toReturn;
-	std::unordered_set<int> startSet(startVec.begin(), startVec.end());
+    std::vector<int> temp = stmtNodeTable.getStmtWithType(Node::assignNode);
+    std::unordered_set<int> startSet(temp.begin(), temp.end());
 
 	// Check if end is an assignment statement
 	if (stmtNodeTable.getType(end) != Node::assignNode)
