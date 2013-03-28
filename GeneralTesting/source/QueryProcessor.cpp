@@ -225,14 +225,18 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para1IsPlaceho
             }
             else {
                 std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
-                std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
+                std::vector<int> para1ValInt;
                 std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
-                std::vector<int> para2ValInt = stringVecToIntVec(para2ValString);
+                std::vector<int> para2ValInt;
                 bool isPara1;
-                if (para1ValString.size() < para2ValString.size())
+                if (para1ValString.size() < para2ValString.size()) {
                     isPara1 = true;
-                else
+					para1ValInt = stringVecToIntVec(para1ValString);
+				}
+                else {
                     isPara1 = false;
+					para2ValInt = stringVecToIntVec(para2ValString);
+				}
 
                 std::vector<std::vector<std::string>> toStoreTuple;
                 if (isPara1) {
@@ -357,14 +361,18 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para1IsPlaceho
             }
             else {
                 std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
-                std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
+                std::vector<int> para1ValInt;
                 std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
-                std::vector<int> para2ValInt = stringVecToIntVec(para2ValString);
+                std::vector<int> para2ValInt;
                 bool isPara1;
-                if (para1ValString.size() < para2ValString.size())
+                if (para1ValString.size() < para2ValString.size()) {
                     isPara1 = true;
-                else
+					para1ValInt = stringVecToIntVec(para1ValString);
+				}
+                else {
                     isPara1 = false;
+					para2ValInt = stringVecToIntVec(para2ValString);
+				}
 
                 std::vector<std::vector<std::string>> toStoreTuple;
                 if (isPara1) {
@@ -502,14 +510,18 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para1IsPlacehol
             }
             else {
                 std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
-                std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
+                std::vector<int> para1ValInt;
                 std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
-                std::vector<int> para2ValInt = stringVecToIntVec(para2ValString);
+                std::vector<int> para2ValInt;
                 bool isPara1;
-                if (para1ValString.size() < para2ValString.size())
+                if (para1ValString.size() < para2ValString.size()) {
                     isPara1 = true;
-                else
+					para1ValInt = stringVecToIntVec(para1ValString);
+				}
+                else {
                     isPara1 = false;
+					para2ValInt = stringVecToIntVec(para2ValString);
+				}
 
                 std::vector<std::vector<std::string>> toStoreTuple;
                 if (isPara1) {
@@ -634,14 +646,18 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para1IsPlacehol
             }
             else {
                 std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
-                std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
+                std::vector<int> para1ValInt;
                 std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
-                std::vector<int> para2ValInt = stringVecToIntVec(para2ValString);
+                std::vector<int> para2ValInt;
                 bool isPara1;
-                if (para1ValString.size() < para2ValString.size())
+                if (para1ValString.size() < para2ValString.size()) {
                     isPara1 = true;
-                else
+					para1ValInt = stringVecToIntVec(para1ValString);
+				}
+                else {
                     isPara1 = false;
+					para2ValInt = stringVecToIntVec(para2ValString);
+				}
 
                 std::vector<std::vector<std::string>> toStoreTuple;
                 if (isPara1) {
@@ -778,14 +794,18 @@ int QueryProcessor::evaluateNext(bool T, bool para1IsNum, bool para1IsPlaceholde
             }
             else {
                 std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
-                std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
+                std::vector<int> para1ValInt;
                 std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
-                std::vector<int> para2ValInt = stringVecToIntVec(para2ValString);
+                std::vector<int> para2ValInt;
                 bool isPara1;
-                if (para1ValString.size() < para2ValString.size())
+                if (para1ValString.size() < para2ValString.size()) {
                     isPara1 = true;
-                else
+					para1ValInt = stringVecToIntVec(para1ValString);
+				}
+                else {
                     isPara1 = false;
+					para2ValInt = stringVecToIntVec(para2ValString);
+				}
 
                 std::vector<std::vector<std::string>> toStoreTuple;
                 if (isPara1) {
@@ -910,14 +930,18 @@ int QueryProcessor::evaluateNext(bool T, bool para1IsNum, bool para1IsPlaceholde
             }
             else {
                 std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
-                std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
+                std::vector<int> para1ValInt;
                 std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
-                std::vector<int> para2ValInt = stringVecToIntVec(para2ValString);
+                std::vector<int> para2ValInt;
                 bool isPara1;
-                if (para1ValString.size() < para2ValString.size())
+                if (para1ValString.size() < para2ValString.size()) {
                     isPara1 = true;
-                else
+					para1ValInt = stringVecToIntVec(para1ValString);
+				}
+                else {
                     isPara1 = false;
+					para2ValInt = stringVecToIntVec(para2ValString);
+				}
 
                 std::vector<std::vector<std::string>> toStoreTuple;
                 if (isPara1) {
@@ -1077,14 +1101,18 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
             // Affects(a1, a2)
             else {
                 std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
-                std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
+                std::vector<int> para1ValInt;
                 std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
-                std::vector<int> para2ValInt = stringVecToIntVec(para2ValString);
+                std::vector<int> para2ValInt;
                 bool isPara1;
-                if (para1ValString.size() < para2ValString.size())
+                if (para1ValString.size() < para2ValString.size()) {
                     isPara1 = true;
-                else
+					para1ValInt = stringVecToIntVec(para1ValString);
+				}
+                else {
                     isPara1 = false;
+					para2ValInt = stringVecToIntVec(para2ValString);
+				}
 
                 std::vector<std::vector<std::string>> toStoreTuple;
                 if (isPara1) {
@@ -1220,14 +1248,18 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
             // Affects*(a1, a2)
             else {
                 std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
-                std::vector<int> para1ValInt = stringVecToIntVec(para1ValString);
+                std::vector<int> para1ValInt;
                 std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
-                std::vector<int> para2ValInt = stringVecToIntVec(para2ValString);
+                std::vector<int> para2ValInt;
                 bool isPara1;
-                if (para1ValString.size() < para2ValString.size())
+                if (para1ValString.size() < para2ValString.size()) {
                     isPara1 = true;
-                else
+					para1ValInt = stringVecToIntVec(para1ValString);
+				}
+                else {
                     isPara1 = false;
+					para2ValInt = stringVecToIntVec(para2ValString);
+				}
 
                 std::vector<std::vector<std::string>> toStoreTuple;
                 if (isPara1) {
@@ -2152,6 +2184,7 @@ void QueryProcessor::processQuery(PKB pkb) {
     std::unordered_set<int> queryChoices;
     // Evaluating clauses
     for (int i = 0; i < (int)queryOrder.size(); i++) {
+		// Comment out when turning off dynamic optimization
         if (i == 2) 
             optiGraph.setWeight(resultStore.getVVVector());
         
@@ -2163,6 +2196,8 @@ void QueryProcessor::processQuery(PKB pkb) {
             } */
 
             int nextQuery;
+
+			// To off dynamic optimization, change to if(true)
             if (i != 2) {
                 nextQuery = queryOrder[i].back();
                 queryOrder[i].pop_back();
