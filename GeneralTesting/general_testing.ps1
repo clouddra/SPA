@@ -13,6 +13,8 @@ $exe_autoTester = "Debug\AutoTester.exe";
 $exe_autoTester1 = "Debug\AutoTester.exe";
 $exe_autoTester2 = "Debug\AutoTester.exe";
 $exe_autoTester3 = "Debug\AutoTester.exe";
+$exe_autoTester4 = "Debug\AutoTester.exe";
+$exe_autoTester5 = "Debug\AutoTester.exe";
 
 #output filenames
 $out_cppunit = $cpp_relative_path +"cppunit.out";
@@ -21,6 +23,8 @@ $out_autoTester = $autoTester_relative_path +"autoTester.out";
 $out_autoTester1 = $autoTester_relative_path +"autoTester1.out";
 $out_autoTester2 = $autoTester_relative_path +"autoTester2.out";
 $out_autoTester3 = $autoTester_relative_path +"autoTester3.out";
+$out_autoTester4 = $autoTester_relative_path +"autoTester4.out";
+$out_autoTester5 = $autoTester_relative_path +"autoTester5.out";
 
 #command line arguments for each executable
 $args_cppunit = @(" ");
@@ -29,7 +33,8 @@ $args_autoTester = @($autoTester_relative_path + "tests\simple00.txt " + $autoTe
 $args_autoTester1 = @($autoTester_relative_path + "tests\simple01.txt " + $autoTester_relative_path + "tests\query01.txt " + $autoTester_relative_path + "tests\out01.xml");
 $args_autoTester2 = @($autoTester_relative_path + "tests\simple02.txt " + $autoTester_relative_path + "tests\query02.txt " + $autoTester_relative_path + "tests\out02.xml");
 $args_autoTester3 = @($autoTester_relative_path + "tests\simple03.txt " + $autoTester_relative_path + "tests\query03.txt " + $autoTester_relative_path + "tests\out03.xml");
-#$args_autoTester3 = @($autoTester_relative_path + "tests\simple03.txt " + $autoTester_relative_path + "tests\query03.txt " + $autoTester_relative_path + "tests\out03.xml");
+$args_autoTester4 = @($autoTester_relative_path + "tests\simple04.txt " + $autoTester_relative_path + "tests\query04.txt " + $autoTester_relative_path + "tests\out04.xml");
+$args_autoTester5 = @($autoTester_relative_path + "tests\simple05.txt " + $autoTester_relative_path + "tests\query05.txt " + $autoTester_relative_path + "tests\out05.xml");
 
 #change directory to the $solution_path
 $current_path = get-location;
@@ -40,7 +45,7 @@ write-output $p;
 
 #tests that will be run
 #add/remove items if you want to do only unit testing or autoTester testing
-$all_testing = @("cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3");#, "autoTester3");
+$all_testing = @("cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5");
 
 foreach ($testing in $all_testing)
 {

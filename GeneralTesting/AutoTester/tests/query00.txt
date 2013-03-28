@@ -1,4 +1,4 @@
-31
+39
 cat: All Category
 1 - Follows, Modifies ::
 stmt s1, s2; 
@@ -154,4 +154,49 @@ Select s1 such that Follows(s1, s2) and Modifies(s2, "x")
 stmt s1, s2, s3; 
 Select s1 such that Follows(s1, s2) and Follows(s2, s3)
 1, 2, 3, 4, 5, 8
+5000
+32 - Tuple ::
+procedure p; constant c;
+Select <p,c>
+Bill 1, Bill 4, Bill 5, Bill 10, Bill 12
+5000
+33 - Affects ::
+assign a;
+Select a such that Affects(1,a)
+2, 3, 5, 6, 10, 12, 14
+5000
+34 - AffectsStar ::
+assign a;
+Select a such that Affects*(1,a)
+2, 3, 4, 5, 6, 8, 10, 11, 12, 13, 14
+5000
+35 - AffectsStar ::
+assign a;
+Select a such that Affects*(2,a)
+3, 4, 5, 6, 8, 10, 11, 12, 13, 14
+5000
+36 - AffectsStar ::
+assign a;
+Select a such that Affects*(3,a)
+4, 5, 6, 8, 10, 11, 12, 13, 14
+5000
+37 - Affects ::
+
+Select BOOLEAN such that Affects(4,6)
+false
+5000
+38 - AffectsStar ::
+
+Select BOOLEAN such that Affects*(4,6)
+true
+5000
+39 - AffectsStar ::
+assign a;
+Select a such that Affects*(10, a)
+8, 10, 11, 12, 13, 14
+5000
+40 - AffectsStar ::
+assign a;
+Select a such that Affects*(a, 4)
+1, 2, 3
 5000

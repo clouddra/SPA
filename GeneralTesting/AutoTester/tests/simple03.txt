@@ -1,13 +1,13 @@
 procedure GambleRumble {
 x = 2;
 z = 3;
-i = 5;
+h = 5 - h;
 }
 
 procedure Dogfight {
 y = 99;
 while NobodyReason {
-	h = 1;
+	h = 1 * g;
 	z = h + x;
 	call GambleRumble;
 	y = y + h * 8;
@@ -27,8 +27,9 @@ else {
 	while Motsu {
 		x = x + 2 + y - t * 52;
 		s = f - x; } }
-		call Dogfight;
+call Dogfight;
 t = kimura;
+best = x;
 }
 
 procedure SystematicFantasy {
@@ -39,4 +40,10 @@ call BlazinBeat;
 
 procedure BlazinBeat {
 call GambleRumble;
+u = f -x;
+s = 3;
+if b then{
+	call GHETTOBLASTER; }
+else {
+	b = 25; }
 }

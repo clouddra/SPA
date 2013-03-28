@@ -1,4 +1,4 @@
-16
+17
 cat: All Category
 1 - Stmt ::
 stmt s;
@@ -79,4 +79,9 @@ Select w such that Parent(w, if2)
 while w; if if1, if2;
 Select w such that Parent(if1, w) such that Parent(w, if2)
 12
+5000
+17 - NextStar, ReturnBoolean ::
+
+Select BOOLEAN such that Next*(1, 3)
+true
 5000
