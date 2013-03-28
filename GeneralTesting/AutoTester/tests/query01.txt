@@ -80,3 +80,13 @@ assign a; while w;
 Select w such that Follows(16, 19) such that Parent*(4, a)
 4, 6, 7, 9, 12, 14, 15, 16, 17, 19, 20, 21
 5000
+17 - Parent, With ::
+stmt s, s1;
+Select s such that Parent (s, s1) with s1.stmt#= 5
+4
+5000
+17 - ParentStar, With ::
+stmt s, s1;
+Select s such that Parent* (s, s1) with s1.stmt#= 8
+7, 6, 4
+5000

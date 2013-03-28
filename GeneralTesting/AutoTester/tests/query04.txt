@@ -1,7 +1,27 @@
-1
+5
 cat: All Category
-1 - Stmt ::
-stmt s;
-Select s
-1, 2, 3, 4
+1 - Parent ::
+stmt s, s1;
+Select s such that Parent (s, s1) with s1.stmt#= 3
+none
+5000
+2 - Parent ::
+stmt s, s1;
+Select s such that Parent (s, s1) with s1.stmt#= 11
+9
+5000
+3 - Parent ::
+stmt s, s1;
+Select s such that Parent (s, s1) with s1.stmt#= 13
+11
+5000
+4 - Parent ::
+stmt s, s1;
+Select s such that Parent (s, s1) with s1.stmt#= 21
+19
+5000
+5 - Parent ::
+stmt s, s1;
+Select s such that Parent (s, 3)
+none
 5000
