@@ -139,7 +139,7 @@ std::vector<std::vector<std::string>> TupleTable::getValuesFor(std::vector<std::
 
     for (int i = 0; i < (int)vars.size(); i++) {
         found = false;
-        for (int j = 0; i < (int)variables.size(); i++) {
+        for (int j = 0; j < (int)variables.size(); j++) {
             if (vars[i].compare(variables[j]) == 0) {
                 match.push_back(j);
                 found = true;
