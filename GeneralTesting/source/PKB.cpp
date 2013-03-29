@@ -1359,9 +1359,9 @@ void PKB::startBuildCfgBip() {
 		{
 			// Insert an empty CFG Node and let buildCFG add in the first statement
 			// add dummy end node
-			procTable.getProc(astNode.getValue()).setCFGStart(start);
+			procTable.setCFGStart(astNode.getValue(), start);
 			end = cfgBip.insertCFGNode(-1, -1, buildCfgBip(astNode.getChildren()[0], -1, bip));			
-			procTable.getProc(astNode.getValue()).setCFGEnd(end);
+			procTable.setCFGEnd(astNode.getValue(), end);
 			
 			// start of next procedure
 			start = end+1; 

@@ -64,22 +64,15 @@ bool CFGBip::isNext(int stmt1, int node1, int stmt2, ProcTable procT){
 std::vector<int> CFGBip::getNextT(int stmt1, int nodeIndex, ProcTable procT){
 	std::unordered_set<int> stmtList;
 	std::vector<bool> visited(cfg.size(), false);	//initialising cfg
-	std::queue<int> nodesToVisit;
 	int nextNode;
 
-	// bip must include 1st statement
-	if (stmt1==-1)
-	{
-		stmtList.emplace(stmt1);
-	}
 
 	if (isBip(nodeIndex)){
-		std::vector<int> bipStmtList = getNextT(-1, procT.getProc(getBip(nodeIndex)).getCFGStart(), procT);
-		for (int i=0; i<(int)bipStmtList.size(); i++) {
-			stmtList.emplace(bipStmtList[i]);
-		}
+		int test = procT.getProc(getBip(nodeIndex)).getCFGStart();
+		getNextT(procT.getProc(getBip(nodeIndex)).getCFGStart(), stmtList, visited, procT);
+		
 	}
-
+	
 	// push statements of current node
 	for (int i=stmt1+1; i<=cfg[nodeIndex].getEnd(); i++)
 		stmtList.emplace(i);
@@ -88,45 +81,43 @@ std::vector<int> CFGBip::getNextT(int stmt1, int nodeIndex, ProcTable procT){
 	// push next nodes to nodesToVisit
 	for (int i=0; i<(int)cfg[nodeIndex].getNext().size(); i++) {
 		nextNode = cfg[nodeIndex].getNext().at(i);
-		nodesToVisit.push(nextNode);
+		//nodesToVisit.push(nextNode);
+		getNextT(nextNode, stmtList, visited, procT);
 	}
+	
 
-	while (!nodesToVisit.empty())
-	{
-		nextNode = nodesToVisit.front() ;
-		nodesToVisit.pop();
-		if (isBip(nodeIndex)){
-			std::vector<int> bipStmtList = getNextT(-1, procT.getProc(getBip(nodeIndex)).getCFGStart(), procT);
-			for (int i=0; i<(int)bipStmtList.size(); i++) {
-				stmtList.emplace(bipStmtList[i]);
-			}
-		}
-		if (visited[nextNode] == false)
-		{
-			visited[nextNode]=true;
-			// add statements to list
-			stmtList = fillStmtInNode(stmtList, cfg[nextNode]);
-
-			// get next nodes to visit
-			for (int i=0; i<(int)cfg[nextNode].getNext().size(); i++) {
-				nodesToVisit.push(cfg[nextNode].getNext().at(i));
-			}
-		}
-
-		else {
-			//stmtList = fillStmtInNode(stmtList, cfg[nextNode]);
-		}
-	}
 	stmtList.erase(-1);
 	std::vector<int> results(stmtList.cbegin(), stmtList.cend());
 	return results;
 }
 
-std::unordered_set<int> CFGBip::fillStmtInNode(std::unordered_set<int> stmtList, CFGBipNode nextNode){
-	for (int i=nextNode.getStart(); i<=nextNode.getEnd(); i++)
+
+void CFGBip::getNextT(int nodeIndex, std::unordered_set<int> &stmtList, std::vector<bool> &visited, ProcTable procT){
+
+	int nextNode;
+	CFGBipNode current = cfg[nodeIndex];
+
+	if (visited[nodeIndex] == true || cfg[nodeIndex].getStart()==-1)
+		return;
+
+	visited[nodeIndex] = true;
+	fillStmtInNode(stmtList, current);
+	
+	if (isBip(nodeIndex)){
+		int test = procT.getProc(getBip(nodeIndex)).getCFGStart();
+		getNextT(procT.getProc(getBip(nodeIndex)).getCFGStart(), stmtList, visited, procT);
+	}
+	for (int i=0; i<(int)cfg[nodeIndex].getNext().size(); i++) {
+		nextNode = current.getNext().at(i);
+		getNextT(nextNode, stmtList, visited, procT);
+	}
+
+}
+
+void CFGBip::fillStmtInNode(std::unordered_set<int> &stmtList, CFGBipNode node){
+	for (int i=node.getStart(); i<=node.getEnd(); i++)
 		stmtList.emplace(i);
 
-	return stmtList;
 }
 
 std::vector<int> CFGBip::getPrev(int stmt2, int nodeIndex, ProcTable procT){

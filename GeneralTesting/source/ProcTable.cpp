@@ -70,3 +70,11 @@ std::vector<std::string> ProcTable::getAllProc() {
 Procedure ProcTable::getProc(int ind){
 	return numToProc.at(ind);
 }
+
+void ProcTable::setCFGStart(int ind, int start){
+	numToProc.at(ind).setCFGStart(start);
+}
+
+void ProcTable::setCFGEnd(int ind, int end){
+	numToProc.at(ind).setCFGEnd(end);
+}

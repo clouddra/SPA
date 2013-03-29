@@ -28,12 +28,13 @@ private:
 	 */
 	std::vector<CFGBipNode> cfg;
 	std::map<int,int> bip;
-	std::unordered_set<int> fillStmtInNode(std::unordered_set<int> stmtList, CFGBipNode nextNode);
+	void fillStmtInNode(std::unordered_set<int> &stmtList, CFGBipNode nextNode);
 
 	public:
 
 	std::vector<int> getNext(int stmt1, int nodeIndex, ProcTable procT);
 	std::vector<int> getNextT(int stmt1, int nodeIndex, ProcTable procT);
+	void getNextT(int nodeIndex, std::unordered_set<int> &stmtList, std::vector<bool> &visited, ProcTable procT);
 	std::vector<int> getPrev(int stmt2, int nodeIndex, ProcTable procT);
     std::vector<int> getPrevT(int stmt2, int nodeIndex, ProcTable procT);
 	bool isNext(int stmt1, int node1, int stmt2, ProcTable procT);

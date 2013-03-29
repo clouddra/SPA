@@ -31,4 +31,6 @@ public:
 	int getProcLastln(int ind);
 	Procedure getProc(int ind);
     std::vector<std::string> getAllProc();
+	void setCFGStart(int ind, int start);
+	void setCFGEnd(int ind, int end);
 };
