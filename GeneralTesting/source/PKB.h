@@ -148,6 +148,13 @@ public:
     std::vector<int> getPrev();
     std::vector<int> getPrevT(int stmt);
     bool isNext(int stmt1, int stmt2);
+    std::vector<int> getNextBip(int stmt);
+    std::vector<int> getNextBip();
+	std::vector<int> getNextBipT(int stmt);
+	std::vector<int> getPrevBip(int stmt);
+    std::vector<int> getPrevBip();
+    std::vector<int> getPrevBipT(int stmt);
+    bool isNextBip(int stmt1, int stmt2);
     std::vector<int> getStmtWithType(int nodeType);
     std::vector<std::string> getVarTable();
     int getNumStmts();

@@ -35,6 +35,7 @@ private:
 	std::vector<int> getNext(int stmt1, int nodeIndex, ProcTable procT);
 	std::vector<int> getNextT(int stmt1, int nodeIndex, ProcTable procT);
 	std::vector<int> getPrev(int stmt2, int nodeIndex, ProcTable procT);
+    std::vector<int> getPrevT(int stmt2, int nodeIndex, ProcTable procT);
 	bool isNext(int stmt1, int node1, int stmt2, ProcTable procT);
 	void addStmt(int nodeIndex, int stmtNum);
 	void addNext(int nodeIndex, int nextIndex);
