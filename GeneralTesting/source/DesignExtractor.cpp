@@ -37,13 +37,13 @@ void DesignExtractor::populateTables()
 			for(int j=0;j< (int)children.size();j++)
 			{
 				_cont->insertContains(i, children[j]);
+				for(int k=j+1;k<(int)children.size();k++)
+					_st->insertSibling(children[j], children[k]);
 				if( j == children.size()-1) 
-					break;
-				int rightSibling = _ast.getNode(children[j]).getRight();
-				_st->insertSibling(children[j], rightSibling);
+					break;				
 				if(_ast.getNode(i).getNodeType()==Node::stmtLstNode)
 				{
-					insertFollows(children[j], rightSibling);//children have the follows relationship
+					insertFollows(children[j], children[j+1]);//children have the follows relationship
 				}
 			}
 		}

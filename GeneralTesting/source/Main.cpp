@@ -64,9 +64,36 @@ int main() {
     de.populateTables();
 	*/
 
+
 	pkb = controller.parseSource(storage);
 	pkb.startBuildCfgBip();
 	
+	/*
+	std::cout << "Sibling table" << std::endl;
+ 
+	for(int i=0;i<pkb.getSiblingTable()->getSize();i++)
+	{
+		std::vector <int> temp = pkb.getSiblingTable()->getSiblings(i);
+		for(int j=0;j<temp.size();j++)
+		{
+		std::cout << temp.at(j)<<" ";
+		}
+		std::cout<<std::endl;
+	}	
+
+	std::cout << "Follows table" << std::endl;
+ 
+	for(int i=0;i<pkb.getSiblingTable()->getSize();i++)
+	{
+		std::vector <int> temp = pkb.getFollowsTable()->getFollows(i);
+		for(int j=0;j<temp.size();j++)
+		{
+		std::cout << temp.at(j)<<" ";
+		}
+		std::cout<<std::endl;
+	}
+	*/
+
     // pql.txt stores currently working queries, pqlShort.txt stores queries in development (may not work)
     char const* pqlFile = "..\\sample_input\\pqlShort.txt";
     std::ifstream in2(pqlFile, std::ios_base::in);
