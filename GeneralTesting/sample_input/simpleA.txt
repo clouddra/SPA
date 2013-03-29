@@ -1,0 +1,17 @@
+procedure Bill {
+z = 10;
+x = z + 5;
+y = x * z + 4;
+d = x + y * 12;    
+d = d + z + x;
+e = d + z * x;
+while i {
+	e = x - y;
+	if z then {
+		y = y + z;
+		i = y + 1; }
+	else {
+		x = y + z; 
+		i = i - 1; }
+	x = y + z; }
+}
