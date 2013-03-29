@@ -148,6 +148,13 @@ public:
     std::vector<int> getPrev();
     std::vector<int> getPrevT(int stmt);
     bool isNext(int stmt1, int stmt2);
+    std::vector<int> getNextBip(int stmt);
+    std::vector<int> getNextBip();
+	std::vector<int> getNextBipT(int stmt);
+	std::vector<int> getPrevBip(int stmt);
+    std::vector<int> getPrevBip();
+    std::vector<int> getPrevBipT(int stmt);
+    bool isNextBip(int stmt1, int stmt2);
     std::vector<int> getStmtWithType(int nodeType);
     std::vector<std::string> getVarTable();
     int getNumStmts();
@@ -166,10 +173,11 @@ public:
 	//void setBip(std::vector<std::pair<int,int>> bip);
 	std::vector<int> getAffectsStart(int start); 
 	std::vector<int> getAffectsEnd(int end);
-	std::vector<int> depthUp(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::unordered_set<int> startSet);
+	std::vector<int> depthUp(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited);
 	std::vector<int> getAffectsTStart(int start);
 	std::vector<int> getAffectsTEnd(int end);
 	std::vector<int> depthUpT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::unordered_set<int> ignoreSet);
+	std::vector<int> depthDownT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::unordered_set<int> ignoreSet);
 
 	void printModifiesTable();
 	AST PKB::getAST();

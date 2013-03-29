@@ -38,7 +38,7 @@ std::vector<std::string> splitQuery(std::string input) {
 int main() {
 	SPAController controller = SPAController() ;
 	std::list<std::string> result;
-    char const* simpleFile = "..\\sample_input\\simple00.txt";
+    char const* simpleFile = "..\\sample_input\\simpleA.txt";
     std::ifstream in(simpleFile, std::ios_base::in);
 
     if (!in)
@@ -95,7 +95,7 @@ int main() {
 	*/
 
     // pql.txt stores currently working queries, pqlShort.txt stores queries in development (may not work)
-    char const* pqlFile = "..\\sample_input\\pqlShort.txt";
+    char const* pqlFile = "..\\sample_input\\pqlShortA.txt";
     std::ifstream in2(pqlFile, std::ios_base::in);
 
     if (!in2)

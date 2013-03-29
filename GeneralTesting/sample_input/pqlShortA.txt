@@ -1,0 +1,2 @@
+assign a;
+Select a such that Affects*(1,a)

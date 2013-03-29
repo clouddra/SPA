@@ -239,5 +239,11 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="ClassDiagram1.cd" />
+    <None Include="..\sample_input\pqlShortA.txt">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\sample_input\simpleA.txt">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

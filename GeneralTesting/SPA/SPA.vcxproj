@@ -86,8 +86,10 @@
   <ItemGroup>
     <None Include="..\sample_input\pql.txt" />
     <None Include="..\sample_input\pqlShort.txt" />
+    <None Include="..\sample_input\pqlShortA.txt" />
     <None Include="..\sample_input\simple.txt" />
     <None Include="..\sample_input\simple00.txt" />
+    <None Include="..\sample_input\simpleA.txt" />
     <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
