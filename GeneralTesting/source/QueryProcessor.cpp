@@ -40,6 +40,9 @@ QueryProcessor::QueryProcessor()
 {
 	queryTree = QueryTree();
 	declarationTable = DeclarationTable();
+    optiGraphs.push_back(QueryGraph());
+    optiGraphs.push_back(QueryGraph());
+    optiGraphs.push_back(QueryGraph());
 }
 
 int QueryProcessor::insertNode(std::string _name, std::string _value, int _parent)
@@ -959,6 +962,290 @@ int QueryProcessor::evaluateNext(bool T, bool para1IsNum, bool para1IsPlaceholde
                 else {
                     for (int i = 0; i < (int)para2ValInt.size(); i++) {
                         temp = pkb.getPrevT(para2ValInt[i]);
+                        toStore = intVecToStringVec(temp);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(toStore[j]);
+                            holder.push_back(para2ValString[i]);
+                            toStoreTuple.push_back(holder);
+                        }
+                    }
+                }
+                int ret = resultStore.insertResult(para1, para2, toStoreTuple);
+                if (ret == -1)
+                    return -1;
+            }
+        }
+    }
+    return 0;
+}
+
+int QueryProcessor::evaluateNextBip(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB pkb) {
+    std::vector<int> temp;
+    std::vector<std::string> toStore;
+
+    // Inserting valid values based on parameter type (if variable)
+    int ret;
+    if (!para1IsNum && !para1IsPlaceholder) {
+        ret = evaluateType(pkb, para1);
+        if (ret == -1) 
+            return -1;
+    }
+    if (!para2IsNum && !para2IsPlaceholder) {
+        int ret2 = evaluateType(pkb, para2);
+        if (ret2 == -1)
+            return -1;
+    }
+
+    if (para1IsPlaceholder && para2IsPlaceholder) {
+        if (pkb.getNumStmts() > 1)
+            return 0;
+        else
+            return -1;
+    }
+    // Inserting valid values based on PKB tables 
+    if (!T) {
+        if (para1IsNum) {
+            if (para2IsNum) {
+                if (!pkb.isNextBip(para1Num, para2Num)) {  // Next(num1, num2) is false, whole query is false
+                    // std::cout << "Next(" << para1 << "," << para2 << ") is false" << std::endl;
+                    return -1;
+                }
+                // Next(num1, num2) is true, do nothing
+            }
+            else if (para2IsPlaceholder) {
+                temp = pkb.getNextBip(para1Num);
+                if (temp.size() > 0)
+                    return 0;
+                else
+                    return -1;
+            }
+            else {
+                temp = pkb.getNextBip(para1Num);
+                toStore = intVecToStringVec(temp);
+                int ret = resultStore.insertResult(para2, toStore);
+                if (ret == -1) {  // Exit cond
+                    return -1;
+                }
+            }
+        }
+        else if (para2IsNum) {
+            if (para1IsPlaceholder) {
+                temp = pkb.getPrevBip(para2Num);
+                if (temp.size() > 0)
+                    return 0;
+                else
+                    return -1;
+            }
+            temp = pkb.getPrevBip(para2Num);
+            toStore = intVecToStringVec(temp);
+            int ret = resultStore.insertResult(para1, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        else if (para1IsPlaceholder) {
+            temp = pkb.getNextBip();
+            toStore = intVecToStringVec(temp);
+            int ret = resultStore.insertResult(para2, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        else if (para2IsPlaceholder) {
+            temp = pkb.getPrevBip();
+            toStore = intVecToStringVec(temp);
+            int ret = resultStore.insertResult(para1, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        else {
+            // Double variable e.g NextBip(s1, s2)
+            if (para1.compare(para2) == 0) {
+                // NextBip (s1, s1)
+                std::vector<int> para1Val = stringVecToIntVec(resultStore.getValuesFor(para1));
+                if (para1Val.size() == 0) {
+                    return -1;
+                }
+                for (int i = 0; i < (int)para1Val.size(); i++) {
+                    if (pkb.isNextBip(para1Val[i], para1Val[i])) {
+                        temp.push_back(i);
+                    }
+                }
+                toStore = intVecToStringVec(temp);
+                int ret = resultStore.insertResult(para1, toStore);
+                if (ret == -1) {  // Exit cond
+                    return -1;
+                }
+            }
+            else {
+                std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
+                std::vector<int> para1ValInt;
+                std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
+                std::vector<int> para2ValInt;
+                bool isPara1;
+                if (para1ValString.size() < para2ValString.size()) {
+                    isPara1 = true;
+					para1ValInt = stringVecToIntVec(para1ValString);
+				}
+                else {
+                    isPara1 = false;
+					para2ValInt = stringVecToIntVec(para2ValString);
+				}
+
+                std::vector<std::vector<std::string>> toStoreTuple;
+                if (isPara1) {
+                    for (int i = 0; i < (int)para1ValInt.size(); i++) {
+                        temp = pkb.getNextBip(para1ValInt[i]);
+                        toStore = intVecToStringVec(temp);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(para1ValString[i]);
+                            holder.push_back(toStore[j]); 
+                            toStoreTuple.push_back(holder);
+                        }
+                    }
+                }
+                else {
+                    for (int i = 0; i < (int)para2ValInt.size(); i++) {
+                        temp = pkb.getPrevBip(para2ValInt[i]);
+                        toStore = intVecToStringVec(temp);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(toStore[j]); 
+                            holder.push_back(para2ValString[i]);
+                            toStoreTuple.push_back(holder);
+                        }
+                    }
+                }
+                int ret = resultStore.insertResult(para1, para2, toStoreTuple);
+                if (ret == -1)
+                    return -1;
+            }
+        }
+    }
+    else {
+        if (para1IsNum) {
+            if (para2IsNum) {
+                bool found = false;
+                temp = pkb.getPrevBipT(para2Num);
+                for (int i = 0; i < (int)temp.size(); i++) {
+                    if (para1Num == temp[i]) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {  // Next*(num1, num2) is false, whole query is false
+                    // std::cout << "Next*(" << para1 << "," << para2 << ") is false" << std::endl;
+                    return -1;
+                }
+                // Next*(num1, num2) is true, do nothing
+            }
+            else if (para2IsPlaceholder) {
+                temp = pkb.getNextBip(para1Num);
+                if (temp.size() > 0)
+                    return 0;
+                else
+                    return -1;
+            }
+            else {
+                temp = pkb.getNextBipT(para1Num);
+                toStore = intVecToStringVec(temp);
+                int ret = resultStore.insertResult(para2, toStore);
+                if (ret == -1) {  // Exit cond
+                    return -1;
+                }
+            }
+        }
+        else if (para2IsNum) {
+            if (para1IsPlaceholder) {
+                temp = pkb.getPrevBip(para2Num);
+                if (temp.size() > 0)
+                    return 0;
+                else
+                    return -1;
+            }
+            temp = pkb.getPrevBipT(para2Num);
+            toStore = intVecToStringVec(temp);
+            int ret = resultStore.insertResult(para1, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        else if (para1IsPlaceholder) {
+            temp = pkb.getNextBip();
+            toStore = intVecToStringVec(temp);
+            int ret = resultStore.insertResult(para2, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        else if (para2IsPlaceholder) {
+            temp = pkb.getPrevBip();
+            toStore = intVecToStringVec(temp);
+            int ret = resultStore.insertResult(para1, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        else {
+            // Double variable e.g NextBip*(s1, s2)
+            if (para1.compare(para2) == 0) {
+                // NextBip* (s1, s1)
+                std::vector<int> para1Val = stringVecToIntVec(resultStore.getValuesFor(para1));
+                if (para1Val.size() == 0) {
+                    return -1;
+                }
+                for (int i = 0; i < (int)para1Val.size(); i++) {
+                    bool found = false;
+                    std::vector<int> temp2 = pkb.getNextBipT(para1Val[i]);
+                    for (int j = 0; j < (int)temp2.size(); j++) {
+                        if (para1Val[i] == temp2[j]) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found)
+                        temp.push_back(para1Val[i]);
+                }
+                toStore = intVecToStringVec(temp);
+                int ret = resultStore.insertResult(para1, toStore);
+                if (ret == -1) {  // Exit cond
+                    return -1;
+                }
+            }
+            else {
+                std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
+                std::vector<int> para1ValInt;
+                std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
+                std::vector<int> para2ValInt;
+                bool isPara1;
+                if (para1ValString.size() < para2ValString.size()) {
+                    isPara1 = true;
+					para1ValInt = stringVecToIntVec(para1ValString);
+				}
+                else {
+                    isPara1 = false;
+					para2ValInt = stringVecToIntVec(para2ValString);
+				}
+
+                std::vector<std::vector<std::string>> toStoreTuple;
+                if (isPara1) {
+                    for (int i = 0; i < (int)para1ValInt.size(); i++) {
+                        temp = pkb.getNextBipT(para1ValInt[i]);
+                        toStore = intVecToStringVec(temp);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(para1ValString[i]);
+                            holder.push_back(toStore[j]); 
+                            toStoreTuple.push_back(holder);
+                        }
+                    }
+                }
+                else {
+                    for (int i = 0; i < (int)para2ValInt.size(); i++) {
+                        temp = pkb.getPrevBipT(para2ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
                             std::vector<std::string> holder;
@@ -2088,13 +2375,15 @@ std::vector<std::vector<int>> QueryProcessor::optimizeQuery(std::vector<QueryNod
             else {
                 if (relation.getName().compare("affects") == 0 || relation.getName().compare("nextt") == 0) {
                     queryOrder[4].push_back(i);
+                    optiGraphs[1].insertQuery(para1, para2);
                 }
                 else if (relation.getName().compare("affectst") == 0) {
                     queryOrder[6].push_back(i);
+                    optiGraphs[2].insertQuery(para1, para2);
                 }
                 else {
                     queryOrder[2].push_back(i);
-                    optiGraph.insertQuery(para1, para2);
+                    optiGraphs[0].insertQuery(para1, para2);
                 }
             }
         }
@@ -2127,7 +2416,7 @@ std::vector<std::vector<int>> QueryProcessor::optimizeQuery(std::vector<QueryNod
             // 2 variables
             else {
                 queryOrder[2].push_back(i);
-                optiGraph.insertQuery(para1, para2);
+                optiGraphs[0].insertQuery(para1, para2);
             }
         }
 
@@ -2181,12 +2470,20 @@ void QueryProcessor::processQuery(PKB pkb) {
     if (queryOrder.size() == 0)
         return;
 
-    std::unordered_set<int> queryChoices;
     // Evaluating clauses
     for (int i = 0; i < (int)queryOrder.size(); i++) {
+        std::unordered_set<int> queryChoices;
+        int graphIndex;
 		// Comment out when turning off dynamic optimization
         if (i == 2) 
-            optiGraph.setWeight(resultStore.getVVVector());
+            graphIndex = 0;
+        else if (i == 4) 
+            graphIndex = 1;
+        else if (i == 6) 
+            graphIndex = 2;
+        if (i == 2 || i == 4 || i == 6)
+            optiGraphs[graphIndex].setWeight(resultStore.getVVVector());
+        // Dynamic optimization end
         
         while (queryOrder[i].size() > 0) {
             /*
@@ -2198,13 +2495,13 @@ void QueryProcessor::processQuery(PKB pkb) {
             int nextQuery;
 
 			// To off dynamic optimization, change to if(true)
-            if (i != 2) {
+            if (i != 2 && i != 4 && i != 6) {
                 nextQuery = queryOrder[i].back();
                 queryOrder[i].pop_back();
             }
             else {
                 if (queryChoices.size() == 0) {
-                    int ret = optiGraph.findMinWeight();
+                    int ret = optiGraphs[graphIndex].findMinWeight();
                     if (ret != -1)
                         queryChoices.insert(ret);
                     else    
@@ -2213,17 +2510,17 @@ void QueryProcessor::processQuery(PKB pkb) {
 
                 int min = *queryChoices.begin();
                 for (auto it = queryChoices.begin(); it != queryChoices.end(); ++it) {
-                    if (optiGraph.graph[*it].weight < optiGraph.graph[min].weight)
+                    if (optiGraphs[graphIndex].graph[*it].weight < optiGraphs[graphIndex].graph[min].weight)
                         min = *it;
                 }
                 nextQuery = queryOrder[i][min];
-                std::vector<int> connect = optiGraph.graph[min].connections;
+                std::vector<int> connect = optiGraphs[graphIndex].graph[min].connections;
                 for (int j = 0; j < (int)connect.size(); j++) {
-                    if (!optiGraph.graph[connect[j]].evaluated)
+                    if (!optiGraphs[graphIndex].graph[connect[j]].evaluated)
                         queryChoices.insert(connect[j]);
                 }
                 queryChoices.erase(min);
-                optiGraph.graph[min].evaluated = true;
+                optiGraphs[graphIndex].graph[min].evaluated = true;
             }
 
             currNode = tree[rootChildren[nextQuery]];
@@ -2442,6 +2739,34 @@ void QueryProcessor::processQuery(PKB pkb) {
                     else
                         return;
                 }
+                // nextBip query
+                else if (relation.getName().compare("nextbip") == 0) {
+                    if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                        
+                        if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
+                            int ret = evaluateNextBip(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                            if (ret == -1)
+                                return;
+                        }
+                        else
+                            return;
+                    }
+                    else
+                        return;
+                }
+                // nextBip* query
+                else if (relation.getName().compare("nextbipt") == 0) {
+                    if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                        
+                        if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
+                            int ret = evaluateNextBip(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                            if (ret == -1)
+                                return;
+                        }
+                        else
+                            return;
+                    }
+                    else
+                        return;
+                }
                 // affects query
                 else if (relation.getName().compare("affects") == 0) {
                     if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::assign_) {                        
@@ -2471,10 +2796,10 @@ void QueryProcessor::processQuery(PKB pkb) {
                         return;
                 }
 
-                if (i == 2) {
+                if (i == 2 || i == 4 || i == 6) {
                     for (auto it = queryChoices.begin(); it != queryChoices.end(); ++it) {
-                        optiGraph.graph[*it].setWeight(para1, resultStore.getValuesFor(para1).size());
-                        optiGraph.graph[*it].setWeight(para2, resultStore.getValuesFor(para2).size());
+                        optiGraphs[graphIndex].graph[*it].setWeight(para1, resultStore.getValuesFor(para1).size());
+                        optiGraphs[graphIndex].graph[*it].setWeight(para2, resultStore.getValuesFor(para2).size());
                     }
                 }
             }
@@ -2590,8 +2915,8 @@ void QueryProcessor::processQuery(PKB pkb) {
 
                 if (i == 2) {
                     for (auto it = queryChoices.begin(); it != queryChoices.end(); ++it) {
-                        optiGraph.graph[*it].setWeight(pattern, resultStore.getValuesFor(pattern).size());
-                        optiGraph.graph[*it].setWeight(var, resultStore.getValuesFor(var).size());
+                        optiGraphs[graphIndex].graph[*it].setWeight(pattern, resultStore.getValuesFor(pattern).size());
+                        optiGraphs[graphIndex].graph[*it].setWeight(var, resultStore.getValuesFor(var).size());
                     }
                 }
             }

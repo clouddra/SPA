@@ -122,7 +122,6 @@ std::vector<int> CFGBip::getNextT(int stmt1, int nodeIndex, ProcTable procT){
 	return results;
 }
 
-
 std::unordered_set<int> CFGBip::fillStmtInNode(std::unordered_set<int> stmtList, CFGBipNode nextNode){
 	for (int i=nextNode.getStart(); i<=nextNode.getEnd(); i++)
 		stmtList.emplace(i);
@@ -157,6 +156,11 @@ std::vector<int> CFGBip::getPrev(int stmt2, int nodeIndex, ProcTable procT){
 		return stmtList;
 	}
 
+}
+
+// Dummy, Yun Long please fill in
+std::vector<int> CFGBip::getPrevT(int stmt2, int nodeIndex, ProcTable procT) {
+    return std::vector<int>();
 }
 
 CFGBipNode CFGBip::getCFGNode(int nodeIndex){

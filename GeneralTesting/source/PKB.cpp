@@ -550,6 +550,60 @@ bool PKB::isNext(int stmt1, int stmt2) {
     return cfg.isNext(stmt1, stmtNodeTable.getCFG(stmt1), stmt2);
 }
 
+std::vector<int> PKB::getNextBip(int stmt) {
+    return cfgBip.getNext(stmt, stmtNodeTable.getCFGBip(stmt), procTable);
+}
+
+std::vector<int> PKB::getNextBip() {
+    std::vector<int> ret;
+    for (int i = 0; i < (int)procTable.getSize(); i++) {
+        int first = procTable.getProcFirstln(i);
+        int last = procTable.getProcLastln(i);
+
+        for (int j = first+1; j <= last; j++) {
+            ret.push_back(j);
+        }
+    }
+    std::vector<int> temp = callsTable.getCalledBy();
+    for (int i = 0; i < (int)temp.size(); i++) {
+        ret.push_back(procTable.getProcFirstln(temp[i]));
+    }
+    return ret;
+}
+
+std::vector<int> PKB::getNextBipT(int stmt) {
+    return cfgBip.getNextT(stmt, stmtNodeTable.getCFGBip(stmt), procTable);
+}
+
+std::vector<int> PKB::getPrevBip(int stmt) {
+    return cfgBip.getPrev(stmt, stmtNodeTable.getCFGBip(stmt), procTable);
+}
+
+std::vector<int> PKB::getPrevBip() {
+    std::vector<int> ret;
+    for (int i = 0; i < (int)procTable.getSize(); i++) {
+        int first = procTable.getProcFirstln(i);
+        int last = procTable.getProcLastln(i);
+
+        for (int j = first; j < last; j++) {
+            ret.push_back(j);
+        }
+    }
+    std::vector<int> temp = callsTable.getCalls();
+    for (int i = 0; i < (int)temp.size(); i++) {
+        ret.push_back(procTable.getProcLastln(temp[i]));
+    }
+    return ret;
+}
+
+std::vector<int> PKB::getPrevBipT(int stmt) {
+    return cfgBip.getPrevT(stmt, stmtNodeTable.getCFGBip(stmt), procTable);
+}
+
+bool PKB::isNextBip(int stmt1, int stmt2) {
+    return cfgBip.isNext(stmt1, stmtNodeTable.getCFGBip(stmt1), stmt2, procTable);
+}
+
 std::vector<int> PKB::getStmtWithType(int nodeType) {
     return stmtNodeTable.getStmtWithType(nodeType);
 }
