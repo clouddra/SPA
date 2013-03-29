@@ -2473,13 +2473,16 @@ void QueryProcessor::processQuery(PKB pkb) {
     // Evaluating clauses
     for (int i = 0; i < (int)queryOrder.size(); i++) {
         std::unordered_set<int> queryChoices;
+        int graphIndex;
 		// Comment out when turning off dynamic optimization
         if (i == 2) 
-            optiGraphs[0].setWeight(resultStore.getVVVector());
+            graphIndex = 0;
         else if (i == 4) 
-            optiGraphs[1].setWeight(resultStore.getVVVector());
+            graphIndex = 1;
         else if (i == 6) 
-            optiGraphs[2].setWeight(resultStore.getVVVector());
+            graphIndex = 2;
+        if (i == 2 || i == 4 || i == 6)
+            optiGraphs[graphIndex].setWeight(resultStore.getVVVector());
         // Dynamic optimization end
         
         while (queryOrder[i].size() > 0) {
@@ -2496,55 +2499,9 @@ void QueryProcessor::processQuery(PKB pkb) {
                 nextQuery = queryOrder[i].back();
                 queryOrder[i].pop_back();
             }
-            else if (i == 2) {
-                if (queryChoices.size() == 0) {
-                    int ret = optiGraphs[0].findMinWeight();
-                    if (ret != -1)
-                        queryChoices.insert(ret);
-                    else    
-                        break;  // Exit while loop
-                }
-
-                int min = *queryChoices.begin();
-                for (auto it = queryChoices.begin(); it != queryChoices.end(); ++it) {
-                    if (optiGraphs[0].graph[*it].weight < optiGraphs[0].graph[min].weight)
-                        min = *it;
-                }
-                nextQuery = queryOrder[i][min];
-                std::vector<int> connect = optiGraphs[0].graph[min].connections;
-                for (int j = 0; j < (int)connect.size(); j++) {
-                    if (!optiGraphs[0].graph[connect[j]].evaluated)
-                        queryChoices.insert(connect[j]);
-                }
-                queryChoices.erase(min);
-                optiGraphs[0].graph[min].evaluated = true;
-            }
-            else if (i == 4) {
-                if (queryChoices.size() == 0) {
-                    int ret = optiGraphs[1].findMinWeight();
-                    if (ret != -1)
-                        queryChoices.insert(ret);
-                    else    
-                        break;  // Exit while loop
-                }
-
-                int min = *queryChoices.begin();
-                for (auto it = queryChoices.begin(); it != queryChoices.end(); ++it) {
-                    if (optiGraphs[1].graph[*it].weight < optiGraphs[1].graph[min].weight)
-                        min = *it;
-                }
-                nextQuery = queryOrder[i][min];
-                std::vector<int> connect = optiGraphs[1].graph[min].connections;
-                for (int j = 0; j < (int)connect.size(); j++) {
-                    if (!optiGraphs[1].graph[connect[j]].evaluated)
-                        queryChoices.insert(connect[j]);
-                }
-                queryChoices.erase(min);
-                optiGraphs[1].graph[min].evaluated = true;
-            }
             else {
                 if (queryChoices.size() == 0) {
-                    int ret = optiGraphs[2].findMinWeight();
+                    int ret = optiGraphs[graphIndex].findMinWeight();
                     if (ret != -1)
                         queryChoices.insert(ret);
                     else    
@@ -2553,17 +2510,17 @@ void QueryProcessor::processQuery(PKB pkb) {
 
                 int min = *queryChoices.begin();
                 for (auto it = queryChoices.begin(); it != queryChoices.end(); ++it) {
-                    if (optiGraphs[2].graph[*it].weight < optiGraphs[2].graph[min].weight)
+                    if (optiGraphs[graphIndex].graph[*it].weight < optiGraphs[graphIndex].graph[min].weight)
                         min = *it;
                 }
                 nextQuery = queryOrder[i][min];
-                std::vector<int> connect = optiGraphs[2].graph[min].connections;
+                std::vector<int> connect = optiGraphs[graphIndex].graph[min].connections;
                 for (int j = 0; j < (int)connect.size(); j++) {
-                    if (!optiGraphs[2].graph[connect[j]].evaluated)
+                    if (!optiGraphs[graphIndex].graph[connect[j]].evaluated)
                         queryChoices.insert(connect[j]);
                 }
                 queryChoices.erase(min);
-                optiGraphs[2].graph[min].evaluated = true;
+                optiGraphs[graphIndex].graph[min].evaluated = true;
             }
 
             currNode = tree[rootChildren[nextQuery]];
@@ -2839,22 +2796,10 @@ void QueryProcessor::processQuery(PKB pkb) {
                         return;
                 }
 
-                if (i == 2) {
+                if (i == 2 || i == 4 || i == 6) {
                     for (auto it = queryChoices.begin(); it != queryChoices.end(); ++it) {
-                        optiGraphs[0].graph[*it].setWeight(para1, resultStore.getValuesFor(para1).size());
-                        optiGraphs[0].graph[*it].setWeight(para2, resultStore.getValuesFor(para2).size());
-                    }
-                }
-                else if (i == 4) {
-                    for (auto it = queryChoices.begin(); it != queryChoices.end(); ++it) {
-                        optiGraphs[1].graph[*it].setWeight(para1, resultStore.getValuesFor(para1).size());
-                        optiGraphs[1].graph[*it].setWeight(para2, resultStore.getValuesFor(para2).size());
-                    }
-                }
-                else if (i == 6) {
-                    for (auto it = queryChoices.begin(); it != queryChoices.end(); ++it) {
-                        optiGraphs[2].graph[*it].setWeight(para1, resultStore.getValuesFor(para1).size());
-                        optiGraphs[2].graph[*it].setWeight(para2, resultStore.getValuesFor(para2).size());
+                        optiGraphs[graphIndex].graph[*it].setWeight(para1, resultStore.getValuesFor(para1).size());
+                        optiGraphs[graphIndex].graph[*it].setWeight(para2, resultStore.getValuesFor(para2).size());
                     }
                 }
             }
@@ -2970,8 +2915,8 @@ void QueryProcessor::processQuery(PKB pkb) {
 
                 if (i == 2) {
                     for (auto it = queryChoices.begin(); it != queryChoices.end(); ++it) {
-                        optiGraphs[0].graph[*it].setWeight(pattern, resultStore.getValuesFor(pattern).size());
-                        optiGraphs[0].graph[*it].setWeight(var, resultStore.getValuesFor(var).size());
+                        optiGraphs[graphIndex].graph[*it].setWeight(pattern, resultStore.getValuesFor(pattern).size());
+                        optiGraphs[graphIndex].graph[*it].setWeight(var, resultStore.getValuesFor(var).size());
                     }
                 }
             }
