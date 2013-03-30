@@ -78,3 +78,11 @@ void ProcTable::setCFGStart(int ind, int start){
 void ProcTable::setCFGEnd(int ind, int end){
 	numToProc.at(ind).setCFGEnd(end);
 }
+
+int ProcTable::getCFGStart(int ind){
+	return numToProc.at(ind).getCFGStart();
+}
+
+int ProcTable::getCFGEnd(int ind){
+	return numToProc.at(ind).getCFGEnd();
+}

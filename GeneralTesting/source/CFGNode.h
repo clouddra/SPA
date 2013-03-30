@@ -19,6 +19,9 @@ private:
 	int end;
 
 
+	int bipStart;
+	int bipEnd;
+
 	std::vector<int> next;
 	std::vector<int> prev;
 
@@ -33,6 +36,12 @@ private:
 	std::vector<int> getPrev();
 	void addNext(int nextNode);
 	void addPrev(int prevNode);
+
+	void setBipStart(int start);
+	void setBipEnd(int end);
+
+	int getBipStart();
+	int getBipEnd();
 };
 
 /*

@@ -33,4 +33,7 @@ public:
     std::vector<std::string> getAllProc();
 	void setCFGStart(int ind, int start);
 	void setCFGEnd(int ind, int end);
+
+	int getCFGStart(int ind);
+	int getCFGEnd(int ind);
 };

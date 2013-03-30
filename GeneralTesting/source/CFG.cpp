@@ -4,7 +4,6 @@
 
 std::vector<int> CFG::getNext(int stmt1, int nodeIndex){
 	std::vector<int> stmtList;
-
 	// if fall in range
 	if (stmt1>=cfg[nodeIndex].getStart() && stmt1 < cfg[nodeIndex].getEnd()) {
 		stmtList.push_back(stmt1+1);
@@ -14,13 +13,34 @@ std::vector<int> CFG::getNext(int stmt1, int nodeIndex){
 	else {
 		for (int i=0, nextNode; i<(int)cfg[nodeIndex].getNext().size(); i++) {
 			nextNode = cfg[nodeIndex].getNext().at(i);
-			stmtList.push_back(cfg[nextNode].getStart());
+
+			if (cfg[nextNode].getStart()!=-1)
+				stmtList.push_back(cfg[nextNode].getStart());
 		}
 
 		return stmtList;
 	}
 
 }
+
+std::vector<int> CFG::getNextBip(int stmt1, int nodeIndex){
+	std::vector<int> stmtList;
+
+	int nextBip = cfg[nodeIndex].getBipStart();
+
+	// if branch return first statement of branched procedure
+	if (nextBip!=-1){
+		stmtList.push_back(cfg[nextBip].getStart());
+		return stmtList; 
+	}
+
+	// else do normal next
+	return getNext(stmt1, nodeIndex);
+	
+}
+
+
+
 
 bool CFG::isNext(int stmt1, int node1, int stmt2){
 	std::vector<int> stmtList;
@@ -41,6 +61,20 @@ bool CFG::isNext(int stmt1, int node1, int stmt2){
 
 	return false;
 }
+
+bool CFG::isNextBip(int stmt1, int node1, int stmt2){
+	std::vector<int> stmtList;
+
+	int nextBip = cfg[node1].getBipStart();
+	
+	if (nextBip!=-1){
+		if (stmt2 == cfg[nextBip].getStart())
+			return true;
+	}
+
+	return isNext(stmt1, node1, stmt2);
+}
+
 
 
 
@@ -71,7 +105,7 @@ std::vector<int> CFG::getNextT(int stmt1, int nodeIndex){
 		{
 			visited[nextNode]=true;
 			// add statements to list
-			stmtList = fillStmtInNode(stmtList, cfg[nextNode]);
+			fillStmtInNode(stmtList, cfg[nextNode]);
 
 			// get next nodes to visit
 			for (int i=0; i<(int)cfg[nextNode].getNext().size(); i++) {
@@ -84,9 +118,67 @@ std::vector<int> CFG::getNextT(int stmt1, int nodeIndex){
 		}
 	}
 
+	stmtList.erase(-1);
 	std::vector<int> results(stmtList.cbegin(), stmtList.cend());
 	return results;
 }
+
+
+std::vector<int> CFG::getNextBipT(int stmt1, int nodeIndex){
+	std::unordered_set<int> stmtList;
+	std::vector<bool> visited(cfg.size(), false);	//initialising cfg
+	int nextNode;
+
+	int nextBip = cfg[nodeIndex].getBipStart();
+
+	if (nextBip!=-1){
+		getNextBipT(nextBip, stmtList, visited);
+	}
+
+	
+	// push statements of current node
+	for (int i=stmt1+1; i<=cfg[nodeIndex].getEnd(); i++)
+		stmtList.emplace(i);
+
+
+	for (int i=0; i<(int)cfg[nodeIndex].getNext().size(); i++) {
+		nextNode = cfg[nodeIndex].getNext().at(i);
+		//nodesToVisit.push(nextNode);
+		getNextBipT(nextNode, stmtList, visited);
+	}
+	
+
+	stmtList.erase(-1);
+	std::vector<int> results(stmtList.cbegin(), stmtList.cend());
+	return results;
+}
+
+
+void CFG::getNextBipT(int nodeIndex, std::unordered_set<int> &stmtList, std::vector<bool> &visited){
+
+	int nextNode, nextBip;
+	CFGNode current = cfg[nodeIndex];
+
+	if (visited[nodeIndex] == true || cfg[nodeIndex].getStart()==-1)
+		return;
+
+	visited[nodeIndex] = true;
+	fillStmtInNode(stmtList, current);
+
+	nextBip = cfg[nodeIndex].getBipStart();
+	if (nextBip!=-1){
+		getNextBipT(nextBip, stmtList, visited);
+	}
+
+	for (int i=0; i<(int)cfg[nodeIndex].getNext().size(); i++) {
+		nextNode = current.getNext().at(i);
+		getNextBipT(nextNode, stmtList, visited);
+	}
+
+}
+
+
+
 
 std::vector<int> CFG::getPrevT(int stmt2, int nodeIndex){
 	std::unordered_set<int> stmtList;
@@ -114,7 +206,7 @@ std::vector<int> CFG::getPrevT(int stmt2, int nodeIndex){
 		{
 			visited[prevNode]=true;
 			// add statements to list
-			stmtList = fillStmtInNode(stmtList, cfg[prevNode]);
+			fillStmtInNode(stmtList, cfg[prevNode]);
 
 			// get next nodes to visit
 			for (int i=0; i<(int)cfg[prevNode].getPrev().size(); i++) {
@@ -127,16 +219,12 @@ std::vector<int> CFG::getPrevT(int stmt2, int nodeIndex){
 		}
 	}
 
+	stmtList.erase(-1);
 	std::vector<int> results(stmtList.cbegin(), stmtList.cend());
 	return results;
 }
 
-std::unordered_set<int> CFG::fillStmtInNode(std::unordered_set<int> stmtList, CFGNode nextNode){
-	for (int i=nextNode.getStart(); i<=nextNode.getEnd(); i++)
-		stmtList.emplace(i);
 
-	return stmtList;
-}
 
 std::vector<int> CFG::getPrev(int stmt2, int nodeIndex){
 	std::vector<int> stmtList;
@@ -228,4 +316,19 @@ void CFG::print()
 			std::cout << cfg[i].getPrev()[j] << ", ";
 		std::cout << std::endl;
 	}
+}
+
+
+void CFG::setBipStart(int nodeIndex, int start){
+	cfg.at(nodeIndex).setBipStart(start);
+}
+
+void CFG::setBipEnd(int nodeIndex, int end){
+	cfg.at(nodeIndex).setBipEnd(end);
+}
+
+
+void CFG::fillStmtInNode(std::unordered_set<int> &stmtList, CFGNode nextNode){
+	for (int i=nextNode.getStart(); i<=nextNode.getEnd(); i++)
+		stmtList.emplace(i);
 }

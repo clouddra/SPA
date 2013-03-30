@@ -20,7 +20,8 @@ private:
      * Indicates the furthest node that can return to the current node
 	 */
 	std::vector<CFGNode> cfg;
-	std::unordered_set<int> fillStmtInNode(std::unordered_set<int> stmtList, CFGNode nextNode);
+	void fillStmtInNode(std::unordered_set<int> &stmtList, CFGNode nextNode);
+	void getNextBipT(int nodeIndex, std::unordered_set<int> &stmtList, std::vector<bool> &visited);
 
 	public:
 
@@ -28,7 +29,15 @@ private:
 	std::vector<int> getNextT(int stmt1, int nodeIndex);
 	std::vector<int> getPrev(int stmt2, int nodeIndex);
     std::vector<int> getPrevT(int stmt2, int nodeIndex);
+
+	std::vector<int> getNextBip(int stmt1, int nodeIndex);
+	std::vector<int> getNextBipT(int stmt1, int nodeIndex);
+	std::vector<int> getPrevBip(int stmt2, int nodeIndex);
+    std::vector<int> getPrevBipT(int stmt2, int nodeIndex);
+
 	bool isNext(int stmt1, int node1, int stmt2);
+	bool isNextBip(int stmt1, int node1, int stmt2);
+
 	void addStmt(int nodeIndex, int stmtNum);
 	void addNext(int nodeIndex, int nextIndex);
 	void addPrev(int nodeIndex, int prevIndex); 
@@ -38,6 +47,11 @@ private:
 	int insertCFGNode(int start, int end, int prev);
 	int insertCFGNode();
 	void print();
+
+	void setBipStart(int nodeIndex, int start);
+	void setBipEnd(int nodeIndex, int end);
+
+
 };
 /*
 GNODE createGNode (TNODE astNode, INDEX nodeType, STMT stmtNum, GNODE prevNode)
