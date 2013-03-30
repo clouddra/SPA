@@ -36,7 +36,7 @@ std::vector<int> CFG::getNextBip(int stmt1, int nodeIndex){
 
 	// else do normal next
 	return getNext(stmt1, nodeIndex);
-	
+
 }
 
 
@@ -66,7 +66,7 @@ bool CFG::isNextBip(int stmt1, int node1, int stmt2){
 	std::vector<int> stmtList;
 
 	int nextBip = cfg[node1].getBipStart();
-	
+
 	if (nextBip!=-1){
 		if (stmt2 == cfg[nextBip].getStart())
 			return true;
@@ -135,7 +135,7 @@ std::vector<int> CFG::getNextBipT(int stmt1, int nodeIndex){
 		getNextBipT(nextBip, stmtList, visited);
 	}
 
-	
+
 	// push statements of current node
 	for (int i=stmt1+1; i<=cfg[nodeIndex].getEnd(); i++)
 		stmtList.emplace(i);
@@ -146,7 +146,7 @@ std::vector<int> CFG::getNextBipT(int stmt1, int nodeIndex){
 		//nodesToVisit.push(nextNode);
 		getNextBipT(nextNode, stmtList, visited);
 	}
-	
+
 
 	stmtList.erase(-1);
 	std::vector<int> results(stmtList.cbegin(), stmtList.cend());
@@ -177,6 +177,101 @@ void CFG::getNextBipT(int nodeIndex, std::unordered_set<int> &stmtList, std::vec
 
 }
 
+std::vector<int> CFG::getPrevBip(int stmt2, int nodeIndex){
+
+	int prevNode, prevBip;
+	
+
+	// stmt is not at the first statement of node, do normal prev
+	if (stmt2 > cfg[nodeIndex].getStart() && stmt2 <= cfg[nodeIndex].getEnd() && stmt2!=-1) {
+		return getPrev(stmt2, nodeIndex);
+	}
+
+	else {
+		std::unordered_set<int> stmtList;
+		for (int i=0; i<(int)cfg[nodeIndex].getPrev().size(); i++) {
+			prevNode = cfg[nodeIndex].getPrev().at(i);
+			prevBip = cfg[prevNode].getBipEnd();
+
+			// if previous node is call then add previous nodes of dummy node in branched procedure
+			if (prevBip!=-1) {
+				std::vector<int> bipStmtList = getPrev(-1, prevBip);
+				stmtList.insert(bipStmtList.begin(), bipStmtList.end());
+			}
+
+			// if previous node is non-call, fill statements belonging to previous node
+			else {
+				fillStmtInNode(stmtList, cfg[prevNode]);
+			}		
+		}
+		std::vector<int> results(stmtList.cbegin(), stmtList.cend());
+		return results;
+	}
+
+}
+
+
+std::vector<int> CFG::getPrevBipT(int stmt2, int nodeIndex){
+
+	int prevNode, prevBip;
+	CFGNode current = cfg[nodeIndex];
+	std::unordered_set<int> stmtList;
+	std::vector<bool> visited(cfg.size(), false);	//initialising boolean vector
+
+	// push statements of current node
+	for (int i=stmt2-1; i>=cfg[nodeIndex].getStart(); i--)
+		stmtList.emplace(i);
+
+	for (int i=0; i<(int)cfg[nodeIndex].getPrev().size(); i++) {
+		prevNode = cfg[nodeIndex].getPrev().at(i);
+		prevBip = cfg[prevNode].getBipEnd();
+
+		// if previous node is call then recurse on end of branched procedure
+		if (prevBip!=-1) {
+			getPrevBipT(prevBip, stmtList, visited);
+		}
+
+		// if previous node is non-call, do recurse on previous node
+		else {
+			getPrevBipT(prevNode, stmtList, visited);
+		}		
+	}
+
+	stmtList.erase(-1);
+	std::vector<int> results(stmtList.cbegin(), stmtList.cend());
+	return results;
+}
+
+
+void CFG::getPrevBipT(int nodeIndex, std::unordered_set<int> &stmtList, std::vector<bool> &visited){
+
+	int prevNode, prevBip;
+	CFGNode current = cfg[nodeIndex];
+
+	if (visited[nodeIndex] == true)
+		return;
+
+	visited[nodeIndex] = true;
+	fillStmtInNode(stmtList, current);
+
+
+	for (int i=0; i<(int)cfg[nodeIndex].getPrev().size(); i++) {
+		prevNode = cfg[nodeIndex].getPrev().at(i);
+		prevBip = cfg[prevNode].getBipEnd();
+
+		// if previous node is call then recurse on end of branched procedure
+		if (prevBip!=-1) {
+			getPrevBipT(prevBip, stmtList, visited);
+		}
+
+		// if previous node is non-call, do recurse on previous node
+		else {
+			getPrevBipT(prevNode, stmtList, visited);
+		}		
+	}
+
+}
+
 
 
 
@@ -188,7 +283,7 @@ std::vector<int> CFG::getPrevT(int stmt2, int nodeIndex){
 
 
 	// push statements of current node
-    for (int i=stmt2-1; i>=cfg[nodeIndex].getStart(); i--)
+	for (int i=stmt2-1; i>=cfg[nodeIndex].getStart(); i--)
 		stmtList.emplace(i);
 
 	//visited[nodeIndex] = true;
@@ -229,8 +324,9 @@ std::vector<int> CFG::getPrevT(int stmt2, int nodeIndex){
 std::vector<int> CFG::getPrev(int stmt2, int nodeIndex){
 	std::vector<int> stmtList;
 
-	// if fall in range
-	if (stmt2 > cfg[nodeIndex].getStart() && stmt2 <= cfg[nodeIndex].getEnd()) {
+
+	// if fall in range and not dummy
+	if (stmt2 > cfg[nodeIndex].getStart() && stmt2 <= cfg[nodeIndex].getEnd() && stmt2!=-1) {
 		stmtList.push_back(stmt2 - 1);
 		return stmtList;
 	}

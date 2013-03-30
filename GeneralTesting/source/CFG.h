@@ -22,6 +22,7 @@ private:
 	std::vector<CFGNode> cfg;
 	void fillStmtInNode(std::unordered_set<int> &stmtList, CFGNode nextNode);
 	void getNextBipT(int nodeIndex, std::unordered_set<int> &stmtList, std::vector<bool> &visited);
+	void getPrevBipT(int nodeIndex, std::unordered_set<int> &stmtList, std::vector<bool> &visited);
 
 	public:
 
