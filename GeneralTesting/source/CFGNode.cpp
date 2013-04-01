@@ -4,15 +4,11 @@ CFGNode::CFGNode(int startStmt, int endStmt, std::vector<int> prevNodes){
 	start = startStmt;
 	end = endStmt;
 	prev = prevNodes;
-	bipStart = -1;
-	bipEnd = -1;
 }
 
 CFGNode::CFGNode(){
 	start = -1;
 	end = -1;
-	bipStart = -1;
-	bipEnd = -1;
 }
 
 
@@ -20,8 +16,6 @@ CFGNode::CFGNode(int startStmt, int endStmt, int prevNode){
 	start = startStmt;
 	end = endStmt;
 	prev.push_back(prevNode);
-	bipStart = -1;
-	bipEnd = -1;
 }
 
 // This function below needs to be updated for compression
@@ -57,17 +51,17 @@ void CFGNode::addPrev(int prevNode){
 	prev.push_back(prevNode);
 }
 
-void CFGNode::setBipStart(int start){
-	bipStart = start;
+void CFGNode::addBipNext(int next){
+	bipNext.push_back(next);
 }
 
-void CFGNode::setBipEnd(int end){
-	bipEnd = end;
+void CFGNode::addBipPrev(int prev){
+	bipPrev.push_back(prev);
 }
 
-int CFGNode::getBipStart(){
-	return bipStart;
+std::vector<int> CFGNode::getBipNext(){
+	return bipNext;
 }
-int CFGNode::getBipEnd(){
-	return bipEnd;
+std::vector<int> CFGNode::getBipPrev(){
+	return bipPrev;
 }

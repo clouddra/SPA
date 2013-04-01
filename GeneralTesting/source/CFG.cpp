@@ -7,40 +7,69 @@ std::vector<int> CFG::getNext(int stmt1, int nodeIndex){
 	// if fall in range
 	if (stmt1>=cfg[nodeIndex].getStart() && stmt1 < cfg[nodeIndex].getEnd()) {
 		stmtList.push_back(stmt1+1);
-		return stmtList;
 	}
 
 	else {
-		for (int i=0, nextNode; i<(int)cfg[nodeIndex].getNext().size(); i++) {
-			nextNode = cfg[nodeIndex].getNext().at(i);
-
-			if (cfg[nextNode].getStart()!=-1)
-				stmtList.push_back(cfg[nextNode].getStart());
+		std::vector<int> nextNodes = cfg[nodeIndex].getNext();
+		for (std::vector<int>::iterator j = nextNodes.begin() ; j != nextNodes.end(); ++j) {
+			// push only non dummy
+			if (cfg[*j].getStart()!=-1)
+				stmtList.push_back(cfg[*j].getStart());
 		}
-
-		return stmtList;
 	}
 
+	return stmtList;
 }
 
 std::vector<int> CFG::getNextBip(int stmt1, int nodeIndex){
+
+	//if not last statement of node, do normal next
 	std::vector<int> stmtList;
-
-	int nextBip = cfg[nodeIndex].getBipStart();
-
-	// if branch return first statement of branched procedure
-	if (nextBip!=-1){
-		stmtList.push_back(cfg[nextBip].getStart());
-		return stmtList; 
+	if (stmt1>=cfg[nodeIndex].getStart() && stmt1 < cfg[nodeIndex].getEnd()) {
+		stmtList.push_back(stmt1+1);
+		return stmtList;
 	}
 
-	// else do normal next
-	return getNext(stmt1, nodeIndex);
+	// if Bip, must return every procedure branched into
+	std::vector<int> nextBip = cfg[nodeIndex].getBipNext();
+	if (!nextBip.empty())
+		getNextBip(stmt1, nodeIndex, stmtList);
 
+	else {
+		// if no Bip
+		std::vector<int> nextNodes = cfg[nodeIndex].getNext();
+		for (std::vector<int>::iterator j = nextNodes.begin() ; j != nextNodes.end(); ++j) {
+			int nextStmt = cfg[*j].getStart();
+
+			if (nextStmt!=-1)
+				stmtList.push_back(nextStmt);
+			
+			// if dummy, we must do recursive bip
+			else
+				getNextBip(-1, nodeIndex, stmtList);
+		}
+	}
+
+	return stmtList;
 }
 
+void CFG::getNextBip(int stmt1, int nodeIndex, std::vector<int> &stmtList){
 
 
+	std::vector<int> nextBip = cfg[nodeIndex].getBipNext();
+
+	for (std::vector<int>::iterator j = nextBip.begin() ; j != nextBip.end(); ++j) {
+		int nextStmt = cfg[*j].getStart();
+
+		if (nextStmt!=-1)
+			stmtList.push_back(nextStmt);
+
+		// recursive bip for dummy until we find valid node
+		else
+			getNextBip(-1, *j, stmtList);
+	}
+
+}
 
 bool CFG::isNext(int stmt1, int node1, int stmt2){
 	std::vector<int> stmtList;
@@ -52,9 +81,9 @@ bool CFG::isNext(int stmt1, int node1, int stmt2){
 	}
 
 	else {
-		for (int i=0, nextNode; i<(int)cfg[node1].getNext().size(); i++) {
-			nextNode = cfg[node1].getNext().at(i);
-			if (cfg[nextNode].getStart() == stmt2)
+		std::vector<int> nextNodes = cfg[node1].getNext();
+		for (std::vector<int>::iterator j = nextNodes.begin() ; j != nextNodes.end(); ++j) {
+			if (cfg[*j].getStart() == stmt2)
 				return true;
 		}
 	}
@@ -63,16 +92,11 @@ bool CFG::isNext(int stmt1, int node1, int stmt2){
 }
 
 bool CFG::isNextBip(int stmt1, int node1, int stmt2){
-	std::vector<int> stmtList;
-
-	int nextBip = cfg[node1].getBipStart();
-
-	if (nextBip!=-1){
-		if (stmt2 == cfg[nextBip].getStart())
-			return true;
-	}
-
-	return isNext(stmt1, node1, stmt2);
+	std::vector<int> stmtList = getNextBip(stmt1, node1);
+	std::vector<int>::iterator it = std::find(stmtList.begin(), stmtList.end(), stmt2);
+	if (it != stmtList.end())
+		return true;
+	return false;
 }
 
 
@@ -127,24 +151,25 @@ std::vector<int> CFG::getNextT(int stmt1, int nodeIndex){
 std::vector<int> CFG::getNextBipT(int stmt1, int nodeIndex){
 	std::unordered_set<int> stmtList;
 	std::vector<bool> visited(cfg.size(), false);	//initialising cfg
-	int nextNode;
-
-	int nextBip = cfg[nodeIndex].getBipStart();
-
-	if (nextBip!=-1){
-		getNextBipT(nextBip, stmtList, visited);
-	}
-
 
 	// push statements of current node
+	// For nodes with bip, only non-calls wil be affected since call is singleton, i.e end of procedure
 	for (int i=stmt1+1; i<=cfg[nodeIndex].getEnd(); i++)
 		stmtList.emplace(i);
 
 
-	for (int i=0; i<(int)cfg[nodeIndex].getNext().size(); i++) {
-		nextNode = cfg[nodeIndex].getNext().at(i);
-		//nodesToVisit.push(nextNode);
-		getNextBipT(nextNode, stmtList, visited);
+	// if there is bip, we do recursive call
+	std::vector<int> nextBip = cfg[nodeIndex].getBipNext();
+	for (std::vector<int>::iterator j = nextBip.begin() ; j != nextBip.end(); ++j) {
+		getNextBipT(*j, stmtList, visited, true);
+	}
+
+
+	// for normal next, no recusive return. Instead we branch to all possible callers
+
+	std::vector<int> nextNodes = cfg[nodeIndex].getBipNext();
+	for (std::vector<int>::iterator j = nextNodes.begin() ; j != nextNodes.end(); ++j) {
+		getNextBipT(*j, stmtList, visited, false);
 	}
 
 
@@ -154,124 +179,137 @@ std::vector<int> CFG::getNextBipT(int stmt1, int nodeIndex){
 }
 
 
-void CFG::getNextBipT(int nodeIndex, std::unordered_set<int> &stmtList, std::vector<bool> &visited){
+void CFG::getNextBipT(int nodeIndex, std::unordered_set<int> &stmtList, std::vector<bool> &visited, bool recursive){
 
-	int nextNode, nextBip;
-	CFGNode current = cfg[nodeIndex];
-
-	if (visited[nodeIndex] == true || cfg[nodeIndex].getStart()==-1)
+	// if visited or end of call
+	if (visited[nodeIndex] == true)
 		return;
 
 	visited[nodeIndex] = true;
-	fillStmtInNode(stmtList, current);
 
-	nextBip = cfg[nodeIndex].getBipStart();
-	if (nextBip!=-1){
-		getNextBipT(nextBip, stmtList, visited);
+	// if we branched in from a call and reached the end, return
+	if (cfg[nodeIndex].getStart()==-1 && recursive == true)
+		return;
+
+	// put statements of current node
+	fillStmtInNode(stmtList, cfg[nodeIndex]);
+
+	std::vector<int> nextBip = cfg[nodeIndex].getBipNext();
+	for (std::vector<int>::iterator j = nextBip.begin() ; j != nextBip.end(); ++j) {
+
+		// if we are at the end of node. Branching for non-calls
+		if (cfg[nodeIndex].getStart()==-1)
+			getNextBipT(*j, stmtList, visited, false);
+
+		// Branching for calls
+		else
+			getNextBipT(*j, stmtList, visited, true);
 	}
 
-	for (int i=0; i<(int)cfg[nodeIndex].getNext().size(); i++) {
-		nextNode = current.getNext().at(i);
-		getNextBipT(nextNode, stmtList, visited);
+	// do normal next after branching, returning from function
+	std::vector<int> nextNodes = cfg[nodeIndex].getBipNext();
+	for (std::vector<int>::iterator j = nextNodes.begin() ; j != nextNodes.end(); ++j) {
+		getNextBipT(*j, stmtList, visited, false);
 	}
 
 }
 
+/*
 std::vector<int> CFG::getPrevBip(int stmt2, int nodeIndex){
 
-	int prevNode, prevBip;
-	
+int prevNode, prevBip;
 
-	// stmt is not at the first statement of node, do normal prev
-	if (stmt2 > cfg[nodeIndex].getStart() && stmt2 <= cfg[nodeIndex].getEnd() && stmt2!=-1) {
-		return getPrev(stmt2, nodeIndex);
-	}
 
-	else {
-		std::unordered_set<int> stmtList;
-		for (int i=0; i<(int)cfg[nodeIndex].getPrev().size(); i++) {
-			prevNode = cfg[nodeIndex].getPrev().at(i);
-			prevBip = cfg[prevNode].getBipEnd();
+// stmt is not at the first statement of node, do normal prev
+if (stmt2 > cfg[nodeIndex].getStart() && stmt2 <= cfg[nodeIndex].getEnd() && stmt2!=-1) {
+return getPrev(stmt2, nodeIndex);
+}
 
-			// if previous node is call then add previous nodes of dummy node in branched procedure
-			if (prevBip!=-1) {
-				std::vector<int> bipStmtList = getPrev(-1, prevBip);
-				stmtList.insert(bipStmtList.begin(), bipStmtList.end());
-			}
+else {
+std::unordered_set<int> stmtList;
+for (int i=0; i<(int)cfg[nodeIndex].getPrev().size(); i++) {
+prevNode = cfg[nodeIndex].getPrev().at(i);
+prevBip = cfg[prevNode].getBipEnd();
 
-			// if previous node is non-call, fill statements belonging to previous node
-			else {
-				fillStmtInNode(stmtList, cfg[prevNode]);
-			}		
-		}
-		std::vector<int> results(stmtList.cbegin(), stmtList.cend());
-		return results;
-	}
+// if previous node is call then add previous nodes of dummy node in branched procedure
+if (prevBip!=-1) {
+std::vector<int> bipStmtList = getPrev(-1, prevBip);
+stmtList.insert(bipStmtList.begin(), bipStmtList.end());
+}
+
+// if previous node is non-call, fill statements belonging to previous node
+else {
+fillStmtInNode(stmtList, cfg[prevNode]);
+}		
+}
+std::vector<int> results(stmtList.cbegin(), stmtList.cend());
+return results;
+}
 
 }
 
 
 std::vector<int> CFG::getPrevBipT(int stmt2, int nodeIndex){
 
-	int prevNode, prevBip;
-	CFGNode current = cfg[nodeIndex];
-	std::unordered_set<int> stmtList;
-	std::vector<bool> visited(cfg.size(), false);	//initialising boolean vector
+int prevNode, prevBip;
+CFGNode current = cfg[nodeIndex];
+std::unordered_set<int> stmtList;
+std::vector<bool> visited(cfg.size(), false);	//initialising boolean vector
 
-	// push statements of current node
-	for (int i=stmt2-1; i>=cfg[nodeIndex].getStart(); i--)
-		stmtList.emplace(i);
+// push statements of current node
+for (int i=stmt2-1; i>=cfg[nodeIndex].getStart(); i--)
+stmtList.emplace(i);
 
-	for (int i=0; i<(int)cfg[nodeIndex].getPrev().size(); i++) {
-		prevNode = cfg[nodeIndex].getPrev().at(i);
-		prevBip = cfg[prevNode].getBipEnd();
+for (int i=0; i<(int)cfg[nodeIndex].getPrev().size(); i++) {
+prevNode = cfg[nodeIndex].getPrev().at(i);
+prevBip = cfg[prevNode].getBipEnd();
 
-		// if previous node is call then recurse on end of branched procedure
-		if (prevBip!=-1) {
-			getPrevBipT(prevBip, stmtList, visited);
-		}
+// if previous node is call then recurse on end of branched procedure
+if (prevBip!=-1) {
+getPrevBipT(prevBip, stmtList, visited);
+}
 
-		// if previous node is non-call, do recurse on previous node
-		else {
-			getPrevBipT(prevNode, stmtList, visited);
-		}		
-	}
+// if previous node is non-call, do recurse on previous node
+else {
+getPrevBipT(prevNode, stmtList, visited);
+}		
+}
 
-	stmtList.erase(-1);
-	std::vector<int> results(stmtList.cbegin(), stmtList.cend());
-	return results;
+stmtList.erase(-1);
+std::vector<int> results(stmtList.cbegin(), stmtList.cend());
+return results;
 }
 
 
 void CFG::getPrevBipT(int nodeIndex, std::unordered_set<int> &stmtList, std::vector<bool> &visited){
 
-	int prevNode, prevBip;
-	CFGNode current = cfg[nodeIndex];
+int prevNode, prevBip;
+CFGNode current = cfg[nodeIndex];
 
-	if (visited[nodeIndex] == true)
-		return;
+if (visited[nodeIndex] == true)
+return;
 
-	visited[nodeIndex] = true;
-	fillStmtInNode(stmtList, current);
+visited[nodeIndex] = true;
+fillStmtInNode(stmtList, current);
 
 
-	for (int i=0; i<(int)cfg[nodeIndex].getPrev().size(); i++) {
-		prevNode = cfg[nodeIndex].getPrev().at(i);
-		prevBip = cfg[prevNode].getBipEnd();
+for (int i=0; i<(int)cfg[nodeIndex].getPrev().size(); i++) {
+prevNode = cfg[nodeIndex].getPrev().at(i);
+prevBip = cfg[prevNode].getBipEnd();
 
-		// if previous node is call then recurse on end of branched procedure
-		if (prevBip!=-1) {
-			getPrevBipT(prevBip, stmtList, visited);
-		}
-
-		// if previous node is non-call, do recurse on previous node
-		else {
-			getPrevBipT(prevNode, stmtList, visited);
-		}		
-	}
-
+// if previous node is call then recurse on end of branched procedure
+if (prevBip!=-1) {
+getPrevBipT(prevBip, stmtList, visited);
 }
 
+// if previous node is non-call, do recurse on previous node
+else {
+getPrevBipT(prevNode, stmtList, visited);
+}		
+}
+
+}
+*/
 
 
 
@@ -414,15 +452,15 @@ void CFG::print()
 	}
 }
 
-
+/*
 void CFG::setBipStart(int nodeIndex, int start){
-	cfg.at(nodeIndex).setBipStart(start);
+cfg.at(nodeIndex).setBipStart(start);
 }
 
 void CFG::setBipEnd(int nodeIndex, int end){
-	cfg.at(nodeIndex).setBipEnd(end);
+cfg.at(nodeIndex).setBipEnd(end);
 }
-
+*/
 
 void CFG::fillStmtInNode(std::unordered_set<int> &stmtList, CFGNode nextNode){
 	for (int i=nextNode.getStart(); i<=nextNode.getEnd(); i++)
