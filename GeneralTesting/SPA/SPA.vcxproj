@@ -43,6 +43,7 @@
     <ClInclude Include="..\source\SPAController.h" />
     <ClInclude Include="..\source\StmtNode.h" />
     <ClInclude Include="..\source\StmtNodeTable.h" />
+    <ClInclude Include="..\source\Threading.h" />
     <ClInclude Include="..\source\TupleTable.h" />
     <ClInclude Include="..\source\UsesTable.h" />
     <ClInclude Include="..\source\ValidValue.h" />
@@ -78,6 +79,7 @@
     <ClCompile Include="..\source\SPAController.cpp" />
     <ClCompile Include="..\source\StmtNode.cpp" />
     <ClCompile Include="..\source\StmtNodeTable.cpp" />
+    <ClCompile Include="..\source\Threading.cpp" />
     <ClCompile Include="..\source\TupleTable.cpp" />
     <ClCompile Include="..\source\UsesTable.cpp" />
     <ClCompile Include="..\source\ValidValue.cpp" />
@@ -119,7 +121,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\boost\boost_1_51_0\boost_1_51_0;C:\Users\Wei Chee\Desktop\WeiChee\NUS\CurrentModules\CS3202\SourceCode\cs3201\GeneralTesting\SPA\external_libs\boost_1_52_0\boost_1_52_0;$(IncludePath)</IncludePath>
+    <IncludePath>C:\boost\boost_1_53_0;C:\Users\Wei Chee\Desktop\WeiChee\NUS\CurrentModules\CS3202\SourceCode\cs3201\GeneralTesting\SPA\external_libs\boost_1_52_0\boost_1_52_0;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\boost\boost_1_53_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -127,6 +130,7 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>../AutoTester;external_libs/boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessorDefinitions>ENABLE_THREADING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

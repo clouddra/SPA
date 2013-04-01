@@ -1,5 +1,8 @@
-#include "Threading.h"
+#pragma once
 #ifdef ENABLE_THREADING
+
+#include "QueryProcessor.h"
+#include "Threading.h"
 
 class Worker {
 private:

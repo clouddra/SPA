@@ -28,8 +28,7 @@
 #include "QueryGraph.h"
 #endif
 
-#ifndef ENABLE_THREADING
-#define ENABLE_THREADING
+#ifdef ENABLE_THREADING
 #include "Threading.h"
 #endif
 
