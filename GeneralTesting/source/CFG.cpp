@@ -214,9 +214,9 @@ void CFG::getNextBipT(int nodeIndex, std::unordered_set<int> &stmtList, std::vec
 
 }
 
-/*
-std::vector<int> CFG::getPrevBip(int stmt2, int nodeIndex){
 
+std::vector<int> CFG::getPrevBip(int stmt2, int nodeIndex){
+    /*
 int prevNode, prevBip;
 
 
@@ -245,12 +245,13 @@ fillStmtInNode(stmtList, cfg[prevNode]);
 std::vector<int> results(stmtList.cbegin(), stmtList.cend());
 return results;
 }
-
+*/
+    return std::vector<int>();
 }
 
 
 std::vector<int> CFG::getPrevBipT(int stmt2, int nodeIndex){
-
+    /*
 int prevNode, prevBip;
 CFGNode current = cfg[nodeIndex];
 std::unordered_set<int> stmtList;
@@ -277,12 +278,13 @@ getPrevBipT(prevNode, stmtList, visited);
 
 stmtList.erase(-1);
 std::vector<int> results(stmtList.cbegin(), stmtList.cend());
-return results;
+return results; */
+    return std::vector<int>();
 }
 
 
 void CFG::getPrevBipT(int nodeIndex, std::unordered_set<int> &stmtList, std::vector<bool> &visited){
-
+    /*
 int prevNode, prevBip;
 CFGNode current = cfg[nodeIndex];
 
@@ -307,9 +309,9 @@ else {
 getPrevBipT(prevNode, stmtList, visited);
 }		
 }
-
-}
 */
+}
+
 
 
 

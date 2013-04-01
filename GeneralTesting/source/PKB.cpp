@@ -551,7 +551,7 @@ bool PKB::isNext(int stmt1, int stmt2) {
 }
 
 std::vector<int> PKB::getNextBip(int stmt) {
-    return cfgBip.getNext(stmt, stmtNodeTable.getCFGBip(stmt), procTable);
+    return cfg.getNextBip(stmt, stmtNodeTable.getCFG(stmt));
 }
 
 std::vector<int> PKB::getNextBip() {
@@ -572,11 +572,11 @@ std::vector<int> PKB::getNextBip() {
 }
 
 std::vector<int> PKB::getNextBipT(int stmt) {
-    return cfgBip.getNextT(stmt, stmtNodeTable.getCFGBip(stmt), procTable);
+    return cfg.getNextBipT(stmt, stmtNodeTable.getCFG(stmt));
 }
 
 std::vector<int> PKB::getPrevBip(int stmt) {
-    return cfgBip.getPrev(stmt, stmtNodeTable.getCFGBip(stmt), procTable);
+    return cfg.getPrevBip(stmt, stmtNodeTable.getCFG(stmt));
 }
 
 std::vector<int> PKB::getPrevBip() {
@@ -597,11 +597,11 @@ std::vector<int> PKB::getPrevBip() {
 }
 
 std::vector<int> PKB::getPrevBipT(int stmt) {
-    return cfgBip.getPrevT(stmt, stmtNodeTable.getCFGBip(stmt), procTable);
+    return cfg.getPrevBipT(stmt, stmtNodeTable.getCFG(stmt));
 }
 
 bool PKB::isNextBip(int stmt1, int stmt2) {
-    return cfgBip.isNext(stmt1, stmtNodeTable.getCFGBip(stmt1), stmt2, procTable);
+    return cfg.isNextBip(stmt1, stmtNodeTable.getCFG(stmt1), stmt2);
 }
 
 std::vector<int> PKB::getStmtWithType(int nodeType) {

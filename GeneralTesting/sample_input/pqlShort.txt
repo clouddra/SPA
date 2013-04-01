@@ -1,5 +1,5 @@
 stmt s1, s2;
-Select s1 such that NextBip(s1, s2)
+Select s1 such that NextBip(5, s2)
 
  
 
