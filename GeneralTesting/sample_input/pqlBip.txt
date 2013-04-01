@@ -1,0 +1,3 @@
+stmt s; 
+Select s such that NextBip(2, s);
+Select s such that NextBip(2, s);

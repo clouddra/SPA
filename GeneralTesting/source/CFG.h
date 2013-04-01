@@ -21,7 +21,8 @@ private:
 	 */
 	std::vector<CFGNode> cfg;
 	void fillStmtInNode(std::unordered_set<int> &stmtList, CFGNode nextNode);
-	void getNextBipT(int nodeIndex, std::unordered_set<int> &stmtList, std::vector<bool> &visited);
+	void getNextBip(int stmt1, int nodeIndex, std::vector<int> &stmtList);
+	void getNextBipT(int nodeIndex, std::unordered_set<int> &stmtList, std::vector<bool> &visited, bool recursive);
 	void getPrevBipT(int nodeIndex, std::unordered_set<int> &stmtList, std::vector<bool> &visited);
 
 	public:
@@ -48,9 +49,6 @@ private:
 	int insertCFGNode(int start, int end, int prev);
 	int insertCFGNode();
 	void print();
-
-	void setBipStart(int nodeIndex, int start);
-	void setBipEnd(int nodeIndex, int end);
 
 
 };
