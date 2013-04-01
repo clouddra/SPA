@@ -34,86 +34,86 @@ struct SimpleGrammar : qi::grammar<Iterator, commonNode(), ascii::space_type>
         using phoenix::at_c;
         using phoenix::push_back;
 
-		text_ = lexeme[+(char_ - '{' - '}' - ';')				[_val += _1]];
-		name_ = lexeme[+(char_ - ')' - '(' - qi::space - '+' - '-' - '*' - '/' - '=' - ';' - '"' - '{' - '}')			[_val += _1]];
+		text_ = lexeme[+(char_ - '{' - '}' - ';')				[_val += qi::_1]];
+		name_ = lexeme[+(char_ - ')' - '(' - qi::space - '+' - '-' - '*' - '/' - '=' - ';' - '"' - '{' - '}')			[_val += qi::_1]];
 
 			
 		call_	=
-				string("call")				[at_c<0>(_val) = _1]
-			>>	name_						[at_c<1>(_val) = _1]
+				string("call")				[at_c<0>(_val) = qi::_1]
+			>>	name_						[at_c<1>(_val) = qi::_1]
 			>>	';'
 		;
 			
 		while_	=
-				string("while")				[at_c<0>(_val) = _1]
-			>>	name_						[at_c<1>(_val) = _1]
+				string("while")				[at_c<0>(_val) = qi::_1]
+			>>	name_						[at_c<1>(_val) = qi::_1]
 			>>	'{'
-			>>	stmtLst_					[push_back(at_c<2>(_val), _1)]
+			>>	stmtLst_					[push_back(at_c<2>(_val), qi::_1)]
 			>>	'}'
 		;
 
 		if_		=
-				string("if")				[at_c<0>(_val) = _1]
-			>>	name_						[at_c<1>(_val) = _1]
-			>>	then_						[push_back(at_c<2>(_val), _1)]
-			>>	else_						[push_back(at_c<2>(_val), _1)]
+				string("if")				[at_c<0>(_val) = qi::_1]
+			>>	name_						[at_c<1>(_val) = qi::_1]
+			>>	then_						[push_back(at_c<2>(_val), qi::_1)]
+			>>	else_						[push_back(at_c<2>(_val), qi::_1)]
 		;
 
 		then_	=
-				string("then")				[at_c<0>(_val) = _1]
+				string("then")				[at_c<0>(_val) = qi::_1]
 			>>	'{'
-			>>	stmtLst_					[push_back(at_c<2>(_val), _1)]
+			>>	stmtLst_					[push_back(at_c<2>(_val), qi::_1)]
 			>>	'}'
 		;
 
 		else_	=
-				string("else")				[at_c<0>(_val) = _1]
+				string("else")				[at_c<0>(_val) = qi::_1]
 			>>	'{'
-			>>	stmtLst_					[push_back(at_c<2>(_val), _1)]
+			>>	stmtLst_					[push_back(at_c<2>(_val), qi::_1)]
 			>>	'}'
 		;
 
 		assign_	=
-				name_						[at_c<0>(_val) = "assign"][at_c<1>(_val) = _1]
+				name_						[at_c<0>(_val) = "assign"][at_c<1>(_val) = qi::_1]
 			>>	'='
-			>>	expr_						[push_back(at_c<2>(_val), _1)]
+			>>	expr_						[push_back(at_c<2>(_val), qi::_1)]
 			>>	';'
 		;
 
-		expr_ =	term_                       [_val = _1]
-            >> *(   ('+' >> term_           [_val += _1])
-            |   ('-' >> term_			    [_val -= _1])
+		expr_ =	term_                       [_val = qi::_1]
+            >> *(   ('+' >> term_           [_val += qi::_1])
+            |   ('-' >> term_			    [_val -= qi::_1])
                 )
         ;
 
-		term_ =	factor_                     [_val = _1]
-            >> *(   ('*' >> factor_         [_val *= _1])
-                |   ('/' >> factor_         [_val /= _1])
+		term_ =	factor_                     [_val = qi::_1]
+            >> *(   ('*' >> factor_         [_val *= qi::_1])
+                |   ('/' >> factor_         [_val /= qi::_1])
                 )
         ;
 
 		factor_ =
-				name_                          [_val = _1]
-            |   '(' >> expr_                [_val = _1] >> ')'
+				name_                          [_val = qi::_1]
+            |   '(' >> expr_                [_val = qi::_1] >> ')'
         ;
 			
 		stmt_	 %= (call_ | while_ | if_ | assign_);
 
 		stmtLst_
-				= +stmt_					[at_c<0>(_val) = "stmtLst"][push_back(at_c<2>(_val), _1)]
+				= +stmt_					[at_c<0>(_val) = "stmtLst"][push_back(at_c<2>(_val), qi::_1)]
 		;
 			
 		procedure_
 				= 
-				string("procedure")			[at_c<0>(_val) = _1]
-			>>	name_						[at_c<1>(_val) = _1]
+				string("procedure")			[at_c<0>(_val) = qi::_1]
+			>>	name_						[at_c<1>(_val) = qi::_1]
 			>>	'{'
-			>>	stmtLst_					[push_back(at_c<2>(_val), _1)]
+			>>	stmtLst_					[push_back(at_c<2>(_val), qi::_1)]
 			>>	'}'
 		;
 			
         program_
-				=	+procedure_				[at_c<0>(_val) = "program"][push_back(at_c<2>(_val), _1)]
+				=	+procedure_				[at_c<0>(_val) = "program"][push_back(at_c<2>(_val), qi::_1)]
 		;
 			
     }
