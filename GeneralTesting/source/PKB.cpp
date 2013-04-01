@@ -801,18 +801,17 @@ void PKB::startBuildCfg() {
 	
 	for (std::vector<std::pair<int,int>>::iterator it = callList.begin() ; it != callList.end(); ++it){
 
-		CFGNode call = cfg.getCFG()[it->first] ;
 		int bipStart = procTable.getCFGStart(it->second);
 		int bipEnd = procTable.getCFGEnd(it->second);
-		std::vector<int> afterCall = call.getNext();
+		std::vector<int> afterCall = cfg.getCFG()[it->first].getNext();
 
-		call.addBipNext(bipStart);
-		cfg.getCFG()[bipStart].addBipPrev(it->first);
+		cfg.addBipNext(it->first, bipStart);
+		cfg.addBipPrev(bipStart, it->first);
 
 		// set return to all nodes after call
 		for (std::vector<int>::iterator j = afterCall.begin() ; j != afterCall.end(); ++j) {
-			cfg.getCFG()[*j].addBipPrev(bipEnd);
-			cfg.getCFG()[bipEnd].addBipNext(*j);
+			cfg.addBipPrev(*j, bipEnd);
+			cfg.addBipNext(bipEnd, *j);
 		}
 	}
 

@@ -1,3 +1,12 @@
 stmt s; 
-Select s such that NextBip(2, s);
-Select s such that NextBip(2, s);
+
+Select s such that NextBip*(3, s)
+Select s such that NextBip*(4, s)
+Select s such that NextBip*(9, s)
+Select s such that NextBip*(7, s)
+
+Select s such that NextBip(2, s)
+Select s such that NextBip(10, s)
+Select s such that NextBip(11, s)
+Select s such that NextBip(8, s)
+Select s such that NextBip(5, s)

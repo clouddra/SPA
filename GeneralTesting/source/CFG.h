@@ -50,7 +50,8 @@ private:
 	int insertCFGNode();
 	void print();
 
-
+	void addBipNext(int nodeIndex, int next);
+	void addBipPrev(int nodeIndex, int prev);
 };
 /*
 GNODE createGNode (TNODE astNode, INDEX nodeType, STMT stmtNum, GNODE prevNode)

@@ -46,7 +46,7 @@ std::vector<int> CFG::getNextBip(int stmt1, int nodeIndex){
 			
 			// if dummy, we must do recursive bip
 			else
-				getNextBip(-1, nodeIndex, stmtList);
+				getNextBip(-1, *j, stmtList);
 		}
 	}
 
@@ -167,7 +167,7 @@ std::vector<int> CFG::getNextBipT(int stmt1, int nodeIndex){
 
 	// for normal next, no recusive return. Instead we branch to all possible callers
 
-	std::vector<int> nextNodes = cfg[nodeIndex].getBipNext();
+	std::vector<int> nextNodes = cfg[nodeIndex].getNext();
 	for (std::vector<int>::iterator j = nextNodes.begin() ; j != nextNodes.end(); ++j) {
 		getNextBipT(*j, stmtList, visited, false);
 	}
@@ -207,9 +207,9 @@ void CFG::getNextBipT(int nodeIndex, std::unordered_set<int> &stmtList, std::vec
 	}
 
 	// do normal next after branching, returning from function
-	std::vector<int> nextNodes = cfg[nodeIndex].getBipNext();
+	std::vector<int> nextNodes = cfg[nodeIndex].getNext();
 	for (std::vector<int>::iterator j = nextNodes.begin() ; j != nextNodes.end(); ++j) {
-		getNextBipT(*j, stmtList, visited, false);
+		getNextBipT(*j, stmtList, visited, recursive);
 	}
 
 }
@@ -454,15 +454,15 @@ void CFG::print()
 	}
 }
 
-/*
-void CFG::setBipStart(int nodeIndex, int start){
-cfg.at(nodeIndex).setBipStart(start);
+
+void CFG::addBipNext(int nodeIndex, int next){
+	cfg.at(nodeIndex).addBipNext(next);
 }
 
-void CFG::setBipEnd(int nodeIndex, int end){
-cfg.at(nodeIndex).setBipEnd(end);
+void CFG::addBipPrev(int nodeIndex, int prev){
+	cfg.at(nodeIndex).addBipPrev(prev);
 }
-*/
+
 
 void CFG::fillStmtInNode(std::unordered_set<int> &stmtList, CFGNode nextNode){
 	for (int i=nextNode.getStart(); i<=nextNode.getEnd(); i++)
