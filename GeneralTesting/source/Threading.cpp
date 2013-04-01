@@ -34,7 +34,7 @@ Threading::~Threading() {
 // [Affects
 
 // Affects(a1, a1)
-std::vector<int> Threading::processAffectsSameVarStart(std::vector<int>& para1Val, PKB pkb, int i) {
+std::vector<int> Threading::processAffectsSameVarStart(std::vector<int>& para1Val, PKB& pkb, int i) {
 	std::vector<int> result;
 	std::vector<int> temp2;
     temp2 = pkb.getAffectsStart(para1Val[i]);
@@ -47,7 +47,7 @@ std::vector<int> Threading::processAffectsSameVarStart(std::vector<int>& para1Va
 	return result;
 }
 
-void Threading::processAffectsSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB pkb) {
+void Threading::processAffectsSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
     for (int i = 0; i < (int)para1Val.size(); i++) {
 		if (i%nThreads == 0 && i > 0) {
 			tGroup.join_all();
@@ -79,7 +79,7 @@ void Threading::processAffectsSameVarDriver(std::vector<int>& temp, std::vector<
 }
 
 // Affects(a1, a2) from start
-std::vector<std::vector<std::string>> Threading::processAffectsDiffVarStart(std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB pkb, int i) {
+std::vector<std::vector<std::string>> Threading::processAffectsDiffVarStart(std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
 	std::vector<std::vector<std::string>> toStoreTuple;
@@ -95,7 +95,7 @@ std::vector<std::vector<std::string>> Threading::processAffectsDiffVarStart(std:
 }
 
 // Affects(a1, a2) from end
-std::vector<std::vector<std::string>> Threading::processAffectsDiffVarEnd(std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB pkb, int i) {
+std::vector<std::vector<std::string>> Threading::processAffectsDiffVarEnd(std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
 	std::vector<std::vector<std::string>> toStoreTuple;
@@ -111,7 +111,7 @@ std::vector<std::vector<std::string>> Threading::processAffectsDiffVarEnd(std::v
 }
 
 void Threading::processAffectsDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
-							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB pkb) {
+							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb) {
     if (isPara1) {
         for (int i = 0; i < (int)para1ValInt.size(); i++) {
 			if (i%nThreads == 0 && i > 0) {
@@ -181,7 +181,7 @@ void Threading::processAffectsDiffVarDriver(std::vector<std::vector<std::string>
 // [Affects*
 
 // Affects*(a1, a1)
-std::vector<int> Threading::processAffectsTSameVarStart(std::vector<int>& para1Val, PKB pkb, int i) {
+std::vector<int> Threading::processAffectsTSameVarStart(std::vector<int>& para1Val, PKB& pkb, int i) {
 	std::vector<int> result;
 	std::vector<int> temp2;
     temp2 = pkb.getAffectsTStart(para1Val[i]);
@@ -194,7 +194,7 @@ std::vector<int> Threading::processAffectsTSameVarStart(std::vector<int>& para1V
 	return result;
 }
 
-void Threading::processAffectsTSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB pkb) {
+void Threading::processAffectsTSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
     for (int i = 0; i < (int)para1Val.size(); i++) {
 		if (i%nThreads == 0 && i > 0) {
 			tGroup.join_all();
@@ -226,7 +226,7 @@ void Threading::processAffectsTSameVarDriver(std::vector<int>& temp, std::vector
 }
 
 // Affects*(a1, a2) from start
-std::vector<std::vector<std::string>> Threading::processAffectsTDiffVarStart(std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB pkb, int i) {
+std::vector<std::vector<std::string>> Threading::processAffectsTDiffVarStart(std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
 	std::vector<std::vector<std::string>> toStoreTuple;
@@ -242,7 +242,7 @@ std::vector<std::vector<std::string>> Threading::processAffectsTDiffVarStart(std
 }
 
 // Affects*(a1, a2) from end
-std::vector<std::vector<std::string>> Threading::processAffectsTDiffVarEnd(std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB pkb, int i) {
+std::vector<std::vector<std::string>> Threading::processAffectsTDiffVarEnd(std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
 	std::vector<std::vector<std::string>> toStoreTuple;
@@ -258,7 +258,7 @@ std::vector<std::vector<std::string>> Threading::processAffectsTDiffVarEnd(std::
 }
 
 void Threading::processAffectsTDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
-							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB pkb) {
+							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb) {
     if (isPara1) {
         for (int i = 0; i < (int)para1ValInt.size(); i++) {
 			if (i%nThreads == 0 && i > 0) {

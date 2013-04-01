@@ -1530,6 +1530,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
                 if (para1Val.size() == 0) {
                     return -1;
                 }
+				#ifndef ENABLE_THREADING
                 for (int i = 0; i < (int)para1Val.size(); i++) {
                     std::vector<int> temp2;
                     temp2 = pkb.getAffectsTStart(para1Val[i]);
@@ -1540,6 +1541,10 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
                         }
                     }
                 }
+				#else
+				Threading threading;
+				threading.processAffectsTSameVarDriver(temp, para1Val, pkb);
+				#endif
                 toStore = intVecToStringVec(temp);
                 int ret = resultStore.insertResult(para1, toStore);
                 if (ret == -1) {  // Exit cond
@@ -1563,6 +1568,8 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
 				}
 
                 std::vector<std::vector<std::string>> toStoreTuple;
+
+				#ifndef ENABLE_THREADING
                 if (isPara1) {
                     for (int i = 0; i < (int)para1ValInt.size(); i++) {
                         temp = pkb.getAffectsTStart(para1ValInt[i]);
@@ -1587,6 +1594,11 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
                         }
                     }
                 }
+				#else
+				Threading threading;
+				threading.processAffectsDiffVarDriver(toStoreTuple, para1ValString, para1ValInt, para2ValString, para2ValInt, isPara1, pkb);
+				#endif
+
                 int ret = resultStore.insertResult(para1, para2, toStoreTuple);
                 if (ret == -1)
                     return -1;
