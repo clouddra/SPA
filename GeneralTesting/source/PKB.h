@@ -95,6 +95,8 @@ private:
     UsesTable usesTable;
     StmtNodeTable stmtNodeTable;
     std::set<int> constantList;
+	std::unordered_map<int, std::vector<int>> affectsMapStart;
+	std::unordered_map<int, std::vector<int>> affectsMapEnd;
 	void addCFGtoStmtNodeTable(int cfgNode, int startStmt, int endStmt);
 		void addCFGBiptoStmtNodeTable(int cfgBipNode, int startStmt, int endStmt);
 public:
@@ -178,6 +180,8 @@ public:
 	std::vector<int> getAffectsTEnd(int end);
 	std::vector<int> depthUpT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::unordered_set<int> ignoreSet);
 	std::vector<int> depthDownT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::unordered_set<int> ignoreSet);
+	std::vector<int> getAffectsStartAPI(int start);
+	std::vector<int> getAffectsEndAPI(int end);
 
 	void printModifiesTable();
 	AST PKB::getAST();

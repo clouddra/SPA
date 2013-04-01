@@ -1108,6 +1108,32 @@ std::vector<int> PKB::getAffectsStart(int start)
 	return toReturn;
 }
 
+// Simple-caching for Affects
+std::vector<int> PKB::getAffectsStartAPI(int start)
+{
+	if (affectsMapStart.count(start) > 0)
+		return affectsMapStart[start];
+	else
+	{
+		std::vector<int> ans = getAffectsStart(start);
+		affectsMapStart[start] = ans;
+		return ans;
+	}
+}
+
+std::vector<int> PKB::getAffectsEndAPI(int end)
+{
+	if (affectsMapEnd.count(end) > 0)
+		return affectsMapEnd[end];
+	else
+	{
+		std::vector<int> ans = getAffectsEnd(end);
+		affectsMapEnd[end] = ans;
+		return ans;
+	}
+}
+
+
 std::vector<int> PKB::getAffectsEnd(int end)
 {
 	std::vector<int> toReturn;
