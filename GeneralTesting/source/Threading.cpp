@@ -1,6 +1,5 @@
-#ifdef ENABLE_THREADING
 #include "Threading.h"
-#include "QueryProcessor.h"
+#ifdef ENABLE_THREADING
 
 class Worker {
 private:
