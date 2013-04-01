@@ -279,15 +279,15 @@ namespace pqlparser
 			DIGIT_ %= lexeme[char_("0-9")];
 			INTEGER_ %= +DIGIT_;
 			IDENT_ %= LETTER_ >> *(LETTER_ | DIGIT_ | lexeme[char_('#')]);
-			NAME_ = lexeme[+(char_ - ')' - '(' - qi::space - '+' - '-' - '*' - '/' - '=' - ';' - '"' - '{' - '}')			[_val += _1]];
+			NAME_ = lexeme[+(char_ - ')' - '(' - qi::space - '+' - '-' - '*' - '/' - '=' - ';' - '"' - '{' - '}')			[_val += qi::_1]];
 
 			// Auxiliary grammar rules
-			tuple_ = elem_					[at_c<0>(_val) = "elem"][push_back(at_c<2>(_val), _1)]
-				| '<' >> elem_				[at_c<0>(_val) = "elem"][push_back(at_c<2>(_val), _1)]
-				>> *(',' >> elem_			[at_c<0>(_val) = "tuple"][push_back(at_c<2>(_val), _1)]) 
+			tuple_ = elem_					[at_c<0>(_val) = "elem"][push_back(at_c<2>(_val), qi::_1)]
+				| '<' >> elem_				[at_c<0>(_val) = "elem"][push_back(at_c<2>(_val), qi::_1)]
+				>> *(',' >> elem_			[at_c<0>(_val) = "tuple"][push_back(at_c<2>(_val), qi::_1)]) 
 				>> '>';
-			elem_ = hold[synonym_[at_c<0>(_val) = "synonym"][push_back(at_c<2>(_val), _1)]] 
-				| attrRef_ [at_c<0>(_val) = "attrRef"][push_back(at_c<2>(_val), _1)];
+			elem_ = hold[synonym_[at_c<0>(_val) = "synonym"][push_back(at_c<2>(_val), qi::_1)]] 
+				| attrRef_ [at_c<0>(_val) = "attrRef"][push_back(at_c<2>(_val), qi::_1)];
 			synonym_ %= IDENT_;
 			attrName_ %= string("procName") | string("varName") | string("value") | string("stmt#");
 			varRef_ %= synonym_ | char_('_') | (char_('"') >> IDENT_ >> char_('"'));
@@ -309,136 +309,136 @@ namespace pqlparser
 			// Grammar rules for select clause
 			
 			select_cl_ = 
-				*declaration_				[push_back(at_c<2>(_val), _1)]
+				*declaration_				[push_back(at_c<2>(_val), qi::_1)]
 				>> string("Select")			[at_c<0>(_val) = "select"]
-				>> result_cl_				[push_back(at_c<2>(_val), _1)]
-				>> *(suchthat_cl_ | with_cl_ | pattern_cl_)	[push_back(at_c<2>(_val), _1)]
+				>> result_cl_				[push_back(at_c<2>(_val), qi::_1)]
+				>> *(suchthat_cl_ | with_cl_ | pattern_cl_)	[push_back(at_c<2>(_val), qi::_1)]
 				;
 
 			result_cl_ = 
-				tuple_						[at_c<0>(_val) = "result"][push_back(at_c<2>(_val), _1)]
+				tuple_						[at_c<0>(_val) = "result"][push_back(at_c<2>(_val), qi::_1)]
 				;
 
 			declaration_ = 
-				design_entity_				[at_c<0>(_val) = "declaration"][at_c<1>(_val) = _1]
-				>> synonym_					[push_back(at_c<2>(_val), _1)]
+				design_entity_				[at_c<0>(_val) = "declaration"][at_c<1>(_val) = qi::_1]
+				>> synonym_					[push_back(at_c<2>(_val), qi::_1)]
 				>> *(','					
-				>> synonym_)				[push_back(at_c<2>(_val), _1)]
+				>> synonym_)				[push_back(at_c<2>(_val), qi::_1)]
 				>> ';'
 				;
 			
 				/*
 			suchthat_cl_ = 
 				string("such that")			[at_c<0>(_val) = "such that"]
-				>> relRef_					[push_back(at_c<2>(_val), _1)]
+				>> relRef_					[push_back(at_c<2>(_val), qi::_1)]
 				;
 				*/
 			suchthat_cl_ = 
 				string("such that")			[at_c<0>(_val) = "such that"]
-				>> relCond_					[push_back(at_c<2>(_val), _1)]
+				>> relCond_					[push_back(at_c<2>(_val), qi::_1)]
 				;
 
 			pattern_cl_ = 
 				string("pattern")			[at_c<0>(_val) = "pattern"]
-				>> patternCond_				[push_back(at_c<2>(_val), _1)]
+				>> patternCond_				[push_back(at_c<2>(_val), qi::_1)]
 				;
 
 			with_cl_ = 
 				string("with")				[at_c<0>(_val) = "with"]
-				>> attrCond_				[push_back(at_c<2>(_val), _1)]
+				>> attrCond_				[push_back(at_c<2>(_val), qi::_1)]
 				;
 
 			attrCond_ = 
-				attrCompare_				[at_c<0>(_val) = "attrCompare"][push_back(at_c<2>(_val), _1)]
-				>> *("and" >> attrCompare_  [push_back(at_c<2>(_val), _1)])		
+				attrCompare_				[at_c<0>(_val) = "attrCompare"][push_back(at_c<2>(_val), qi::_1)]
+				>> *("and" >> attrCompare_  [push_back(at_c<2>(_val), qi::_1)])		
 				;
 
 			attrCompare_ = 
 				hold[
-				(attrRef_					[at_c<0>(_val) = "attrCompare_attrRef"][push_back(at_c<2>(_val), _1)]
+				(attrRef_					[at_c<0>(_val) = "attrCompare_attrRef"][push_back(at_c<2>(_val), qi::_1)]
 				>> string("=")
-				>> ref_						[push_back(at_c<2>(_val), _1)]
+				>> ref_						[push_back(at_c<2>(_val), qi::_1)]
 				)
 				]
 				|
 				(
-				synonym_					[at_c<0>(_val) = "attrCompare_synonym"][push_back(at_c<2>(_val), _1)]
+				synonym_					[at_c<0>(_val) = "attrCompare_synonym"][push_back(at_c<2>(_val), qi::_1)]
 				>> string("=")
-				>> ref_pl_					[push_back(at_c<2>(_val), _1)]
+				>> ref_pl_					[push_back(at_c<2>(_val), qi::_1)]
 				)
 				;
 
 			ref_pl_ =
-				INTEGER_					[at_c<0>(_val) = "ref_pl_integer"][push_back(at_c<2>(_val), _1)]
-				| attrRef_					[at_c<0>(_val) = "ref_pl_attrRef"][push_back(at_c<2>(_val), _1)]
+				INTEGER_					[at_c<0>(_val) = "ref_pl_integer"][push_back(at_c<2>(_val), qi::_1)]
+				| attrRef_					[at_c<0>(_val) = "ref_pl_attrRef"][push_back(at_c<2>(_val), qi::_1)]
 				;
 
 			attrRef_ =
-				synonym_					[at_c<0>(_val) = "attrRef"][push_back(at_c<2>(_val), _1)]
+				synonym_					[at_c<0>(_val) = "attrRef"][push_back(at_c<2>(_val), qi::_1)]
 				>> string(".")
-				>> attrName_				[push_back(at_c<2>(_val), _1)]
+				>> attrName_				[push_back(at_c<2>(_val), qi::_1)]
 				;
 			
 			ref_ =
-				('"' >> IDENT_ >> '"')		[at_c<0>(_val) = "ref_ident"][push_back(at_c<2>(_val), _1)]
-				| INTEGER_					[at_c<0>(_val) = "ref_integer"][push_back(at_c<2>(_val), _1)]
-				| attrRef_					[at_c<0>(_val) = "ref_attrRef"][push_back(at_c<2>(_val), _1)]
+				('"' >> IDENT_ >> '"')		[at_c<0>(_val) = "ref_ident"][push_back(at_c<2>(_val), qi::_1)]
+				| INTEGER_					[at_c<0>(_val) = "ref_integer"][push_back(at_c<2>(_val), qi::_1)]
+				| attrRef_					[at_c<0>(_val) = "ref_attrRef"][push_back(at_c<2>(_val), qi::_1)]
 				;
 				
 			patternCond_ =
-				pattern_					[at_c<0>(_val) = "patternCond"][push_back(at_c<2>(_val), _1)]
-				>> *("and" >> pattern_      [push_back(at_c<2>(_val), _1)])	
+				pattern_					[at_c<0>(_val) = "patternCond"][push_back(at_c<2>(_val), qi::_1)]
+				>> *("and" >> pattern_      [push_back(at_c<2>(_val), qi::_1)])	
 				;
 
 			pattern_ %= hold[if_] | assign_or_while_;
 			
 			expression_spec_ = 
-				(('"' >> expr_ [at_c<0>(_val) = "expr_no_underscore"][push_back(at_c<2>(_val), _1)] >> '"') 
-				| (lit('_') >> '"' >> expr_ [at_c<0>(_val) = "expr_with_underscore"][push_back(at_c<2>(_val), _1)] >> '"' >> lit('_')))
+				(('"' >> expr_ [at_c<0>(_val) = "expr_no_underscore"][push_back(at_c<2>(_val), qi::_1)] >> '"') 
+				| (lit('_') >> '"' >> expr_ [at_c<0>(_val) = "expr_with_underscore"][push_back(at_c<2>(_val), qi::_1)] >> '"' >> lit('_')))
 				;
 
-			expr_ =	term_                       [_val = _1]
-                >> *(   ('+' >> term_           [_val += _1])
-                |   ('-' >> term_			    [_val -= _1])
+			expr_ =	term_                       [_val = qi::_1]
+                >> *(   ('+' >> term_           [_val += qi::_1])
+                |   ('-' >> term_			    [_val -= qi::_1])
                     )
 				;
 
-			term_ =	factor_                     [_val = _1]
-                >> *(   ('*' >> factor_         [_val *= _1])
-                    |   ('/' >> factor_         [_val /= _1])
+			term_ =	factor_                     [_val = qi::_1]
+                >> *(   ('*' >> factor_         [_val *= qi::_1])
+                    |   ('/' >> factor_         [_val /= qi::_1])
                     )
 				;
 
 			factor_ =
-				 NAME_                          [_val = _1]
+				 NAME_                          [_val = qi::_1]
                 |   '(' 
-				>> expr_						[_val = _1] 
+				>> expr_						[_val = qi::_1] 
 				>> ')'
 				;
 
 			assign_or_while_ = 
-				synonym_					[at_c<0>(_val) = "pattern_assign_or_while_"][push_back(at_c<2>(_val), _1)]
+				synonym_					[at_c<0>(_val) = "pattern_assign_or_while_"][push_back(at_c<2>(_val), qi::_1)]
 				>> '('
-				>> varRef_					[push_back(at_c<2>(_val), _1)]
+				>> varRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ','
-				>> (expression_spec_ | string("_")) 	[push_back(at_c<2>(_val), _1)]
+				>> (expression_spec_ | string("_")) 	[push_back(at_c<2>(_val), qi::_1)]
 				>> ')'
 				;
 				
 			if_ = 
-				synonym_					[at_c<0>(_val) = "pattern_if_"][push_back(at_c<2>(_val), _1)]
+				synonym_					[at_c<0>(_val) = "pattern_if_"][push_back(at_c<2>(_val), qi::_1)]
 				>> '('
-				>> varRef_					[push_back(at_c<2>(_val), _1)]
+				>> varRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ','
-				>> string("_")				[push_back(at_c<2>(_val), _1)]
+				>> string("_")				[push_back(at_c<2>(_val), qi::_1)]
 				>> ','
-				>> string("_")				[push_back(at_c<2>(_val), _1)]
+				>> string("_")				[push_back(at_c<2>(_val), qi::_1)]
 				>> ')'
 				;
 
 			relCond_ =
-				relRef_						[at_c<0>(_val) = "relcond_"][push_back(at_c<2>(_val), _1)]
-				>> *("and" >> relRef_       [push_back(at_c<2>(_val), _1)])		
+				relRef_						[at_c<0>(_val) = "relcond_"][push_back(at_c<2>(_val), qi::_1)]
+				>> *("and" >> relRef_       [push_back(at_c<2>(_val), qi::_1)])		
 				;
 
 			relRef_ %= ModifiesS_ | ModifiesP_ | UsesS_ | UsesP_ | Parent_ | ParentT_ | Follows_ 
@@ -447,144 +447,144 @@ namespace pqlparser
 			ModifiesS_ = 
 				string("Modifies")			[at_c<0>(_val) = "modifiess"]
 				>> '('
-				>> stmtRef_					[push_back(at_c<2>(_val), _1)]
+				>> stmtRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ',' 
-				>> varRef_					[push_back(at_c<2>(_val), _1)]
+				>> varRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ')'
 				;
 
 			ModifiesP_ = 
 				string("Modifies")			[at_c<0>(_val) = "modifiesp"]
 				>> '('
-				>> entRef_					[push_back(at_c<2>(_val), _1)]
+				>> entRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ',' 
-				>> varRef_					[push_back(at_c<2>(_val), _1)]
+				>> varRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ')'
 				;
 
 			UsesS_ = 
 				string("Uses")				[at_c<0>(_val) = "usess"]
 				>> '(' 
-				>> stmtRef_					[push_back(at_c<2>(_val), _1)]					
+				>> stmtRef_					[push_back(at_c<2>(_val), qi::_1)]					
 				>> ',' 
-				>> varRef_					[push_back(at_c<2>(_val), _1)]
+				>> varRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ')'
 				;
 
 			UsesP_ = 
 				string("Uses")				[at_c<0>(_val) = "usesp"]
 				>> '(' 
-				>> entRef_					[push_back(at_c<2>(_val), _1)]					
+				>> entRef_					[push_back(at_c<2>(_val), qi::_1)]					
 				>> ',' 
-				>> varRef_					[push_back(at_c<2>(_val), _1)]
+				>> varRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ')'
 				;
 
 			Parent_ = 
 				string("Parent")			[at_c<0>(_val) = "parent"]
 				>> '(' 
-				>> stmtRef_					[push_back(at_c<2>(_val), _1)]	
+				>> stmtRef_					[push_back(at_c<2>(_val), qi::_1)]	
 				>> ',' 
-				>> stmtRef_					[push_back(at_c<2>(_val), _1)]	
+				>> stmtRef_					[push_back(at_c<2>(_val), qi::_1)]	
 				>> ')'
 				;
 
 			ParentT_ = 
 				string("Parent*")			[at_c<0>(_val) = "parentt"]
 				>> '('
-				>> stmtRef_					[push_back(at_c<2>(_val), _1)]	
+				>> stmtRef_					[push_back(at_c<2>(_val), qi::_1)]	
 				>> ','
-				>> stmtRef_					[push_back(at_c<2>(_val), _1)]	
+				>> stmtRef_					[push_back(at_c<2>(_val), qi::_1)]	
 				>> ')'
 				;
 
 			Follows_ = 
 				string("Follows")			[at_c<0>(_val) = "follows"]
 				>> char_('(') 
-				>> stmtRef_					[push_back(at_c<2>(_val), _1)]	
+				>> stmtRef_					[push_back(at_c<2>(_val), qi::_1)]	
 				>> char_(',') 
-				>> stmtRef_					[push_back(at_c<2>(_val), _1)]	
+				>> stmtRef_					[push_back(at_c<2>(_val), qi::_1)]	
 				>> char_(')')
 				;
 
 			FollowsT_ = 
 				string("Follows*")			[at_c<0>(_val) = "followst"]
 				>> char_('(') 
-				>> stmtRef_					[push_back(at_c<2>(_val), _1)]	
+				>> stmtRef_					[push_back(at_c<2>(_val), qi::_1)]	
 				>> char_(',')				
-				>> stmtRef_					[push_back(at_c<2>(_val), _1)]	
+				>> stmtRef_					[push_back(at_c<2>(_val), qi::_1)]	
 				>> char_(')')
 				;
 
 			Calls_ =
 				string("Calls")				[at_c<0>(_val) = "calls"]
 				>> '('
-				>> entRef_					[push_back(at_c<2>(_val), _1)]	
+				>> entRef_					[push_back(at_c<2>(_val), qi::_1)]	
 				>> ','
-				>> entRef_					[push_back(at_c<2>(_val), _1)]	
+				>> entRef_					[push_back(at_c<2>(_val), qi::_1)]	
 				>> ')'
 				;
 
 			CallsT_ =
 				string("Calls*")			[at_c<0>(_val) = "callst"]
 				>> '('
-				>> entRef_					[push_back(at_c<2>(_val), _1)]	
+				>> entRef_					[push_back(at_c<2>(_val), qi::_1)]	
 				>> ','
-				>> entRef_					[push_back(at_c<2>(_val), _1)]	
+				>> entRef_					[push_back(at_c<2>(_val), qi::_1)]	
 				>> ')'
 				;
 
 			Next_ =
 				string("Next")				[at_c<0>(_val) = "next"]
 				>> '('
-				>> lineRef_					[push_back(at_c<2>(_val), _1)]
+				>> lineRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ','
-				>> lineRef_					[push_back(at_c<2>(_val), _1)]
+				>> lineRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ')'
 				;
 
 			NextT_ =
 				string("Next*")				[at_c<0>(_val) = "nextt"]
 				>> '('
-				>> lineRef_					[push_back(at_c<2>(_val), _1)]
+				>> lineRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ','
-				>> lineRef_					[push_back(at_c<2>(_val), _1)]
+				>> lineRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ')'
 				;
 
 			Affects_ =
 				string("Affects")			[at_c<0>(_val) = "affects"]
 				>> '('
-				>> stmtRef_					[push_back(at_c<2>(_val), _1)]
+				>> stmtRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ','
-				>> stmtRef_					[push_back(at_c<2>(_val), _1)]
+				>> stmtRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ')'
 				;
 
 			AffectsT_ =
 				string("Affects*")			[at_c<0>(_val) = "affectst"]
 				>> '('
-				>> stmtRef_					[push_back(at_c<2>(_val), _1)]
+				>> stmtRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ','
-				>> stmtRef_					[push_back(at_c<2>(_val), _1)]
+				>> stmtRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ')'
 				;
 
 			NextBip_ =
 				string("NextBip")			[at_c<0>(_val) = "nextbip"]
 				>> '('
-				>> lineRef_					[push_back(at_c<2>(_val), _1)]
+				>> lineRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ','
-				>> lineRef_					[push_back(at_c<2>(_val), _1)]
+				>> lineRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ')'
 				;
 
 			NextBipT_ =
 				string("NextBip*")			[at_c<0>(_val) = "nextbipt"]
 				>> '('
-				>> lineRef_					[push_back(at_c<2>(_val), _1)]
+				>> lineRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ','
-				>> lineRef_					[push_back(at_c<2>(_val), _1)]
+				>> lineRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ')'
 				;
         }

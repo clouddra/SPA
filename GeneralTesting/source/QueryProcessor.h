@@ -28,6 +28,10 @@
 #include "QueryGraph.h"
 #endif
 
+#ifdef ENABLE_THREADING
+#include "Threading.h"
+#endif
+
 #include "AbstractWrapper.h"
 
 class QueryProcessor {
