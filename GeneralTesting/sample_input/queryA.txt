@@ -1,2 +1,2 @@
-assign a;
-Select a such that Affects(1,a)
+assign a1, a2;
+Select a1 such that Affects(a1, a2)

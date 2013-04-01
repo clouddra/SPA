@@ -1409,6 +1409,8 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
 				}
 
                 std::vector<std::vector<std::string>> toStoreTuple;
+
+				#ifndef ENABLE_THREADING
                 if (isPara1) {
                     for (int i = 0; i < (int)para1ValInt.size(); i++) {
                         temp = pkb.getAffectsStartAPI(para1ValInt[i]);
@@ -1433,6 +1435,11 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
                         }
                     }
                 }
+				#else
+				Threading threading;
+				threading.processAffectsDiffVarDriver(toStoreTuple, para1ValString, para1ValInt, para2ValString, para2ValInt, isPara1, pkb);
+				#endif
+
                 int ret = resultStore.insertResult(para1, para2, toStoreTuple);
                 if (ret == -1)
                     return -1;
