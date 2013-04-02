@@ -134,6 +134,7 @@ int main() {
 	for (int i = 0; i < (int)queries.size(); i++) {
 		result = controller.evaluateQuery(queries[i]);
         std::cout << "Result of Query " << i+1 << std::endl;
+        std::cout << queries[i] << std::endl;
         int count = 0;
         while ((int)result.size() > 0) {
             count++;

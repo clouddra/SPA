@@ -251,5 +251,11 @@
     <None Include="..\sample_input\simpleA.txt">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\sample_input\cfgBip.txt">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\sample_input\pqlBip.txt">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

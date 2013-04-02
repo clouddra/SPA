@@ -86,7 +86,9 @@
     <ClCompile Include="..\source\VarTable.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\sample_input\cfgBip.txt" />
     <None Include="..\sample_input\pql.txt" />
+    <None Include="..\sample_input\pqlBip.txt" />
     <None Include="..\sample_input\pqlShort.txt" />
     <None Include="..\sample_input\pqlShortA.txt" />
     <None Include="..\sample_input\simple.txt" />
