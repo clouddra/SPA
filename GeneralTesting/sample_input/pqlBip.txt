@@ -1,5 +1,18 @@
 stmt s; 
 
+Select s such that NextBip*(s, 8)
+Select s such that NextBip*(s, 4)
+Select s such that NextBip*(s, 10)
+Select s such that NextBip*(s, 5)
+Select s such that NextBip*(s, 7)
+
+Select s such that NextBip(s, 9)
+Select s such that NextBip(s, 8)
+Select s such that NextBip(s, 3)
+Select s such that NextBip(s, 4)
+Select s such that NextBip(s, 2)
+Select s such that NextBip(s, 10)
+
 Select s such that NextBip*(3, s)
 Select s such that NextBip*(4, s)
 Select s such that NextBip*(9, s)
