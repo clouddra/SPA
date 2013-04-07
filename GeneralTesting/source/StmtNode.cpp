@@ -1,9 +1,8 @@
 #include "StmtNode.h"
 
-StmtNode::StmtNode(int ast, int cfg, int cfgBip, int type ){
+StmtNode::StmtNode(int ast, int cfg, int type ){
 	astNode = ast;
 	cfgNode = cfg;
-	cfgBipNode = cfgBip;
 	nodeType = type;
 }
 
@@ -19,10 +18,6 @@ int StmtNode::getCFG(){
 	return cfgNode;
 }
 
-int StmtNode::getCFGBip(){
-	return cfgBipNode;
-}
-
 void StmtNode::setAST(int ast){
 	astNode = ast;
 }
@@ -31,8 +26,4 @@ void StmtNode::setType(int type){
 }
 void StmtNode::setCFG(int cfg){
 	cfgNode = cfg;
-}
-
-void StmtNode::setCFGBip(int cfgBip){
-	cfgBipNode=cfgBip;
 }

@@ -6,7 +6,6 @@
 class UsesTable {
 
 private:
-	std::vector<std::pair <int ,int>> usesTable;
 
 	/**
 	 * Index: procedure, Elements: variable used by procedures
@@ -101,62 +100,3 @@ public:
 	 */
 	void compressTables();
 };
-
-
-/*
-5.7 Uses for statements
-STMT[] getUsesVar (VAR var)
-Description:
-
-Returns all statements that uses variable var.
-Else return NULL.
-
-VAR[] getUsedBy (STMT stmtNum)
-Description:
-
-Returns all variables used by a statement.
-Else return NULL.
-
-
-BOOL isUses (STMT stmtNum, VAR var)
-Description:
-    Returns TRUE if stmtNum uses var.
-    Otherwise, return FALSE.
-
-INTEGER getSize()
-Description:
-    Returns the total number of relationships in Uses Table
-
-INDEX getUsesIndex (STMT stmtNum, VAR var)
-Description:
-
-If the Uses relationship between the statement and the variable is in the Uses Table, returns its index.
-    Otherwise, returns -1 (special value)
-
-PAIR<STMT, VAR> extractUses (INDEX ind)
-Description:
-    Returns the relationship of two statements at Uses Table [ind]
-If ind is out of range:
-Throws:
-    InvalidReferenceException
-
-5.8 Uses for procedures
-PROC[] getUsesVarProc (VAR var)
-Description:
-
-Return all procedures that use variable var.
-
-Else return NULL.
-
-VAR[] getUsedByProc (PROC proc)
-Description:
-
-Returns all variables used by procedure proc
-
-Else return NULL.
-
-BOOL isUsesProc (PROC proc, VAR var)
-Description:
-    Returns TRUE if proc uses var.
-    Otherwise, return FALSE.
-*/
