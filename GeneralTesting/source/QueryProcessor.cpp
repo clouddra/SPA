@@ -2795,8 +2795,8 @@ void QueryProcessor::processQuery(PKB pkb) {
                 }
                 // affects query
                 else if (relation.getName().compare("affects") == 0) {
-                    if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::assign_) {                        
-                        if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::assign_) {
+                    if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::stmt_) {                        
+                        if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::assign_ || para1Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::stmt_) {
                             int ret = evaluateAffects(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
                             if (ret == -1)
                                 return;
@@ -2809,8 +2809,8 @@ void QueryProcessor::processQuery(PKB pkb) {
                 }
                 // affects* query
                 else if (relation.getName().compare("affectst") == 0) {
-                    if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::assign_) {                        
-                        if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::assign_) {
+                    if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::stmt_) {                        
+                        if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::assign_ || para1Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::stmt_) {
                             int ret = evaluateAffects(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
                             if (ret == -1)
                                 return;
