@@ -59,7 +59,7 @@ private:
 	int evaluateAssignPattern(std::string pattern, std::string var, int exprRoot, bool varIsEnt, bool varIsPlaceholder, bool hasUnderscore, PKB pkb);
     int evaluateIfWhilePattern(std::string pattern, std::string var, bool varIsEnt, bool varIsPlaceholder, PKB pkb);
     int attrRefChecker(std::string* synonym, std::string* attrName, int* synoType, QueryNode attrRef, PKB pkb);
-    std::vector<std::vector<int>> optimizeQuery(std::vector<QueryNode> tree, int curr);
+    std::vector<std::vector<int>> optimizeQuery(std::vector<QueryNode> tree, int curr, PKB pkb);
 
 public:
 	QueryProcessor();

@@ -131,19 +131,6 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para1IsPlaceho
     std::vector<int> temp;
     std::vector<std::string> toStore;
 
-    // Inserting valid values based on parameter type (if variable)
-    int ret;
-    if (!para1IsNum && !para1IsPlaceholder) {
-        ret = evaluateType(pkb, para1);
-        if (ret == -1) 
-            return -1;
-    }
-    if (!para2IsNum && !para2IsPlaceholder) {
-        int ret2 = evaluateType(pkb, para2);
-        if (ret2 == -1)
-            return -1;
-    }
-
     if (para1IsPlaceholder && para2IsPlaceholder) {
         if (pkb.getFollowsTable() -> getSize() > 0)
             return 0;
@@ -416,19 +403,6 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para1IsPlacehol
     std::vector<int> temp;
     std::vector<std::string> toStore;
 
-    // Inserting valid values based on parameter type (if variable)
-    int ret;
-    if (!para1IsNum && !para1IsPlaceholder) {
-        ret = evaluateType(pkb, para1);
-        if (ret == -1) 
-            return -1;
-    }
-    if (!para2IsNum && !para2IsPlaceholder) {
-        int ret2 = evaluateType(pkb, para2);
-        if (ret2 == -1)
-            return -1;
-    }
-
     if (para1IsPlaceholder && para2IsPlaceholder) {
         if (pkb.getParentTable() -> getSize() > 0)
             return 0;
@@ -699,19 +673,6 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para1IsPlacehol
 int QueryProcessor::evaluateNext(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
-
-    // Inserting valid values based on parameter type (if variable)
-    int ret;
-    if (!para1IsNum && !para1IsPlaceholder) {
-        ret = evaluateType(pkb, para1);
-        if (ret == -1) 
-            return -1;
-    }
-    if (!para2IsNum && !para2IsPlaceholder) {
-        int ret2 = evaluateType(pkb, para2);
-        if (ret2 == -1)
-            return -1;
-    }
 
     if (para1IsPlaceholder && para2IsPlaceholder) {
         if (pkb.getNumStmts() > 1)
@@ -984,19 +945,6 @@ int QueryProcessor::evaluateNextBip(bool T, bool para1IsNum, bool para1IsPlaceho
     std::vector<int> temp;
     std::vector<std::string> toStore;
 
-    // Inserting valid values based on parameter type (if variable)
-    int ret;
-    if (!para1IsNum && !para1IsPlaceholder) {
-        ret = evaluateType(pkb, para1);
-        if (ret == -1) 
-            return -1;
-    }
-    if (!para2IsNum && !para2IsPlaceholder) {
-        int ret2 = evaluateType(pkb, para2);
-        if (ret2 == -1)
-            return -1;
-    }
-
     if (para1IsPlaceholder && para2IsPlaceholder) {
         if (pkb.getNumStmts() > 1)
             return 0;
@@ -1267,19 +1215,6 @@ int QueryProcessor::evaluateNextBip(bool T, bool para1IsNum, bool para1IsPlaceho
 int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
-
-    // Inserting valid values based on parameter type (if variable)
-    int ret;
-    if (!para1IsNum && !para1IsPlaceholder) {
-        ret = evaluateType(pkb, para1);
-        if (ret == -1) 
-            return -1;
-    }
-    if (!para2IsNum && !para2IsPlaceholder) {
-        int ret2 = evaluateType(pkb, para2);
-        if (ret2 == -1)
-            return -1;
-    }
 
     if (para1IsPlaceholder && para2IsPlaceholder) {
         return 0;
@@ -1613,19 +1548,6 @@ int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para2IsEnt, bool par
     std::vector<int> temp;
     std::vector<std::string> toStore;
 
-    // Inserting valid values based on parameter type (if variable)
-    int ret;
-    if (!para1IsNum) {
-        ret = evaluateType(pkb, para1);
-        if (ret == -1) 
-            return -1;
-    }
-    if (!para2IsEnt && !para2IsPlaceholder) {
-        int ret2 = evaluateType(pkb, para2);
-        if (ret2 == -1)
-            return -1;
-    }
-
     // Inserting valid values based on PKB tables 
     if (para1IsNum) {
         if (para2IsEnt) {
@@ -1725,19 +1647,6 @@ int QueryProcessor::evaluateModifiesP(bool para1IsEnt, bool para2IsEnt, bool par
     std::vector<int> temp;
     std::vector<std::string> toStore;
 
-    // Inserting valid values based on parameter type (if variable)
-    int ret;
-    if (!para1IsEnt) {
-        ret = evaluateType(pkb, para1);
-        if (ret == -1) 
-            return -1;
-    }
-    if (!para2IsEnt && !para2IsPlaceholder) {
-        int ret2 = evaluateType(pkb, para2);
-        if (ret2 == -1)
-            return -1;
-    }
-
     // Inserting valid values based on PKB tables 
     if (para1IsEnt) {
         if (para2IsEnt) {
@@ -1830,19 +1739,6 @@ int QueryProcessor::evaluateModifiesP(bool para1IsEnt, bool para2IsEnt, bool par
 int QueryProcessor::evaluateUsesS(bool para1IsNum, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, PKB pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
-
-    // Inserting valid values based on parameter type (if variable)
-    int ret;
-    if (!para1IsNum) {
-        ret = evaluateType(pkb, para1);
-        if (ret == -1) 
-            return -1;
-    }
-    if (!para2IsEnt && !para2IsPlaceholder) {
-        int ret2 = evaluateType(pkb, para2);
-        if (ret2 == -1)
-            return -1;
-    }
 
     // Inserting valid values based on PKB tables 
     if (para1IsNum) {
@@ -1943,19 +1839,6 @@ int QueryProcessor::evaluateUsesP(bool para1IsEnt, bool para2IsEnt, bool para2Is
     std::vector<int> temp;
     std::vector<std::string> toStore;
 
-    // Inserting valid values based on parameter type (if variable)
-    int ret;
-    if (!para1IsEnt) {
-        ret = evaluateType(pkb, para1);
-        if (ret == -1) 
-            return -1;
-    }
-    if (!para2IsEnt && !para2IsPlaceholder) {
-        int ret2 = evaluateType(pkb, para2);
-        if (ret2 == -1)
-            return -1;
-    }
-
     // Inserting valid values based on PKB tables 
     if (para1IsEnt) {
         if (para2IsEnt) {
@@ -2047,19 +1930,6 @@ int QueryProcessor::evaluateUsesP(bool para1IsEnt, bool para2IsEnt, bool para2Is
 // Evaluating calls query
 int QueryProcessor::evaluateCalls(bool T, bool para1IsEnt, bool para1IsPlaceholder, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, PKB pkb) {
     std::vector<std::string> toStore;
-
-    // Inserting valid values based on parameter type (if variable)
-    int ret;
-    if (!para1IsEnt && !para1IsPlaceholder) {
-        ret = evaluateType(pkb, para1);
-        if (ret == -1) 
-            return -1;
-    }
-    if (!para2IsEnt && !para2IsPlaceholder) {
-        int ret2 = evaluateType(pkb, para2);
-        if (ret2 == -1)
-            return -1;
-    }
 
     if (!T) {
         if (para1IsEnt) {
@@ -2351,7 +2221,7 @@ By vector index
 5: 1 variable affects*
 6: 2 variable affects*
 */
-std::vector<std::vector<int>> QueryProcessor::optimizeQuery(std::vector<QueryNode> tree, int curr) {
+std::vector<std::vector<int>> QueryProcessor::optimizeQuery(std::vector<QueryNode> tree, int curr, PKB pkb) {
     std::vector<int> rootChildren = tree[0].getChildren();
     std::vector<std::vector<int>> queryOrder;
     for (int i = 0; i < 7; i++) {
@@ -2373,12 +2243,26 @@ std::vector<std::vector<int>> QueryProcessor::optimizeQuery(std::vector<QueryNod
             std::string para2 = tree[paraNode2].getName();
 
             // Figure out type of parameter 1 and 2
-            bool dummy = false; 
-            int dummy2;
-            int para1Type = findTypeOf(para1, &dummy, &dummy, &dummy, &dummy2);
-            int para2Type = findTypeOf(para2, &dummy, &dummy, &dummy, &dummy2);
+            bool para1IsNum = false, para2IsNum = false;
+            bool para1IsEnt = false, para2IsEnt = false;
+            bool para1IsPlaceholder = false, para2IsPlaceholder = false;
+            int dummy;
+            int para1Type = findTypeOf(para1, &para1IsNum, &para1IsEnt, &para1IsPlaceholder, &dummy);
+            int para2Type = findTypeOf(para2, &para2IsNum, &para2IsEnt, &para2IsPlaceholder, &dummy);
             if (para1Type == -2 || para2Type == -2) {   // Cannot figure out parameter type
                 return std::vector<std::vector<int>>();
+            }
+
+            int ret;
+            if (para1Type != -1) {
+                ret = evaluateType(pkb, para1);
+                if (ret == -1) 
+                    return std::vector<std::vector<int>>();
+            }
+            if (para2Type != -1) {
+                ret = evaluateType(pkb, para2);
+                if (ret == -1)
+                    return std::vector<std::vector<int>>();
             }
 
             // 0 variables
@@ -2423,12 +2307,26 @@ std::vector<std::vector<int>> QueryProcessor::optimizeQuery(std::vector<QueryNod
             std::string para2 = tree[temp.getChildren()[1]].getName();
 
              // Figure out type of parameter 1 and 2
-            bool dummy = false; 
-            int dummy2;
-            int para1Type = findTypeOf(para1, &dummy, &dummy, &dummy, &dummy2);
-            int para2Type = findTypeOf(para2, &dummy, &dummy, &dummy, &dummy2);
+            bool para1IsNum = false, para2IsNum = false;
+            bool para1IsEnt = false, para2IsEnt = false;
+            bool para1IsPlaceholder = false, para2IsPlaceholder = false;
+            int dummy;
+            int para1Type = findTypeOf(para1, &para1IsNum, &para1IsEnt, &para1IsPlaceholder, &dummy);
+            int para2Type = findTypeOf(para2, &para2IsNum, &para2IsEnt, &para2IsPlaceholder, &dummy);
             if (para1Type == -2 || para2Type == -2) {   // Cannot figure out parameter type
                 return std::vector<std::vector<int>>();
+            }
+
+            int ret;
+            if (para1Type != -1) {
+                ret = evaluateType(pkb, para1);
+                if (ret == -1) 
+                    return std::vector<std::vector<int>>();
+            }
+            if (para2Type != -1) {
+                ret = evaluateType(pkb, para2);
+                if (ret == -1)
+                    return std::vector<std::vector<int>>();
             }
 
             // 0 variables
@@ -2492,7 +2390,7 @@ void QueryProcessor::processQuery(PKB pkb) {
         return;
 
     // Initial Query Optimizing
-    std::vector<std::vector<int>> queryOrder = optimizeQuery(tree, curr+1);
+    std::vector<std::vector<int>> queryOrder = optimizeQuery(tree, curr+1, pkb);
     if (queryOrder.size() == 0)
         return;
 
@@ -2994,10 +2892,14 @@ void QueryProcessor::processQuery(PKB pkb) {
                         if (ret == -1)
                             return;
 
-                        if (synoType == DeclarationTable::variable_ && synoType2 != DeclarationTable::variable_)
-                            return;
-                        if (synoType == DeclarationTable::procedure_ && synoType2 != DeclarationTable::procedure_)
-                            return;
+                        if (synoType == DeclarationTable::variable_ || synoType2 == DeclarationTable::variable_) {
+                            if (!(synoType == DeclarationTable::variable_ && synoType2 == DeclarationTable::variable_))
+                                return;
+                        }
+                        if (synoType == DeclarationTable::procedure_ || synoType2 == DeclarationTable::procedure_) {
+                            if (!(synoType == DeclarationTable::procedure_ && synoType2 == DeclarationTable::procedure_))
+                                return;
+                        }
 
                         toStore = resultStore.getValuesFor(syno);
                         std::vector<std::vector<std::string>> toStoreTuple;
@@ -3161,16 +3063,11 @@ void QueryProcessor::printResult()
 int QueryProcessor::evaluateAssignPattern(std::string pattern, std::string var, int exprRoot, bool varIsEnt, bool varIsPlaceholder, bool hasUnderscore, PKB pkb)
 {
     std::vector<QueryNode> tree = queryTree.getTree();
-    // Inserting valid values based on parameter type (if variable)
-    int patternType, varType, ret;
-    patternType = evaluateType(pkb, pattern);
-    if (patternType == -1) 
-        return -1;
+    int patternType = -1, varType = -1, ret;
+    patternType = declarationTable.getType(pattern);
     if (!varIsEnt && !varIsPlaceholder) {
-        varType = evaluateType(pkb, var);
-        if (varType == -1)
-            return -1;
-    }
+        varType = declarationTable.getType(var);
+    } 
 
     std::vector<std::string> toStore;
     std::vector<std::vector<std::string>> toStoreTuple;
@@ -3230,15 +3127,10 @@ int QueryProcessor::evaluateAssignPattern(std::string pattern, std::string var, 
 
 int QueryProcessor::evaluateIfWhilePattern(std::string pattern, std::string var, bool varIsEnt, bool varIsPlaceholder, PKB pkb) {
     std::vector<QueryNode> tree = queryTree.getTree();
-    // Inserting valid values based on parameter type (if variable)
-    int patternType, varType, ret;
-    patternType = evaluateType(pkb, pattern);
-    if (patternType == -1) 
-        return -1;
+    int patternType = -1, varType = -1, ret;
+    patternType = declarationTable.getType(pattern);
     if (!varIsEnt && !varIsPlaceholder) {
-        varType = evaluateType(pkb, var);
-        if (varType == -1)
-            return -1;
+        varType = declarationTable.getType(var);
     }
 
     std::vector<std::string> toStore;

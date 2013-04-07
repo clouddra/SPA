@@ -436,7 +436,7 @@ namespace pqlparser
 				>> ','
 				>> stmtLstRef_				[push_back(at_c<2>(_val), qi::_1)]
 				>> ')'
-				;
+				;  
 
 			relCond_ =
 				relRef_						[at_c<0>(_val) = "relcond_"][push_back(at_c<2>(_val), qi::_1)]
