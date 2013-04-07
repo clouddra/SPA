@@ -293,6 +293,8 @@ namespace pqlparser
 			varRef_ %= synonym_ | char_('_') | (char_('"') >> IDENT_ >> char_('"'));
 			entRef_ %= synonym_ | char_('_') | (char_('"') >> IDENT_ >> char_('"')) | INTEGER_;
 			stmtRef_ %= synonym_ | char_('_') | INTEGER_;
+			stmtLstRef_ %= synonym_ | char_('_');
+			nodeRef_ %= synonym_ | INTEGER_;
 			lineRef_ %= synonym_ | char_('_') | INTEGER_;
 
 			design_entity_ %= 
@@ -421,7 +423,7 @@ namespace pqlparser
 				>> '('
 				>> varRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ','
-				>> (expression_spec_ | string("_")) 	[push_back(at_c<2>(_val), qi::_1)]
+				>> (expression_spec_ | stmtLstRef_) 	[push_back(at_c<2>(_val), qi::_1)]
 				>> ')'
 				;
 				
@@ -430,9 +432,9 @@ namespace pqlparser
 				>> '('
 				>> varRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ','
-				>> string("_")				[push_back(at_c<2>(_val), qi::_1)]
+				>> stmtLstRef_				[push_back(at_c<2>(_val), qi::_1)]
 				>> ','
-				>> string("_")				[push_back(at_c<2>(_val), qi::_1)]
+				>> stmtLstRef_				[push_back(at_c<2>(_val), qi::_1)]
 				>> ')'
 				;
 
@@ -587,6 +589,33 @@ namespace pqlparser
 				>> lineRef_					[push_back(at_c<2>(_val), qi::_1)]
 				>> ')'
 				;
+
+			Contains_ =
+				string("Contains")			[at_c<0>(_val) = "contains"]
+				>> '('
+				>> nodeRef_					[push_back(at_c<2>(_val), qi::_1)]
+				>> ','
+				>> nodeRef_					[push_back(at_c<2>(_val), qi::_1)]
+				>> ')'
+				;
+
+			ContainsT_ =
+				string("Contains*")			[at_c<0>(_val) = "containst"]
+				>> '('
+				>> nodeRef_					[push_back(at_c<2>(_val), qi::_1)]
+				>> ','
+				>> nodeRef_					[push_back(at_c<2>(_val), qi::_1)]
+				>> ')'
+				;
+
+			Sibling_ =
+				string("Sibling")			[at_c<0>(_val) = "sibling"]
+				>> '('
+				>> nodeRef_					[push_back(at_c<2>(_val), qi::_1)]
+				>> ','
+				>> nodeRef_					[push_back(at_c<2>(_val), qi::_1)]
+				>> ')'
+				;
         }
 
 		// Lexical Rules
@@ -603,8 +632,10 @@ namespace pqlparser
 		qi::rule<Iterator, std::string(), ascii::space_type> attrName_;
 		qi::rule<Iterator, std::string(), ascii::space_type> entRef_;
 		qi::rule<Iterator, std::string(), ascii::space_type> stmtRef_;
+		qi::rule<Iterator, std::string(), ascii::space_type> stmtLstRef_;
 		qi::rule<Iterator, std::string(), ascii::space_type> varRef_;
 		qi::rule<Iterator, std::string(), ascii::space_type> lineRef_;
+		qi::rule<Iterator, std::string(), ascii::space_type> nodeRef_;
 		qi::rule<Iterator, std::string(), ascii::space_type> design_entity_;
 
 		// Grammar rules for select clause
@@ -647,6 +678,9 @@ namespace pqlparser
 		qi::rule<Iterator, commonNode(), ascii::space_type> AffectsT_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> NextBip_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> NextBipT_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> Contains_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> ContainsT_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> Sibling_;
     };
 
     //]
