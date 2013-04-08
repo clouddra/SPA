@@ -1385,7 +1385,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
         if (para1IsNum) {
             // Affects*(1, 10)
             if (para2IsNum) {
-                temp = pkb.getAffectsTStart(para1Num);
+                temp = pkb.getAffectsTStartAPI(para1Num);
                 for (int i = 0; i < (int)temp.size(); i++) {
                     if (temp[i] == para2Num)
                         return 0;
@@ -1394,7 +1394,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
             }
             // Affects*(1, _)
             else if (para2IsPlaceholder) {
-                temp = pkb.getAffectsTStart(para1Num);
+                temp = pkb.getAffectsTStartAPI(para1Num);
                 if (temp.size() > 0)
                     return 0;
                 else
@@ -1402,7 +1402,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
             }
             // Affects*(1, a)
             else {
-                temp = pkb.getAffectsTStart(para1Num);
+                temp = pkb.getAffectsTStartAPI(para1Num);
                 toStore = intVecToStringVec(temp);
                 int ret = resultStore.insertResult(para2, toStore);
                 if (ret == -1) {  // Exit cond
@@ -1413,7 +1413,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
         else if (para2IsNum) {
             // Affects*(_, 10)
             if (para1IsPlaceholder) {
-                temp = pkb.getAffectsTEnd(para2Num);
+                temp = pkb.getAffectsTEndAPI(para2Num);
                 if (temp.size() > 0)
                     return 0;
                 else
@@ -1421,7 +1421,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
             }
             // Affects*(a, 10)
             else {
-                temp = pkb.getAffectsTEnd(para2Num);
+                temp = pkb.getAffectsTEndAPI(para2Num);
                 toStore = intVecToStringVec(temp);
                 int ret = resultStore.insertResult(para1, toStore);
                 if (ret == -1) {  // Exit cond
@@ -1433,7 +1433,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
         else if (para1IsPlaceholder) {
             std::vector<int> temp2 = stringVecToIntVec(resultStore.getValuesFor(para2));
             for (int i = temp2.size()-1; i > -1; i--) {
-                temp = pkb.getAffectsTEnd(temp2[i]);
+                temp = pkb.getAffectsTEndAPI(temp2[i]);
                 if (temp.size() == 0)
                     temp2.erase(temp.begin()+i);
             }
@@ -1447,7 +1447,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
         else if (para2IsPlaceholder) {
             std::vector<int> temp2 = stringVecToIntVec(resultStore.getValuesFor(para1));
             for (int i = temp2.size()-1; i > -1; i--) {
-                temp = pkb.getAffectsTStart(temp2[i]);
+                temp = pkb.getAffectsTStartAPI(temp2[i]);
                 if (temp.size() == 0)
                     temp2.erase(temp.begin()+i);
             }
@@ -1468,7 +1468,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
 				#ifndef ENABLE_THREADING
                 for (int i = 0; i < (int)para1Val.size(); i++) {
                     std::vector<int> temp2;
-                    temp2 = pkb.getAffectsTStart(para1Val[i]);
+                    temp2 = pkb.getAffectsTStartAPI(para1Val[i]);
                     for (int j = 0; j < (int)temp2.size(); j++) {
                         if (temp2[j] == para1Val[i]) {
                             temp.push_back(para1Val[i]);
@@ -1507,7 +1507,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
 				#ifndef ENABLE_THREADING
                 if (isPara1) {
                     for (int i = 0; i < (int)para1ValInt.size(); i++) {
-                        temp = pkb.getAffectsTStart(para1ValInt[i]);
+                        temp = pkb.getAffectsTStartAPI(para1ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
                             std::vector<std::string> holder;
@@ -1519,7 +1519,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
                 }
                 else {
                     for (int i = 0; i < (int)para2ValInt.size(); i++) {
-                        temp = pkb.getAffectsTEnd(para2ValInt[i]);
+                        temp = pkb.getAffectsTEndAPI(para2ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
                             std::vector<std::string> holder;

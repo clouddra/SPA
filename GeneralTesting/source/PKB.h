@@ -97,6 +97,8 @@ private:
     std::set<int> constantList;
 	std::unordered_map<int, std::vector<int>> affectsMapStart;
 	std::unordered_map<int, std::vector<int>> affectsMapEnd;
+	std::unordered_map<int, std::vector<int>> affectsTMapStart;
+	std::unordered_map<int, std::vector<int>> affectsTMapEnd;
 	void addCFGtoStmtNodeTable(int cfgNode, int startStmt, int endStmt);
 		void addCFGBiptoStmtNodeTable(int cfgBipNode, int startStmt, int endStmt);
 public:
@@ -180,6 +182,8 @@ public:
 	std::vector<int> depthDownT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::unordered_set<int> ignoreSet);
 	std::vector<int> getAffectsStartAPI(int start);
 	std::vector<int> getAffectsEndAPI(int end);
+	std::vector<int> getAffectsTStartAPI(int start);
+	std::vector<int> getAffectsTEndAPI(int end);
 
 	void printModifiesTable();
 	AST PKB::getAST();

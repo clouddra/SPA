@@ -1456,7 +1456,30 @@ std::vector<int> PKB::depthUpT(int currStmt, std::unordered_set<int> varSet, std
 	return toReturn;
 }
 
+// Simple-caching for Affects*
+std::vector<int> PKB::getAffectsTStartAPI(int start)
+{
+	if (affectsTMapStart.count(start) > 0)
+		return affectsTMapStart[start];
+	else
+	{
+		std::vector<int> ans = getAffectsTStart(start);
+		affectsTMapStart[start] = ans;
+		return ans;
+	}
+}
 
+std::vector<int> PKB::getAffectsTEndAPI(int end)
+{
+	if (affectsTMapEnd.count(end) > 0)
+		return affectsTMapEnd[end];
+	else
+	{
+		std::vector<int> ans = getAffectsTEnd(end);
+		affectsTMapEnd[end] = ans;
+		return ans;
+	}
+}
 
 
 void PKB::addCFGtoStmtNodeTable(int cfgNode, int startStmt, int endStmt){
