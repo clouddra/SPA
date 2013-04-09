@@ -1245,7 +1245,7 @@ std::vector<int> PKB::getAffectsTStart(int start)
 {
 	std::vector<int> toReturn;
 
-	// Check if end is an assignment statement
+	// Check if start is an assignment statement
 	if (stmtNodeTable.getType(start) != Node::assignNode)
 		return toReturn;
 
@@ -1481,6 +1481,266 @@ std::vector<int> PKB::getAffectsTEndAPI(int end)
 	}
 }
 
+std::vector<int> PKB::getAffectsBipStart(int start)
+{
+	std::vector<int> toReturn;
+
+	// Check if start is an assignment statement
+	if (stmtNodeTable.getType(start) != Node::assignNode)
+		return toReturn;
+
+	// Keep track of visited stmts
+	int numOfStmts = stmtNodeTable.getSize();
+	std::vector<int> visited(numOfStmts, -1); // "-1" means unvisited
+
+	int var = modifiesTable.getModifiedBy(start)[0]; // An assignment statement will only modify 1 variable
+
+	// Do not mark start as visited, in case "AffectsBip(12, 12)"
+
+	int cfgIndex = stmtNodeTable.getCFG(start);
+	// Use getNextBip, in case currStmt is last stmt
+	std::vector<int> nextStmtBip = cfg.getNextBip(start, cfgIndex);
+	std::vector<int> branchIn; // Currently in main branch, so branchIn is empty
+	for (int i=0; i<(int)nextStmtBip.size(); i++)
+	{
+		std::vector<int> temp = depthDownBip(nextStmtBip[i], var, visited, branchIn);
+		toReturn.insert(toReturn.end(), temp.begin(), temp.end());
+	}
+
+	return toReturn;
+
+}
+
+
+std::vector<int> PKB::depthDownBip(int currStmt, int var, std::vector<int> visited, std::vector<int> branchIn)
+{
+	std::vector<int> toReturn;
+
+	// currStmt has been visited before
+	if (visited[currStmt] == 1)
+		return toReturn;
+
+	visited[currStmt] = 1; // Mark currStmt as visited
+
+	int nodeType = stmtNodeTable.getType(currStmt);
+	if (nodeType == Node::assignNode)
+	{
+		std::vector<int> varsUsedByCurrStmt = usesTable.getUsedBy(currStmt);
+
+		for (int i=0; i<(int)varsUsedByCurrStmt.size(); i++)
+		{
+			// currStmt uses the targeted variable
+			if (varsUsedByCurrStmt[i] == var)
+			{
+				toReturn.push_back(currStmt);
+				break;
+			}
+		}
+
+		int currVar = modifiesTable.getModifiedBy(currStmt)[0]; // An assignment statement will only modify 1 variable
+		// currStmt does not modify the targeted variable
+		if (currVar != var)
+		{
+			// Depth first search the next statements
+			int cfgIndex = stmtNodeTable.getCFG(currStmt);
+			std::vector<int> nextStmt = cfg.getNext(currStmt, cfgIndex);
+
+			// If currStmt is last stmt of proc and proc is main branch
+			if (branchIn.empty() && nextStmt.empty())
+			{
+				std::vector<int> nextStmtBip = cfg.getNextBip(currStmt, cfgIndex);
+				for (int i=0; i<(int)nextStmtBip.size(); i++)
+				{
+					std::vector<int> temp = depthDownBip(nextStmtBip[i], var, visited, branchIn);
+					toReturn.insert(toReturn.end(), temp.begin(), temp.end());
+				}
+			}
+			else if (nextStmt.empty()) // at last stmt and in sub branch, so should return to prev branch
+			{
+				// Reset curr proc stmts to unvisited
+				int currProcInd = procTable.getProcOfStmt(currStmt);
+				int firstStmt = procTable.getProcFirstln(currProcInd);
+				int lastStmt = procTable.getProcLastln(currProcInd);
+				for (int k = firstStmt; k <= lastStmt; k++)
+					visited[k] = -1;
+
+				int nextBipStmt = branchIn.back();
+				branchIn.pop_back();
+				std::vector<int> temp = depthDownBip(nextBipStmt, var, visited, branchIn);
+				toReturn.insert(toReturn.end(), temp.begin(), temp.end());
+			}
+			else // currStmt is not the last stmt
+			{
+				for (int i=0; i<(int)nextStmt.size(); i++)
+				{
+					std::vector<int> temp = depthDownBip(nextStmt[i], var, visited, branchIn);
+					toReturn.insert(toReturn.end(), temp.begin(), temp.end());
+				}
+			}
+		}
+	}
+	else if (nodeType == Node::callNode)
+	{
+		int cfgIndex = stmtNodeTable.getCFG(currStmt);
+		std::vector<int> nextStmt = cfg.getNext(currStmt, cfgIndex); // We are making use of the assumption getNext(callstmt) only has 0 or 1 stmt
+
+		if (!nextStmt.empty()) // call stmt is not the last stmt of current procedure
+		{
+			// Jump to the first stmt of called procedure, add the nextStmt to branch back in later
+			branchIn.push_back(nextStmt[0]);
+			std::vector<int> nextStmtBip = cfg.getNextBip(currStmt, cfgIndex);
+			for (int i=0; i<(int)nextStmtBip.size(); i++)
+			{
+				std::vector<int> temp = depthDownBip(nextStmtBip[i], var, visited, branchIn);
+				toReturn.insert(toReturn.end(), temp.begin(), temp.end());
+			}
+		}
+		else // call stmt is the last stmt of current procedure
+		{
+			if (branchIn.empty()) // in main branch
+			{
+				int currProcInd = procTable.getProcOfStmt(currStmt);
+				int dummyCfgNodeInd = procTable.getCFGEnd(currProcInd);
+				std::vector<int> nextBipDummy = cfg.getNextBip(-1, dummyCfgNodeInd);
+				// Add the many possible nextStmt to branch back in later
+				for (int j=0; j<(int)nextBipDummy.size(); j++)
+				{
+					branchIn.push_back(nextBipDummy[j]);
+					// Jump to the first stmt of called procedure
+					std::vector<int> nextStmtBip = cfg.getNextBip(currStmt, cfgIndex);
+					for (int i=0; i<(int)nextStmtBip.size(); i++)
+					{
+						std::vector<int> temp = depthDownBip(nextStmtBip[i], var, visited, branchIn);
+						toReturn.insert(toReturn.end(), temp.begin(), temp.end());
+					}
+					branchIn.pop_back();
+				}
+			}
+			else // in subBranch, we need to return to prev branch after we branch out
+			{
+				// Reset curr proc stmts to unvisited
+				int currProcInd = procTable.getProcOfStmt(currStmt);
+				int firstStmt = procTable.getProcFirstln(currProcInd);
+				int lastStmt = procTable.getProcLastln(currProcInd);
+				for (int k = firstStmt; k <= lastStmt; k++)
+					visited[k] = -1;
+
+				// No need to handle branchIn, coz we cannot pop it yet
+				std::vector<int> nextStmtBip = cfg.getNextBip(currStmt, cfgIndex);
+				for (int i=0; i<(int)nextStmtBip.size(); i++)
+				{
+					std::vector<int> temp = depthDownBip(nextStmtBip[i], var, visited, branchIn);
+					toReturn.insert(toReturn.end(), temp.begin(), temp.end());
+				}
+			}
+		}
+	}
+	else if (nodeType == Node::whileNode)
+	{
+		int cfgIndex = stmtNodeTable.getCFG(currStmt);
+		std::vector<int> nextStmt = cfg.getNext(currStmt, cfgIndex);
+		if ((int)nextStmt.size() == 1) // while stmt is actually the last stmt, hence only 1 nextStmt
+		{
+			if (branchIn.empty()) // in main branch
+			{
+				std::vector<int> nextStmtBip = cfg.getNextBip(currStmt, cfgIndex);
+				for (int i=0; i<(int)nextStmtBip.size(); i++)
+				{
+					// branchIn remains empty, as the next procedure becomes the main branch
+					std::vector<int> temp = depthDownBip(nextStmtBip[i], var, visited, branchIn);
+					toReturn.insert(toReturn.end(), temp.begin(), temp.end());
+				}
+			}
+			else // in sub branch, so we return to previous branch
+			{
+				// Reset curr proc stmts to unvisited
+				int currProcInd = procTable.getProcOfStmt(currStmt);
+				int firstStmt = procTable.getProcFirstln(currProcInd);
+				int lastStmt = procTable.getProcLastln(currProcInd);
+				for (int k = firstStmt; k <= lastStmt; k++)
+					visited[k] = -1;
+
+				int nextBipStmt = branchIn.back();
+				branchIn.pop_back();
+				std::vector<int> temp = depthDownBip(nextBipStmt, var, visited, branchIn);
+				toReturn.insert(toReturn.end(), temp.begin(), temp.end());
+			}
+		}
+		else // while stmt is not the last stmt, normal getNext
+		{
+			for (int i=0; i<(int)nextStmt.size(); i++)
+			{
+				std::vector<int> temp = depthDownBip(nextStmt[i], var, visited, branchIn);
+				toReturn.insert(toReturn.end(), temp.begin(), temp.end());
+			}
+		}
+	}
+	else // nodeType is "if", hence cannot be last stmt
+	{
+		// Depth first search the next statements, use normal getNext
+		int cfgIndex = stmtNodeTable.getCFG(currStmt);
+		std::vector<int> nextStmt = cfg.getNext(currStmt, cfgIndex);
+		for (int i=0; i<(int)nextStmt.size(); i++)
+		{
+			std::vector<int> temp = depthDownBip(nextStmt[i], var, visited, branchIn);
+			toReturn.insert(toReturn.end(), temp.begin(), temp.end());
+		}
+	}
+
+	return toReturn;
+}
+
+/*
+std::vector<int> PKB::getAffectsBipEnd(int end)
+{
+	std::vector<int> toReturn;
+
+	// Check if end is an assignment statement
+	if (stmtNodeTable.getType(end) != Node::assignNode)
+		return toReturn;
+
+	// Keep track of visited stmts
+	int numOfStmts = stmtNodeTable.getSize();
+	std::vector<int> visited(numOfStmts, -1); // "-1" means unvisited
+
+	// Multiple variables may be used in the "end" statement
+	std::vector<int> varVec = usesTable.getUsedBy(end);
+	std::unordered_set<int> varSet(varVec.begin(), varVec.end());
+
+	// Do not mark end as visited, in case "AffectsBip(12, 12)"
+
+	int cfgIndex = stmtNodeTable.getCFG(end);
+	std::vector<int> prevStmt = cfg.getPrev(end, cfgIndex);
+	std::unordered_set<int> prevSet(prevStmt.begin(), prevStmt.end());
+	std::vector<int> prevStmtBip = cfg.getPrevBip(end, cfgIndex);
+
+	for (int i=0; i<(int)prevStmtBip.size(); i++)
+	{
+		std::vector<int> temp;
+		
+		if (prevSet.count(prevStmtBip[i]) > 0)
+		{
+			// prevStmtBip[i] is in the same procedure
+			temp = depthUpBip(prevStmtBip[i], varSet, visited, false);
+		}
+		else 
+		{
+			// prevStmtBip[i] is in another procedure
+			temp = depthUpBip(prevStmtBip[i], varSet, visited, true);
+		}
+		toReturn.insert(toReturn.end(), temp.begin(), temp.end());
+	}
+
+	return toReturn;
+}
+
+std::vector<int> PKB::depthUpBip(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, bool subBranch)
+{
+	std::vector<int> toReturn;
+	return toReturn;
+}
+
+*/
 
 void PKB::addCFGtoStmtNodeTable(int cfgNode, int startStmt, int endStmt){
 	for (int i=startStmt; i<=endStmt; i++)
