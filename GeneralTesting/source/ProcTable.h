@@ -29,6 +29,7 @@ public:
 	int getProcIndex (std::string procName);
 	int getProcFirstln(int ind);
 	int getProcLastln(int ind);
+	int getProcOfStmt(int stmtNo);
 	Procedure getProc(int ind);
     std::vector<std::string> getAllProc();
 	void setCFGStart(int ind, int start);

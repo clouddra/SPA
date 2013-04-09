@@ -86,3 +86,15 @@ int ProcTable::getCFGStart(int ind){
 int ProcTable::getCFGEnd(int ind){
 	return numToProc.at(ind).getCFGEnd();
 }
+
+int ProcTable::getProcOfStmt(int stmtNo){
+	int size = getSize();
+	for(int i = 0; i<size; i++)
+	{
+		if (stmtNo >= numToProc[i].getFirstLine() && stmtNo <= numToProc[i].getLastLine())
+			return i;
+	}
+
+	return -1;
+}
+
