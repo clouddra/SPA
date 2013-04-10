@@ -187,7 +187,7 @@ public:
 	std::vector<int> getAffectsBipStart(int start);
 	std::vector<int> getAffectsBipEnd(int end);
 	std::vector<int> depthDownBip(int currStmt, int var, std::vector<int> visited, std::vector<int> branchIn);
-//	std::vector<int> depthUpBip(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, bool subBranch);
+	std::vector<int> depthUpBip(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::vector<int> branchIn);
 
 	void printModifiesTable();
 	AST PKB::getAST();
