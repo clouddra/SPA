@@ -1825,6 +1825,341 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
     return 0;
 }
 
+int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB pkb) {
+    std::vector<int> temp;
+    std::vector<std::string> toStore;
+
+    if (para1IsPlaceholder && para2IsPlaceholder) {
+        return 0;
+    }
+    // Inserting valid values based on PKB tables 
+    if (!T) {
+        if (para1IsNum) {
+            // AffectsBip(1, 10)
+            if (para2IsNum) {
+                temp = pkb.getAffectsBipStart(para1Num);
+                for (int i = 0; i < (int)temp.size(); i++) {
+                    if (temp[i] == para2Num)
+                        return 0;
+                }
+                return -1;
+            }
+            // AffectsBip(1, _)
+            else if (para2IsPlaceholder) {
+                temp = pkb.getAffectsBipStart(para1Num);
+                if (temp.size() > 0)
+                    return 0;
+                else
+                    return -1;
+            }
+            // AffectsBip(1, a)
+            else {
+                temp = pkb.getAffectsBipStart(para1Num);
+                toStore = intVecToStringVec(temp);
+                int ret = resultStore.insertResult(para2, toStore);
+                if (ret == -1) {  // Exit cond
+                    return -1;
+                }
+            }
+        }
+        else if (para2IsNum) {
+            // AffectsBip(_, 10)
+            if (para1IsPlaceholder) {
+                temp = pkb.getAffectsBipEnd(para2Num);
+                if (temp.size() > 0)
+                    return 0;
+                else
+                    return -1;
+            }
+            // AffectsBip(a, 10)
+            else {
+                temp = pkb.getAffectsBipEnd(para2Num);
+                toStore = intVecToStringVec(temp);
+                int ret = resultStore.insertResult(para1, toStore);
+                if (ret == -1) {  // Exit cond
+                    return -1;
+                }
+            }
+        }
+        // AffectsBip(_, a)
+        else if (para1IsPlaceholder) {
+            std::vector<int> temp2 = stringVecToIntVec(resultStore.getValuesFor(para2));
+            for (int i = temp2.size()-1; i > -1; i--) {
+                temp = pkb.getAffectsBipEnd(temp2[i]);
+                if (temp.size() == 0)
+                    temp2.erase(temp.begin()+i);
+            }
+            toStore = intVecToStringVec(temp2);
+            int ret = resultStore.insertResult(para2, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        // AffectsBip(a, _)
+        else if (para2IsPlaceholder) {
+            std::vector<int> temp2 = stringVecToIntVec(resultStore.getValuesFor(para1));
+            for (int i = temp2.size()-1; i > -1; i--) {
+                temp = pkb.getAffectsBipStart(temp2[i]);
+                if (temp.size() == 0)
+                    temp2.erase(temp.begin()+i);
+            }
+            toStore = intVecToStringVec(temp2);
+            int ret = resultStore.insertResult(para1, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        // Double variable
+        else {
+            // AffectsBip (a1, a1)
+            if (para1.compare(para2) == 0) {
+                std::vector<int> para1Val = stringVecToIntVec(resultStore.getValuesFor(para1));
+                if (para1Val.size() == 0) {
+                    return -1;
+                }
+				
+				// #ifndef ENABLE_THREADING
+                for (int i = 0; i < (int)para1Val.size(); i++) {
+                    std::vector<int> temp2;
+                    temp2 = pkb.getAffectsBipStart(para1Val[i]);
+                    for (int j = 0; j < (int)temp2.size(); j++) {
+                        if (temp2[j] == para1Val[i]) {
+                            temp.push_back(para1Val[i]);
+                            break;
+                        }
+                    }
+                }
+                /*
+				#else
+				Threading threading;
+				threading.processAffectsSameVarDriver(temp, para1Val, pkb);
+				#endif */
+
+                toStore = intVecToStringVec(temp);
+                int ret = resultStore.insertResult(para1, toStore);
+                if (ret == -1) {  // Exit cond
+                    return -1;
+                }
+            }
+            // AffectsBip(a1, a2)
+            else {
+                std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
+                std::vector<int> para1ValInt;
+                std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
+                std::vector<int> para2ValInt;
+                bool isPara1;
+                if (para1ValString.size() < para2ValString.size()) {
+                    isPara1 = true;
+					para1ValInt = stringVecToIntVec(para1ValString);
+				}
+                else {
+                    isPara1 = false;
+					para2ValInt = stringVecToIntVec(para2ValString);
+				}
+
+                std::vector<std::vector<std::string>> toStoreTuple;
+
+				// #ifndef ENABLE_THREADING
+                if (isPara1) {
+                    for (int i = 0; i < (int)para1ValInt.size(); i++) {
+                        temp = pkb.getAffectsBipStart(para1ValInt[i]);
+                        toStore = intVecToStringVec(temp);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(para1ValString[i]);
+                            holder.push_back(toStore[j]); 
+                            toStoreTuple.push_back(holder);
+                        }
+                    }
+                }
+                else {
+                    for (int i = 0; i < (int)para2ValInt.size(); i++) {
+                        temp = pkb.getAffectsBipEnd(para2ValInt[i]);
+                        toStore = intVecToStringVec(temp);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(toStore[j]); 
+                            holder.push_back(para2ValString[i]);
+                            toStoreTuple.push_back(holder);
+                        }
+                    }
+                }
+                /*
+				#else
+				Threading threading;
+				threading.processAffectsDiffVarDriver(toStoreTuple, para1ValString, para1ValInt, para2ValString, para2ValInt, isPara1, pkb);
+				#endif */
+
+                int ret = resultStore.insertResult(para1, para2, toStoreTuple);
+                if (ret == -1)
+                    return -1;
+            }
+        }
+    }
+    /*
+    else {
+        if (para1IsNum) {
+            // AffectsBip*(1, 10)
+            if (para2IsNum) {
+                temp = pkb.getAffectsBipTStart(para1Num);
+                for (int i = 0; i < (int)temp.size(); i++) {
+                    if (temp[i] == para2Num)
+                        return 0;
+                }
+                return -1;
+            }
+            // AffectsBip*(1, _)
+            else if (para2IsPlaceholder) {
+                temp = pkb.getAffectsBipTStart(para1Num);
+                if (temp.size() > 0)
+                    return 0;
+                else
+                    return -1;
+            }
+            // AffectsBip*(1, a)
+            else {
+                temp = pkb.getAffectsBipTStart(para1Num);
+                toStore = intVecToStringVec(temp);
+                int ret = resultStore.insertResult(para2, toStore);
+                if (ret == -1) {  // Exit cond
+                    return -1;
+                }
+            }
+        }
+        else if (para2IsNum) {
+            // AffectsBip*(_, 10)
+            if (para1IsPlaceholder) {
+                temp = pkb.getAffectsBipTEnd(para2Num);
+                if (temp.size() > 0)
+                    return 0;
+                else
+                    return -1;
+            }
+            // AffectsBip*(a, 10)
+            else {
+                temp = pkb.getAffectsBipTEnd(para2Num);
+                toStore = intVecToStringVec(temp);
+                int ret = resultStore.insertResult(para1, toStore);
+                if (ret == -1) {  // Exit cond
+                    return -1;
+                }
+            }
+        }
+        // AffectsBip*(_, a)
+        else if (para1IsPlaceholder) {
+            std::vector<int> temp2 = stringVecToIntVec(resultStore.getValuesFor(para2));
+            for (int i = temp2.size()-1; i > -1; i--) {
+                temp = pkb.getAffectsBipTEnd(temp2[i]);
+                if (temp.size() == 0)
+                    temp2.erase(temp.begin()+i);
+            }
+            toStore = intVecToStringVec(temp2);
+            int ret = resultStore.insertResult(para2, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        // AffectsBip*(a, _)
+        else if (para2IsPlaceholder) {
+            std::vector<int> temp2 = stringVecToIntVec(resultStore.getValuesFor(para1));
+            for (int i = temp2.size()-1; i > -1; i--) {
+                temp = pkb.getAffectsBipTStart(temp2[i]);
+                if (temp.size() == 0)
+                    temp2.erase(temp.begin()+i);
+            }
+            toStore = intVecToStringVec(temp2);
+            int ret = resultStore.insertResult(para1, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        // Double variable
+        else {
+            // AffectsBip* (a1, a1)
+            if (para1.compare(para2) == 0) {
+                std::vector<int> para1Val = stringVecToIntVec(resultStore.getValuesFor(para1));
+                if (para1Val.size() == 0) {
+                    return -1;
+                }
+			    #ifndef ENABLE_THREADING
+                for (int i = 0; i < (int)para1Val.size(); i++) {
+                    std::vector<int> temp2;
+                    temp2 = pkb.getAffectsBipTStart(para1Val[i]);
+                    for (int j = 0; j < (int)temp2.size(); j++) {
+                        if (temp2[j] == para1Val[i]) {
+                            temp.push_back(para1Val[i]);
+                            break;
+                        }
+                    }
+                }
+				#else
+				Threading threading;
+				threading.processAffectsTSameVarDriver(temp, para1Val, pkb);
+				#endif
+
+                toStore = intVecToStringVec(temp);
+                int ret = resultStore.insertResult(para1, toStore);
+                if (ret == -1) {  // Exit cond
+                    return -1;
+                }
+            }
+            // Affects*(a1, a2)
+            else {
+                std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
+                std::vector<int> para1ValInt;
+                std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
+                std::vector<int> para2ValInt;
+                bool isPara1;
+                if (para1ValString.size() < para2ValString.size()) {
+                    isPara1 = true;
+					para1ValInt = stringVecToIntVec(para1ValString);
+				}
+                else {
+                    isPara1 = false;
+					para2ValInt = stringVecToIntVec(para2ValString);
+				}
+
+                std::vector<std::vector<std::string>> toStoreTuple;
+
+				#ifndef ENABLE_THREADING
+                if (isPara1) {
+                    for (int i = 0; i < (int)para1ValInt.size(); i++) {
+                        temp = pkb.getAffectsBipTStart(para1ValInt[i]);
+                        toStore = intVecToStringVec(temp);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(para1ValString[i]);
+                            holder.push_back(toStore[j]); 
+                            toStoreTuple.push_back(holder);
+                        }
+                    }
+                }
+                else {
+                    for (int i = 0; i < (int)para2ValInt.size(); i++) {
+                        temp = pkb.getAffectsBipTEnd(para2ValInt[i]);
+                        toStore = intVecToStringVec(temp);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(toStore[j]); 
+                            holder.push_back(para2ValString[i]);
+                            toStoreTuple.push_back(holder);
+                        }
+                    }
+                }
+				#else
+				Threading threading;
+				threading.processAffectsDiffVarDriver(toStoreTuple, para1ValString, para1ValInt, para2ValString, para2ValInt, isPara1, pkb);
+				#endif
+
+                int ret = resultStore.insertResult(para1, para2, toStoreTuple);
+                if (ret == -1)
+                    return -1;
+            }
+        }
+    } */
+    return 0;
+}
+
 // Evaluating modifies query, statements
 int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, PKB pkb) {
     std::vector<int> temp;
@@ -3029,6 +3364,34 @@ void QueryProcessor::processQuery(PKB pkb) {
                     if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::stmt_) {                        
                         if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::stmt_) {
                             int ret = evaluateAffects(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                            if (ret == -1)
+                                return;
+                        }
+                        else
+                            return;
+                    }
+                    else
+                        return;
+                }
+                // affectsBip query
+                else if (relation.getName().compare("affectsbip") == 0) {
+                    if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::stmt_) {                        
+                        if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::stmt_) {
+                            int ret = evaluateAffectsBip(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                            if (ret == -1)
+                                return;
+                        }
+                        else
+                            return;
+                    }
+                    else
+                        return;
+                }
+                // affectsBip* query
+                else if (relation.getName().compare("affectsbipt") == 0) {
+                    if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::stmt_) {                        
+                        if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::stmt_) {
+                            int ret = evaluateAffectsBip(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
                             if (ret == -1)
                                 return;
                         }

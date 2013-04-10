@@ -449,7 +449,7 @@ namespace pqlparser
 
 			relRef_ %= ModifiesS_ | ModifiesP_ | UsesS_ | UsesP_ | Parent_ | ParentT_ | Follows_ 
 				| FollowsT_ | Calls_ | CallsT_ | Next_ | NextT_ | Affects_ | AffectsT_ | NextBip_ | NextBipT_
-                | Contains_ | ContainsT_ | Sibling_;
+                | Contains_ | ContainsT_ | Sibling_ | AffectsBip_ | AffectsBipT_ ;
 
 			ModifiesS_ = 
 				string("Modifies")			[at_c<0>(_val) = "modifiess"]
@@ -577,6 +577,24 @@ namespace pqlparser
 				>> ')'
 				;
 
+            AffectsBip_ =
+				string("AffectsBip")			[at_c<0>(_val) = "affectsbip"]
+				>> '('
+				>> stmtRef_					[push_back(at_c<2>(_val), qi::_1)]
+				>> ','
+				>> stmtRef_					[push_back(at_c<2>(_val), qi::_1)]
+				>> ')'
+				;
+
+			AffectsBipT_ =
+				string("AffectsBip*")			[at_c<0>(_val) = "affectsbipt"]
+				>> '('
+				>> stmtRef_					[push_back(at_c<2>(_val), qi::_1)]
+				>> ','
+				>> stmtRef_					[push_back(at_c<2>(_val), qi::_1)]
+				>> ')'
+				;
+
 			NextBip_ =
 				string("NextBip")			[at_c<0>(_val) = "nextbip"]
 				>> '('
@@ -681,6 +699,8 @@ namespace pqlparser
 		qi::rule<Iterator, commonNode(), ascii::space_type> NextT_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> Affects_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> AffectsT_;
+        qi::rule<Iterator, commonNode(), ascii::space_type> AffectsBip_;
+		qi::rule<Iterator, commonNode(), ascii::space_type> AffectsBipT_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> NextBip_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> NextBipT_;
 		qi::rule<Iterator, commonNode(), ascii::space_type> Contains_;
