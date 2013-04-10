@@ -48,6 +48,11 @@
 #include "StmtNodeTable.h"
 #endif
 
+#ifndef NODETABLE_HEAD
+#define NODETABLE_HEAD
+#include "NodeTable.h"
+#endif
+
 #ifndef STD_HEAD
 #define STD_HEAD
 #include "Common.hpp"
@@ -94,16 +99,25 @@ private:
 	ProcTable procTable;
     UsesTable usesTable;
     StmtNodeTable stmtNodeTable;
+    NodeTable nodeTable;
     std::set<int> constantList;
 	std::unordered_map<int, std::vector<int>> affectsMapStart;
 	std::unordered_map<int, std::vector<int>> affectsMapEnd;
 	std::unordered_map<int, std::vector<int>> affectsTMapStart;
 	std::unordered_map<int, std::vector<int>> affectsTMapEnd;
 	void addCFGtoStmtNodeTable(int cfgNode, int startStmt, int endStmt);
-		void addCFGBiptoStmtNodeTable(int cfgBipNode, int startStmt, int endStmt);
+	void addCFGBiptoStmtNodeTable(int cfgBipNode, int startStmt, int endStmt);
+    std::vector<int> convertToNodeIndex(std::string input, int type);
+    std::vector<std::string> convertToStorageType(std::vector<int> result, int type);
+
 public:
     PKB();
     int insertNode(int nodeType, std::string value, int parent);
+    std::vector<std::string> getContainer(std::string input, int inputType, int outputType);
+    std::vector<std::string> getContainerT(std::string input, int inputType, int outputType);
+	std::vector<std::string> getContainedIn(std::string input, int inputType, int outputType);
+    std::vector<std::string> getContainedInT(std::string input, int inputType, int outputType);
+    bool isContains(std::string input1, int type1, std::string input2, int type2);
     std::vector<int> getParent(int stmt);
     std::vector<int> getParent();
     std::vector<int> getParentT(int stmt);
@@ -164,6 +178,8 @@ public:
     int getNumStmts();
     std::vector<std::string> getAllProc();
     void postParseCleanup();
+    std::vector<int> getNodeIndexes(int type);
+    std::vector<std::string> convertStmtLst(std::vector<int> nodeIndexes);
 	std::vector<int> matchIfWhilePattern(int nodeType, std::string varName);
 	std::vector<int> matchAssignPattern(std::string varName, std::vector<QueryNode> queryTree, int patternRoot, bool hasUnderscore);
 	Node qNodeToNode(QueryNode qNode);
@@ -195,6 +211,5 @@ public:
 	StmtNodeTable* getStmtNodeTable();
 	ProcTable* getProcTable();
 	ContainsTable* getContainsTable();
-	SiblingTable* getSiblingTable();
-		
+	SiblingTable* getSiblingTable();		
 };

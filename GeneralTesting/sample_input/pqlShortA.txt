@@ -1,2 +1,2 @@
-assign a;
-Select a such that Affects*(1,a)
+stmt s; variable v; assign a; while w; call c; if ifs; procedure p;
+Select s such that Follows(a, s) and Follows(a, ifs) and Parent(w, s) and Parent*(ifs, c) and Modifies(c, v) and Uses (p, v)

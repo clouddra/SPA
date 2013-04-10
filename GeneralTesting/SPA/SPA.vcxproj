@@ -23,6 +23,7 @@
     <ClInclude Include="..\source\HelperFunctions.h" />
     <ClInclude Include="..\source\ModifiesTable.h" />
     <ClInclude Include="..\source\Node.h" />
+    <ClInclude Include="..\source\NodeTable.h" />
     <ClInclude Include="..\source\QueryGraph.h" />
     <ClInclude Include="..\source\ParentTable.h" />
     <ClInclude Include="..\source\Parser.h" />
@@ -60,6 +61,7 @@
     <ClCompile Include="..\source\Main.cpp" />
     <ClCompile Include="..\source\ModifiesTable.cpp" />
     <ClCompile Include="..\source\Node.cpp" />
+    <ClCompile Include="..\source\NodeTable.cpp" />
     <ClCompile Include="..\source\ParentTable.cpp" />
     <ClCompile Include="..\source\Parser.cpp" />
     <ClCompile Include="..\source\PKB.cpp" />
@@ -98,7 +100,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>

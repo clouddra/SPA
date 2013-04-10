@@ -17,6 +17,8 @@ private:
 
 public:
     ResultStorage();
+    int insertResult(std::string var1, std::string var2, std::string var3, std::string var4, std::vector<std::vector<std::string>> vals);
+    int insertResult(std::string var1, std::string var2, std::string var3, std::vector<std::vector<std::string>> vals);
     int insertResult(std::string var1, std::string var2, std::vector<std::vector<std::string>> vals);
     int insertResult(std::string var, std::vector<std::string> vals);
     std::vector<std::string> getValuesFor(std::string var);

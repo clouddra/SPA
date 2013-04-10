@@ -299,6 +299,7 @@ namespace pqlparser
 
 			design_entity_ %= 
 				string ("procedure")
+                | string("stmtLst")
                 | string("stmt")
 				| string("assign")
                 | string ("call")
@@ -306,7 +307,10 @@ namespace pqlparser
                 | string("if")
 				| string("variable")
 				| string("constant")
-				| string("prog_line");
+				| string("prog_line")
+                | string("plus")
+                | string("minus")
+                | string("times");
 
 			// Grammar rules for select clause
 			
@@ -444,7 +448,8 @@ namespace pqlparser
 				;
 
 			relRef_ %= ModifiesS_ | ModifiesP_ | UsesS_ | UsesP_ | Parent_ | ParentT_ | Follows_ 
-				| FollowsT_ | Calls_ | CallsT_ | Next_ | NextT_ | Affects_ | AffectsT_ | NextBip_ | NextBipT_;
+				| FollowsT_ | Calls_ | CallsT_ | Next_ | NextT_ | Affects_ | AffectsT_ | NextBip_ | NextBipT_
+                | Contains_ | ContainsT_ | Sibling_;
 
 			ModifiesS_ = 
 				string("Modifies")			[at_c<0>(_val) = "modifiess"]

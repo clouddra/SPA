@@ -26,6 +26,103 @@ int ResultStorage::insertResult(std::string var1, std::string var2, std::vector<
     return insertResult(tempVars, vals);
 }
 
+int ResultStorage::insertResult(std::string var1, std::string var2, std::string var3, std::vector<std::vector<std::string>> vals) {
+    int ret;
+    std::vector<std::string> tempVars;
+    std::vector<std::vector<std::string>> tempVals;
+    tempVars.push_back(var1);
+    tempVars.push_back(var2);
+    tempVars.push_back(var3);
+    TupleTable tempTT = TupleTable(tempVars, vals);
+
+    tempVars.clear();
+    tempVars.push_back(var1);
+    tempVars.push_back(var2);
+    tempVals = tempTT.getValuesFor(tempVars);
+    ret = insertResult(tempVars, tempVals);
+    if (ret == -1)
+        return -1;
+
+    tempVars.clear();
+    tempVars.push_back(var2);
+    tempVars.push_back(var3);
+    tempVals = tempTT.getValuesFor(tempVars);
+    ret = insertResult(tempVars, tempVals);
+    if (ret == -1)
+        return -1;
+
+    tempVars.clear();
+    tempVars.push_back(var1);
+    tempVars.push_back(var3);
+    tempVals = tempTT.getValuesFor(tempVars);
+    ret = insertResult(tempVars, tempVals);
+    if (ret == -1)
+        return -1;
+
+    return 0;
+}
+
+int ResultStorage::insertResult(std::string var1, std::string var2, std::string var3, std::string var4, std::vector<std::vector<std::string>> vals) {
+    int ret;
+    std::vector<std::string> tempVars;
+    std::vector<std::vector<std::string>> tempVals;
+    tempVars.push_back(var1);
+    tempVars.push_back(var2);
+    tempVars.push_back(var3);
+    tempVars.push_back(var4);
+    TupleTable tempTT = TupleTable(tempVars, vals);
+
+    tempVars.clear();
+    tempVars.push_back(var1);
+    tempVars.push_back(var2);
+    tempVals = tempTT.getValuesFor(tempVars);
+    ret = insertResult(tempVars, tempVals);
+    if (ret == -1)
+        return -1;
+
+    tempVars.clear();
+    tempVars.push_back(var1);
+    tempVars.push_back(var3);
+    tempVals = tempTT.getValuesFor(tempVars);
+    ret = insertResult(tempVars, tempVals);
+    if (ret == -1)
+        return -1;
+
+    tempVars.clear();
+    tempVars.push_back(var1);
+    tempVars.push_back(var4);
+    tempVals = tempTT.getValuesFor(tempVars);
+    ret = insertResult(tempVars, tempVals);
+    if (ret == -1)
+        return -1;
+
+    tempVars.clear();
+    tempVars.push_back(var2);
+    tempVars.push_back(var3);
+    tempVals = tempTT.getValuesFor(tempVars);
+    ret = insertResult(tempVars, tempVals);
+    if (ret == -1)
+        return -1;
+
+    tempVars.clear();
+    tempVars.push_back(var2);
+    tempVars.push_back(var4);
+    tempVals = tempTT.getValuesFor(tempVars);
+    ret = insertResult(tempVars, tempVals);
+    if (ret == -1)
+        return -1;
+
+    tempVars.clear();
+    tempVars.push_back(var3);
+    tempVars.push_back(var4);
+    tempVals = tempTT.getValuesFor(tempVars);
+    ret = insertResult(tempVars, tempVals);
+    if (ret == -1)
+        return -1;
+
+    return 0;
+}
+
 int ResultStorage::insertResult(std::vector<std::string> vars, std::vector<std::vector<std::string>> vals) {
     TupleTable tempTT = TupleTable(vars, vals);
     int ret, merge1 = -1, toDelete = -1;

@@ -22,41 +22,50 @@ int PKB::insertNode(int nodeType, std::string value, int parent) {
     int indexValue = -1;
     bool newStmtFlag = false;
     bool hasStmtNum = false;
+    bool insertNodeTable = false;
 
     switch (nodeType) {
-    case Node::assignNode:
-    case Node::whileNode:
-    case Node::ifNode:
-        newStmtFlag = true;
-        hasStmtNum = true;
-        break;
+        case Node::assignNode:
+        case Node::whileNode:
+        case Node::ifNode:
+            newStmtFlag = true;
+            hasStmtNum = true;
+            break;
 
-    case Node::callNode:
-        newStmtFlag = true;
-        hasStmtNum = true;
-        indexValue = procTable.insertProc(value);
-        break;
+        case Node::callNode:
+            newStmtFlag = true;
+            hasStmtNum = true;
+            indexValue = procTable.insertProc(value);
+            break;
 
-    case Node::varNode:
-        indexValue = varTable.insertVar(value);
-        hasStmtNum = true;
-        break;
+        case Node::varNode:
+            indexValue = varTable.insertVar(value);
+            hasStmtNum = true;
+            insertNodeTable = true;
+            break;
 
-    case Node::constNode:
-        indexValue = atoi(value.c_str());
-        constantList.insert(indexValue);
-        hasStmtNum = true;
-        break;
+        case Node::procedureNode:
+            indexValue = procTable.insertProc(value);
+            insertNodeTable = true;
+            break;
 
-    case Node::procedureNode:
-        indexValue = procTable.insertProc(value);
-        break;
+        case Node::constNode:
+            indexValue = atoi(value.c_str());
+            constantList.insert(indexValue);
+            hasStmtNum = true;
+            insertNodeTable = true;
+            break;
 
-    case Node::divideNode:
-    case Node::minusNode:
-    case Node::plusNode:
-    case Node::timesNode:
-        hasStmtNum = true;
+        case Node::divideNode:
+        case Node::minusNode:
+        case Node::plusNode:
+        case Node::timesNode:
+            hasStmtNum = true;
+            insertNodeTable = true;
+            break;
+
+        case Node::stmtLstNode:
+            insertNodeTable = true;
     }
 
     int stmtNum = -1;
@@ -69,6 +78,9 @@ int PKB::insertNode(int nodeType, std::string value, int parent) {
     int newNode = ast.insertNode(nodeType, indexValue, stmtNum, parent);
     if (newStmtFlag) {
         stmtNodeTable.insertStmtNode(stmtNum, newNode, nodeType);
+    }
+    if (insertNodeTable) {
+        nodeTable.insert(newNode, nodeType);
     }
 
     return newNode;
@@ -140,6 +152,250 @@ void PKB::postParseCleanup() {
         }
         procTable.updateProc(currProc.getValue(), firstStmt, lastStmt);
     }
+}
+
+std::vector<int> PKB::getNodeIndexes(int type) {
+    switch (type) {
+        case Node::minusNode:
+            return nodeTable.getMinus();
+
+        case Node::plusNode:
+            return nodeTable.getPlus();
+
+        case Node::timesNode:
+            return nodeTable.getTimes();
+
+        case Node::stmtLstNode:
+            return nodeTable.getStmtLst();
+    }
+    return std::vector<int>();
+}
+
+std::vector<std::string> PKB::convertStmtLst(std::vector<int> nodeIndexes) {
+    std::vector<int> temp;
+    std::vector<std::string> toRet;
+    std::vector<Node> tree = ast.getTree();
+
+    for (int i = 0; i < (int)nodeIndexes.size(); i++) {
+        temp = tree[nodeIndexes[i]].getChildren();
+        int firstStmt = tree[temp[0]].getStmtNum();
+        toRet.push_back(std::to_string((long long)firstStmt));
+    }
+    return toRet;
+}
+
+std::vector<int> PKB::convertToNodeIndex(std::string input, int type) {
+    std::vector<int> nodeInput, temp;
+    std::vector<Node> tree = ast.getTree();
+    std::istringstream convert(input);
+    int inputNum = -1;
+    bool isNum = false;
+    if (convert >> inputNum)
+        isNum = true;
+
+    switch (type) {
+        case Node::assignNode:
+        case Node::callNode:
+        case Node::ifNode:
+        case Node::whileNode:
+        case Node::stmtSpecialValue:
+            if (!isNum)
+                return temp;
+            nodeInput.push_back(stmtNodeTable.getAST(inputNum));
+            break;
+
+        case Node::constNode:
+            temp = nodeTable.getConstants();
+            if (!isNum)
+                return temp;
+            for (int i = 0; i < (int)temp.size(); i++) {
+                if (tree[temp[i]].getValue() == inputNum)
+                    nodeInput.push_back(temp[i]);
+            }
+            break;
+
+        case Node::minusNode:
+        case Node::plusNode:
+        case Node::timesNode:
+        case Node::stmtLstNode:
+            if (!isNum)
+                return temp;
+            nodeInput.push_back(inputNum);
+            break;
+
+        case Node::procedureNode:
+            temp = nodeTable.getProcs();
+            inputNum = procTable.getProcIndex(input);
+            if (inputNum == -1)
+                return temp;
+            for (int i = 0; i < (int)temp.size(); i++) {
+                if (tree[temp[i]].getValue() == inputNum)
+                    nodeInput.push_back(temp[i]);
+            }
+            break;
+
+        case Node::varNode:
+            temp = nodeTable.getVariables();
+            inputNum = varTable.getVarIndex(input);
+            if (inputNum == -1)
+                return temp;
+            for (int i = 0; i < (int)temp.size(); i++) {
+                if (tree[temp[i]].getValue() == inputNum)
+                    nodeInput.push_back(temp[i]);
+            }
+            break;
+    }
+    return nodeInput;
+}
+
+std::vector<std::string> PKB::convertToStorageType(std::vector<int> result, int type) {
+    std::vector<Node> tree = ast.getTree();
+    std::set<std::string> tempSet;
+    std::vector<std::string> toRet;
+
+    switch (type) {
+        case Node::assignNode:
+        case Node::callNode:
+        case Node::ifNode:
+        case Node::whileNode:
+            for (int i = 0; i < (int)result.size(); i++) {
+                if (tree[result[i]].getNodeType() == type) {
+                    std::string temp = std::to_string((long long) tree[result[i]].getStmtNum());
+                    tempSet.insert(temp);
+                }
+            }
+            break;
+
+        case Node::stmtSpecialValue:
+            for (int i = 0; i < (int)result.size(); i++) {
+                if (tree[result[i]].getNodeType() == Node::assignNode || tree[result[i]].getNodeType() == Node::whileNode || tree[result[i]].getNodeType() == Node::ifNode || tree[result[i]].getNodeType() == Node::callNode) {
+                    std::string temp = std::to_string((long long) tree[result[i]].getStmtNum());
+                    tempSet.insert(temp);
+                }
+            }
+            break;
+
+        case Node::constNode:
+            for (int i = 0; i < (int)result.size(); i++) {
+                if (tree[result[i]].getNodeType() == type) {
+                    std::string temp = std::to_string((long long) tree[result[i]].getValue());
+                    tempSet.insert(temp);
+                }
+            }
+            break;
+
+        case Node::minusNode:
+        case Node::plusNode:
+        case Node::timesNode:
+        case Node::stmtLstNode:
+            for (int i = 0; i < (int)result.size(); i++) {
+                if (tree[result[i]].getNodeType() == type) {
+                    std::string temp = std::to_string((long long) result[i]);
+                    toRet.push_back(temp);
+                }
+            }
+            return toRet;
+            break;
+
+        case Node::procedureNode:
+            for (int i = 0; i < (int)result.size(); i++) {
+                if (tree[result[i]].getNodeType() == type) {
+                    int temp = tree[result[i]].getValue();
+                    tempSet.insert(procTable.getProcName(temp));
+                }
+            }
+            break;
+            
+        case Node::varNode:
+            for (int i = 0; i < (int)result.size(); i++) {
+                if (tree[result[i]].getNodeType() == type) {
+                    int temp = tree[result[i]].getValue();
+                    tempSet.insert(varTable.getVarName(temp));
+                }
+            }
+            break;
+    }
+    toRet = std::vector<std::string> (tempSet.begin(), tempSet.end());
+    return toRet;
+}
+
+std::vector<std::string> PKB::getContainer(std::string input, int inputType, int outputType) {
+    std::vector<int> nodeInput, temp, result;
+
+    nodeInput = convertToNodeIndex(input, inputType);
+    for (int i = 0; i < (int)nodeInput.size(); i++) {
+        temp = containsTable.getContainer(nodeInput[i]);
+        result.insert(result.end(), temp.begin(), temp.end());
+    }
+    std::vector<std::string> toRet = convertToStorageType(result, outputType);
+    return toRet;
+}
+
+std::vector<std::string> PKB::getContainerT(std::string input, int inputType, int outputType) {
+    std::vector<int> nodeInput, temp, result;
+    std::unordered_set<int> tempSet;
+
+    nodeInput = convertToNodeIndex(input, inputType);
+    std::unordered_set<int> inputSet = std::unordered_set<int> (nodeInput.begin(), nodeInput.end());
+    for (int i = 0; i < (int)nodeInput.size(); i++) {
+        temp = containsTable.getContainer(nodeInput[i]);
+        for (int j = 0; j < (int)temp.size(); j++) {
+            tempSet.insert(temp[j]);
+            if (inputSet.insert(temp[j]).second) {
+                nodeInput.push_back(temp[j]);
+            }
+        }
+    }
+    result = std::vector<int> (tempSet.begin(), tempSet.end());
+    std::vector<std::string> toRet = convertToStorageType(result, outputType);
+    return toRet;
+}
+
+std::vector<std::string> PKB::getContainedIn(std::string input, int inputType, int outputType) {
+    std::vector<int> nodeInput, temp, result;
+
+    nodeInput = convertToNodeIndex(input, inputType);
+    for (int i = 0; i < (int)nodeInput.size(); i++) {
+        temp = containsTable.getContainedIn(nodeInput[i]);
+        result.insert(result.end(), temp.begin(), temp.end());
+    }
+    std::vector<std::string> toRet = convertToStorageType(result, outputType);
+    return toRet;
+}
+
+std::vector<std::string> PKB::getContainedInT(std::string input, int inputType, int outputType) {
+    std::vector<int> nodeInput, temp, result;
+    std::unordered_set<int> tempSet;
+
+    nodeInput = convertToNodeIndex(input, inputType);
+    std::unordered_set<int> inputSet = std::unordered_set<int> (nodeInput.begin(), nodeInput.end());
+    for (int i = 0; i < (int)nodeInput.size(); i++) {
+        temp = containsTable.getContainedIn(nodeInput[i]);
+        for (int j = 0; j < (int)temp.size(); j++) {
+            tempSet.insert(temp[j]);
+            if (inputSet.insert(temp[j]).second) {
+                nodeInput.push_back(temp[j]);
+            }
+        }
+    }
+    result = std::vector<int> (tempSet.begin(), tempSet.end());
+    std::vector<std::string> toRet = convertToStorageType(result, outputType);
+    return toRet;
+}
+
+bool PKB::isContains(std::string input1, int type1, std::string input2, int type2) {
+    std::vector<int> nodeInput1, nodeInput2;
+    nodeInput1 = convertToNodeIndex(input1, type1);
+    nodeInput2 = convertToNodeIndex(input2, type2);
+
+    for (int i = 0; i < (int)nodeInput1.size(); i++) {
+        for (int j = 0; j < (int)nodeInput2.size(); j++) {
+            if (containsTable.isContains(nodeInput1[i], nodeInput2[j])) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 std::vector<int> PKB::getParent(int stmt) {

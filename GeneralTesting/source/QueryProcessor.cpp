@@ -87,6 +87,18 @@ void QueryProcessor::loadDeclaration(std::vector<QueryNode> tree, int* curr) {
         else if (currNode.getValue().compare("call") == 0) {
             varType = DeclarationTable::call_;
         }
+        else if (currNode.getValue().compare("plus") == 0) {
+            varType = DeclarationTable::plus_;
+        }
+        else if (currNode.getValue().compare("minus") == 0) {
+            varType = DeclarationTable::minus_;
+        }
+        else if (currNode.getValue().compare("times") == 0) {
+            varType = DeclarationTable::times_;
+        }
+        else if (currNode.getValue().compare("stmtLst") == 0) {
+            varType = DeclarationTable::stmtLst_;
+        }
 
         std::vector<int> childHolder = currNode.getChildren();
         for (int i = 0; i < (int)childHolder.size(); i++) {
@@ -124,6 +136,276 @@ int QueryProcessor::findTypeOf(std::string para, bool* paraIsNum, bool* paraIsEn
         }
     }
     return paraType;
+}
+
+// Evaluating contains and contains* query 
+int QueryProcessor::evaluateContains(bool T, bool para1IsNum, bool para2IsNum, std::string para1, std::string para2, int para1Num, int para2Num, int para1Type, int para2Type, PKB pkb) {
+    std::vector<std::string> toStore;
+    int ret;
+
+    switch (para1Type) {
+        case::DeclarationTable::assign_:
+            para1Type = Node::assignNode;
+            break;
+
+        case::DeclarationTable::call_:
+            para1Type = Node::callNode;
+            break;
+
+        case::DeclarationTable::constant_:
+            para1Type = Node::constNode;
+            break;
+
+        case::DeclarationTable::if_:
+            para1Type = Node::ifNode;
+            break;
+
+        case::DeclarationTable::minus_:
+            para1Type = Node::minusNode;
+            break;
+
+        case::DeclarationTable::plus_:
+            para1Type = Node::plusNode;
+            break;
+
+        case::DeclarationTable::procedure_:
+            para1Type = Node::procedureNode;
+            break;
+
+        case::DeclarationTable::prog_line_:
+            para1Type = Node::stmtSpecialValue;
+            break;
+
+        case::DeclarationTable::stmtLst_:
+            para1Type = Node::stmtLstNode;
+            break;
+
+        case::DeclarationTable::stmt_:
+            para1Type = Node::stmtSpecialValue;
+            break;
+
+        case::DeclarationTable::times_:
+            para1Type = Node::timesNode;
+            break;
+
+        case::DeclarationTable::variable_:
+            para1Type = Node::varNode;
+            break;
+
+        case::DeclarationTable::while_:
+            para1Type = Node::whileNode;
+            break;
+
+        case -1:
+            para1Type = Node::stmtSpecialValue;
+            break;
+    }
+
+    switch (para2Type) {
+        case::DeclarationTable::assign_:
+            para2Type = Node::assignNode;
+            break;
+
+        case::DeclarationTable::call_:
+            para2Type = Node::callNode;
+            break;
+
+        case::DeclarationTable::constant_:
+            para2Type = Node::constNode;
+            break;
+
+        case::DeclarationTable::if_:
+            para2Type = Node::ifNode;
+            break;
+
+        case::DeclarationTable::minus_:
+            para2Type = Node::minusNode;
+            break;
+
+        case::DeclarationTable::plus_:
+            para2Type = Node::plusNode;
+            break;
+
+        case::DeclarationTable::procedure_:
+            para2Type = Node::procedureNode;
+            break;
+
+        case::DeclarationTable::prog_line_:
+            para2Type = Node::stmtSpecialValue;
+            break;
+
+        case::DeclarationTable::stmtLst_:
+            para2Type = Node::stmtLstNode;
+            break;
+
+        case::DeclarationTable::stmt_:
+            para2Type = Node::stmtSpecialValue;
+            break;
+
+        case::DeclarationTable::times_:
+            para2Type = Node::timesNode;
+            break;
+
+        case::DeclarationTable::variable_:
+            para2Type = Node::varNode;
+            break;
+
+        case::DeclarationTable::while_:
+            para2Type = Node::whileNode;
+            break;
+        
+        case -1:
+            para2Type = Node::stmtSpecialValue;
+            break;
+    }
+
+    if (!T) {
+        if (para1IsNum) {
+            // Contains (5, 7)
+            if (para2IsNum) {
+                if (!pkb.isContains(para1, para1Type, para2, para2Type))
+                    return -1;
+            }
+            // Contains (5, a)
+            else {
+                toStore = pkb.getContainedIn(para1, para1Type, para2Type);
+                ret = resultStore.insertResult(para2, toStore);
+                if (ret == -1)
+                    return -1;
+            }
+        }
+        // Contains(w, 5)
+        else if (para2IsNum) {
+            toStore = pkb.getContainer(para2, para2Type, para1Type);
+            ret = resultStore.insertResult(para1, toStore);
+            if (ret == -1)
+                return -1;
+        }
+        // Double variable
+        else {
+            // Contains(w, w)
+            if (para1.compare(para2) == 0) {
+                return -1;
+            }
+            // Contains(w, s)
+            else {
+                std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
+                std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
+                bool isPara1;
+                if (para1ValString.size() < para2ValString.size()) {
+                    isPara1 = true;
+				}
+                else {
+                    isPara1 = false;
+				}
+
+                std::vector<std::vector<std::string>> toStoreTuple;
+                if (isPara1) {
+                    for (int i = 0; i < (int)para1ValString.size(); i++) {
+                        toStore = pkb.getContainedIn(para1ValString[i], para1Type, para2Type);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(para1ValString[i]);
+                            holder.push_back(toStore[j]);
+                            toStoreTuple.push_back(holder);
+                        }
+                    }
+                }
+                else {
+                    for (int i = 0; i < (int)para2ValString.size(); i++) {
+                        toStore = pkb.getContainer(para2ValString[i], para2Type, para1Type);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(toStore[j]);
+                            holder.push_back(para2ValString[i]);
+                            toStoreTuple.push_back(holder);
+                        }
+                    }
+                }
+                ret = resultStore.insertResult(para1, para2, toStoreTuple);
+                if (ret == -1)
+                    return -1;
+            }
+        }
+    }
+    else {
+        if (para1IsNum) {
+            // Contains*(5, 7)
+            if (para2IsNum) {
+                std::vector<std::string> holder = pkb.getContainedInT(para1, para1Type, para2Type);
+                bool found = false;
+                for (int i = 0; i < (int)holder.size(); i++) {
+                    if (holder[i].compare(para2) == 0) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                    return -1;
+            }
+            // Contains*(5, a)
+            else {
+                toStore = pkb.getContainedInT(para1, para1Type, para2Type);
+                ret = resultStore.insertResult(para2, toStore);
+                if (ret == -1)
+                    return -1;
+            }
+        }
+        // Contains*(w, 5)
+        else if (para2IsNum) {
+            toStore = pkb.getContainerT(para2, para2Type, para1Type);
+            ret = resultStore.insertResult(para1, toStore);
+            if (ret == -1)
+                return -1;
+        }
+        // Double variable
+        else {
+            // Contains*(w, w)
+            if (para1.compare(para2) == 0) {
+                return -1;
+            }
+            // Contains*(w, s)
+            else {
+                std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
+                std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
+                bool isPara1;
+                if (para1ValString.size() < para2ValString.size()) {
+                    isPara1 = true;
+				}
+                else {
+                    isPara1 = false;
+				}
+
+                std::vector<std::vector<std::string>> toStoreTuple;
+                if (isPara1) {
+                    for (int i = 0; i < (int)para1ValString.size(); i++) {
+                        toStore = pkb.getContainedInT(para1ValString[i], para1Type, para2Type);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(para1ValString[i]);
+                            holder.push_back(toStore[j]);
+                            toStoreTuple.push_back(holder);
+                        }
+                    }
+                }
+                else {
+                    for (int i = 0; i < (int)para2ValString.size(); i++) {
+                        toStore = pkb.getContainerT(para2ValString[i], para2Type, para1Type);
+                        for (int j = 0; j < (int)toStore.size(); j++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(toStore[j]);
+                            holder.push_back(para2ValString[i]);
+                            toStoreTuple.push_back(holder);
+                        }
+                    }
+                }
+                ret = resultStore.insertResult(para1, para2, toStoreTuple);
+                if (ret == -1)
+                    return -1;
+            }
+        }
+    }
+    return 0;
 }
 
 // Evaluating follows and follows* query
@@ -2207,6 +2489,42 @@ int QueryProcessor::evaluateType(PKB pkb, std::string target) {
                 return -1;
             break;
         }
+
+        case DeclarationTable::minus_:
+        {
+            toStore = intVecToStringVec(pkb.getNodeIndexes(Node::minusNode));
+            int ret = resultStore.insertResult(target, toStore);
+            if (ret == -1)  // Exit cond
+                return -1;
+            break;
+        }
+
+        case DeclarationTable::plus_:
+        {
+            toStore = intVecToStringVec(pkb.getNodeIndexes(Node::plusNode));
+            int ret = resultStore.insertResult(target, toStore);
+            if (ret == -1)  // Exit cond
+                return -1;
+            break;
+        }
+
+        case DeclarationTable::times_:
+        {
+            toStore = intVecToStringVec(pkb.getNodeIndexes(Node::timesNode));
+            int ret = resultStore.insertResult(target, toStore);
+            if (ret == -1)  // Exit cond
+                return -1;
+            break;
+        }
+
+        case DeclarationTable::stmtLst_:
+        {
+            toStore = intVecToStringVec(pkb.getNodeIndexes(Node::stmtLstNode));
+            int ret = resultStore.insertResult(target, toStore);
+            if (ret == -1)  // Exit cond
+                return -1;
+            break;
+        }
     }
     return targetType;
 }
@@ -2440,8 +2758,9 @@ void QueryProcessor::processQuery(PKB pkb) {
                 nextQuery = queryOrder[i][min];
                 std::vector<int> connect = optiGraphs[graphIndex].graph[min].connections;
                 for (int j = 0; j < (int)connect.size(); j++) {
-                    if (!optiGraphs[graphIndex].graph[connect[j]].evaluated)
+                    if (!optiGraphs[graphIndex].graph[connect[j]].evaluated) {
                         queryChoices.insert(connect[j]);
+                    }
                 }
                 queryChoices.erase(min);
                 optiGraphs[graphIndex].graph[min].evaluated = true;
@@ -2714,6 +3033,26 @@ void QueryProcessor::processQuery(PKB pkb) {
                                 return;
                         }
                         else
+                            return;
+                    }
+                    else
+                        return;
+                }
+                // contains query
+                else if (relation.getName().compare("contains") == 0) {
+                    if (!para1IsPlaceholder && !para2IsPlaceholder && !para1IsEnt && !para2IsEnt) {
+                        int ret = evaluateContains(false, para1IsNum, para2IsNum, para1, para2, para1Num, para2Num, para1Type, para2Type, pkb);
+                        if (ret == -1)
+                            return;
+                    }
+                    else
+                        return;
+                }
+                // contains* query
+                else if (relation.getName().compare("containst") == 0) {
+                    if (!para1IsPlaceholder && !para2IsPlaceholder && !para1IsEnt && !para2IsEnt) {
+                        int ret = evaluateContains(true, para1IsNum, para2IsNum, para1, para2, para1Num, para2Num, para1Type, para2Type, pkb);
+                        if (ret == -1)
                             return;
                     }
                     else
