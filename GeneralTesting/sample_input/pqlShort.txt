@@ -1,5 +1,10 @@
 if ifs; while w; assign a; stmtLst sl; stmt s; plus pl; minus mi; times ti; variable v;
-Select a such that AffectsBip(1, a)
+Select s such that Sibling(s, 1)
+Select s such that Sibling(1, s)
+Select s such that Sibling(1, 2)
+Select s such that Sibling(s, a)
+Select v such that Sibling(v, v)
+
 
  
 

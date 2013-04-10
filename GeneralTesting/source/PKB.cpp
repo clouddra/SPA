@@ -398,6 +398,35 @@ bool PKB::isContains(std::string input1, int type1, std::string input2, int type
     return false;
 }
 
+std::vector<std::string> PKB::getSibling(std::string input, int inputType, int outputType) {
+    std::vector<int> nodeInput, temp;
+    std::unordered_set<int> result;
+
+    nodeInput = convertToNodeIndex(input, inputType);
+    for (int i = 0; i < (int)nodeInput.size(); i++) {
+        temp = siblingTable.getSiblings(nodeInput[i]);
+        result.insert(temp.begin(), temp.end());
+    }
+    temp = std::vector<int>(result.begin(), result.end());
+    std::vector<std::string> toRet = convertToStorageType(temp, outputType);
+    return toRet;
+}
+
+bool PKB::isSibling(std::string input1, int type1, std::string input2, int type2) {
+    std::vector<int> nodeInput1, nodeInput2;
+    nodeInput1 = convertToNodeIndex(input1, type1);
+    nodeInput2 = convertToNodeIndex(input2, type2);
+
+    for (int i = 0; i < (int)nodeInput1.size(); i++) {
+        for (int j = 0; j < (int)nodeInput2.size(); j++) {
+            if (siblingTable.isSibling(nodeInput1[i], nodeInput2[j])) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 std::vector<int> PKB::getParent(int stmt) {
 	return parentTable.getParent(stmt);
 }

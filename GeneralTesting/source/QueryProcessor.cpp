@@ -138,6 +138,212 @@ int QueryProcessor::findTypeOf(std::string para, bool* paraIsNum, bool* paraIsEn
     return paraType;
 }
 
+// Evaluate sibling query
+int QueryProcessor::evaluateSibling(bool para1IsNum, bool para2IsNum, std::string para1, std::string para2, int para1Num, int para2Num, int para1Type, int para2Type, PKB pkb) {
+    std::vector<std::string> toStore;
+    int ret;
+
+    switch (para1Type) {
+        case::DeclarationTable::assign_:
+            para1Type = Node::assignNode;
+            break;
+
+        case::DeclarationTable::call_:
+            para1Type = Node::callNode;
+            break;
+
+        case::DeclarationTable::constant_:
+            para1Type = Node::constNode;
+            break;
+
+        case::DeclarationTable::if_:
+            para1Type = Node::ifNode;
+            break;
+
+        case::DeclarationTable::minus_:
+            para1Type = Node::minusNode;
+            break;
+
+        case::DeclarationTable::plus_:
+            para1Type = Node::plusNode;
+            break;
+
+        case::DeclarationTable::procedure_:
+            para1Type = Node::procedureNode;
+            break;
+
+        case::DeclarationTable::prog_line_:
+            para1Type = Node::stmtSpecialValue;
+            break;
+
+        case::DeclarationTable::stmtLst_:
+            para1Type = Node::stmtLstNode;
+            break;
+
+        case::DeclarationTable::stmt_:
+            para1Type = Node::stmtSpecialValue;
+            break;
+
+        case::DeclarationTable::times_:
+            para1Type = Node::timesNode;
+            break;
+
+        case::DeclarationTable::variable_:
+            para1Type = Node::varNode;
+            break;
+
+        case::DeclarationTable::while_:
+            para1Type = Node::whileNode;
+            break;
+
+        case -1:
+            para1Type = Node::stmtSpecialValue;
+            break;
+    }
+
+    switch (para2Type) {
+        case::DeclarationTable::assign_:
+            para2Type = Node::assignNode;
+            break;
+
+        case::DeclarationTable::call_:
+            para2Type = Node::callNode;
+            break;
+
+        case::DeclarationTable::constant_:
+            para2Type = Node::constNode;
+            break;
+
+        case::DeclarationTable::if_:
+            para2Type = Node::ifNode;
+            break;
+
+        case::DeclarationTable::minus_:
+            para2Type = Node::minusNode;
+            break;
+
+        case::DeclarationTable::plus_:
+            para2Type = Node::plusNode;
+            break;
+
+        case::DeclarationTable::procedure_:
+            para2Type = Node::procedureNode;
+            break;
+
+        case::DeclarationTable::prog_line_:
+            para2Type = Node::stmtSpecialValue;
+            break;
+
+        case::DeclarationTable::stmtLst_:
+            para2Type = Node::stmtLstNode;
+            break;
+
+        case::DeclarationTable::stmt_:
+            para2Type = Node::stmtSpecialValue;
+            break;
+
+        case::DeclarationTable::times_:
+            para2Type = Node::timesNode;
+            break;
+
+        case::DeclarationTable::variable_:
+            para2Type = Node::varNode;
+            break;
+
+        case::DeclarationTable::while_:
+            para2Type = Node::whileNode;
+            break;
+        
+        case -1:
+            para2Type = Node::stmtSpecialValue;
+            break;
+    }
+
+    if (para1IsNum) {
+        // Sibling (5, 7)
+        if (para2IsNum) {
+            if (!pkb.isSibling(para1, para1Type, para2, para2Type))
+                return -1;
+        }
+        // Sibling (5, a)
+        else {
+            toStore = pkb.getSibling(para1, para1Type, para2Type);
+            ret = resultStore.insertResult(para2, toStore);
+            if (ret == -1)
+                return -1;
+        }
+    }
+    // Sibling(w, 5)
+    else if (para2IsNum) {
+        toStore = pkb.getSibling(para2, para2Type, para1Type);
+        ret = resultStore.insertResult(para1, toStore);
+        if (ret == -1)
+            return -1;
+    }
+    // Double variable
+    else {
+        // Sibling(v, v)
+        if (para1.compare(para2) == 0) {
+            std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
+            for (int i = 0; i < (int)para1ValString.size(); i++) {
+                std::vector<std::string> holder = pkb.getSibling(para1ValString[i], para1Type, para1Type);
+                bool found = false;
+                for (int j = 0; j < (int)holder.size(); j++) {
+                    if (holder[j].compare(para1ValString[i]) == 0) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found)
+                    toStore.push_back(para1ValString[i]);
+            }
+            ret = resultStore.insertResult(para1, toStore);
+            if (ret == -1)
+                return -1;
+        }
+        // Sibling(w, s)
+        else {
+            std::vector<std::string> para1ValString = resultStore.getValuesFor(para1);
+            std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
+            bool isPara1;
+            if (para1ValString.size() < para2ValString.size()) {
+                isPara1 = true;
+			}
+            else {
+                isPara1 = false;
+			}
+
+            std::vector<std::vector<std::string>> toStoreTuple;
+            if (isPara1) {
+                for (int i = 0; i < (int)para1ValString.size(); i++) {
+                    toStore = pkb.getSibling(para1ValString[i], para1Type, para2Type);
+                    for (int j = 0; j < (int)toStore.size(); j++) {
+                        std::vector<std::string> holder;
+                        holder.push_back(para1ValString[i]);
+                        holder.push_back(toStore[j]);
+                        toStoreTuple.push_back(holder);
+                    }
+                }
+            }
+            else {
+                for (int i = 0; i < (int)para2ValString.size(); i++) {
+                    toStore = pkb.getSibling(para2ValString[i], para2Type, para1Type);
+                    for (int j = 0; j < (int)toStore.size(); j++) {
+                        std::vector<std::string> holder;
+                        holder.push_back(toStore[j]);
+                        holder.push_back(para2ValString[i]);
+                        toStoreTuple.push_back(holder);
+                    }
+                }
+            }
+            ret = resultStore.insertResult(para1, para2, toStoreTuple);
+            if (ret == -1)
+                return -1;
+        }
+    }
+    return 0;
+}
+
 // Evaluating contains and contains* query 
 int QueryProcessor::evaluateContains(bool T, bool para1IsNum, bool para2IsNum, std::string para1, std::string para2, int para1Num, int para2Num, int para1Type, int para2Type, PKB pkb) {
     std::vector<std::string> toStore;
@@ -3396,6 +3602,16 @@ void QueryProcessor::processQuery(PKB pkb) {
                                 return;
                         }
                         else
+                            return;
+                    }
+                    else
+                        return;
+                }
+                // sibling query
+                else if (relation.getName().compare("sibling") == 0) {
+                    if (!para1IsPlaceholder && !para2IsPlaceholder && !para1IsEnt && !para2IsEnt) {
+                        int ret = evaluateSibling(para1IsNum, para2IsNum, para1, para2, para1Num, para2Num, para1Type, para2Type, pkb);
+                        if (ret == -1)
                             return;
                     }
                     else

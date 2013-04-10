@@ -118,6 +118,8 @@ public:
 	std::vector<std::string> getContainedIn(std::string input, int inputType, int outputType);
     std::vector<std::string> getContainedInT(std::string input, int inputType, int outputType);
     bool isContains(std::string input1, int type1, std::string input2, int type2);
+    std::vector<std::string> getSibling(std::string input, int inputType, int outputType);
+    bool isSibling(std::string input1, int type1, std::string input2, int type2);
     std::vector<int> getParent(int stmt);
     std::vector<int> getParent();
     std::vector<int> getParentT(int stmt);
