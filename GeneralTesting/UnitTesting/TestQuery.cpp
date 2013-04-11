@@ -10,7 +10,7 @@
 #include <iostream>
 #include <string>
 
-//volatile bool AbstractWrapper::GlobalStop = false;
+volatile bool AbstractWrapper::GlobalStop = false;
 
 void 
 QueryTest::setUp()

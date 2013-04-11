@@ -4,8 +4,6 @@
 #endif
 
 #include <set>
-// Uncomment this line when using SPA.exe
-// volatile bool AbstractWrapper::GlobalStop = false;
 
 // Notation guide: Variables = Declared in pql query, Entities = Variables in simple code (VarTable in PKB)
 
@@ -1795,6 +1793,15 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
 				
 				#ifndef ENABLE_THREADING
                 for (int i = 0; i < (int)para1Val.size(); i++) {
+
+                    /*
+                    // Autotester timeout
+                    if (i % 5 == 4) {
+                        if (AbstractWrapper::GlobalStop) {
+                            return -1;
+                        } 
+                    } */
+
                     std::vector<int> temp2;
                     temp2 = pkb.getAffectsStartAPI(para1Val[i]);
                     for (int j = 0; j < (int)temp2.size(); j++) {
@@ -1836,6 +1843,15 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
 				#ifndef ENABLE_THREADING
                 if (isPara1) {
                     for (int i = 0; i < (int)para1ValInt.size(); i++) {
+
+                        /*
+                        // Autotester timeout
+                        if (i % 5 == 4) {
+                            if (AbstractWrapper::GlobalStop) {
+                                return -1;
+                            } 
+                        } */
+
                         temp = pkb.getAffectsStartAPI(para1ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
@@ -1848,6 +1864,15 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
                 }
                 else {
                     for (int i = 0; i < (int)para2ValInt.size(); i++) {
+
+                        /*
+                        // Autotester timeout
+                        if (i % 5 == 4) {
+                            if (AbstractWrapper::GlobalStop) {
+                                return -1;
+                            } 
+                        } */
+
                         temp = pkb.getAffectsEndAPI(para2ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
@@ -1955,6 +1980,15 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
                 }
 				#ifndef ENABLE_THREADING
                 for (int i = 0; i < (int)para1Val.size(); i++) {
+
+                    /*
+                    // Autotester timeout
+                    if (i % 5 == 4) {
+                        if (AbstractWrapper::GlobalStop) {
+                            return -1;
+                        } 
+                    } */
+
                     std::vector<int> temp2;
                     temp2 = pkb.getAffectsTStartAPI(para1Val[i]);
                     for (int j = 0; j < (int)temp2.size(); j++) {
@@ -1995,6 +2029,15 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
 				#ifndef ENABLE_THREADING
                 if (isPara1) {
                     for (int i = 0; i < (int)para1ValInt.size(); i++) {
+
+                        /*
+                        // Autotester timeout
+                        if (i % 5 == 4) {
+                            if (AbstractWrapper::GlobalStop) {
+                                return -1;
+                            } 
+                        } */
+
                         temp = pkb.getAffectsTStartAPI(para1ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
@@ -2007,6 +2050,15 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
                 }
                 else {
                     for (int i = 0; i < (int)para2ValInt.size(); i++) {
+
+                        /*
+                        // Autotester timeout
+                        if (i % 5 == 4) {
+                            if (AbstractWrapper::GlobalStop) {
+                                return -1;
+                            } 
+                        } */
+
                         temp = pkb.getAffectsTEndAPI(para2ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
@@ -3269,6 +3321,7 @@ void QueryProcessor::processQuery(PKB pkb) {
         // Dynamic optimization end
         
         while (queryOrder[i].size() > 0) {
+            
             /*
             // Autotester timeout
             if (AbstractWrapper::GlobalStop) {

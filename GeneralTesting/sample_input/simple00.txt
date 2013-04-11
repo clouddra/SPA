@@ -8,7 +8,7 @@ e = d + z * x;
 while i {
 	e = x - y;
 	if z then {
-		y = y + z;
+		y = a + m;
 		i = y + 1; }
 	else {
 		x = y + z; 

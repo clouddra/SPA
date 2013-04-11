@@ -201,6 +201,7 @@ std::vector<std::string> ResultStorage::getValuesFor(std::string var) {
 std::vector<std::vector<std::string>> ResultStorage::getValuesFor(std::vector<std::string> vars) {
     std::vector<std::vector<std::string>> temp;
     std::vector<std::vector<std::vector<std::string>>> intResults;
+    std::vector<int> order;
 
     for (int i = 0; i < (int)ttVector.size(); i++) {
         std::vector<std::string> match;
@@ -209,6 +210,7 @@ std::vector<std::vector<std::string>> ResultStorage::getValuesFor(std::vector<st
             for (int k = 0; k < (int)tempVec.size(); k++) {
                 if (vars[j].compare(tempVec[k]) == 0) {
                     match.push_back(vars[j]);
+                    order.push_back(j);
                     break;
                 }
             }
@@ -234,7 +236,16 @@ std::vector<std::vector<std::string>> ResultStorage::getValuesFor(std::vector<st
         intResults.erase(intResults.begin()+1);
     }
 
-    return intResults[0];
+    std::vector<std::vector<std::string>> toRet;
+    for (int i = 0; i < (int)intResults[0].size(); i++) {
+        std::vector<std::string> holder;
+        holder.resize((int)vars.size());
+        for (int j = 0; j < (int)order.size(); j++) {
+            holder[order[j]] = intResults[0][i][j];
+        }
+        toRet.push_back(holder);
+    }
+    return toRet;
 }
 
 std::vector<ValidValue> ResultStorage::getVVVector() {

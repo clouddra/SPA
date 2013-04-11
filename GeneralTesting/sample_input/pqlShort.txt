@@ -1,9 +1,5 @@
-if ifs; while w; assign a; stmtLst sl; stmt s; plus pl; minus mi; times ti; variable v;
-Select s such that Sibling(s, 1)
-Select s such that Sibling(1, s)
-Select s such that Sibling(1, 2)
-Select s such that Sibling(s, a)
-Select v such that Sibling(v, v)
+variable v1,v2,v3; 
+Select <v1,v2,v3> with v1.varName = "m" and v2.varName = "a" with v3.varName = v2.varName
 
 
  
