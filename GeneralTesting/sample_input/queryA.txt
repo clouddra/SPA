@@ -1,2 +1,2 @@
-assign a1, a2;
-Select a1 such that Affects*(1, a2)
+assign a;
+Select a1 such that AffectsBip(a, 20)

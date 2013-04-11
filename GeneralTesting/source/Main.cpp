@@ -94,7 +94,7 @@ int main() {
 	*/
 
     // pql.txt stores currently working queries, pqlShort.txt stores queries in development (may not work)
-    char const* pqlFile = "..\\sample_input\\pqlShort.txt";
+    char const* pqlFile = "..\\sample_input\\queryA.txt";
     std::ifstream in2(pqlFile, std::ios_base::in);
 
     if (!in2)

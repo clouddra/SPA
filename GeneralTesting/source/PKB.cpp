@@ -1827,6 +1827,16 @@ std::vector<int> PKB::depthDownBip(int currStmt, int var, std::vector<int> visit
 				int currProcInd = procTable.getProcOfStmt(currStmt);
 				int dummyCfgNodeInd = procTable.getCFGEnd(currProcInd);
 				std::vector<int> nextBipDummy = cfg.getNextBip(-1, dummyCfgNodeInd);
+
+				if (nextBipDummy.empty()) // no where else to branch after we return
+				{
+					std::vector<int> nextStmtBip = cfg.getNextBip(currStmt, cfgIndex);
+					for (int i=0; i<(int)nextStmtBip.size(); i++)
+					{
+						std::vector<int> temp = depthDownBip(nextStmtBip[i], var, visited, branchIn);
+						toReturn.insert(toReturn.end(), temp.begin(), temp.end());
+					}
+				}
 				// Add the many possible nextStmt to branch back in later
 				for (int j=0; j<(int)nextBipDummy.size(); j++)
 				{
@@ -1866,29 +1876,38 @@ std::vector<int> PKB::depthDownBip(int currStmt, int var, std::vector<int> visit
 		std::vector<int> nextStmt = cfg.getNext(currStmt, cfgIndex);
 		if ((int)nextStmt.size() == 1) // while stmt is actually the last stmt, hence only 1 nextStmt
 		{
-			if (branchIn.empty()) // in main branch
+			if (visited[nextStmt[0]] == -1) // stmt in while loop has not been visited yet
 			{
-				std::vector<int> nextStmtBip = cfg.getNextBip(currStmt, cfgIndex);
-				for (int i=0; i<(int)nextStmtBip.size(); i++)
+				visited[currStmt] = -1; // set while node to unvisited so we can visited it again and do branch out
+				std::vector<int> temp = depthDownBip(nextStmt[0], var, visited, branchIn);
+				toReturn.insert(toReturn.end(), temp.begin(), temp.end());
+			}
+			else // time to branch out
+			{
+				if (branchIn.empty()) // in main branch
 				{
-					// branchIn remains empty, as the next procedure becomes the main branch
-					std::vector<int> temp = depthDownBip(nextStmtBip[i], var, visited, branchIn);
+					std::vector<int> nextStmtBip = cfg.getNextBip(currStmt, cfgIndex);
+					for (int i=0; i<(int)nextStmtBip.size(); i++)
+					{
+						// branchIn remains empty, as the next procedure becomes the main branch
+						std::vector<int> temp = depthDownBip(nextStmtBip[i], var, visited, branchIn);
+						toReturn.insert(toReturn.end(), temp.begin(), temp.end());
+					}
+				}
+				else // in sub branch, so we return to previous branch
+				{
+					// Reset curr proc stmts to unvisited
+					int currProcInd = procTable.getProcOfStmt(currStmt);
+					int firstStmt = procTable.getProcFirstln(currProcInd);
+					int lastStmt = procTable.getProcLastln(currProcInd);
+					for (int k = firstStmt; k <= lastStmt; k++)
+						visited[k] = -1;
+
+					int nextBipStmt = branchIn.back();
+					branchIn.pop_back();
+					std::vector<int> temp = depthDownBip(nextBipStmt, var, visited, branchIn);
 					toReturn.insert(toReturn.end(), temp.begin(), temp.end());
 				}
-			}
-			else // in sub branch, so we return to previous branch
-			{
-				// Reset curr proc stmts to unvisited
-				int currProcInd = procTable.getProcOfStmt(currStmt);
-				int firstStmt = procTable.getProcFirstln(currProcInd);
-				int lastStmt = procTable.getProcLastln(currProcInd);
-				for (int k = firstStmt; k <= lastStmt; k++)
-					visited[k] = -1;
-
-				int nextBipStmt = branchIn.back();
-				branchIn.pop_back();
-				std::vector<int> temp = depthDownBip(nextBipStmt, var, visited, branchIn);
-				toReturn.insert(toReturn.end(), temp.begin(), temp.end());
 			}
 		}
 		else // while stmt is not the last stmt, normal getNext
@@ -1993,7 +2012,8 @@ std::vector<int> PKB::depthUpBip(int currStmt, std::unordered_set<int> varSet, s
 		return toReturn;
 
 	visited[currStmt] = 1; // Mark currStmt as visited
-
+	if (currStmt == 27)
+		std::cout<< "sth";
 	int nodeType = stmtNodeTable.getType(currStmt);
 	if (nodeType == Node::assignNode)
 	{			
