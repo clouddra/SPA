@@ -1731,8 +1731,12 @@ std::vector<int> PKB::getAffectsBipStart(int start)
 		std::vector<int> temp = depthDownBip(nextStmtBip[i], var, visited, branchIn);
 		toReturn.insert(toReturn.end(), temp.begin(), temp.end());
 	}
+	
+	// Remove duplicates before return answer
+	std::unordered_set<int> uniqueReturn(toReturn.begin(), toReturn.end());
+	std::vector<int> finalReturn(uniqueReturn.begin(), uniqueReturn.end());
 
-	return toReturn;
+	return finalReturn;
 
 }
 
@@ -1998,7 +2002,11 @@ std::vector<int> PKB::getAffectsBipEnd(int end)
 		}
 	}
 
-	return toReturn;
+	// Remove duplicates before return answer
+	std::unordered_set<int> uniqueReturn(toReturn.begin(), toReturn.end());
+	std::vector<int> finalReturn(uniqueReturn.begin(), uniqueReturn.end());
+
+	return finalReturn;
 
 }
 
@@ -2012,8 +2020,7 @@ std::vector<int> PKB::depthUpBip(int currStmt, std::unordered_set<int> varSet, s
 		return toReturn;
 
 	visited[currStmt] = 1; // Mark currStmt as visited
-	if (currStmt == 27)
-		std::cout<< "sth";
+
 	int nodeType = stmtNodeTable.getType(currStmt);
 	if (nodeType == Node::assignNode)
 	{			
