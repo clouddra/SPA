@@ -93,8 +93,6 @@ bool CFG::isNext(int stmt1, int node1, int stmt2){
 
 std::vector<int> CFG::getPrevBip(int stmt2, int nodeIndex){
 
-
-
 	//if not last statement of node, do normal prev
 	std::vector<int> stmtList;
 	if (stmt2 > cfg[nodeIndex].getStart() && stmt2 <= cfg[nodeIndex].getEnd()) {
@@ -102,10 +100,19 @@ std::vector<int> CFG::getPrevBip(int stmt2, int nodeIndex){
 		return stmtList;
 	}
 
+	std::vector<int> prevNodes = cfg[nodeIndex].getPrev();
+
 
 	// if Bip, must branch back to prev proc
 	std::vector<int> prevBip = cfg[nodeIndex].getBipPrev();
 	if (!prevBip.empty()) {
+		for (std::vector<int>::iterator j = prevNodes.begin() ; j != prevNodes.end(); ++j) {
+			// check if not branching out (not calls node).
+			// if true we must add to stmtList
+			if (cfg[*j].getBipNext().empty())
+				stmtList.push_back(cfg[*j].getEnd());
+		}
+
 		for (std::vector<int>::iterator j = prevBip.begin() ; j != prevBip.end(); ++j) {
 			int prevStmt = cfg[*j].getEnd();
 
@@ -130,7 +137,6 @@ std::vector<int> CFG::getPrevBip(int stmt2, int nodeIndex){
 
 	else{
 		// if no Bip
-		std::vector<int> prevNodes = cfg[nodeIndex].getPrev();
 		for (std::vector<int>::iterator j = prevNodes.begin() ; j != prevNodes.end(); ++j) {
 			// no dummy for prev
 			stmtList.push_back(cfg[*j].getEnd());
