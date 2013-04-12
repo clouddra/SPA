@@ -28,45 +28,20 @@ Select s such that NextBip(2, s)
 6 - NextBip ::
 stmt s;
 Select s such that NextBip(10, s)
-5, 8
+3, 5, 8
 5000
 7 - NextBip ::
 stmt s;
 Select s such that NextBip(11, s)
-5, 8
+3, 5, 8
 5000
 8 - NextBip ::
 stmt s;
 Select s such that NextBip(8, s)
-3
+9
 5000
 9 - NextBip ::
 stmt s;
 Select s such that NextBip(5, s)
 none
-5000
-10 - NextBipStar ::
-stmt s;
-Select s such that NextBip*(s, 8)
-10, 11, 9, 7, 6, 2, 1
-5000
-11 - NextBipStar ::
-stmt s;
-Select s such that NextBip*(s, 4)
-3, 8, 10, 11, 9, 7, 6, 2, 1
-5000
-12 - NextBipStar ::
-stmt s;
-Select s such that NextBip*(s, 10)
-9, 7, 6, 2, 1, 4, 3, 8, 11, 10
-5000
-13 - NextBipStar ::
-stmt s;
-Select s such that NextBip*(s, 5)
-10, 11, 9, 4, 3, 8, 6, 7, 2, 1
-5000
-14 - NextBipStar ::
-stmt s;
-Select s such that NextBip*(s, 7)
-6, 2, 1
 5000

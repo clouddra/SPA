@@ -1,0 +1,7 @@
+1
+cat: All Category
+1 - NextBip ::
+stmt s;
+Select s such that NextBip(5, s)
+3
+5000

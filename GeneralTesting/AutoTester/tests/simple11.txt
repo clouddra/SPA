@@ -1,0 +1,31 @@
+procedure First {
+  x = 3;
+  y = x+3;
+  if i then{
+	i = i-1;
+	x = 0;
+	while j{
+		while k{
+			x=x+y  ;
+		}
+		y=x + y -k;
+	}
+	kkk =k*k*k ;
+ }
+ else{
+	a =b;
+ }
+ ab = c;
+}
+procedure Third{
+  x=0;
+  while i{
+   x= 2*y+ x;
+   call First;}
+  if x then{
+   x = x+1;
+   }
+  else{
+  z = 1;}
+  z=z;
+}
