@@ -71,7 +71,7 @@ write-output $p;
 #add/remove items if you want to do only unit testing or autoTester testing
 #"autoTester11", "autoTester12", "autoTester13" -> contain recursion
 #"cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8", "autoTester9", "autoTester10"
-$all_testing = @("autoTester9");
+$all_testing = @("cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8", "autoTester9", "autoTester10");
 
 foreach ($testing in $all_testing)
 {
