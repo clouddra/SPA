@@ -2806,6 +2806,12 @@ int QueryProcessor::evaluateUsesP(bool para1IsEnt, bool para2IsEnt, bool para2Is
 int QueryProcessor::evaluateCalls(bool T, bool para1IsEnt, bool para1IsPlaceholder, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, PKB pkb) {
     std::vector<std::string> toStore;
 
+    if (para1IsPlaceholder && para2IsPlaceholder) {
+        if (pkb.getCallsTable()->getSize() > 0)
+            return 0;
+        else
+            return -1;
+    }
     if (!T) {
         if (para1IsEnt) {
             if (para2IsEnt) {
@@ -2831,8 +2837,22 @@ int QueryProcessor::evaluateCalls(bool T, bool para1IsEnt, bool para1IsPlacehold
             }
         }
         else if (para2IsEnt) {
+            if (para1IsPlaceholder) {
+                toStore = pkb.getCalledBy(para2);
+                if (toStore.size() > 0)
+                    return 0;
+                else 
+                    return -1;
+            }
             toStore = pkb.getCalls(para2);
             int ret = resultStore.insertResult(para1, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        else if (para1IsPlaceholder) {
+            toStore = pkb.getCalledBy();
+            int ret = resultStore.insertResult(para2, toStore);
             if (ret == -1) {  // Exit cond
                 return -1;
             }
@@ -2924,8 +2944,22 @@ int QueryProcessor::evaluateCalls(bool T, bool para1IsEnt, bool para1IsPlacehold
             }
         }
         else if (para2IsEnt) {
+            if (para1IsPlaceholder) {
+                toStore = pkb.getCalledBy(para2);
+                if (toStore.size() > 0)
+                    return 0;
+                else 
+                    return -1;
+            }
             toStore = pkb.getCallsT(para2);
             int ret = resultStore.insertResult(para1, toStore);
+            if (ret == -1) {  // Exit cond
+                return -1;
+            }
+        }
+        else if (para1IsPlaceholder) {
+            toStore = pkb.getCalledBy();
+            int ret = resultStore.insertResult(para2, toStore);
             if (ret == -1) {  // Exit cond
                 return -1;
             }
