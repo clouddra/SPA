@@ -319,6 +319,7 @@ namespace pqlparser
 				>> string("Select")			[at_c<0>(_val) = "select"]
 				>> result_cl_				[push_back(at_c<2>(_val), qi::_1)]
 				>> *(suchthat_cl_ | with_cl_ | pattern_cl_)	[push_back(at_c<2>(_val), qi::_1)]
+				>> -(char_(';'))
 				;
 
 			result_cl_ = 
