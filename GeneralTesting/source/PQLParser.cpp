@@ -286,8 +286,8 @@ namespace pqlparser
 				| '<' >> elem_				[at_c<0>(_val) = "elem"][push_back(at_c<2>(_val), qi::_1)]
 				>> *(',' >> elem_			[at_c<0>(_val) = "tuple"][push_back(at_c<2>(_val), qi::_1)]) 
 				>> '>';
-			elem_ = hold[synonym_[at_c<0>(_val) = "synonym"][push_back(at_c<2>(_val), qi::_1)]] 
-				| attrRef_ [at_c<0>(_val) = "attrRef"][push_back(at_c<2>(_val), qi::_1)];
+			elem_ = hold[attrRef_			[at_c<0>(_val) = "attrRef"][push_back(at_c<2>(_val), qi::_1)]] 
+				| synonym_					[at_c<0>(_val) = "synonym"][push_back(at_c<2>(_val), qi::_1)];
 			synonym_ %= IDENT_;
 			attrName_ %= string("procName") | string("varName") | string("value") | string("stmt#");
 			varRef_ %= synonym_ | char_('_') | (char_('"') >> IDENT_ >> char_('"'));
