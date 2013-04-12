@@ -1533,7 +1533,11 @@ std::vector<int> PKB::getAffectsTStart(int start)
 		toReturn.insert(toReturn.end(), temp.begin(), temp.end());
 	}
 
-	return toReturn;
+	// Remove duplicates before return answer
+	std::unordered_set<int> uniqueReturn(toReturn.begin(), toReturn.end());
+	std::vector<int> finalReturn(uniqueReturn.begin(), uniqueReturn.end());
+
+	return finalReturn;
 }
 
 std::vector<int> PKB::depthDownT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::unordered_set<int> ignoreSet)
@@ -1623,7 +1627,11 @@ std::vector<int> PKB::getAffectsTEnd(int end)
 		toReturn.insert(toReturn.end(), temp.begin(), temp.end());
 	}
 
-	return toReturn;
+	// Remove duplicates before return answer
+	std::unordered_set<int> uniqueReturn(toReturn.begin(), toReturn.end());
+	std::vector<int> finalReturn(uniqueReturn.begin(), uniqueReturn.end());
+
+	return finalReturn;
 }
 
 std::vector<int> PKB::depthUpT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::unordered_set<int> ignoreSet)

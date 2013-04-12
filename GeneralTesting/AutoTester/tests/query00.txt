@@ -1,4 +1,4 @@
-39
+57
 cat: All Category
 1 - Follows, Modifies ::
 stmt s1, s2; 
@@ -199,4 +199,89 @@ Select a such that Affects*(10, a)
 assign a;
 Select a such that Affects*(a, 4)
 1, 2, 3
+5000
+41 - AffectsStar ::
+
+Select BOOLEAN such that Affects*(1, 13)
+true
+5000
+42 - Follows ::
+
+Select BOOLEAN such that Follows (_, _)
+true
+5000
+43 - Follows ::
+
+Select BOOLEAN such that Follows (1, _)
+true
+5000
+44 - Follows ::
+
+Select BOOLEAN such that Follows (_, 2)
+true
+5000
+45 - Follows ::
+
+Select BOOLEAN such that Follows (_, 1)
+false
+5000
+46 - Follows ::
+
+Select BOOLEAN such that Follows (14, _)
+false
+5000
+47 - Follows ::
+
+Select BOOLEAN such that Follows (7, _)
+false
+5000
+48 - Follows ::
+assign a;
+Select a such that Follows (a, _)
+1, 2, 3, 4, 5, 6, 8, 10, 12
+5000
+49 - Follows ::
+assign a;
+Select a such that Follows (_, a)
+2, 3, 4, 5, 6, 11, 13, 14
+5000
+50 - Follows ::
+
+Select BOOLEAN such that Follows (6, 7)
+true
+5000
+51 - Follows ::
+
+Select BOOLEAN such that Follows (9, 14)
+true
+5000
+52 - Follows ::
+
+Select BOOLEAN such that Follows (8, 9)
+true
+5000
+53 - Follows ::
+assign a;
+Select a such that Follows (a, a)
+none
+5000
+54 - Follows ::
+assign a1, a2;
+Select a1 such that Follows (a1, a2)
+1, 2, 3, 4, 5, 10, 12
+5000
+55 - Follows ::
+stmt s;
+Select s such that Follows (s, _)
+1, 2, 3, 4, 5, 6, 8, 9, 10, 12
+5000
+56 - ContainsStar, ReturnBoolean ::
+
+Select BOOLEAN such that Contains* (7, 8)
+true
+5000
+57 - Sibling ::
+
+Select BOOLEAN such that Sibling (1, 2)
+true
 5000
