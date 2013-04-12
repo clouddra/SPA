@@ -2838,7 +2838,7 @@ int QueryProcessor::evaluateCalls(bool T, bool para1IsEnt, bool para1IsPlacehold
         }
         else if (para2IsEnt) {
             if (para1IsPlaceholder) {
-                toStore = pkb.getCalledBy(para2);
+                toStore = pkb.getCalls(para2);
                 if (toStore.size() > 0)
                     return 0;
                 else 
@@ -2945,7 +2945,7 @@ int QueryProcessor::evaluateCalls(bool T, bool para1IsEnt, bool para1IsPlacehold
         }
         else if (para2IsEnt) {
             if (para1IsPlaceholder) {
-                toStore = pkb.getCalledBy(para2);
+                toStore = pkb.getCalls(para2);
                 if (toStore.size() > 0)
                     return 0;
                 else 
