@@ -3287,6 +3287,15 @@ void QueryProcessor::processQuery(PKB pkb) {
             isBool = true;
             result.push_back("false");
         }
+        else if (target.compare("attrRef") == 0) {
+            if (currNode.getChildren().size() == 2) {
+                std::string holder;
+                int temp;
+                int ret = attrRefChecker(&target, &holder, &temp, currNode, pkb);
+                if (ret == -1)
+                    return;
+            }
+        }
     }
     else if (currNode.getName().compare("tuple") == 0) {
         isTuple = true;
@@ -3294,7 +3303,17 @@ void QueryProcessor::processQuery(PKB pkb) {
         for (int i = 0; i < (int)temp.size(); i++) {
             currNode = tree[temp[i]];
             currNode = tree[currNode.getChildren()[0]];
-            tupleTarget.push_back(currNode.getName());
+            target = currNode.getName();
+            if (target.compare("attrRef") == 0) {
+                if (currNode.getChildren().size() == 2) {
+                    std::string holder;
+                    int temp;
+                    int ret = attrRefChecker(&target, &holder, &temp, currNode, pkb);
+                    if (ret == -1)
+                        return;
+                }
+            }
+            tupleTarget.push_back(target);
         }
     }
     else
