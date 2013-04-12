@@ -1,5 +1,5 @@
-variable v1,v2,v3; 
-Select <v1,v2,v3> with v1.varName = "m" and v2.varName = "a" with v3.varName = v2.varName
+assign a1; variable v;
+Select a1.varName pattern a1(v, "z+5")
 
 
  
