@@ -1,4 +1,4 @@
-25
+36
 cat: All Category
 1 - Parent, ImplStmtLine, Typed :: Which is the parent (type while) of the statement in line number 7
 while w;
@@ -124,4 +124,54 @@ i, x, z
 prog_line n1, n2; variable v; call c;
 Select c such that Next*(n1, n2) and Modifies(n1, v) and Uses(n2, v) and Modifies(c, v)
 10, 12, 16
+5000
+26 - NextStar, ImplStmtLine, And-Tuple ::
+prog_line n;
+Select n such that Next*(13, n)
+14, 15, 16, 17, 18, 19, 20, 21
+5000
+27 - Pattern ::
+variable v; assign a1;
+Select v pattern a1(v, _)
+x, z, i, y
+5000
+28 - Uses ::
+variable v; assign a2;
+Select v such that Uses(a2, v)
+i, x, z, y
+5000
+29 - AffectsStar ::
+assign a1, a2;
+Select a2 such that Affects*(a1, a2)
+11, 17, 19, 21, 5, 7, 8, 9
+5000
+30 - NextBip ::
+
+Select BOOLEAN such that NextBip(10, 22)
+true
+5000
+31 - NextBip ::
+
+Select BOOLEAN such that NextBip(1, 2)
+true
+5000
+32 - NextBip ::
+prog_line n;
+Select n such that NextBip(23, n)
+11, 17
+5000
+33 - Next ::
+prog_line n;
+Select n such that Next(24, n)
+none
+5000
+35 - NextBip ::
+prog_line n;
+Select n such that NextBip(21, n)
+none
+5000
+36 - Next ::
+prog_line n;
+Select n such that Next(21, n)
+none
 5000

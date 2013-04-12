@@ -250,3 +250,8 @@ assign a1, a2;
 Select a2 such that Affects (a1, a2)
 19, 7, 9, 6, 20
 5000
+51 - Calls ::
+procedure p;
+Select p such that Calls(_,p)
+Dogfight, GHETTOBLASTER, BlazinBeat, GambleRumble
+5000

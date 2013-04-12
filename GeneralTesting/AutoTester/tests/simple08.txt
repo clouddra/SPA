@@ -1,0 +1,11 @@
+procedure RINA {
+a = b;
+call MAMI;
+e = 0;
+}
+procedure MAMI {
+call TOMO;
+}
+procedure TOMO {
+b = b;
+}

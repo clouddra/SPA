@@ -125,11 +125,11 @@
     <LibraryPath>..\external_libs\boost\boost_1_53_0;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\boost\boost_1_53_0;$(IncludePath)</IncludePath>
+    <IncludePath>..\external_libs\boost\boost_1_53_0;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ReferencePath>$(ReferencePath)</ReferencePath>
-    <LibraryPath>C:\boost\boost_1_53_0\stage\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\external_libs\boost\boost_1_53_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
