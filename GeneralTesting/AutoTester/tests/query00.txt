@@ -1,4 +1,4 @@
-57
+60
 cat: All Category
 1 - Follows, Modifies ::
 stmt s1, s2; 
@@ -284,4 +284,19 @@ true
 
 Select BOOLEAN such that Sibling (1, 2)
 true
+5000
+58 - Tuple ::
+if i; while w;
+Select <i, w>
+9 7
+5000
+59 - Parent, Follows, Modifies::
+if i; stmt s1, s2, s3, s4; procedure p; variable v;
+Select <i, s1> such that Parent(s1, s2) and Follows(s3, s4) and Modifies(p, v)
+9 7, 9 9
+5000
+60 - Tuple::
+if i; stmt s;
+Select <i, s> such that Follows(2,s)
+9 3
 5000

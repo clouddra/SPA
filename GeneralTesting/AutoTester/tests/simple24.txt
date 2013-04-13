@@ -1,0 +1,99 @@
+procedure A {
+  if x then {
+    x = 2;
+    while y {
+      x = x + 4;
+      y = (5 - x) + 3 * (5 - x) + 5;
+    }
+    call B;
+  } else {
+    call C;
+    if z then {
+      b = ((((a + 2) * 3) + 4) * 5) - 9;
+    } else {
+      if z then {
+        b = 11;
+        while z {
+          a = 13;
+          b = a - 14;
+          c = b + 15;
+          d = c + b + 16;
+        }
+        c = 17;
+      } else {
+        b = 18;
+      }
+    }
+  }
+  b = 19;
+}
+procedure B {
+  while b {
+    if a then{
+      x = 22;
+    } else {
+      x = 23;
+    }
+  }
+  call E;
+  while c25 {
+    call E;
+  }
+}
+procedure C {
+  p = 27;
+  if p then {
+	q = 29;
+	while q {
+		q = q - 31;
+		p = p * q - 32;
+		g = 33;
+		r = q * ((5 + g) * 34) - q * p;
+		if q then{
+			a = b + 36;
+			q = q - 37;
+			while r {
+				y = r + p - 39;
+				c = c - g + 40;
+			}
+		} else {
+			g = g - 41;
+			f = x + y * p - q - r * 42;
+		}
+		g = g + 43;
+		while h {
+			t = h + 45;
+		}
+	}
+  } else {
+	call E;
+	d = 47;
+  }
+}
+procedure D {
+  call C;
+}
+procedure E {
+  call F1;
+}
+procedure G {
+  x = 30;
+}
+procedure F1 {
+  call F2;
+}
+procedure F2 {
+  call F3;
+}
+procedure F3 {
+  call F4;
+}
+procedure F4 {
+  call F5;
+}
+procedure F5 {
+  call F6;
+}
+procedure F6 {
+  x = y - 36;
+}
