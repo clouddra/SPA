@@ -1,0 +1,332 @@
+procedure PHTMH{
+	m=s+w+i*(f-y)+p;
+	w=r-x-i-(i+v)*b;
+	r=y+u+e+(v*b)+l;
+	y=w+q*p-(i*m)*v;
+	if b then{
+		l=d+p+g+(i*t)+p;
+		g=u*f*n-(t+n)-t;
+		k=w-h+f-(e-e)-m;
+			while x{
+		n=s*p+p-(y*g)+a;
+		b=t-u+y*(y+v)-x;
+		q=p-r*h-(m*i)*f;
+			f=d+l*m-(p+p)+u;
+		i=y-k+l+(v*h)*v;
+}
+}
+else{
+		y=w+m-e-(h+h)+g;
+		c=l+e+l*(n-k)+q;
+}
+	while r{
+		k=i+h-m*(b+d)+e;
+		f=x-l-b+(m-i)*g;
+		y=a-x+n+(y-k)*a;
+			c=y+i+f*(f*q)-n;
+		k=b+h+e-(k-b)+d;
+}
+	if r then{
+		d=e-a-q-(r-x)+l;
+		h=b+r*e+(q+e)-h;
+		m=b*f*k*(s+v)*i;
+			while t{
+		q=w+g*a+(l*m)-s;
+		t=g*d-k-(t*h)-v;
+		g=q*b*t+(t-w)-x;
+			c=n+v-f-(e+d)+d;
+		u=h-a*m+(c*p)+q;
+}
+}
+else{
+		g=s*v+u+(s+c)-k;
+		e=m-x*i-(g+c)+f;
+}
+	v=c*b+i*(i*f)*t;
+	b=s-t+u-(c-s)+q;
+	s=p*v*d+(s-i)+t;
+	if u then{
+		c=m*n*g*(g*g)*h;
+		h=i+s+e*(g+k)-t;
+		g=u*i+h*(u+h)*c;
+			while f{
+		h=w-m*c*(u*q)-u;
+		s=f*q*r*(e*l)+y;
+		r=i*v*h+(q-p)+s;
+			s=l-e+d+(b*g)*e;
+		b=f-f*a*(a*p)*c;
+}
+}
+else{
+		g=w-k-l*(g-d)+e;
+		e=c*k-l+(y*n)*m;
+}
+}
+procedure XCTDZ{
+	h=f-q-g*(w-h)*h;
+	v=c*q*d*(n+c)-p;
+	a=u*i*g*(i*b)+x;
+	w=n-y-v*(b+g)+w;
+	if e then{
+		d=v-d*k-(e-h)-y;
+		v=y*c+t*(g*e)-g;
+		h=y+m*l+(h+t)+g;
+			while g{
+		k=m-d+c*(s-u)-g;
+		g=x+f-x*(n-u)-a;
+		g=q+u-i+(t*t)-w;
+			r=r*n-b-(m-m)-y;
+		a=c*v-g-(g-v)*m;
+}
+}
+else{
+		q=h+s-q+(s-q)-l;
+		n=e-g-b*(g-y)-e;
+}
+	while a{
+		n=b-l+a*(x+g)*u;
+		t=t+a+d*(i+t)-f;
+		w=q*b+i+(i-a)-d;
+			w=l*w-h-(g-x)*y;
+		b=q+t-u*(f*q)+e;
+}
+	if n then{
+		k=k*v*y*(l-c)-h;
+		r=h+d+b*(v*m)+w;
+		x=f-u*h+(r-d)+t;
+			while v{
+		d=r*q*d+(n-y)-c;
+		f=d-x*k+(l-h)-r;
+		f=b-r*r*(b-h)+f;
+			w=g*d+y*(p-m)-f;
+		q=t*q+s*(g-k)*l;
+}
+}
+else{
+		s=x*u-f-(t*a)+s;
+		m=p+f*m+(r-d)+r;
+}
+	v=p*h-c-(l-g)+w;
+	f=u-l-w-(u+r)-r;
+	d=n-q*l-(a+q)*x;
+	if w then{
+		v=f+b-w*(q+c)-m;
+		q=e+l*k*(s*b)*b;
+		e=e*f-m*(i*w)-n;
+			while v{
+		p=s*d+n-(h*c)-p;
+		f=i*r+g-(f*f)+k;
+		e=y+h-k+(s-v)+d;
+			v=n-u-l+(x-x)*q;
+		x=h+x*i+(e*r)-e;
+}
+}
+else{
+		g=w*s-l+(i*i)+b;
+		l=g*i*h*(v*u)-u;
+}
+}
+procedure XJHHR{
+	x=n-y*i*(u*v)+p;
+	i=s*d*a*(m*u)+u;
+	k=k+k-i-(c-c)-e;
+	d=q*a+x*(y*u)*y;
+	if l then{
+		l=d-n+y-(u*f)-r;
+		i=t-c+l-(c+a)+k;
+		k=h*r-q+(c-t)+m;
+			while q{
+		m=n+u+e+(r           *m)-q;
+		s=v-a+p*(i*s)+t;
+		r=q*m*k-(d+t)+b;
+		call XCTDZ ;
+		r=m+k-i*(i+d)+d;
+		h=c+a+l+(i+y)+h;
+}
+}
+else{
+		v=y*p*p+(y-t)*a;
+		p=i*q+b+(m+l)-p;
+}
+	while s{
+		r=m+c-a*(l-e)-x;
+		h=x*n*p+(u-b)+k;
+		l=g-s*n-(u+f)+f;
+			a=w*u-t+(g*u)*r;
+		k=c+b-n+(i+n)*f;
+}
+	if k then{
+		r=y-v+e*(e*d)*g;
+		v=b*g+i*(p+a)*e;
+		m=q-n*u+(u+x)+p;
+		call XCTDZ ;
+		while e{
+		p=h*q-p+(a*p)*r;
+		p=i*t*c*(n-f)*q;
+		c=k+t+q+(i*t)-f;
+			v=n-c+x-(d+x)+v;
+		n=q+r+p-(h+g)*d;
+}
+}
+else{
+		k=m-u-a-(n+y)-g;
+		s=e+e*p+(x*x)+m;
+}
+	k=x+i*g+(d+d)-0l;
+	g=d-k-a+(n+w)-r;
+	t=q+a*k+(u-v)-h;
+	if e then{
+		v=s*k+h-(b*f)-e;
+		g=k*l-u-(c-b)-w;
+		a=g-v+e*(y*m)+n;
+			while n{
+		g=s*b+u-(u*x)+i;
+		s=l-k*y+(g+x)+i;
+		d=w*y+p+(l-w)*w;
+			d=v+u*r*(c-n)+a;
+		q=a+v*i+(d+t)+n;
+}
+}
+else{
+		x=h+g*w+(e+d)+q;
+		i=d*d+n-(n*q)-h;
+}
+}
+procedure KMFRZ{
+	r=y-u-f*(r-h)-x;
+	l=x*h*i+(p*l)+l;
+	q=r+w+n-(a*b)-n;
+	x=d*b+l*(f*q)+a;
+	if p then{
+		i=f*a-m*(y+k)-k;
+		m=c*d-e+(a*h)*h;
+		i=u*s-h+(i+g)*m;
+			while w{
+		d=p+g*p*(i+t)*d;
+		x=a*i+t-(h*y)*k;
+		q=d-e*b+(a*a)*g;
+		call XCTDZ ;
+		r=k-m+v-(r-e)+p;
+		d=y+x+w*(v-c)*m;
+}
+}
+else{
+		w=r+e*m+(p*p)+g;
+		v=k+g-m*(x-m)+d;
+}
+	while l{
+		i=c*a+i*(t+d)+y;
+		u=c*t+y*(i-k)-r;
+		n=p-a+k-(a+w)*d;
+		call XCTDZ ;
+		u=q*t*l*(m+k)-x;
+		t=r*g-n+(w+t)+h;
+}
+	if x then{
+		k=p-r-r+(s+u)+d;
+		u=g+x-x+(p+g)-t;
+		g=u*d+p*(q+p)+k;
+			while y{
+		u=r-w-t*(e-y)-h;
+		n=g+q*m*(c*m)+g;
+		v=v*e+k*(a+d)*h;
+		call XJHHR ;
+		w=m+l-t*(e*u)*u;
+		r=l*c+g-(g*h)+v;
+}
+}
+else{
+		i=r-g+e*(f+n)-u;
+		y=g+f*q*(f+k)+k;
+}
+	call XCTDZ ;
+	p=h+b-v*(a-x)-h;
+	i=q*h-u+(a*y)+m;
+	n=f*g-w+(u+h)+n;
+	if s then{
+		s=x+b+s*(r-g)+h;
+		a=r-n+r-(f+q)-q;
+		r=r-s+k*(t-c)*q;
+			while k{
+		l=g+d+u+(s+g)-l;
+		t=i+v*g+(w+h)-n;
+		s=w-g*i+(f-p)+u;
+			b=u-a-r-(f*u)+h;
+		n=h-s*y*(h*y)*p;
+}
+}
+else{
+		h=m*b*b*(v*a)-i;
+		t=s*t*t+(f+q)+g;
+}
+}
+procedure GWTQV{
+	t=h-x-w+(y-n)*g;
+	m=x+i+c-(c*a)+k;
+	f=n*x+u+(h-p)-d;
+	g=h-s-q+(x-w)+x;
+	if p then{
+		w=m-e-t+(k+p)-c;
+		c=w+b*y*(s-s)*h;
+		g=d-i*n-(s+m)-e;
+			while g{
+		w=n-t-k-(m-e)-h;
+		g=t+c+g-(b*c)*b;
+		b=c*b-b+(d-g)-n;
+			i=a*a+a*(g*t)*l;
+		x=g-s+f-(r-p)-f;
+}
+}
+else{
+		c=m*s*w-(h-r)+v;
+		i=v*x+a*(x*q)+k;
+}
+	while b{
+		d=x*a-d-(i*a)+r;
+		l=s*g-w-(m+k)+p;
+		r=u-b*u+(q+w)*p;
+		call XCTDZ ;
+		l=w-b*f+(g+p)-i;
+		f=t-u*h-(q-g)+g;
+}
+	if r then{
+		y=b+g-w-(v-n)-c;
+		x=b-y-x*(d+f)+n;
+		b=k+h-w*(f+v)*c;
+		call XJHHR ;
+		while u{
+		q=p+q-q+(w+v)+g;
+		s=g-g-b*(i-t)+h;
+		u=n-b-i-(k+c)*a;
+		call KMFRZ ;
+		i=u-h-s-(d+q)-t;
+		f=a-n-f*(l-i)*n;
+}
+}
+else{
+		t=l*s*q+(g*g)*f;
+		v=m+a-v-(y+w)-a;
+}
+	call KMFRZ ;
+	s=y*l+t*(s+a)*q;
+	n=g-v-m+(y+l)+v;
+	t=x+h-e*(n+q)-e;
+	if l then{
+		c=v+l+g-(q+g)-x;
+		d=a-l-f-(s*f)+a;
+		e=w+n-b+(c*l)*g;
+		call XJHHR ;
+		while b{
+		w=y+b+m+(m-q)+y;
+		s=s*u-u-(w-e)*g;
+		a=m-d-a+(b-a)-c;
+		call KMFRZ ;
+		t=m+x-p*(g+b)-g;
+		b=n*v*r+(t*c)-k;
+}
+}
+else{
+		x=f+s-h-(g+b)*e;
+		v=m+e-k-(n-n)+s;
+}
+}

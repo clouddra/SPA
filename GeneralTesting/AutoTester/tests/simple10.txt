@@ -1,16 +1,13 @@
 procedure testWhile {
-	while a {
-		b = a;
-		while b {
-			c = d;
-			while b{
-				c = d;
-			}
-			abc = cba + abc * dbg;
-		}
-		call testIf;
+while a {
+	b = a;
+	while b {
+		c = d;
+		while b{
+			c = d;}
+		abc = cba + abc * dbg;
 	}
-}
+	call testIf;}}
 
 procedure testIf{
  if i then{
