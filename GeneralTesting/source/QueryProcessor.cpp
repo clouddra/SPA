@@ -3330,6 +3330,11 @@ void QueryProcessor::processQuery(PKB pkb) {
                     return;
             }
         }
+        else {
+            int ret = evaluateType(pkb, target);
+            if (ret == -1)
+                return;
+        }
     }
     else if (currNode.getName().compare("tuple") == 0) {
         isTuple = true;
@@ -3346,6 +3351,11 @@ void QueryProcessor::processQuery(PKB pkb) {
                     if (ret == -1)
                         return;
                 }
+            }
+            else {
+                int ret = evaluateType(pkb, target);
+                if (ret == -1)
+                    return;
             }
             tupleTarget.push_back(target);
         }
@@ -3994,25 +4004,9 @@ void QueryProcessor::processQuery(PKB pkb) {
     else {
         if (!isTuple) {
             result = resultStore.getValuesFor(target);
-            // If empty, should mean that target did not appear in query
-            if (result.size() == 0) {
-                int ret = evaluateType(pkb, target);
-                if (ret == -1)
-                    return;
-                result = resultStore.getValuesFor(target);
-            }
         }
         else {
-            std::vector<std::vector<std::string>> holder = resultStore.getValuesFor(tupleTarget);
-            // If empty, should mean that target did not appear in query
-            if (holder.size() == 0) {
-                for (int i = 0; i < (int)tupleTarget.size(); i++) {
-                    int ret = evaluateType(pkb, tupleTarget[i]);
-                    if (ret == -1)
-                        return;
-                }
-                holder = resultStore.getValuesFor(tupleTarget);
-            }
+            std::vector<std::vector<std::string>> holder = resultStore.getValuesFor(tupleTarget);              
             for (int i = 0; i < (int)holder.size(); i++) {
                 std::string tupleResult = holder[i][0];
                 for (int j = 1; j < (int)holder[i].size(); j++) {
