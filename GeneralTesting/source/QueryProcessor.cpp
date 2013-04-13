@@ -2071,7 +2071,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
                 }
 				#else
 				Threading threading;
-				threading.processAffectsDiffVarDriver(toStoreTuple, para1ValString, para1ValInt, para2ValString, para2ValInt, isPara1, pkb);
+				threading.processAffectsTDiffVarDriver(toStoreTuple, para1ValString, para1ValInt, para2ValString, para2ValInt, isPara1, pkb);
 				#endif
 
                 int ret = resultStore.insertResult(para1, para2, toStoreTuple);
@@ -2406,7 +2406,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                 }
 				#else
 				Threading threading;
-				threading.processAffectsDiffVarDriver(toStoreTuple, para1ValString, para1ValInt, para2ValString, para2ValInt, isPara1, pkb);
+				threading.processAffectsTDiffVarDriver(toStoreTuple, para1ValString, para1ValInt, para2ValString, para2ValInt, isPara1, pkb);
 				#endif
 
                 int ret = resultStore.insertResult(para1, para2, toStoreTuple);
