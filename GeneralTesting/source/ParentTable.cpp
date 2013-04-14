@@ -54,8 +54,8 @@ std::vector<int> ParentTable::getParent(int stmt2){
 std::vector<int> ParentTable::getParent(){
 	
 	std::vector<int> results ;
-	for (int i = 0; i < (int)parentTable.size() ; i++) {
-		if (!parentTable.at(i).empty())
+	for (int i = 0; i < (int)childTable.size() ; i++) {
+		if (!childTable.at(i).empty())
 			results.push_back(i);
 	}
 
@@ -77,8 +77,8 @@ std::vector<int> ParentTable::getChild(int stmt1){
 std::vector<int> ParentTable::getChild(){
 
 	std::vector<int> results ;
-	for (int i = 0; i < (int)childTable.size() ; i++) {
-		if (!childTable.at(i).empty())
+	for (int i = 0; i < (int)parentTable.size() ; i++) {
+		if (!parentTable.at(i).empty())
 			results.push_back(i);
 	}
 
