@@ -1,4 +1,4 @@
-128
+129
 cat: Calls(syn,syn)
 1 - Test1
 procedure p1,p2,p3,p4; while w1,w2,w3,w4; assign a,a1,a2,a3,a4; stmt s,s#,s1,s2,s3,s4; variable v1,v2,v3,v4; prog_line n1, n2, n3,n4; constant c1, c2, c3,c4; if i1, i2, i3, i4; call ca1,ca2,ca3,ca4;
@@ -717,4 +717,9 @@ i, y, z
 prog_line n1;
 Select n1 such that Uses(n1, "i")
 1, 8, 9, 10, 12, 14, 15, 16, 19, 20, 22, 24, 25, 27, 28, 29
+5000
+129 - Contains ::
+procedure p; constant c;
+Select p such that Contains* (p, c) with c.value=1
+testIf, testBoth
 5000

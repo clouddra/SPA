@@ -1,0 +1,192 @@
+procedure Apple{
+	h=a;
+	call Durian;
+	if q then{
+		d=(p-d*(i+v)-j);
+		if o then{
+			r=(b+t*h-(b-(z-f)-x)-d);
+			call Banana;
+			f=(a*u)+(c*(e*a+(v-c)+(r*z*(t+a)*(k-e)-(x-n)-k)-n+e)*m);
+			y=z+i;}
+		else {
+			g=1;
+			h=x;}}
+	else {
+		h=b;
+		j=x+1*(v-c);}}
+
+procedure Banana{
+	u=s-b+i*b;
+	s=z+z*(h*y-l)+(c*z+(b*(s*(t*w)-y)*g)+(x+(o*t)-l)*u);
+	while x{
+		y=f+d;
+		call Durian;}
+	b=1+d;
+	call Guava;
+	call Lemon;
+	l=w+x*a;
+	l=(c-r)*c-r-d;
+	while s{
+		w=h;
+		p=p;
+		y=c;}}
+		
+procedure Cherry{
+	while q{
+		r=(p+(u*(u*r)*s)+j*(r+h+(a-(a*n)+f)*(h-f)*y+f)*(m+b*t)*r)+d*a;
+		p=g-(i*m);
+		while k{
+			c=(o-(h+u*o)+b);
+			m=l;
+			while e{
+				k=o+(v-(b+c)-w);
+				m=5*7+f;
+				if i then{
+					r=(c*x);
+					f=(l*y);
+					while f{
+						j=z+a*d;
+						while j{
+							j=z+d;
+							k=(e+b)*(t-a)-x+1-r+3*h;}}}
+				else{
+					j=2-r;
+					f=3+f;}}}}
+	while f{
+		j=z+(d-5)*7;}}
+
+procedure Durian{
+	l=(w+(b+(o-b+k)-j)+j*e);
+	call Guava;
+	j=5;
+	h=(p+x)+d-4;
+	if f then{
+		r=m*s*(d-(p+x)-(i-(b*(f-(p-o)*(l*c-l)*m)+b)*o)-o);}
+	else {
+		call Cherry;}
+	if y then{
+		r=a*g+(a-(p+b*w)+f);}
+	else {
+		b=v+3-5*7;}
+	if g then{
+		r=(u-f);
+		s=(a*c*(v-p+x*(i*w)-(g-k)*(t*d)+(u+(w+x)+h-(h-r)+g)*f)*(i-z)-n);
+		while g{
+			z=(w+v);
+			q=t+(j*n)-s-o;
+			while i{
+				g=p*(k*(m-r)-(s+(w*p+x*g-(l-y)*(h*(k*b)-k)+t+t)+y)-s);
+				while d{
+					u=a*(x-(n*(e*v)-q-d-(i*h*(x*(g*v)-f)+u)+t)+x)*g+p;
+					k=(h-t);}}}}
+	else{
+		z=p+x;
+		b=(p+x);
+		h=(u*(a*q)+t);}
+	r=p*j;
+	while g{
+		d=(z-b)+(h*e)*(p+(p*r)*(v-t)-m);
+		r=(q+j);}}
+		
+procedure Guava{
+	r=4+d;
+	x=1+2;}
+	
+procedure Lemon{
+	r=4+d;
+	s=(t*g)-1+2;}
+
+procedure Mango{
+	a=1;
+	b=2;
+	c=3;
+	d=4;
+	m=3+x;
+	if g then{
+		m=2;}
+	else{
+		k=1;}
+	e=(k+(o*v)+s+(o+(l+(m+a)-w)+(r+s)*m-j)-r-v);
+	f=d+r;
+	call Orange;
+	u=a+(b*c)-d+(f+(g-(h*i)+j)*k-l+(m-n));}
+
+procedure Orange{
+	a=b;
+	g=4;
+	while z{
+		d=w+x;}
+	call Papaya;}
+
+procedure Papaya{
+	c=6;
+	while k{
+		call Strawberry;}}
+
+procedure Strawberry{
+	f=4*(r+6);
+	if c then{
+		d=m-(h+o)*(a-(n+(a+l)+(m*(s+(x-(c-d)*m)*p)+h)-v)*q*c);}
+	else {
+	while z{
+		r=w;
+		if u then{
+			c=b;
+			if f then{
+				q=(c*l)+w;
+				if t then{
+					n=s*(w-k)+(y*(z+a)*i-x);}
+				else {
+					call Watermelon;}}
+			else{
+				c=(q-e);
+				p=(p*(t*f)*(p-(j*m)*t)+(y+f+(c*p*d*c)+i)+v);
+				a=(c+o)-d;}}
+		else{
+			e=g*g-i;
+			b=(x+(v+(j-(y*(t+d)-(l+(v+(j*(f*o-p)+o)+k)*e)-p)*e)*p)*r)+k;}}}
+	q=h-b;
+	f=l;
+	while q{
+		z=o;
+		j=(f+(t+q)-(v*o)*d);
+		while j{
+			o=j;}}
+	s=3+p+x-f;}
+
+procedure Watermelon{
+	y=a;
+	if e then{
+		e=i-(s-b)*b*(y*z)*g;
+		o=y*n-j;}
+	else {
+		e=h+j;}
+	y=(m*n)*n+(b-g+r+j);
+	if z then{
+		z=(r-(p-(7*r*t)+r)*y);
+		if z then{
+			y=3*t;
+			if z then{
+				f=3*t+5-r;
+				if z then{
+					d=3*t;
+					if z then{
+						e=3-(f+g);
+						if z then{
+							a=k-(7*r*t);
+							g=7*r*t;}
+						else{
+							j=s;}}
+					else{
+						d=u;}}
+				else{
+					w=s;}}
+			else{
+				w=e+d+f*h-3;}}
+		else{
+			w=3;}}
+	else{
+		r=7*r*t-h+1;
+		x=z-f+2-1;}
+	w=v-u*u;
+	x=f+7*r*t-3;}

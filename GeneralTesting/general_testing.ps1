@@ -35,6 +35,8 @@ $exe_autoTester22 = "Release\AutoTester.exe";
 $exe_autoTester23 = "Release\AutoTester.exe";
 $exe_autoTester24 = "Release\AutoTester.exe";
 $exe_autoTester25 = "Release\AutoTester.exe";
+$exe_autoTester26 = "Release\AutoTester.exe";
+$exe_autoTester27 = "Release\AutoTester.exe";
 
 #output filenames
 $out_cppunit = $cpp_relative_path +"cppunit.out";
@@ -65,6 +67,8 @@ $out_autoTester22 = $autoTester_relative_path +"autoTester22.out";
 $out_autoTester23 = $autoTester_relative_path +"autoTester23.out";
 $out_autoTester24 = $autoTester_relative_path +"autoTester24.out";
 $out_autoTester25 = $autoTester_relative_path +"autoTester25.out";
+$out_autoTester26 = $autoTester_relative_path +"autoTester26.out";
+$out_autoTester27 = $autoTester_relative_path +"autoTester27.out";
 
 #command line arguments for each executable
 $args_cppunit = @(" ");
@@ -95,6 +99,8 @@ $args_autoTester22 = @($autoTester_relative_path + "tests\simple22.txt " + $auto
 $args_autoTester23 = @($autoTester_relative_path + "tests\simple23.txt " + $autoTester_relative_path + "tests\query23.txt " + $autoTester_relative_path + "tests\out23.xml");
 $args_autoTester24 = @($autoTester_relative_path + "tests\simple24.txt " + $autoTester_relative_path + "tests\query24.txt " + $autoTester_relative_path + "tests\out24.xml");
 $args_autoTester25 = @($autoTester_relative_path + "tests\simple25.txt " + $autoTester_relative_path + "tests\query25.txt " + $autoTester_relative_path + "tests\out25.xml");
+$args_autoTester26 = @($autoTester_relative_path + "tests\simple26.txt " + $autoTester_relative_path + "tests\query26.txt " + $autoTester_relative_path + "tests\out26.xml");
+$args_autoTester27 = @($autoTester_relative_path + "tests\simple27.txt " + $autoTester_relative_path + "tests\query27.txt " + $autoTester_relative_path + "tests\out27.xml");
 
 #change directory to the $solution_path
 $current_path = get-location;
@@ -106,8 +112,8 @@ write-output $p;
 #tests that will be run
 #add/remove items if you want to do only unit testing or autoTester testing
 #"autoTester11", "autoTester12", "autoTester13" -> contain recursion
-#"cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8", "autoTester9", "autoTester10", "autoTester14", "autoTester15", "autoTester16", "autoTester17", "autoTester18", "autoTester19", "autoTester20", "autoTester21", "autoTester22", "autoTester23", "autoTester24", "autoTester25"
-$all_testing = @("cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8", "autoTester9", "autoTester10", "autoTester14", "autoTester15", "autoTester16", "autoTester17", "autoTester18", "autoTester19", "autoTester20", "autoTester21", "autoTester22", "autoTester23", "autoTester24", "autoTester25");
+#"cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8", "autoTester9", "autoTester10", "autoTester14", "autoTester15", "autoTester16", "autoTester17", "autoTester18", "autoTester19", "autoTester20", "autoTester21", "autoTester22", "autoTester23", "autoTester24", "autoTester25", "autoTester26", "autoTester27"
+$all_testing = @("cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8", "autoTester9", "autoTester10", "autoTester14", "autoTester15", "autoTester16", "autoTester17", "autoTester18", "autoTester19", "autoTester20", "autoTester21", "autoTester22", "autoTester23", "autoTester24", "autoTester25", "autoTester26", "autoTester27");
 
 foreach ($testing in $all_testing)
 {
