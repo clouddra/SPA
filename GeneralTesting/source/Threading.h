@@ -1,5 +1,6 @@
 #ifdef ENABLE_THREADING
 #include <boost/thread.hpp>
+#include <Windows.h>
 
 class Worker {
 private:
@@ -57,5 +58,6 @@ public:
 
 	std::vector<std::string> intVecToStringVec(std::vector<int> input);
 	bool join_all();
+	void terminate_all(); // Not portable, windows only
 };
 #endif
