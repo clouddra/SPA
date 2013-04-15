@@ -2254,7 +2254,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             }
         }
     }
-    /*
+    
     else {
         if (para1IsNum) {
             // AffectsBip*(1, 10)
@@ -2339,7 +2339,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                 if (para1Val.size() == 0) {
                     return -1;
                 }
-			    #ifndef ENABLE_THREADING
+			    //#ifndef ENABLE_THREADING
                 for (int i = 0; i < (int)para1Val.size(); i++) {
                     std::vector<int> temp2;
                     temp2 = pkb.getAffectsBipTStart(para1Val[i]);
@@ -2350,10 +2350,11 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                         }
                     }
                 }
-				#else
+                /*
+                #else
 				Threading threading;
 				threading.processAffectsTSameVarDriver(temp, para1Val, pkb);
-				#endif
+				#endif */
 
                 toStore = intVecToStringVec(temp);
                 int ret = resultStore.insertResult(para1, toStore);
@@ -2379,7 +2380,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
 
                 std::vector<std::vector<std::string>> toStoreTuple;
 
-				#ifndef ENABLE_THREADING
+				//#ifndef ENABLE_THREADING
                 if (isPara1) {
                     for (int i = 0; i < (int)para1ValInt.size(); i++) {
                         temp = pkb.getAffectsBipTStart(para1ValInt[i]);
@@ -2404,17 +2405,18 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                         }
                     }
                 }
+                /*
 				#else
 				Threading threading;
 				threading.processAffectsTDiffVarDriver(toStoreTuple, para1ValString, para1ValInt, para2ValString, para2ValInt, isPara1, pkb);
-				#endif
+				#endif */
 
                 int ret = resultStore.insertResult(para1, para2, toStoreTuple);
                 if (ret == -1)
                     return -1;
             }
         }
-    } */
+    } 
     return 0;
 }
 
