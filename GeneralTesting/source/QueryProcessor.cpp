@@ -4449,6 +4449,7 @@ int QueryProcessor::evaluateIfPatternStmtLst(std::string pattern, std::string va
         // std::cout << var << " is not declared as a variable, query cannot be evaluated/n"; 
         return -1;
     }
+    return 0;
 }
 
 int QueryProcessor::evaluateWhilePatternStmtLst(std::string pattern, std::string var, bool varIsEnt, bool varIsPlaceholder, std::string stmtLst, PKB pkb) {
