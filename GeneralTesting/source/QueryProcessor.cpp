@@ -1760,7 +1760,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
             for (int i = temp2.size()-1; i > -1; i--) {
                 temp = pkb.getAffectsEndAPI(temp2[i]);
                 if (temp.size() == 0)
-                    temp2.erase(temp.begin()+i);
+                    temp2.erase(temp2.begin()+i);
             }
             toStore = intVecToStringVec(temp2);
             int ret = resultStore.insertResult(para2, toStore);
@@ -1774,7 +1774,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
             for (int i = temp2.size()-1; i > -1; i--) {
                 temp = pkb.getAffectsStartAPI(temp2[i]);
                 if (temp.size() == 0)
-                    temp2.erase(temp.begin()+i);
+                    temp2.erase(temp2.begin()+i);
             }
             toStore = intVecToStringVec(temp2);
             int ret = resultStore.insertResult(para1, toStore);
@@ -1948,7 +1948,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
             for (int i = temp2.size()-1; i > -1; i--) {
                 temp = pkb.getAffectsTEndAPI(temp2[i]);
                 if (temp.size() == 0)
-                    temp2.erase(temp.begin()+i);
+                    temp2.erase(temp2.begin()+i);
             }
             toStore = intVecToStringVec(temp2);
             int ret = resultStore.insertResult(para2, toStore);
@@ -1962,7 +1962,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
             for (int i = temp2.size()-1; i > -1; i--) {
                 temp = pkb.getAffectsTStartAPI(temp2[i]);
                 if (temp.size() == 0)
-                    temp2.erase(temp.begin()+i);
+                    temp2.erase(temp2.begin()+i);
             }
             toStore = intVecToStringVec(temp2);
             int ret = resultStore.insertResult(para1, toStore);
@@ -2145,7 +2145,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             for (int i = temp2.size()-1; i > -1; i--) {
                 temp = pkb.getAffectsBipEnd(temp2[i]);
                 if (temp.size() == 0)
-                    temp2.erase(temp.begin()+i);
+                    temp2.erase(temp2.begin()+i);
             }
             toStore = intVecToStringVec(temp2);
             int ret = resultStore.insertResult(para2, toStore);
@@ -2159,7 +2159,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             for (int i = temp2.size()-1; i > -1; i--) {
                 temp = pkb.getAffectsBipStart(temp2[i]);
                 if (temp.size() == 0)
-                    temp2.erase(temp.begin()+i);
+                    temp2.erase(temp2.begin()+i);
             }
             toStore = intVecToStringVec(temp2);
             int ret = resultStore.insertResult(para1, toStore);
@@ -2336,7 +2336,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             for (int i = temp2.size()-1; i > -1; i--) {
                 temp = pkb.getAffectsBipTEnd(temp2[i]);
                 if (temp.size() == 0)
-                    temp2.erase(temp.begin()+i);
+                    temp2.erase(temp2.begin()+i);
             }
             toStore = intVecToStringVec(temp2);
             int ret = resultStore.insertResult(para2, toStore);
@@ -2350,7 +2350,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             for (int i = temp2.size()-1; i > -1; i--) {
                 temp = pkb.getAffectsBipTStart(temp2[i]);
                 if (temp.size() == 0)
-                    temp2.erase(temp.begin()+i);
+                    temp2.erase(temp2.begin()+i);
             }
             toStore = intVecToStringVec(temp2);
             int ret = resultStore.insertResult(para1, toStore);
