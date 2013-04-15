@@ -206,6 +206,10 @@ public:
 	std::vector<int> getAffectsBipEnd(int end);
 	std::vector<int> depthDownBip(int currStmt, int var, std::vector<int> visited, std::vector<int> branchIn);
 	std::vector<int> depthUpBip(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::vector<int> branchIn);
+	std::vector<int> getAffectsBipTStart(int start);
+	std::vector<int> getAffectsBipTEnd(int end);
+	std::vector<int> depthDownBipT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::vector<int> branchIn, std::unordered_set<int> ignoreSet);
+	std::vector<int> depthUpBipT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::vector<int> branchIn, std::unordered_set<int> ignoreSet);
 
 	void printModifiesTable();
 	AST PKB::getAST();
