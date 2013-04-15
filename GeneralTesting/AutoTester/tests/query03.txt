@@ -1,4 +1,4 @@
-50
+52
 cat: All Category
 1 - Stmt ::
 stmt s;
@@ -254,4 +254,9 @@ Select a2 such that Affects (a1, a2)
 procedure p;
 Select p such that Calls(_,p)
 Dogfight, GHETTOBLASTER, BlazinBeat, GambleRumble
+5000
+52 - ContainsStar :: return all procedures in which while is nested in if statement
+procedure p; if ifStmt; while w;
+Select p such that Contains* (p, ifStmt) and Contains* (ifStmt, w)
+GHETTOBLASTER
 5000

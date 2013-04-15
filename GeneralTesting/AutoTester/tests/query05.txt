@@ -1,4 +1,4 @@
-36
+37
 cat: All Category
 1 - Parent, ImplStmtLine, Typed :: Which is the parent (type while) of the statement in line number 7
 while w;
@@ -62,7 +62,7 @@ Select a such that Affects*(11, a)
 5000
 13 - Pattern, Typed ::
 assign a;
-Select a pattern a("z", _"x+i")
+Select a pattern a("z", _"x+i"_)
 none
 5000
 14 - Pattern, Typed ::
@@ -174,4 +174,9 @@ none
 prog_line n;
 Select n such that Next(21, n)
 none
+5000
+37 - Contains, ContainsStar ::
+procedure p; if ifStmt; variable v;
+Select v such that Contains (ifStmt, v) and Contains* (p, ifStmt) with p.procName="q"
+x
 5000

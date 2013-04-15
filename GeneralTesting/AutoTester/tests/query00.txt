@@ -1,4 +1,4 @@
-60
+75
 cat: All Category
 1 - Follows, Modifies ::
 stmt s1, s2; 
@@ -299,4 +299,79 @@ Select <i, s1> such that Parent(s1, s2) and Follows(s3, s4) and Modifies(p, v)
 if i; stmt s;
 Select <i, s> such that Follows(2,s)
 9 3
+5000
+61 - Contains :: returns all the variables that control some if statement
+variable v; if ifStmt;
+Select v such that Contains (ifStmt, v)
+z
+5000
+62 - ContainsStar :: returns all the assignments that refer to variable “x” (either on the left- or right-hand-side)
+variable v; assign a;
+Select a such that Contains* (a, v) with v.varName="x"
+2, 3, 4, 5, 6, 8, 12, 14
+5000
+63 - ContainsStar :: returns all the assignments with ‘plus’ nodes that refer to variable “x” (either on the left- or right-hand-side of plus)
+variable v; plus add; assign a;
+Select a such that Contains* (a, add) and Contains* (add, v) with v.varName="x"
+3, 4, 5, 6
+5000
+64 - ContainsStar :: return all procedures in which while is nested in if statement
+procedure p; if ifStmt; while w;
+Select p such that Contains* (p, ifStmt) and Contains* (ifStmt, w)
+none
+5000
+65 - ContainsStar ::
+stmt s;
+Select s such that Contains* (7, s)
+8, 9, 10, 11, 12, 13, 14
+5000
+66 - ContainsStar ::
+stmt s;
+Select s such that Contains* (s, 8)
+7
+5000
+67 - ContainsStar ::
+stmt s;
+Select s such that Contains* (s, 10)
+7, 9
+5000
+68 - ContainsStar ::
+variable v;
+Select v such that Contains* (2, v)
+x, z
+5000
+69 - ContainsStar ::
+variable v;
+Select v such that Contains* (7, v)
+i, x, y, e, z
+5000
+70 - ContainsStar ::
+variable v;
+Select v such that Contains* (9, v)
+x, y, z, i
+5000
+71 - ReturnBoolean, Pattern ::
+if i;
+Select BOOLEAN pattern i("z", then, else)
+true
+5000
+72 - ReturnBoolean, Pattern ::
+if i; stmtLst then, else;
+Select BOOLEAN pattern i("z", then, else)
+true
+5000
+73 - ReturnBoolean, Pattern ::
+if i; stmtLst then, else; variable v;
+Select v such that Contains* (then, v) pattern i("z", then, else) 
+y, i, z
+5000
+74 - AffectsStar ::
+stmt s1; assign a2;
+Select a2 such that Affects*(s1,a2) with s1.stmt#=1
+2, 3, 4, 5, 6, 8, 10, 11, 12, 13, 14
+5000
+75 - AffectsStar ::
+stmt s1; assign a2;
+Select a2 such that Affects*(s1,a2) and Next(s1,2)
+2, 3, 4, 5, 6, 8, 10, 11, 12, 13, 14
 5000
