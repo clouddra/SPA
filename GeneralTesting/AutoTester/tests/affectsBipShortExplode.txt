@@ -5,6 +5,41 @@ stmt s;
 Select s such that Affects(4, s)
 9, 10, 11, 6, 7
 5000
+2 - Affects*::
+stmt s;
+Select s such that Affects*(4, s)
+9, 10, 11, 6, 7
+5000
+2 - Affects*::
+stmt s;
+Select s such that Affects(9, s)
+11
+5000
+2 - Affects*::
+stmt s;
+Select s such that Affects*(9, s)
+11
+5000
+2 - Affects*::
+stmt s;
+Select s such that Affects(14, s)
+16
+5000
+2 - Affects*::
+stmt s;
+Select s such that Affects*(14, s)
+16
+5000
+2 - Affects*::
+stmt s;
+Select s such that Affects(18, s)
+none
+5000
+2 - Affects*::
+stmt s;
+Select s such that Affects*(18, s)
+none
+5000
 5 - Affects::
 stmt s;
 Select s such that Affects(2, s)
@@ -29,4 +64,64 @@ Select s such that Affects*(1, s)
 stmt s;
 Select s such that Affects(1, s)
 10,11,2,4,5,7,9,6
+5000
+9 - Affects ::
+stmt s;
+Select s such that Affects*(10, s)
+11
+5000
+9 - Affects ::
+stmt s;
+Select s such that Affects*(5, s)
+11,6,9
+5000
+9 - Affects ::
+stmt s;
+Select s such that Affects*(15, s)
+16
+5000
+9 - Affects ::
+stmt s;
+Select s such that Affects*(19, s)
+none
+5000
+9 - Affects ::
+stmt s;
+Select s such that Affects*(s, 4)
+1
+5000
+9 - Affects ::
+stmt s;
+Select s such that Affects*(s, 9)
+1,2,4,5,6
+5000
+9 - Affects ::
+stmt s;
+Select s such that Affects*(s, 14)
+none
+5000
+9 - Affects ::
+stmt s;
+Select s such that Affects*(s, 18)
+none
+5000
+9 - Affects ::
+stmt s;
+Select s such that Affects*(s, 16)
+12,14,15
+5000
+9 - Affects ::
+stmt s;
+Select s such that Affects*(s, 6)
+1,2,4,5
+5000
+9 - Affects ::
+stmt s;
+Select s such that Affects(s, 16)
+12,14,15
+5000
+9 - Affects ::
+stmt s;
+Select s such that Affects(s, 6)
+1,2,4,5
 5000
