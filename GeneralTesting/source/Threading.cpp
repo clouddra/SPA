@@ -50,10 +50,11 @@ std::vector<int> Threading::processAffectsSameVarStart(std::vector<int>& para1Va
 	return result;
 }
 
-void Threading::processAffectsSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
+bool Threading::processAffectsSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
     for (int i = 0; i < (int)para1Val.size(); i++) {
 		if (i%nThreads == 0 && i > 0) {
-			tGroup.join_all();
+			if (!join_all()) return false;
+			//tGroup.join_all();
 			for (int j=0; j<nThreads; j++) {
 				std::vector<int> returnedVector = workers[j%nThreads].getReturnVector();
 				for (std::vector<int>::iterator it=returnedVector.begin(); it<returnedVector.end(); it++) {
@@ -69,7 +70,8 @@ void Threading::processAffectsSameVarDriver(std::vector<int>& temp, std::vector<
 		tGroup.add_thread(tList[i%nThreads]);
     }
 
-	tGroup.join_all();
+	if (!join_all()) return false;
+	//tGroup.join_all();
 	for (int j=0; j<nThreads; j++) {
 		if (tGroup.is_thread_in(tList[j])) {
 			std::vector<int> returnedVector = workers[j%nThreads].getReturnVector();
@@ -79,6 +81,7 @@ void Threading::processAffectsSameVarDriver(std::vector<int>& temp, std::vector<
 			tGroup.remove_thread(tList[j]);
 		}
 	}
+	return true;
 }
 
 // Affects(a1, a2) from start
@@ -113,12 +116,13 @@ std::vector<std::vector<std::string>> Threading::processAffectsDiffVarEnd(std::v
 	return toStoreTuple;
 }
 
-void Threading::processAffectsDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
+bool Threading::processAffectsDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
 							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb) {
     if (isPara1) {
         for (int i = 0; i < (int)para1ValInt.size(); i++) {
 			if (i%nThreads == 0 && i > 0) {
-				tGroup.join_all();
+				if (!join_all()) return false;
+				//tGroup.join_all();
 				for (int j=0; j<nThreads; j++) {
 					std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
 					for (std::vector<std::vector<std::string>>::iterator it=returnedTuple.begin(); it<returnedTuple.end(); it++) {
@@ -134,7 +138,8 @@ void Threading::processAffectsDiffVarDriver(std::vector<std::vector<std::string>
 			tGroup.add_thread(tList[i%nThreads]);
         }
 
-		tGroup.join_all();
+		if (!join_all()) return false;
+		//tGroup.join_all();
 		for (int j=0; j<nThreads; j++) {
 			if (tGroup.is_thread_in(tList[j])) {
 				std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
@@ -144,11 +149,13 @@ void Threading::processAffectsDiffVarDriver(std::vector<std::vector<std::string>
 				tGroup.remove_thread(tList[j]);
 			}
 		}
+		return true;
     }
     else {
         for (int i = 0; i < (int)para2ValInt.size(); i++) {
 			if (i%nThreads == 0 && i > 0) {
-				tGroup.join_all();
+				if (!join_all()) return false;
+				//tGroup.join_all();
 				for (int j=0; j<nThreads; j++) {
 					std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
 					for (std::vector<std::vector<std::string>>::iterator it=returnedTuple.begin(); it<returnedTuple.end(); it++) {
@@ -164,7 +171,8 @@ void Threading::processAffectsDiffVarDriver(std::vector<std::vector<std::string>
 			tGroup.add_thread(tList[i%nThreads]);
         }
 
-		tGroup.join_all();
+		if (!join_all()) return false;
+		//tGroup.join_all();
 		for (int j=0; j<nThreads; j++) {
 			if (tGroup.is_thread_in(tList[j])) {
 				std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
@@ -174,6 +182,7 @@ void Threading::processAffectsDiffVarDriver(std::vector<std::vector<std::string>
 				tGroup.remove_thread(tList[j]);
 			}
 		}
+		return true;
     }
 }
 
@@ -197,10 +206,11 @@ std::vector<int> Threading::processAffectsTSameVarStart(std::vector<int>& para1V
 	return result;
 }
 
-void Threading::processAffectsTSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
+bool Threading::processAffectsTSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
     for (int i = 0; i < (int)para1Val.size(); i++) {
 		if (i%nThreads == 0 && i > 0) {
-			tGroup.join_all();
+			if (!join_all()) return false;
+			//tGroup.join_all();
 			for (int j=0; j<nThreads; j++) {
 				std::vector<int> returnedVector = workers[j%nThreads].getReturnVector();
 				for (std::vector<int>::iterator it=returnedVector.begin(); it<returnedVector.end(); it++) {
@@ -216,7 +226,8 @@ void Threading::processAffectsTSameVarDriver(std::vector<int>& temp, std::vector
 		tGroup.add_thread(tList[i%nThreads]);
     }
 
-	tGroup.join_all();
+	if (!join_all()) return false;
+	//tGroup.join_all();
 	for (int j=0; j<nThreads; j++) {
 		if (tGroup.is_thread_in(tList[j])) {
 			std::vector<int> returnedVector = workers[j%nThreads].getReturnVector();
@@ -226,6 +237,7 @@ void Threading::processAffectsTSameVarDriver(std::vector<int>& temp, std::vector
 			tGroup.remove_thread(tList[j]);
 		}
 	}
+	return true;
 }
 
 // Affects*(a1, a2) from start
@@ -260,12 +272,13 @@ std::vector<std::vector<std::string>> Threading::processAffectsTDiffVarEnd(std::
 	return toStoreTuple;
 }
 
-void Threading::processAffectsTDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
+bool Threading::processAffectsTDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
 							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb) {
     if (isPara1) {
         for (int i = 0; i < (int)para1ValInt.size(); i++) {
 			if (i%nThreads == 0 && i > 0) {
-				tGroup.join_all();
+				if (!join_all()) return false;
+				//tGroup.join_all();
 				for (int j=0; j<nThreads; j++) {
 					std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
 					for (std::vector<std::vector<std::string>>::iterator it=returnedTuple.begin(); it<returnedTuple.end(); it++) {
@@ -281,7 +294,8 @@ void Threading::processAffectsTDiffVarDriver(std::vector<std::vector<std::string
 			tGroup.add_thread(tList[i%nThreads]);
         }
 
-		tGroup.join_all();
+		if (!join_all()) return false;
+		//tGroup.join_all();
 		for (int j=0; j<nThreads; j++) {
 			if (tGroup.is_thread_in(tList[j])) {
 				std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
@@ -291,11 +305,13 @@ void Threading::processAffectsTDiffVarDriver(std::vector<std::vector<std::string
 				tGroup.remove_thread(tList[j]);
 			}
 		}
+		return true;
     }
     else {
         for (int i = 0; i < (int)para2ValInt.size(); i++) {
 			if (i%nThreads == 0 && i > 0) {
-				tGroup.join_all();
+				if (!join_all()) return false;
+				//tGroup.join_all();
 				for (int j=0; j<nThreads; j++) {
 					std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
 					for (std::vector<std::vector<std::string>>::iterator it=returnedTuple.begin(); it<returnedTuple.end(); it++) {
@@ -311,7 +327,8 @@ void Threading::processAffectsTDiffVarDriver(std::vector<std::vector<std::string
 			tGroup.add_thread(tList[i%nThreads]);
         }
 
-		tGroup.join_all();
+		if (!join_all()) return false;
+		//tGroup.join_all();
 		for (int j=0; j<nThreads; j++) {
 			if (tGroup.is_thread_in(tList[j])) {
 				std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
@@ -321,6 +338,7 @@ void Threading::processAffectsTDiffVarDriver(std::vector<std::vector<std::string
 				tGroup.remove_thread(tList[j]);
 			}
 		}
+		return true;
     }
 }
 // Affects*]
@@ -344,10 +362,11 @@ std::vector<int> Threading::processAffectsBipSameVarStart(std::vector<int>& para
 	return result;
 }
 
-void Threading::processAffectsBipSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
+bool Threading::processAffectsBipSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
     for (int i = 0; i < (int)para1Val.size(); i++) {
 		if (i%nThreads == 0 && i > 0) {
-			tGroup.join_all();
+			if (!join_all()) return false;
+			//tGroup.join_all();
 			for (int j=0; j<nThreads; j++) {
 				std::vector<int> returnedVector = workers[j%nThreads].getReturnVector();
 				for (std::vector<int>::iterator it=returnedVector.begin(); it<returnedVector.end(); it++) {
@@ -363,7 +382,8 @@ void Threading::processAffectsBipSameVarDriver(std::vector<int>& temp, std::vect
 		tGroup.add_thread(tList[i%nThreads]);
     }
 
-	tGroup.join_all();
+	if (!join_all()) return false;
+	//tGroup.join_all();
 	for (int j=0; j<nThreads; j++) {
 		if (tGroup.is_thread_in(tList[j])) {
 			std::vector<int> returnedVector = workers[j%nThreads].getReturnVector();
@@ -373,6 +393,7 @@ void Threading::processAffectsBipSameVarDriver(std::vector<int>& temp, std::vect
 			tGroup.remove_thread(tList[j]);
 		}
 	}
+	return true;
 }
 
 // AffectsBip(a1, a2) from start
@@ -407,12 +428,13 @@ std::vector<std::vector<std::string>> Threading::processAffectsBipDiffVarEnd(std
 	return toStoreTuple;
 }
 
-void Threading::processAffectsBipDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
+bool Threading::processAffectsBipDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
 							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb) {
     if (isPara1) {
         for (int i = 0; i < (int)para1ValInt.size(); i++) {
 			if (i%nThreads == 0 && i > 0) {
-				tGroup.join_all();
+				if (!join_all()) return false;
+				//tGroup.join_all();
 				for (int j=0; j<nThreads; j++) {
 					std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
 					for (std::vector<std::vector<std::string>>::iterator it=returnedTuple.begin(); it<returnedTuple.end(); it++) {
@@ -428,7 +450,8 @@ void Threading::processAffectsBipDiffVarDriver(std::vector<std::vector<std::stri
 			tGroup.add_thread(tList[i%nThreads]);
         }
 
-		tGroup.join_all();
+		if (!join_all()) return false;
+		//tGroup.join_all();
 		for (int j=0; j<nThreads; j++) {
 			if (tGroup.is_thread_in(tList[j])) {
 				std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
@@ -438,11 +461,13 @@ void Threading::processAffectsBipDiffVarDriver(std::vector<std::vector<std::stri
 				tGroup.remove_thread(tList[j]);
 			}
 		}
+		return true;
     }
     else {
         for (int i = 0; i < (int)para2ValInt.size(); i++) {
 			if (i%nThreads == 0 && i > 0) {
-				tGroup.join_all();
+				if (!join_all()) return false;
+				//tGroup.join_all();
 				for (int j=0; j<nThreads; j++) {
 					std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
 					for (std::vector<std::vector<std::string>>::iterator it=returnedTuple.begin(); it<returnedTuple.end(); it++) {
@@ -458,7 +483,8 @@ void Threading::processAffectsBipDiffVarDriver(std::vector<std::vector<std::stri
 			tGroup.add_thread(tList[i%nThreads]);
         }
 
-		tGroup.join_all();
+		if (!join_all()) return false;
+		//tGroup.join_all();
 		for (int j=0; j<nThreads; j++) {
 			if (tGroup.is_thread_in(tList[j])) {
 				std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
@@ -468,6 +494,7 @@ void Threading::processAffectsBipDiffVarDriver(std::vector<std::vector<std::stri
 				tGroup.remove_thread(tList[j]);
 			}
 		}
+		return true;
     }
 }
 
@@ -491,10 +518,11 @@ std::vector<int> Threading::processAffectsBipTSameVarStart(std::vector<int>& par
 	return result;
 }
 
-void Threading::processAffectsBipTSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
+bool Threading::processAffectsBipTSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
     for (int i = 0; i < (int)para1Val.size(); i++) {
 		if (i%nThreads == 0 && i > 0) {
-			tGroup.join_all();
+			if (!join_all()) return false;
+			//tGroup.join_all();
 			for (int j=0; j<nThreads; j++) {
 				std::vector<int> returnedVector = workers[j%nThreads].getReturnVector();
 				for (std::vector<int>::iterator it=returnedVector.begin(); it<returnedVector.end(); it++) {
@@ -510,7 +538,8 @@ void Threading::processAffectsBipTSameVarDriver(std::vector<int>& temp, std::vec
 		tGroup.add_thread(tList[i%nThreads]);
     }
 
-	tGroup.join_all();
+	if (!join_all()) return false;
+	//tGroup.join_all();
 	for (int j=0; j<nThreads; j++) {
 		if (tGroup.is_thread_in(tList[j])) {
 			std::vector<int> returnedVector = workers[j%nThreads].getReturnVector();
@@ -520,6 +549,7 @@ void Threading::processAffectsBipTSameVarDriver(std::vector<int>& temp, std::vec
 			tGroup.remove_thread(tList[j]);
 		}
 	}
+	return true;
 }
 
 // AffectsBip*(a1, a2) from start
@@ -554,12 +584,13 @@ std::vector<std::vector<std::string>> Threading::processAffectsBipTDiffVarEnd(st
 	return toStoreTuple;
 }
 
-void Threading::processAffectsBipTDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
+bool Threading::processAffectsBipTDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
 							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb) {
     if (isPara1) {
         for (int i = 0; i < (int)para1ValInt.size(); i++) {
 			if (i%nThreads == 0 && i > 0) {
-				tGroup.join_all();
+				if (!join_all()) return false;
+				//tGroup.join_all();
 				for (int j=0; j<nThreads; j++) {
 					std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
 					for (std::vector<std::vector<std::string>>::iterator it=returnedTuple.begin(); it<returnedTuple.end(); it++) {
@@ -575,7 +606,8 @@ void Threading::processAffectsBipTDiffVarDriver(std::vector<std::vector<std::str
 			tGroup.add_thread(tList[i%nThreads]);
         }
 
-		tGroup.join_all();
+		if (!join_all()) return false;
+		//tGroup.join_all();
 		for (int j=0; j<nThreads; j++) {
 			if (tGroup.is_thread_in(tList[j])) {
 				std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
@@ -585,11 +617,13 @@ void Threading::processAffectsBipTDiffVarDriver(std::vector<std::vector<std::str
 				tGroup.remove_thread(tList[j]);
 			}
 		}
+		return true;
     }
     else {
         for (int i = 0; i < (int)para2ValInt.size(); i++) {
 			if (i%nThreads == 0 && i > 0) {
-				tGroup.join_all();
+				if (!join_all()) return false;
+				//tGroup.join_all();
 				for (int j=0; j<nThreads; j++) {
 					std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
 					for (std::vector<std::vector<std::string>>::iterator it=returnedTuple.begin(); it<returnedTuple.end(); it++) {
@@ -605,7 +639,8 @@ void Threading::processAffectsBipTDiffVarDriver(std::vector<std::vector<std::str
 			tGroup.add_thread(tList[i%nThreads]);
         }
 
-		tGroup.join_all();
+		if (!join_all()) return false;
+		//tGroup.join_all();
 		for (int j=0; j<nThreads; j++) {
 			if (tGroup.is_thread_in(tList[j])) {
 				std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
@@ -615,6 +650,7 @@ void Threading::processAffectsBipTDiffVarDriver(std::vector<std::vector<std::str
 				tGroup.remove_thread(tList[j]);
 			}
 		}
+		return true;
     }
 }
 // AffectsBip*]
@@ -626,6 +662,25 @@ std::vector<std::string> Threading::intVecToStringVec(std::vector<int> input) {
         output.push_back(std::to_string((long long)input[i]));
     }
     return output;
+}
+
+bool Threading::join_all() {
+	while(1) {
+		bool flag = true;
+		for (int j=0; j<nThreads; j++) {
+			if (tList[j]->joinable() && !tList[j]->try_join_for(boost::chrono::milliseconds(1000))) {
+				flag = false;
+				/*
+				if (AbstractWrapper::GlobalStop) {
+					return false;
+				}
+				*/
+			}
+			else flag = true & flag;
+		}
+		if (flag) break;
+	}
+	return true;
 }
 
 #endif

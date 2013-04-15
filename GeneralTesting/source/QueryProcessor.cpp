@@ -1813,7 +1813,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
                 }
 				#else
 				Threading threading;
-				threading.processAffectsSameVarDriver(temp, para1Val, pkb);
+				if (!threading.processAffectsSameVarDriver(temp, para1Val, pkb)) return -1;
 				#endif
 
                 toStore = intVecToStringVec(temp);
@@ -1885,7 +1885,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
                 }
 				#else
 				Threading threading;
-				threading.processAffectsDiffVarDriver(toStoreTuple, para1ValString, para1ValInt, para2ValString, para2ValInt, isPara1, pkb);
+				if(!threading.processAffectsDiffVarDriver(toStoreTuple, para1ValString, para1ValInt, para2ValString, para2ValInt, isPara1, pkb)) return -1;
 				#endif
 
                 int ret = resultStore.insertResult(para1, para2, toStoreTuple);
@@ -2000,7 +2000,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
                 }
 				#else
 				Threading threading;
-				threading.processAffectsTSameVarDriver(temp, para1Val, pkb);
+				if(!threading.processAffectsTSameVarDriver(temp, para1Val, pkb)) return -1;
 				#endif
                 toStore = intVecToStringVec(temp);
                 int ret = resultStore.insertResult(para1, toStore);
@@ -2071,7 +2071,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
                 }
 				#else
 				Threading threading;
-				threading.processAffectsTDiffVarDriver(toStoreTuple, para1ValString, para1ValInt, para2ValString, para2ValInt, isPara1, pkb);
+				if(!threading.processAffectsTDiffVarDriver(toStoreTuple, para1ValString, para1ValInt, para2ValString, para2ValInt, isPara1, pkb)) return -1;
 				#endif
 
                 int ret = resultStore.insertResult(para1, para2, toStoreTuple);
@@ -2190,7 +2190,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                 
 				#else
 				Threading threading;
-				threading.processAffectsBipSameVarDriver(temp, para1Val, pkb);
+				if(!threading.processAffectsBipSameVarDriver(temp, para1Val, pkb)) return -1;
 				#endif
 
                 toStore = intVecToStringVec(temp);
@@ -2245,7 +2245,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                 
 				#else
 				Threading threading;
-				threading.processAffectsBipDiffVarDriver(toStoreTuple, para1ValString, para1ValInt, para2ValString, para2ValInt, isPara1, pkb);
+				if(!threading.processAffectsBipDiffVarDriver(toStoreTuple, para1ValString, para1ValInt, para2ValString, para2ValInt, isPara1, pkb)) return -1;
 				#endif
 
                 int ret = resultStore.insertResult(para1, para2, toStoreTuple);
@@ -2353,7 +2353,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                 
                 #else
 				Threading threading;
-				threading.processAffectsBipTSameVarDriver(temp, para1Val, pkb);
+				if (!threading.processAffectsBipTSameVarDriver(temp, para1Val, pkb)) return -1;
 				#endif
 
                 toStore = intVecToStringVec(temp);
@@ -2408,7 +2408,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                 
 				#else
 				Threading threading;
-				threading.processAffectsBipTDiffVarDriver(toStoreTuple, para1ValString, para1ValInt, para2ValString, para2ValInt, isPara1, pkb);
+				if (!threading.processAffectsBipTDiffVarDriver(toStoreTuple, para1ValString, para1ValInt, para2ValString, para2ValInt, isPara1, pkb)) return -1;
 				#endif
 
                 int ret = resultStore.insertResult(para1, para2, toStoreTuple);
