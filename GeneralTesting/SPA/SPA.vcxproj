@@ -137,7 +137,7 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>../external_libs/boost/boost_1_53_0;../AutoTester;external_libs/boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PreprocessorDefinitions>ENABLE_THREADING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
