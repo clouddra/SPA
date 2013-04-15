@@ -1,0 +1,19 @@
+procedure Bill {	x = 5;
+	y = x * 3 ;
+	if i then {
+		x = x + z; }
+	else {y = x * y; }
+	z = x + y;
+	y = x + 6;
+	if i then {
+		x = x + z; }
+	else {y = x * y; }
+	z = x * y + 2;}
+procedure Mary {y = x * 3 ;
+	if i then {
+		x = x + z; }
+	else {y = x * y; }
+	z = x + y;}
+procedure John {if i then {
+		x = x + z; }
+	else {y = x * y; }}

@@ -1,0 +1,27 @@
+14
+cat: All Category
+2 - AffectsBip*::
+stmt s;
+Select s such that AffectsBip(10, s)
+8, 3, 10, 11, 5
+5000
+5 - AffectsBip::
+stmt s;
+Select s such that AffectsBip(6, s)
+11, 8
+5000
+6 - AffectsBip::
+stmt s;
+Select s such that AffectsBip(11, s)
+5, 8
+5000
+6 - AffectsBip*::
+stmt s;
+Select s such that AffectsBip*(1, s)
+11, 5, 6, 10, 8, 3
+5000
+6 - AffectsBip::
+stmt s;
+Select s such that AffectsBip(1, s)
+11, 5, 6, 10, 8, 3
+5000

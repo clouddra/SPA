@@ -1,0 +1,32 @@
+14
+cat: All Category
+2 - Affects*::
+stmt s;
+Select s such that Affects(4, s)
+9, 10, 11, 6, 7
+5000
+5 - Affects::
+stmt s;
+Select s such that Affects(2, s)
+5, 6
+5000
+6 - Affects::
+stmt s;
+Select s such that Affects(10, s)
+11
+5000
+9 - Affects ::
+stmt s;
+Select s such that Affects(5, s)
+6
+5000
+9 - Affects* ::
+stmt s;
+Select s such that Affects*(1, s)
+10,11,2,4,5,7,9,6
+5000
+9 - Affects ::
+stmt s;
+Select s such that Affects(1, s)
+10,11,2,4,5,7,9,6
+5000
