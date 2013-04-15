@@ -901,35 +901,22 @@ std::vector<std::string> PKB::getAllProc() {
     return procTable.getAllProc();
 }
 
-std::vector<std::vector<std::string>> PKB::matchIfPatternStmtLst(std::string varName) {
+std::vector<std::vector<std::string>> PKB::addStmtLst(std::vector<int> stmts, bool addStmtLst1, bool addStmtLst2) {
     std::vector<std::vector<std::string>> toRet;
     std::vector<Node> tree = ast.getTree();
-    std::vector<int> tempVec = matchIfWhilePattern(Node::ifNode, varName);
     
-    for (int i = 0; i < (int)tempVec.size(); i++) {
-        int temp = stmtNodeTable.getAST(tempVec[i]);
-        int stmtLst1 = tree[temp].getChildren()[1];
-        int stmtLst2 = tree[temp].getChildren()[2];
+    for (int i = 0; i < (int)stmts.size(); i++) {
+        int temp = stmtNodeTable.getAST(stmts[i]);
         std::vector<std::string> holder;
-        holder.push_back(std::to_string((long long)tempVec[i]));
-        holder.push_back(std::to_string((long long)stmtLst1));
-        holder.push_back(std::to_string((long long)stmtLst2));
-        toRet.push_back(holder);
-    }
-    return toRet;
-}
-
-std::vector<std::vector<std::string>> PKB::matchWhilePatternStmtLst(std::string varName) {
-    std::vector<std::vector<std::string>> toRet;
-    std::vector<Node> tree = ast.getTree();
-    std::vector<int> tempVec = matchIfWhilePattern(Node::whileNode, varName);
-
-    for (int i = 0; i < (int)tempVec.size(); i++) {
-        int temp = stmtNodeTable.getAST(tempVec[i]);
-        int stmtLst = tree[temp].getChildren()[1];
-        std::vector<std::string> holder;
-        holder.push_back(std::to_string((long long)tempVec[i]));
-        holder.push_back(std::to_string((long long)stmtLst));
+        holder.push_back(std::to_string((long long)stmts[i]));
+        if (addStmtLst1) {
+            int stmtLst1 = tree[temp].getChildren()[1];
+            holder.push_back(std::to_string((long long)stmtLst1));
+        }
+        if (addStmtLst2) {
+            int stmtLst2 = tree[temp].getChildren()[2];
+            holder.push_back(std::to_string((long long)stmtLst2));
+        }
         toRet.push_back(holder);
     }
     return toRet;
