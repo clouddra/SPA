@@ -3772,6 +3772,8 @@ void QueryProcessor::processQuery(PKB pkb) {
                 QueryNode temp = tree[clause[0]];
                 std::string pattern = tree[temp.getChildren()[0]].getName();
                 std::string var = tree[temp.getChildren()[1]].getName();
+                bool hasStmtLst = false;
+                std::string stmtLst1, stmtLst2;
 
                 if (temp.getName().compare("pattern_assign_or_while_") == 0) {
                     temp = tree[temp.getChildren()[2]];
@@ -3788,7 +3790,8 @@ void QueryProcessor::processQuery(PKB pkb) {
                         hasUnderscore = true;
                     }
                     else {
-                        // std::cout << "Error parsing pattern clause\n";
+                        hasStmtLst = true;
+                        stmtLst1 = temp.getName();
                         return;
                     }
 
@@ -3826,14 +3829,25 @@ void QueryProcessor::processQuery(PKB pkb) {
                         return;
                     }
 
-                    if (!isWhile) {
-                        int ret = evaluateAssignPattern(pattern, var, expressionRoot, varIsEnt, varIsPlaceholder, hasUnderscore, pkb);
-                        if (ret == -1)
-                            return;
+                    if (!hasStmtLst) {
+                        if (!isWhile) {
+                            int ret = evaluateAssignPattern(pattern, var, expressionRoot, varIsEnt, varIsPlaceholder, hasUnderscore, pkb);
+                            if (ret == -1)
+                                return;
+                        }
+                        else {
+                            int ret = evaluateIfWhilePattern(pattern, var, varIsEnt, varIsPlaceholder, pkb);
+                            if (ret == -1)
+                                return;
+                        }
                     }
                     else {
-                        int ret = evaluateIfWhilePattern(pattern, var, varIsEnt, varIsPlaceholder, pkb);
-                        if (ret == -1)
+                        if (declarationTable.getType(stmtLst1) == DeclarationTable::stmtLst_ && isWhile) {
+                            int ret = evaluateWhilePatternStmtLst(pattern, var, varIsEnt, varIsPlaceholder, stmtLst1, pkb);
+                            if (ret == -1)
+                                return;
+                        }
+                        else
                             return;
                     }
                 }
@@ -3862,9 +3876,28 @@ void QueryProcessor::processQuery(PKB pkb) {
                         return;
                     }
 
-                    int ret = evaluateIfWhilePattern(pattern, var, varIsEnt, varIsPlaceholder, pkb);
-                    if (ret == -1)
-                        return;
+                    stmtLst1 = tree[temp.getChildren()[2]].getName();
+                    stmtLst2 = tree[temp.getChildren()[3]].getName();
+                    bool SL1IsPlaceholder = true, SL2IsPlaceholder = true;
+                    if (stmtLst1.compare("_") != 0) {
+                        hasStmtLst = true;
+                        SL1IsPlaceholder = false;
+                    }
+                    if (stmtLst2.compare("_") != 0) {
+                        hasStmtLst = true;
+                        SL2IsPlaceholder = false;
+                    }
+
+                    if (!hasStmtLst) {
+                        int ret = evaluateIfWhilePattern(pattern, var, varIsEnt, varIsPlaceholder, pkb);
+                        if (ret == -1)
+                            return;
+                    }
+                    else {
+                        int ret = evaluateIfPatternStmtLst(pattern, var, varIsEnt, varIsPlaceholder, stmtLst1, SL1IsPlaceholder, stmtLst2, SL2IsPlaceholder, pkb);
+                        if (ret == -1)
+                            return;
+                    }
                 }
                 else {
                     // std::cout << "Unknown pattern format\n";
@@ -4227,6 +4260,13 @@ int QueryProcessor::evaluateIfWhilePattern(std::string pattern, std::string var,
         // std::cout << var << " is not declared as a variable, query cannot be evaluated/n"; 
         return -1;
     }
+    return 0;
+}
+
+int QueryProcessor::evaluateIfPatternStmtLst(std::string pattern, std::string var, bool varIsEnt, bool varIsPlaceholder, std::string stmtLst1, bool SL1IsPlaceholder, std::string stmtLst2, bool SL2IsPlaceholder, PKB pkb) {
+    return 0;
+}
+int QueryProcessor::evaluateWhilePatternStmtLst(std::string pattern, std::string var, bool varIsEnt, bool varIsPlaceholder, std::string stmtLst, PKB pkb) {
     return 0;
 }
 

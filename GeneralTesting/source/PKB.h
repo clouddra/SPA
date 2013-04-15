@@ -182,6 +182,8 @@ public:
     void postParseCleanup();
     std::vector<int> getNodeIndexes(int type);
     std::vector<std::string> convertStmtLst(std::vector<int> nodeIndexes);
+    std::vector<std::vector<std::string>> matchIfPatternStmtLst(std::string varName);
+    std::vector<std::vector<std::string>> matchWhilePatternStmtLst(std::string varName);
 	std::vector<int> matchIfWhilePattern(int nodeType, std::string varName);
 	std::vector<int> matchAssignPattern(std::string varName, std::vector<QueryNode> queryTree, int patternRoot, bool hasUnderscore);
 	Node qNodeToNode(QueryNode qNode);

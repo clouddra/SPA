@@ -901,7 +901,41 @@ std::vector<std::string> PKB::getAllProc() {
     return procTable.getAllProc();
 }
 
-// The below function is used for pattern while, if and assign _
+std::vector<std::vector<std::string>> PKB::matchIfPatternStmtLst(std::string varName) {
+    std::vector<std::vector<std::string>> toRet;
+    std::vector<Node> tree = ast.getTree();
+    std::vector<int> tempVec = matchIfWhilePattern(Node::ifNode, varName);
+    
+    for (int i = 0; i < (int)tempVec.size(); i++) {
+        int temp = stmtNodeTable.getAST(tempVec[i]);
+        int stmtLst1 = tree[temp].getChildren()[1];
+        int stmtLst2 = tree[temp].getChildren()[2];
+        std::vector<std::string> holder;
+        holder.push_back(std::to_string((long long)tempVec[i]));
+        holder.push_back(std::to_string((long long)stmtLst1));
+        holder.push_back(std::to_string((long long)stmtLst2));
+        toRet.push_back(holder);
+    }
+    return toRet;
+}
+
+std::vector<std::vector<std::string>> PKB::matchWhilePatternStmtLst(std::string varName) {
+    std::vector<std::vector<std::string>> toRet;
+    std::vector<Node> tree = ast.getTree();
+    std::vector<int> tempVec = matchIfWhilePattern(Node::whileNode, varName);
+
+    for (int i = 0; i < (int)tempVec.size(); i++) {
+        int temp = stmtNodeTable.getAST(tempVec[i]);
+        int stmtLst = tree[temp].getChildren()[1];
+        std::vector<std::string> holder;
+        holder.push_back(std::to_string((long long)tempVec[i]));
+        holder.push_back(std::to_string((long long)stmtLst));
+        toRet.push_back(holder);
+    }
+    return toRet;
+}
+
+// The below function is used for pattern while and if 
 // varName here refers to the variable name in simple source
 std::vector<int> PKB::matchIfWhilePattern(int nodeType, std::string varName) {
 	std::vector<int> toReturn;
