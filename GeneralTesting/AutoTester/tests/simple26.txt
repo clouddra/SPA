@@ -1,0 +1,40 @@
+procedure Test1{
+	x = 1;
+	y = 2;
+	z = 3;
+	x = x + y;
+	x = z;
+	while x {
+		z = 2;
+		x = 3;
+		if y then {
+			a = x + z;
+			while a {
+				b = a + x;}
+			p = 2;
+			call Test2;
+			q = p;} else {
+			c = y;}}
+	b = y;}
+procedure Test2{
+	y = x;
+	p = y;}
+procedure Test3 {
+	i = 1;
+	j = i + a;
+	while j {
+		k = i + y;}}
+procedure Test4 {
+	t1 = 2;
+	while tl {
+		t2 = t1;
+		t2 = 15;
+		while t2 {
+			t2 = t1;}}
+		t2 = t3; }
+procedure Test5 {
+	r = 1;
+	if r then {
+		r1 = r; } else {
+		r = 2; }
+	r2 =r1; }

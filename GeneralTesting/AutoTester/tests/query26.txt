@@ -1,0 +1,243 @@
+47
+cat: All Categories
+2 - Uses :: variables used by 6 (while)
+variable v;
+Select v such that Uses(6, v)
+a, p, x, y, z
+5000
+1 - Uses :: stmts that use x
+stmt s; 
+Select s such that Uses(s, "x")
+4, 6, 9, 10, 11, 12, 14, 18
+5000
+3 - Uses :: variables used by 14 (call)
+variable v;
+Select v such that Uses(14, v)
+x, y
+5000
+4 - Uses :: 2 clause
+variable v; stmt s;
+Select s such that Uses(14, v) and Uses(s, v)
+4, 6, 9, 10, 11, 12, 14, 16, 17, 18, 19, 22, 23
+5000
+5 - Uses :: 2 clause
+variable v; stmt s;
+Select v such that Uses(s, "i") and Uses(s, v)
+a, i, j, y
+5000
+6 - Uses :: 2 clause
+variable v; stmt s;
+Select s such that Uses(s, "i") and Uses(s, "y")
+22, 23
+5000
+7 - UsesP :: procedures that use x
+procedure p;
+Select p such that Uses(p, "x")
+Test1, Test2
+5000
+8 - UsesP :: variables used by proc Test3
+variable v;
+Select v such that Uses("Test3", v)
+a, i, j, y
+5000
+9 - UsesP, Uses :: 2 clause
+variable v;
+Select v such that Uses("Test3", v) and Uses(11, v)
+a
+5000
+10 - UsesP, Uses :: 3 clause (reduces to stmt that use a)
+variable v; stmt s;
+Select s such that Uses("Test3", v) and Uses(11, v) and Uses(s, v)
+6, 9, 11, 12, 21
+5000
+11 - UsesP :: 2 clause
+procedure p; variable v;
+Select v such that Uses(p, "j") and Uses(p, v)
+a, i, j, y
+5000
+12 - UsesP :: 2 clause
+procedure p; variable v;
+Select p such that Uses("Test3", v) and Uses(p, v)
+Test1, Test2, Test3
+5000
+13 - Modifies :: stmts that modifies x
+stmt s; 
+Select s such that Modifies(s, "x")
+1, 4, 5, 6, 8
+5000
+14 - Modifies :: variables modified by 9 (if)
+variable v;
+Select v such that Modifies(9, v)
+a, b, c, p, q, y
+5000
+15 - Modifies :: 2 clause
+stmt s; variable v;
+Select v such that Modifies(s, "x") and Modifies(s, v)
+a, b, c, p, q, x, y, z
+5000
+16 - Modifies :: 2 clause
+stmt s; variable v;
+Select s such that Modifies(11, v) and Modifies(s, v)
+6, 9, 11, 12, 17
+5000
+17 - Parent :: parent of 12
+stmt s; 
+Select s such that Parent(s, 12)
+11
+5000
+18 - Parent :: children of 6
+stmt s; 
+Select s such that Parent(6, s)
+7, 8, 9
+5000
+19 - Parent :: siblings of 11
+stmt s1, s2; 
+Select s2 such that Parent(s1, 11) and Parent(s1, s2)
+10, 11, 13, 14, 15, 16
+5000
+20 - Parent :: parent of 11
+stmt s1, s2; 
+Select s1 such that Parent(s1, 11) and Parent(s1, s2)
+9
+5000
+21 - Parent :: grand children of 6
+stmt s1, s2; 
+Select s2 such that Parent(6, s1) and Parent(s1, s2)
+10, 11, 13, 14, 15, 16
+5000
+22 - Parent :: grand children of 6
+stmt s; 
+Select s such that Parent*(s, 12)
+6, 9, 11
+5000
+22 - ParentStar :: decendents of 9
+stmt s; 
+Select s such that Parent*(9, s)
+10, 11, 12, 13, 14, 15, 16
+5000
+23 - ParentStar :: 2 clause (decendents of 6)
+stmt s1, s2; 
+Select s2 such that Parent*(s1, 9) and Parent*(s1, s2)
+7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+5000
+24 - ParentStar :: 2 clause (decendents of 6)
+stmt s1, s2; 
+Select s2 such that Parent*(9, s1) and Parent*(s1, s2)
+12
+5000
+25 - ParentStar :: 3 clause (3rd level decendents onwards)
+stmt s1, s2, s3; 
+Select s3 such that Parent*(6, s1) and Parent*(s1, s2) and Parent*(s2, s3)
+12
+5000
+26 - Next :: next of 6
+prog_line l;
+Select l such that Next(6, l)
+7, 17
+5000
+27 - Next :: prev to 11
+prog_line l;
+Select l such that Next(l, 11)
+10, 12
+5000
+28 - Next :: next to 15
+prog_line l;
+Select l such that Next(15, l)
+6
+5000
+29 - Next :: 2 clause (reduces to next of 6)
+prog_line l1, l2;
+Select l2 such that Next(15, l1) and Next(l1, l2)
+7, 17
+5000
+30 - Next :: 2 clause (reduces to prev of 6)
+prog_line l1, l2;
+Select l2 such that Next(15, l1) and Next(l2, l1)
+5, 15, 16
+5000
+31 - Next :: test for test 5
+prog_line l;
+Select l such that Next(15, l)
+6
+5000
+32 - Next :: test for test 5
+prog_line l;
+Select l such that Next(l, 6)
+5, 15, 16
+5000
+33 - NextStar :: 
+prog_line l;
+Select l such that Next*(9, l)
+6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17
+5000
+34 - NextStar :: 
+prog_line l;
+Select l such that Next*(12, l)
+6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17
+5000
+35 - NextStar :: 
+prog_line l;
+Select l such that Next*(l, 25)
+24, 25, 26, 27, 28, 29
+5000
+36 - NextStar :: 
+prog_line l;
+Select l such that Next*(l, 27)
+24, 25, 26, 27, 28, 29
+5000
+37 - NextStar :: 
+prog_line l;
+Select l such that Next*(l, 33)
+31, 32
+5000
+38 - NextStar :: 
+prog_line l1, l2;
+Select l2 such that Next*(l1, 33) and Next*(l1, l2)
+32, 33, 34, 35
+5000
+39 - NextStar :: 
+prog_line l1, l2;
+Select l1 such that Next*(33, l2) and Next*(l1, l2)
+31, 32, 33, 34
+5000
+40 - Affect :: 
+assign a;
+Select a such that Affects(a, 10)
+7, 8
+5000
+41 - Affect :: 
+assign a;
+Select a such that Affects(a, 29)
+24
+5000
+42 - Affect :: 
+assign a;
+Select a such that Affects(26, a)
+none
+5000
+43 - Affect :: 
+assign a;
+Select a such that Affects(8, a)
+10, 12
+5000
+44 - Affect :: 
+assign a1, a2;
+Select a2 such that Affects(31, a1) and Affects(a1, a2)
+35
+5000
+45 - Affect :: 
+assign a1, a2;
+Select a1 such that Affects(a2, 12) and Affects(a1, a2)
+7, 8
+5000
+cat: AffectStar
+46 - AffectStar :: 
+assign a;
+Select a such that Affects*(2, a)
+4, 16, 17
+5000
+47 - AffectStar :: 
+assign a;
+Select a such that Affects*(7, a)
+10, 12
+5000
