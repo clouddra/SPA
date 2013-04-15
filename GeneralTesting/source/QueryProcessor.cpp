@@ -1760,7 +1760,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
             for (int i = temp2.size()-1; i > -1; i--) {
                 temp = pkb.getAffectsEndAPI(temp2[i]);
                 if (temp.size() == 0)
-                    temp2.erase(temp.begin()+i);
+                    temp2.erase(temp2.begin()+i);
             }
             toStore = intVecToStringVec(temp2);
             int ret = resultStore.insertResult(para2, toStore);
@@ -1774,7 +1774,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
             for (int i = temp2.size()-1; i > -1; i--) {
                 temp = pkb.getAffectsStartAPI(temp2[i]);
                 if (temp.size() == 0)
-                    temp2.erase(temp.begin()+i);
+                    temp2.erase(temp2.begin()+i);
             }
             toStore = intVecToStringVec(temp2);
             int ret = resultStore.insertResult(para1, toStore);
@@ -1948,7 +1948,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
             for (int i = temp2.size()-1; i > -1; i--) {
                 temp = pkb.getAffectsTEndAPI(temp2[i]);
                 if (temp.size() == 0)
-                    temp2.erase(temp.begin()+i);
+                    temp2.erase(temp2.begin()+i);
             }
             toStore = intVecToStringVec(temp2);
             int ret = resultStore.insertResult(para2, toStore);
@@ -1962,7 +1962,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
             for (int i = temp2.size()-1; i > -1; i--) {
                 temp = pkb.getAffectsTStartAPI(temp2[i]);
                 if (temp.size() == 0)
-                    temp2.erase(temp.begin()+i);
+                    temp2.erase(temp2.begin()+i);
             }
             toStore = intVecToStringVec(temp2);
             int ret = resultStore.insertResult(para1, toStore);
@@ -2145,7 +2145,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             for (int i = temp2.size()-1; i > -1; i--) {
                 temp = pkb.getAffectsBipEnd(temp2[i]);
                 if (temp.size() == 0)
-                    temp2.erase(temp.begin()+i);
+                    temp2.erase(temp2.begin()+i);
             }
             toStore = intVecToStringVec(temp2);
             int ret = resultStore.insertResult(para2, toStore);
@@ -2159,7 +2159,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             for (int i = temp2.size()-1; i > -1; i--) {
                 temp = pkb.getAffectsBipStart(temp2[i]);
                 if (temp.size() == 0)
-                    temp2.erase(temp.begin()+i);
+                    temp2.erase(temp2.begin()+i);
             }
             toStore = intVecToStringVec(temp2);
             int ret = resultStore.insertResult(para1, toStore);
@@ -2178,6 +2178,15 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
 				
 				#ifndef ENABLE_THREADING
                 for (int i = 0; i < (int)para1Val.size(); i++) {
+
+                    /*
+                    // Autotester timeout
+                    if (i % 5 == 4) {
+                        if (AbstractWrapper::GlobalStop) {
+                            return -1;
+                        } 
+                    } */
+
                     std::vector<int> temp2;
                     temp2 = pkb.getAffectsBipStart(para1Val[i]);
                     for (int j = 0; j < (int)temp2.size(); j++) {
@@ -2220,6 +2229,15 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
 				#ifndef ENABLE_THREADING
                 if (isPara1) {
                     for (int i = 0; i < (int)para1ValInt.size(); i++) {
+
+                        /*
+                        // Autotester timeout
+                        if (i % 5 == 4) {
+                            if (AbstractWrapper::GlobalStop) {
+                                return -1;
+                            } 
+                        } */
+
                         temp = pkb.getAffectsBipStart(para1ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
@@ -2232,6 +2250,15 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                 }
                 else {
                     for (int i = 0; i < (int)para2ValInt.size(); i++) {
+
+                        /*
+                        // Autotester timeout
+                        if (i % 5 == 4) {
+                            if (AbstractWrapper::GlobalStop) {
+                                return -1;
+                            } 
+                        } */
+
                         temp = pkb.getAffectsBipEnd(para2ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
@@ -2309,7 +2336,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             for (int i = temp2.size()-1; i > -1; i--) {
                 temp = pkb.getAffectsBipTEnd(temp2[i]);
                 if (temp.size() == 0)
-                    temp2.erase(temp.begin()+i);
+                    temp2.erase(temp2.begin()+i);
             }
             toStore = intVecToStringVec(temp2);
             int ret = resultStore.insertResult(para2, toStore);
@@ -2323,7 +2350,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             for (int i = temp2.size()-1; i > -1; i--) {
                 temp = pkb.getAffectsBipTStart(temp2[i]);
                 if (temp.size() == 0)
-                    temp2.erase(temp.begin()+i);
+                    temp2.erase(temp2.begin()+i);
             }
             toStore = intVecToStringVec(temp2);
             int ret = resultStore.insertResult(para1, toStore);
@@ -2341,6 +2368,15 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                 }
 			    #ifndef ENABLE_THREADING
                 for (int i = 0; i < (int)para1Val.size(); i++) {
+
+                    /*
+                    // Autotester timeout
+                    if (i % 5 == 4) {
+                        if (AbstractWrapper::GlobalStop) {
+                            return -1;
+                        } 
+                    } */
+
                     std::vector<int> temp2;
                     temp2 = pkb.getAffectsBipTStart(para1Val[i]);
                     for (int j = 0; j < (int)temp2.size(); j++) {
@@ -2383,6 +2419,15 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
 				#ifndef ENABLE_THREADING
                 if (isPara1) {
                     for (int i = 0; i < (int)para1ValInt.size(); i++) {
+
+                        /*
+                        // Autotester timeout
+                        if (i % 5 == 4) {
+                            if (AbstractWrapper::GlobalStop) {
+                                return -1;
+                            } 
+                        } */
+
                         temp = pkb.getAffectsBipTStart(para1ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
@@ -2395,6 +2440,15 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                 }
                 else {
                     for (int i = 0; i < (int)para2ValInt.size(); i++) {
+
+                        /*
+                        // Autotester timeout
+                        if (i % 5 == 4) {
+                            if (AbstractWrapper::GlobalStop) {
+                                return -1;
+                            } 
+                        } */
+
                         temp = pkb.getAffectsBipTEnd(para2ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
@@ -3167,11 +3221,12 @@ By vector index
 4: 2 variable affects/next*
 5: 1 variable affects*
 6: 2 variable affects*
+7: 3/4 variable pattern
 */
 std::vector<std::vector<int>> QueryProcessor::optimizeQuery(std::vector<QueryNode> tree, int curr, PKB pkb) {
     std::vector<int> rootChildren = tree[0].getChildren();
     std::vector<std::vector<int>> queryOrder;
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 8; i++) {
         std::vector<int> temp;
         queryOrder.push_back(temp);
     }
@@ -3252,6 +3307,10 @@ std::vector<std::vector<int>> QueryProcessor::optimizeQuery(std::vector<QueryNod
             QueryNode temp = tree[clause[0]];
             std::string para1 = tree[temp.getChildren()[0]].getName();
             std::string para2 = tree[temp.getChildren()[1]].getName();
+            std::string para3 = tree[temp.getChildren()[2]].getName();
+            std::string para4 = "";
+            if ((int)temp.getChildren().size() > 3)
+                para4 = tree[temp.getChildren()[3]].getName();
 
              // Figure out type of parameter 1 and 2
             bool para1IsNum = false, para2IsNum = false;
@@ -3264,30 +3323,69 @@ std::vector<std::vector<int>> QueryProcessor::optimizeQuery(std::vector<QueryNod
                 return std::vector<std::vector<int>>();
             }
 
-            int ret;
+            int ret, varCount = 0;
             if (para1Type != -1) {
+                varCount += 1;
                 ret = evaluateType(pkb, para1);
                 if (ret == -1) 
                     return std::vector<std::vector<int>>();
             }
             if (para2Type != -1) {
+                varCount += 1;
                 ret = evaluateType(pkb, para2);
                 if (ret == -1)
                     return std::vector<std::vector<int>>();
             }
+            bool SL1 = false, SL2 = false;
+            if (para1Type != DeclarationTable::assign_) {
+                int type = declarationTable.getType(para3);
+                if (type == DeclarationTable::stmtLst_) {
+                    varCount += 1;
+                    SL1 = true;
+                    ret = evaluateType(pkb, para3);
+                    if (ret == -1)
+                        return std::vector<std::vector<int>>();
+                }
+                type = declarationTable.getType(para4);
+                if (type == DeclarationTable::stmtLst_) {
+                    varCount += 1;
+                    SL2 = true;
+                    ret = evaluateType(pkb, para4);
+                    if (ret == -1)
+                        return std::vector<std::vector<int>>();
+                }
+            }
 
             // 0 variables
-            if (para1Type == -1 && para2Type == -1) {
+            if (varCount == 0) {
                 queryOrder[0].push_back(i);
             }
             // 1 variable
-            else if (para1Type == -1 || para2Type == -1) {
+            else if (varCount == 1) {
                 queryOrder[1].push_back(i);
             }
             // 2 variables
-            else {
+            else if (varCount == 2) {
                 queryOrder[2].push_back(i);
-                optiGraphs[0].insertQuery(para1, para2);
+                if (!SL1 && !SL2)
+                    optiGraphs[0].insertQuery(para1, para2);
+                else if (SL1 && SL2)
+                    optiGraphs[0].insertQuery(para3, para4);
+                else if (SL1) {
+                    if (para1Type != -1)
+                        optiGraphs[0].insertQuery(para1, para3);
+                    else
+                        optiGraphs[0].insertQuery(para2, para3);
+                }
+                else {
+                    if (para1Type != -1)
+                        optiGraphs[0].insertQuery(para1, para4);
+                    else
+                        optiGraphs[0].insertQuery(para2, para4);
+                }
+            }
+            else {
+                queryOrder[7].push_back(i);
             }
         }
 
@@ -3794,7 +3892,6 @@ void QueryProcessor::processQuery(PKB pkb) {
                     else {
                         hasStmtLst = true;
                         stmtLst1 = temp.getName();
-                        return;
                     }
 
                     // Figure out type of parameter 1 and 2
@@ -4199,7 +4296,6 @@ int QueryProcessor::evaluateAssignPattern(std::string pattern, std::string var, 
 }
 
 int QueryProcessor::evaluateIfWhilePattern(std::string pattern, std::string var, bool varIsEnt, bool varIsPlaceholder, PKB pkb) {
-    std::vector<QueryNode> tree = queryTree.getTree();
     int patternType = -1, varType = -1, ret;
     patternType = declarationTable.getType(pattern);
     if (!varIsEnt && !varIsPlaceholder) {
@@ -4266,9 +4362,145 @@ int QueryProcessor::evaluateIfWhilePattern(std::string pattern, std::string var,
 }
 
 int QueryProcessor::evaluateIfPatternStmtLst(std::string pattern, std::string var, bool varIsEnt, bool varIsPlaceholder, std::string stmtLst1, bool SL1IsPlaceholder, std::string stmtLst2, bool SL2IsPlaceholder, PKB pkb) {
-    return 0;
+    int varType = -1, ret;
+    if (!varIsEnt && !varIsPlaceholder) {
+        varType = declarationTable.getType(var);
+    }
+    if (stmtLst1.compare(stmtLst2) == 0) 
+        return -1;
+
+    std::vector<std::vector<std::string>> toStoreTuple;
+    std::vector<int> statements;
+	
+    if (varIsEnt) {     // The var == "var", where var is in our simple source code
+        statements = pkb.matchIfWhilePattern(Node::ifNode, var);
+        toStoreTuple = pkb.addStmtLst(statements, !SL1IsPlaceholder, !SL2IsPlaceholder);
+        if (SL1IsPlaceholder) {
+            ret = resultStore.insertResult(pattern, stmtLst2, toStoreTuple);
+            if (ret == -1)
+                return -1; 
+        }
+        else if (SL2IsPlaceholder) {
+            ret = resultStore.insertResult(pattern, stmtLst1, toStoreTuple);
+            if (ret == -1)
+                return -1; 
+        }
+        else {
+            ret = resultStore.insertResult(pattern, stmtLst1, stmtLst2, toStoreTuple);
+            if (ret == -1)
+                return -1;
+        }
+    }
+    else if (varIsPlaceholder) {
+        std::vector<std::string> varList = pkb.getVarTable();
+        std::set<int> temp;
+        for (int i=0; i<(int)varList.size(); i++)
+		{
+            statements = pkb.matchIfWhilePattern(Node::ifNode, varList[i]);
+            temp.insert(statements.begin(), statements.end());  // Set ensures no duplicates
+		}
+        statements.clear();
+        statements.insert(statements.begin(), temp.begin(), temp.end());
+        toStoreTuple = pkb.addStmtLst(statements, !SL1IsPlaceholder, !SL2IsPlaceholder);
+        if (SL1IsPlaceholder) {
+            ret = resultStore.insertResult(pattern, stmtLst2, toStoreTuple);
+            if (ret == -1)
+                return -1; 
+        }
+        else if (SL2IsPlaceholder) {
+            ret = resultStore.insertResult(pattern, stmtLst1, toStoreTuple);
+            if (ret == -1)
+                return -1; 
+        }
+        else {
+            ret = resultStore.insertResult(pattern, stmtLst1, stmtLst2, toStoreTuple);
+            if (ret == -1)
+                return -1;
+        }
+    }
+    else if (varType == DeclarationTable::variable_) {  
+        std::vector<std::string> varList = resultStore.getValuesFor(var);
+        for (int i=0; i<(int)varList.size(); i++)
+		{
+            statements = pkb.matchIfWhilePattern(Node::ifNode, varList[i]);
+            std::vector<std::vector<std::string>> holder = pkb.addStmtLst(statements, !SL1IsPlaceholder, !SL2IsPlaceholder);
+            for (int j = 0; j < (int)holder.size(); j++) {
+                holder[j].push_back(varList[i]);
+                toStoreTuple.push_back(holder[j]);
+            }
+		}
+        if (SL1IsPlaceholder) {
+            ret = resultStore.insertResult(pattern, stmtLst2, var, toStoreTuple);
+            if (ret == -1)
+                return -1; 
+        }
+        else if (SL2IsPlaceholder) {
+            ret = resultStore.insertResult(pattern, stmtLst1, var, toStoreTuple);
+            if (ret == -1)
+                return -1; 
+        }
+        else {
+            ret = resultStore.insertResult(pattern, stmtLst1, stmtLst2, var, toStoreTuple);
+            if (ret == -1)
+                return -1;
+        }
+    }
+    else {
+        // std::cout << var << " is not declared as a variable, query cannot be evaluated/n"; 
+        return -1;
+    }
 }
+
 int QueryProcessor::evaluateWhilePatternStmtLst(std::string pattern, std::string var, bool varIsEnt, bool varIsPlaceholder, std::string stmtLst, PKB pkb) {
+    int varType = -1, ret;
+    if (!varIsEnt && !varIsPlaceholder) {
+        varType = declarationTable.getType(var);
+    }
+
+    std::vector<std::vector<std::string>> toStoreTuple;
+    std::vector<int> statements;
+	
+    if (varIsEnt) {     // The var == "var", where var is in our simple source code
+        statements = pkb.matchIfWhilePattern(Node::whileNode, var);
+        toStoreTuple = pkb.addStmtLst(statements, true, false);
+        ret = resultStore.insertResult(pattern, stmtLst, toStoreTuple);
+        if (ret == -1)
+            return -1;  
+    }
+    else if (varIsPlaceholder) {
+        std::vector<std::string> varList = pkb.getVarTable();
+        std::set<int> temp;
+        for (int i=0; i<(int)varList.size(); i++)
+		{
+			statements = pkb.matchIfWhilePattern(Node::whileNode, varList[i]);
+            temp.insert(statements.begin(), statements.end());  // Set ensures no duplicates
+		}
+        statements.clear();
+        statements.insert(statements.begin(), temp.begin(), temp.end());
+        toStoreTuple = pkb.addStmtLst(statements, true, false);
+        ret = resultStore.insertResult(pattern, stmtLst, toStoreTuple);
+        if (ret == -1)
+            return -1; 
+    }
+    else if (varType == DeclarationTable::variable_) {  
+        std::vector<std::string> varList = resultStore.getValuesFor(var);
+        for (int i=0; i<(int)varList.size(); i++)
+		{
+            statements = pkb.matchIfWhilePattern(Node::whileNode, varList[i]);
+            std::vector<std::vector<std::string>> holder = pkb.addStmtLst(statements, true, false);
+            for (int j = 0; j < (int)holder.size(); j++) {
+                holder[j].push_back(varList[i]);
+                toStoreTuple.push_back(holder[j]);
+            }
+		}
+        int ret = resultStore.insertResult(pattern, stmtLst, var, toStoreTuple);
+        if (ret == -1)
+            return -1;
+    }
+    else {
+        // std::cout << var << " is not declared as a variable, query cannot be evaluated/n"; 
+        return -1;
+    }
     return 0;
 }
 

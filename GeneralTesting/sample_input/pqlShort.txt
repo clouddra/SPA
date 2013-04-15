@@ -1,5 +1,5 @@
-assign a1; variable v; stmtLst sl; if ifs;
-Select v pattern ifs(v, _, sl)
+assign a1; variable v; stmtLst sl, sl2; if ifs; while w;
+Select sl pattern w(_, sl)
 
 
  
