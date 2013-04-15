@@ -1829,7 +1829,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
                 std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
                 std::vector<int> para2ValInt;
                 bool isPara1;
-                if (para1ValString.size() < para2ValString.size()) {
+                if (para1ValString.size() <= para2ValString.size()) {
                     isPara1 = true;
 					para1ValInt = stringVecToIntVec(para1ValString);
 				}
@@ -2015,7 +2015,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
                 std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
                 std::vector<int> para2ValInt;
                 bool isPara1;
-                if (para1ValString.size() < para2ValString.size()) {
+                if (para1ValString.size() <= para2ValString.size()) {
                     isPara1 = true;
 					para1ValInt = stringVecToIntVec(para1ValString);
 				}
@@ -2215,7 +2215,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                 std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
                 std::vector<int> para2ValInt;
                 bool isPara1;
-                if (para1ValString.size() < para2ValString.size()) {
+                if (para1ValString.size() <= para2ValString.size()) {
                     isPara1 = true;
 					para1ValInt = stringVecToIntVec(para1ValString);
 				}
@@ -2405,7 +2405,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                 std::vector<std::string> para2ValString = resultStore.getValuesFor(para2);
                 std::vector<int> para2ValInt;
                 bool isPara1;
-                if (para1ValString.size() < para2ValString.size()) {
+                if (para1ValString.size() <= para2ValString.size()) {
                     isPara1 = true;
 					para1ValInt = stringVecToIntVec(para1ValString);
 				}
