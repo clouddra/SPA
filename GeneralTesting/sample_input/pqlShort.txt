@@ -1,5 +1,5 @@
-assign a1; variable v;
-Select a1.varName pattern a1(v, "z+5")
+assign a1; variable v; stmtLst sl;
+Select <a1, sl> with a1.stmt# = 5;
 
 
  

@@ -4004,9 +4004,29 @@ void QueryProcessor::processQuery(PKB pkb) {
     else {
         if (!isTuple) {
             result = resultStore.getValuesFor(target);
+            if (declarationTable.getType(target) == DeclarationTable::stmtLst_) {
+                result = pkb.convertStmtLst(stringVecToIntVec(result));
+            }
         }
         else {
-            std::vector<std::vector<std::string>> holder = resultStore.getValuesFor(tupleTarget);              
+            std::vector<std::vector<std::string>> holder = resultStore.getValuesFor(tupleTarget); 
+            std::vector<int> stmtLstTarget;
+            for (int i = 0; i < (int)tupleTarget.size(); i++) {
+                if (declarationTable.getType(tupleTarget[i]) == DeclarationTable::stmtLst_)
+                    stmtLstTarget.push_back(i);
+            }
+            for (int i = 0; i < (int)holder.size(); i++) {
+                for (int j = 0; j < (int)stmtLstTarget.size(); j++) {
+                    std::istringstream convert(holder[i][stmtLstTarget[j]]);
+                    int temp = -1;
+                    if (!(convert >> temp)) {
+                        return;
+                    }
+                    std::vector<int> tempVec;
+                    tempVec.push_back(temp);
+                    holder[i][stmtLstTarget[j]] = pkb.convertStmtLst(tempVec)[0];
+                }
+            }
             for (int i = 0; i < (int)holder.size(); i++) {
                 std::string tupleResult = holder[i][0];
                 for (int j = 1; j < (int)holder[i].size(); j++) {
