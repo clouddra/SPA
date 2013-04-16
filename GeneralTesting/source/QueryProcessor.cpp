@@ -137,7 +137,7 @@ int QueryProcessor::findTypeOf(std::string para, bool* paraIsNum, bool* paraIsEn
 }
 
 // Evaluate sibling query
-int QueryProcessor::evaluateSibling(bool para1IsNum, bool para2IsNum, std::string para1, std::string para2, int para1Num, int para2Num, int para1Type, int para2Type, PKB pkb) {
+int QueryProcessor::evaluateSibling(bool para1IsNum, bool para2IsNum, std::string para1, std::string para2, int para1Num, int para2Num, int para1Type, int para2Type, PKB& pkb) {
     std::vector<std::string> toStore;
     int ret;
 
@@ -343,7 +343,7 @@ int QueryProcessor::evaluateSibling(bool para1IsNum, bool para2IsNum, std::strin
 }
 
 // Evaluating contains and contains* query 
-int QueryProcessor::evaluateContains(bool T, bool para1IsNum, bool para2IsNum, std::string para1, std::string para2, int para1Num, int para2Num, int para1Type, int para2Type, PKB pkb) {
+int QueryProcessor::evaluateContains(bool T, bool para1IsNum, bool para2IsNum, std::string para1, std::string para2, int para1Num, int para2Num, int para1Type, int para2Type, PKB& pkb) {
     std::vector<std::string> toStore;
     int ret;
 
@@ -613,7 +613,7 @@ int QueryProcessor::evaluateContains(bool T, bool para1IsNum, bool para2IsNum, s
 }
 
 // Evaluating follows and follows* query
-int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB pkb) {
+int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB& pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
 
@@ -885,7 +885,7 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para1IsPlaceho
 }
 
 // Evaluating parent and parent* query
-int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB pkb) {
+int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB& pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
 
@@ -1156,7 +1156,7 @@ int QueryProcessor::evaluateParent(bool T, bool para1IsNum, bool para1IsPlacehol
     return 0;
 }
 
-int QueryProcessor::evaluateNext(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB pkb) {
+int QueryProcessor::evaluateNext(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB& pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
 
@@ -1455,7 +1455,7 @@ int QueryProcessor::evaluateNext(bool T, bool para1IsNum, bool para1IsPlaceholde
     return 0;
 }
 
-int QueryProcessor::evaluateNextBip(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB pkb) {
+int QueryProcessor::evaluateNextBip(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB& pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
 
@@ -1726,7 +1726,7 @@ int QueryProcessor::evaluateNextBip(bool T, bool para1IsNum, bool para1IsPlaceho
     return 0;
 }
 
-int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB pkb) {
+int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB& pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
 
@@ -2111,7 +2111,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
     return 0;
 }
 
-int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB pkb) {
+int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB& pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
 
@@ -2503,7 +2503,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
 }
 
 // Evaluating modifies query, statements
-int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, PKB pkb) {
+int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, PKB& pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
 
@@ -2602,7 +2602,7 @@ int QueryProcessor::evaluateModifiesS(bool para1IsNum, bool para2IsEnt, bool par
 }
 
 // Evaluating modifies query, procedure
-int QueryProcessor::evaluateModifiesP(bool para1IsEnt, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, PKB pkb) {
+int QueryProcessor::evaluateModifiesP(bool para1IsEnt, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, PKB& pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
 
@@ -2695,7 +2695,7 @@ int QueryProcessor::evaluateModifiesP(bool para1IsEnt, bool para2IsEnt, bool par
 }
 
 // Evaluating uses query, statements
-int QueryProcessor::evaluateUsesS(bool para1IsNum, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, PKB pkb) {
+int QueryProcessor::evaluateUsesS(bool para1IsNum, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, PKB& pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
 
@@ -2794,7 +2794,7 @@ int QueryProcessor::evaluateUsesS(bool para1IsNum, bool para2IsEnt, bool para2Is
 }
 
 // Evaluating uses query, procedure
-int QueryProcessor::evaluateUsesP(bool para1IsEnt, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, PKB pkb) {
+int QueryProcessor::evaluateUsesP(bool para1IsEnt, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, PKB& pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
 
@@ -2887,7 +2887,7 @@ int QueryProcessor::evaluateUsesP(bool para1IsEnt, bool para2IsEnt, bool para2Is
 }
 
 // Evaluating calls query
-int QueryProcessor::evaluateCalls(bool T, bool para1IsEnt, bool para1IsPlaceholder, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, PKB pkb) {
+int QueryProcessor::evaluateCalls(bool T, bool para1IsEnt, bool para1IsPlaceholder, bool para2IsEnt, bool para2IsPlaceholder, std::string para1, std::string para2, PKB& pkb) {
     std::vector<std::string> toStore;
 
     if (para1IsPlaceholder && para2IsPlaceholder) {
@@ -3106,7 +3106,7 @@ int QueryProcessor::evaluateCalls(bool T, bool para1IsEnt, bool para1IsPlacehold
 }
 
 // Evaluating based on variable type (target should be a declared variable in the declaration table)
-int QueryProcessor::evaluateType(PKB pkb, std::string target) {
+int QueryProcessor::evaluateType(PKB& pkb, std::string target) {
     int targetType = declarationTable.getType(target);
     std::vector<int> validStmtNum;
     std::vector<std::string> toStore;
@@ -3251,7 +3251,7 @@ By vector index
 6: 2 variable affects*
 7: 3/4 variable pattern
 */
-std::vector<std::vector<int>> QueryProcessor::optimizeQuery(std::vector<QueryNode> tree, int curr, PKB pkb) {
+std::vector<std::vector<int>> QueryProcessor::optimizeQuery(std::vector<QueryNode> tree, int curr, PKB& pkb) {
     std::vector<int> rootChildren = tree[0].getChildren();
     std::vector<std::vector<int>> queryOrder;
     for (int i = 0; i < 8; i++) {
@@ -3425,7 +3425,7 @@ std::vector<std::vector<int>> QueryProcessor::optimizeQuery(std::vector<QueryNod
 }
 
 // Walk our Query Tree and store results in result vector
-void QueryProcessor::processQuery(PKB pkb) {
+void QueryProcessor::processQuery(PKB& pkb) {
     // Reorganize query tree
     queryTree.reorgTree();
 
@@ -4198,7 +4198,7 @@ void QueryProcessor::processQuery(PKB pkb) {
     }
 }
 
-int QueryProcessor::attrRefChecker(std::string* synonym, std::string* attrName, int* synoType, QueryNode attrRef, PKB pkb) {
+int QueryProcessor::attrRefChecker(std::string* synonym, std::string* attrName, int* synoType, QueryNode attrRef, PKB& pkb) {
     std::vector<QueryNode> tree = queryTree.getTree();
     *synonym = (tree[attrRef.getChildren()[0]]).getName();
     *synoType = evaluateType(pkb, *synonym);
@@ -4258,7 +4258,7 @@ void QueryProcessor::printResult()
 // Evaluates pattern query Eg. "pattern a1(x, _"y"_)" ===> a1 = pattern, x = var, _"y"_ = expr
 // Eg. "pattern w1(x, _)" ===> w1 = pattern, x = var
 // Eg. "pattern if1(x, _, _)" ===> if1 = pattern, x = var
-int QueryProcessor::evaluateAssignPattern(std::string pattern, std::string var, int exprRoot, bool varIsEnt, bool varIsPlaceholder, bool hasUnderscore, PKB pkb)
+int QueryProcessor::evaluateAssignPattern(std::string pattern, std::string var, int exprRoot, bool varIsEnt, bool varIsPlaceholder, bool hasUnderscore, PKB& pkb)
 {
     std::vector<QueryNode> tree = queryTree.getTree();
     int patternType = -1, varType = -1, ret;
@@ -4323,7 +4323,7 @@ int QueryProcessor::evaluateAssignPattern(std::string pattern, std::string var, 
     return 0;
 }
 
-int QueryProcessor::evaluateIfWhilePattern(std::string pattern, std::string var, bool varIsEnt, bool varIsPlaceholder, PKB pkb) {
+int QueryProcessor::evaluateIfWhilePattern(std::string pattern, std::string var, bool varIsEnt, bool varIsPlaceholder, PKB& pkb) {
     int patternType = -1, varType = -1, ret;
     patternType = declarationTable.getType(pattern);
     if (!varIsEnt && !varIsPlaceholder) {
@@ -4389,7 +4389,7 @@ int QueryProcessor::evaluateIfWhilePattern(std::string pattern, std::string var,
     return 0;
 }
 
-int QueryProcessor::evaluateIfPatternStmtLst(std::string pattern, std::string var, bool varIsEnt, bool varIsPlaceholder, std::string stmtLst1, bool SL1IsPlaceholder, std::string stmtLst2, bool SL2IsPlaceholder, PKB pkb) {
+int QueryProcessor::evaluateIfPatternStmtLst(std::string pattern, std::string var, bool varIsEnt, bool varIsPlaceholder, std::string stmtLst1, bool SL1IsPlaceholder, std::string stmtLst2, bool SL2IsPlaceholder, PKB& pkb) {
     int varType = -1, ret;
     if (!varIsEnt && !varIsPlaceholder) {
         varType = declarationTable.getType(var);
@@ -4480,7 +4480,7 @@ int QueryProcessor::evaluateIfPatternStmtLst(std::string pattern, std::string va
     return 0;
 }
 
-int QueryProcessor::evaluateWhilePatternStmtLst(std::string pattern, std::string var, bool varIsEnt, bool varIsPlaceholder, std::string stmtLst, PKB pkb) {
+int QueryProcessor::evaluateWhilePatternStmtLst(std::string pattern, std::string var, bool varIsEnt, bool varIsPlaceholder, std::string stmtLst, PKB& pkb) {
     int varType = -1, ret;
     if (!varIsEnt && !varIsPlaceholder) {
         varType = declarationTable.getType(var);
