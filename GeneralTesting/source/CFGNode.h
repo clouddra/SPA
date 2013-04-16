@@ -25,6 +25,9 @@ private:
 	std::vector<int> next;
 	std::vector<int> prev;
 
+	int top;
+	int bot;
+
 	public:
 	CFGNode::CFGNode(int startStmt, int endStmt, std::vector<int> prevNodes);
 	CFGNode::CFGNode(int startStmt, int endStmt, int prevNode);
@@ -42,6 +45,12 @@ private:
 
 	std::vector<int> getBipNext();
 	std::vector<int> getBipPrev();
+
+	int getTop();
+	int getBot();
+	
+	void setTop(int t);
+	void setBot(int b);
 };
 
 /*
