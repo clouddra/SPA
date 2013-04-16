@@ -41,7 +41,7 @@ public:
 	std::vector<int> getModifiesVar(int var);
 
 	/**
-	 * Returns all statements that modifies any variables.
+	 * Returns all statements that modifies any variable.
 	 */
     std::vector<int> getModifiesVar();
 
@@ -93,7 +93,7 @@ public:
 	int getSizeProc();
 
 	/**
-	 * Remove empty entries in Calls Table. To be invoked after extraction of calls relationship
+	 * Remove empty entries in Modifies Table. To be invoked after extraction of modifies relationship
 	 */
 	void compressTables();
 };

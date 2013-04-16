@@ -19,6 +19,8 @@ int SiblingTable::insertSibling(int stmt1, int stmt2){
 		siblingTable.push_back(std::pair<int ,int>(stmt1, stmt2)) ;
 		index = siblingTable.size() - 1;
 	}
+	else if(index==-1)
+		return index2;
 
 	return index;
 }
