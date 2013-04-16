@@ -1726,7 +1726,7 @@ int QueryProcessor::evaluateNextBip(bool T, bool para1IsNum, bool para1IsPlaceho
     return 0;
 }
 
-int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB pkb) {
+int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB* pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
 
@@ -1738,7 +1738,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
         if (para1IsNum) {
             // Affects(1, 10)
             if (para2IsNum) {
-                temp = pkb.getAffectsStartAPI(para1Num);
+                temp = pkb->getAffectsStartAPI(para1Num);
                 for (int i = 0; i < (int)temp.size(); i++) {
                     if (temp[i] == para2Num)
                         return 0;
@@ -1747,7 +1747,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
             }
             // Affects(1, _)
             else if (para2IsPlaceholder) {
-                temp = pkb.getAffectsStartAPI(para1Num);
+                temp = pkb->getAffectsStartAPI(para1Num);
                 if (temp.size() > 0)
                     return 0;
                 else
@@ -1755,7 +1755,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
             }
             // Affects(1, a)
             else {
-                temp = pkb.getAffectsStartAPI(para1Num);
+                temp = pkb->getAffectsStartAPI(para1Num);
                 toStore = intVecToStringVec(temp);
                 int ret = resultStore.insertResult(para2, toStore);
                 if (ret == -1) {  // Exit cond
@@ -1766,7 +1766,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
         else if (para2IsNum) {
             // Affects(_, 10)
             if (para1IsPlaceholder) {
-                temp = pkb.getAffectsEndAPI(para2Num);
+                temp = pkb->getAffectsEndAPI(para2Num);
                 if (temp.size() > 0)
                     return 0;
                 else
@@ -1774,7 +1774,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
             }
             // Affects(a, 10)
             else {
-                temp = pkb.getAffectsEndAPI(para2Num);
+                temp = pkb->getAffectsEndAPI(para2Num);
                 toStore = intVecToStringVec(temp);
                 int ret = resultStore.insertResult(para1, toStore);
                 if (ret == -1) {  // Exit cond
@@ -1786,7 +1786,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
         else if (para1IsPlaceholder) {
             std::vector<int> temp2 = stringVecToIntVec(resultStore.getValuesFor(para2));
             for (int i = temp2.size()-1; i > -1; i--) {
-                temp = pkb.getAffectsEndAPI(temp2[i]);
+                temp = pkb->getAffectsEndAPI(temp2[i]);
                 if (temp.size() == 0)
                     temp2.erase(temp2.begin()+i);
             }
@@ -1800,7 +1800,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
         else if (para2IsPlaceholder) {
             std::vector<int> temp2 = stringVecToIntVec(resultStore.getValuesFor(para1));
             for (int i = temp2.size()-1; i > -1; i--) {
-                temp = pkb.getAffectsStartAPI(temp2[i]);
+                temp = pkb->getAffectsStartAPI(temp2[i]);
                 if (temp.size() == 0)
                     temp2.erase(temp2.begin()+i);
             }
@@ -1820,18 +1820,19 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
                 }
 				
 				#ifndef ENABLE_THREADING
+                int interval = ceil(500.0 / pkb->getNumStmts());
                 for (int i = 0; i < (int)para1Val.size(); i++) {
 
                     /*
                     // Autotester timeout
-                    if (i % 5 == 4) {
+                    if (i % interval == interval-1) {
                         if (AbstractWrapper::GlobalStop) {
                             return -1;
                         } 
                     } */
 
                     std::vector<int> temp2;
-                    temp2 = pkb.getAffectsStartAPI(para1Val[i]);
+                    temp2 = pkb->getAffectsStartAPI(para1Val[i]);
                     for (int j = 0; j < (int)temp2.size(); j++) {
                         if (temp2[j] == para1Val[i]) {
                             temp.push_back(para1Val[i]);
@@ -1869,18 +1870,19 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
                 std::vector<std::vector<std::string>> toStoreTuple;
 
 				#ifndef ENABLE_THREADING
+                int interval = ceil(500.0 / pkb->getNumStmts());
                 if (isPara1) {
                     for (int i = 0; i < (int)para1ValInt.size(); i++) {
 
                         /*
                         // Autotester timeout
-                        if (i % 5 == 4) {
+                        if (i % interval == interval-1) {
                             if (AbstractWrapper::GlobalStop) {
                                 return -1;
                             } 
                         } */
 
-                        temp = pkb.getAffectsStartAPI(para1ValInt[i]);
+                        temp = pkb->getAffectsStartAPI(para1ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
                             std::vector<std::string> holder;
@@ -1895,13 +1897,13 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
 
                         /*
                         // Autotester timeout
-                        if (i % 5 == 4) {
+                        if (i % interval == interval-1) {
                             if (AbstractWrapper::GlobalStop) {
                                 return -1;
                             } 
                         } */
 
-                        temp = pkb.getAffectsEndAPI(para2ValInt[i]);
+                        temp = pkb->getAffectsEndAPI(para2ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
                             std::vector<std::string> holder;
@@ -1926,7 +1928,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
         if (para1IsNum) {
             // Affects*(1, 10)
             if (para2IsNum) {
-                temp = pkb.getAffectsTStartAPI(para1Num);
+                temp = pkb->getAffectsTStartAPI(para1Num);
                 for (int i = 0; i < (int)temp.size(); i++) {
                     if (temp[i] == para2Num)
                         return 0;
@@ -1935,7 +1937,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
             }
             // Affects*(1, _)
             else if (para2IsPlaceholder) {
-                temp = pkb.getAffectsTStartAPI(para1Num);
+                temp = pkb->getAffectsTStartAPI(para1Num);
                 if (temp.size() > 0)
                     return 0;
                 else
@@ -1943,7 +1945,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
             }
             // Affects*(1, a)
             else {
-                temp = pkb.getAffectsTStartAPI(para1Num);
+                temp = pkb->getAffectsTStartAPI(para1Num);
                 toStore = intVecToStringVec(temp);
                 int ret = resultStore.insertResult(para2, toStore);
                 if (ret == -1) {  // Exit cond
@@ -1954,7 +1956,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
         else if (para2IsNum) {
             // Affects*(_, 10)
             if (para1IsPlaceholder) {
-                temp = pkb.getAffectsTEndAPI(para2Num);
+                temp = pkb->getAffectsTEndAPI(para2Num);
                 if (temp.size() > 0)
                     return 0;
                 else
@@ -1962,7 +1964,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
             }
             // Affects*(a, 10)
             else {
-                temp = pkb.getAffectsTEndAPI(para2Num);
+                temp = pkb->getAffectsTEndAPI(para2Num);
                 toStore = intVecToStringVec(temp);
                 int ret = resultStore.insertResult(para1, toStore);
                 if (ret == -1) {  // Exit cond
@@ -1974,7 +1976,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
         else if (para1IsPlaceholder) {
             std::vector<int> temp2 = stringVecToIntVec(resultStore.getValuesFor(para2));
             for (int i = temp2.size()-1; i > -1; i--) {
-                temp = pkb.getAffectsTEndAPI(temp2[i]);
+                temp = pkb->getAffectsTEndAPI(temp2[i]);
                 if (temp.size() == 0)
                     temp2.erase(temp2.begin()+i);
             }
@@ -1988,7 +1990,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
         else if (para2IsPlaceholder) {
             std::vector<int> temp2 = stringVecToIntVec(resultStore.getValuesFor(para1));
             for (int i = temp2.size()-1; i > -1; i--) {
-                temp = pkb.getAffectsTStartAPI(temp2[i]);
+                temp = pkb->getAffectsTStartAPI(temp2[i]);
                 if (temp.size() == 0)
                     temp2.erase(temp2.begin()+i);
             }
@@ -2007,18 +2009,19 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
                     return -1;
                 }
 				#ifndef ENABLE_THREADING
+                int interval = ceil(500.0/pkb->getNumStmts());
                 for (int i = 0; i < (int)para1Val.size(); i++) {
 
                     /*
                     // Autotester timeout
-                    if (i % 5 == 4) {
+                    if (i % interval == interval-1) {
                         if (AbstractWrapper::GlobalStop) {
                             return -1;
                         } 
                     } */
 
                     std::vector<int> temp2;
-                    temp2 = pkb.getAffectsTStartAPI(para1Val[i]);
+                    temp2 = pkb->getAffectsTStartAPI(para1Val[i]);
                     for (int j = 0; j < (int)temp2.size(); j++) {
                         if (temp2[j] == para1Val[i]) {
                             temp.push_back(para1Val[i]);
@@ -2055,18 +2058,20 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
                 std::vector<std::vector<std::string>> toStoreTuple;
 
 				#ifndef ENABLE_THREADING
+                int interval = ceil(500.0/pkb->getNumStmts());
                 if (isPara1) {
                     for (int i = 0; i < (int)para1ValInt.size(); i++) {
 
-                        /*
+                        
                         // Autotester timeout
-                        if (i % 5 == 4) {
+                        /*
+                        if (i % interval == interval-1) {
                             if (AbstractWrapper::GlobalStop) {
                                 return -1;
                             } 
                         } */
 
-                        temp = pkb.getAffectsTStartAPI(para1ValInt[i]);
+                        temp = pkb->getAffectsTStartAPI(para1ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
                             std::vector<std::string> holder;
@@ -2081,13 +2086,13 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
 
                         /*
                         // Autotester timeout
-                        if (i % 5 == 4) {
+                        if (i % interval == interval-1) {
                             if (AbstractWrapper::GlobalStop) {
                                 return -1;
                             } 
                         } */
 
-                        temp = pkb.getAffectsTEndAPI(para2ValInt[i]);
+                        temp = pkb->getAffectsTEndAPI(para2ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
                             std::vector<std::string> holder;
@@ -2111,7 +2116,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
     return 0;
 }
 
-int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB pkb) {
+int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlaceholder, bool para2IsNum, bool para2IsPlaceholder, std::string para1, std::string para2, int para1Num, int para2Num, PKB* pkb) {
     std::vector<int> temp;
     std::vector<std::string> toStore;
 
@@ -2123,7 +2128,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
         if (para1IsNum) {
             // AffectsBip(1, 10)
             if (para2IsNum) {
-                temp = pkb.getAffectsBipStart(para1Num);
+                temp = pkb->getAffectsBipStart(para1Num);
                 for (int i = 0; i < (int)temp.size(); i++) {
                     if (temp[i] == para2Num)
                         return 0;
@@ -2132,7 +2137,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             }
             // AffectsBip(1, _)
             else if (para2IsPlaceholder) {
-                temp = pkb.getAffectsBipStart(para1Num);
+                temp = pkb->getAffectsBipStart(para1Num);
                 if (temp.size() > 0)
                     return 0;
                 else
@@ -2140,7 +2145,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             }
             // AffectsBip(1, a)
             else {
-                temp = pkb.getAffectsBipStart(para1Num);
+                temp = pkb->getAffectsBipStart(para1Num);
                 toStore = intVecToStringVec(temp);
                 int ret = resultStore.insertResult(para2, toStore);
                 if (ret == -1) {  // Exit cond
@@ -2151,7 +2156,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
         else if (para2IsNum) {
             // AffectsBip(_, 10)
             if (para1IsPlaceholder) {
-                temp = pkb.getAffectsBipEnd(para2Num);
+                temp = pkb->getAffectsBipEnd(para2Num);
                 if (temp.size() > 0)
                     return 0;
                 else
@@ -2159,7 +2164,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             }
             // AffectsBip(a, 10)
             else {
-                temp = pkb.getAffectsBipEnd(para2Num);
+                temp = pkb->getAffectsBipEnd(para2Num);
                 toStore = intVecToStringVec(temp);
                 int ret = resultStore.insertResult(para1, toStore);
                 if (ret == -1) {  // Exit cond
@@ -2171,7 +2176,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
         else if (para1IsPlaceholder) {
             std::vector<int> temp2 = stringVecToIntVec(resultStore.getValuesFor(para2));
             for (int i = temp2.size()-1; i > -1; i--) {
-                temp = pkb.getAffectsBipEnd(temp2[i]);
+                temp = pkb->getAffectsBipEnd(temp2[i]);
                 if (temp.size() == 0)
                     temp2.erase(temp2.begin()+i);
             }
@@ -2185,7 +2190,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
         else if (para2IsPlaceholder) {
             std::vector<int> temp2 = stringVecToIntVec(resultStore.getValuesFor(para1));
             for (int i = temp2.size()-1; i > -1; i--) {
-                temp = pkb.getAffectsBipStart(temp2[i]);
+                temp = pkb->getAffectsBipStart(temp2[i]);
                 if (temp.size() == 0)
                     temp2.erase(temp2.begin()+i);
             }
@@ -2205,18 +2210,19 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                 }
 				
 				#ifndef ENABLE_THREADING
+                int interval = ceil(500.0/pkb->getNumStmts());
                 for (int i = 0; i < (int)para1Val.size(); i++) {
 
                     /*
                     // Autotester timeout
-                    if (i % 5 == 4) {
+                    if (i % interval == interval-1) {
                         if (AbstractWrapper::GlobalStop) {
                             return -1;
                         } 
                     } */
 
                     std::vector<int> temp2;
-                    temp2 = pkb.getAffectsBipStart(para1Val[i]);
+                    temp2 = pkb->getAffectsBipStart(para1Val[i]);
                     for (int j = 0; j < (int)temp2.size(); j++) {
                         if (temp2[j] == para1Val[i]) {
                             temp.push_back(para1Val[i]);
@@ -2255,18 +2261,19 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                 std::vector<std::vector<std::string>> toStoreTuple;
 
 				#ifndef ENABLE_THREADING
+                int interval = ceil(500.0/pkb->getNumStmts());
                 if (isPara1) {
                     for (int i = 0; i < (int)para1ValInt.size(); i++) {
 
                         /*
                         // Autotester timeout
-                        if (i % 5 == 4) {
+                        if (i % interval == interval-1) {
                             if (AbstractWrapper::GlobalStop) {
                                 return -1;
                             } 
                         } */
 
-                        temp = pkb.getAffectsBipStart(para1ValInt[i]);
+                        temp = pkb->getAffectsBipStart(para1ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
                             std::vector<std::string> holder;
@@ -2281,13 +2288,13 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
 
                         /*
                         // Autotester timeout
-                        if (i % 5 == 4) {
+                        if (i % interval == interval-1) {
                             if (AbstractWrapper::GlobalStop) {
                                 return -1;
                             } 
                         } */
 
-                        temp = pkb.getAffectsBipEnd(para2ValInt[i]);
+                        temp = pkb->getAffectsBipEnd(para2ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
                             std::vector<std::string> holder;
@@ -2314,7 +2321,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
         if (para1IsNum) {
             // AffectsBip*(1, 10)
             if (para2IsNum) {
-                temp = pkb.getAffectsBipTStart(para1Num);
+                temp = pkb->getAffectsBipTStart(para1Num);
                 for (int i = 0; i < (int)temp.size(); i++) {
                     if (temp[i] == para2Num)
                         return 0;
@@ -2323,7 +2330,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             }
             // AffectsBip*(1, _)
             else if (para2IsPlaceholder) {
-                temp = pkb.getAffectsBipTStart(para1Num);
+                temp = pkb->getAffectsBipTStart(para1Num);
                 if (temp.size() > 0)
                     return 0;
                 else
@@ -2331,7 +2338,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             }
             // AffectsBip*(1, a)
             else {
-                temp = pkb.getAffectsBipTStart(para1Num);
+                temp = pkb->getAffectsBipTStart(para1Num);
                 toStore = intVecToStringVec(temp);
                 int ret = resultStore.insertResult(para2, toStore);
                 if (ret == -1) {  // Exit cond
@@ -2342,7 +2349,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
         else if (para2IsNum) {
             // AffectsBip*(_, 10)
             if (para1IsPlaceholder) {
-                temp = pkb.getAffectsBipTEnd(para2Num);
+                temp = pkb->getAffectsBipTEnd(para2Num);
                 if (temp.size() > 0)
                     return 0;
                 else
@@ -2350,7 +2357,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             }
             // AffectsBip*(a, 10)
             else {
-                temp = pkb.getAffectsBipTEnd(para2Num);
+                temp = pkb->getAffectsBipTEnd(para2Num);
                 toStore = intVecToStringVec(temp);
                 int ret = resultStore.insertResult(para1, toStore);
                 if (ret == -1) {  // Exit cond
@@ -2362,7 +2369,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
         else if (para1IsPlaceholder) {
             std::vector<int> temp2 = stringVecToIntVec(resultStore.getValuesFor(para2));
             for (int i = temp2.size()-1; i > -1; i--) {
-                temp = pkb.getAffectsBipTEnd(temp2[i]);
+                temp = pkb->getAffectsBipTEnd(temp2[i]);
                 if (temp.size() == 0)
                     temp2.erase(temp2.begin()+i);
             }
@@ -2376,7 +2383,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
         else if (para2IsPlaceholder) {
             std::vector<int> temp2 = stringVecToIntVec(resultStore.getValuesFor(para1));
             for (int i = temp2.size()-1; i > -1; i--) {
-                temp = pkb.getAffectsBipTStart(temp2[i]);
+                temp = pkb->getAffectsBipTStart(temp2[i]);
                 if (temp.size() == 0)
                     temp2.erase(temp2.begin()+i);
             }
@@ -2395,18 +2402,19 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                     return -1;
                 }
 			    #ifndef ENABLE_THREADING
+                int interval = ceil(500.0/pkb->getNumStmts());
                 for (int i = 0; i < (int)para1Val.size(); i++) {
 
                     /*
                     // Autotester timeout
-                    if (i % 5 == 4) {
+                    if (i % interval == interval-1) {
                         if (AbstractWrapper::GlobalStop) {
                             return -1;
                         } 
                     } */
 
                     std::vector<int> temp2;
-                    temp2 = pkb.getAffectsBipTStart(para1Val[i]);
+                    temp2 = pkb->getAffectsBipTStart(para1Val[i]);
                     for (int j = 0; j < (int)temp2.size(); j++) {
                         if (temp2[j] == para1Val[i]) {
                             temp.push_back(para1Val[i]);
@@ -2445,18 +2453,19 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                 std::vector<std::vector<std::string>> toStoreTuple;
 
 				#ifndef ENABLE_THREADING
+                int interval = ceil(500.0 / pkb->getNumStmts());
                 if (isPara1) {
                     for (int i = 0; i < (int)para1ValInt.size(); i++) {
 
                         /*
                         // Autotester timeout
-                        if (i % 5 == 4) {
+                        if (i % interval == interval-1) {
                             if (AbstractWrapper::GlobalStop) {
                                 return -1;
                             } 
                         } */
 
-                        temp = pkb.getAffectsBipTStart(para1ValInt[i]);
+                        temp = pkb->getAffectsBipTStart(para1ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
                             std::vector<std::string> holder;
@@ -2471,13 +2480,13 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
 
                         /*
                         // Autotester timeout
-                        if (i % 5 == 4) {
+                        if (i % interval == interval-1) {
                             if (AbstractWrapper::GlobalStop) {
                                 return -1;
                             } 
                         } */
 
-                        temp = pkb.getAffectsBipTEnd(para2ValInt[i]);
+                        temp = pkb->getAffectsBipTEnd(para2ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
                             std::vector<std::string> holder;
@@ -3425,7 +3434,7 @@ std::vector<std::vector<int>> QueryProcessor::optimizeQuery(std::vector<QueryNod
 }
 
 // Walk our Query Tree and store results in result vector
-void QueryProcessor::processQuery(PKB pkb) {
+void QueryProcessor::processQuery(PKB* pkb) {
     // Reorganize query tree
     queryTree.reorgTree();
 
@@ -3453,13 +3462,13 @@ void QueryProcessor::processQuery(PKB pkb) {
             if (currNode.getChildren().size() == 2) {
                 std::string holder;
                 int temp;
-                int ret = attrRefChecker(&target, &holder, &temp, currNode, pkb);
+                int ret = attrRefChecker(&target, &holder, &temp, currNode, *pkb);
                 if (ret == -1)
                     return;
             }
         }
         else {
-            int ret = evaluateType(pkb, target);
+            int ret = evaluateType(*pkb, target);
             if (ret == -1)
                 return;
         }
@@ -3475,13 +3484,13 @@ void QueryProcessor::processQuery(PKB pkb) {
                 if (currNode.getChildren().size() == 2) {
                     std::string holder;
                     int temp;
-                    int ret = attrRefChecker(&target, &holder, &temp, currNode, pkb);
+                    int ret = attrRefChecker(&target, &holder, &temp, currNode, *pkb);
                     if (ret == -1)
                         return;
                 }
             }
             else {
-                int ret = evaluateType(pkb, target);
+                int ret = evaluateType(*pkb, target);
                 if (ret == -1)
                     return;
             }
@@ -3492,7 +3501,7 @@ void QueryProcessor::processQuery(PKB pkb) {
         return;
 
     // Initial Query Optimizing
-    std::vector<std::vector<int>> queryOrder = optimizeQuery(tree, curr+1, pkb);
+    std::vector<std::vector<int>> queryOrder = optimizeQuery(tree, curr+1, *pkb);
     if (queryOrder.size() == 0)
         return;
 
@@ -3591,7 +3600,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                 if (relation.getName().compare("follows") == 0) {
                     if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {
                         if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
-                            int ret = evaluateFollows(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                            int ret = evaluateFollows(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, *pkb); 
                             if (ret == -1)
                                 return;
                         }
@@ -3605,7 +3614,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                 else if (relation.getName().compare("followst") == 0) {
                     if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                
                         if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {   
-                            int ret = evaluateFollows(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                            int ret = evaluateFollows(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, *pkb); 
                             if (ret == -1)
                                 return;
                         }
@@ -3619,7 +3628,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                 else if (relation.getName().compare("parent") == 0) {
                     if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                        
                         if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
-                            int ret = evaluateParent(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                            int ret = evaluateParent(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, *pkb); 
                             if (ret == -1)
                                 return;
                         }
@@ -3633,7 +3642,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                 else if (relation.getName().compare("parentt") == 0) {
                     if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                        
                         if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
-                            int ret = evaluateParent(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                            int ret = evaluateParent(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, *pkb); 
                             if (ret == -1)
                                 return;
                         }
@@ -3647,13 +3656,13 @@ void QueryProcessor::processQuery(PKB pkb) {
                 else if (relation.getName().compare("modifiess") == 0) {
                     if (para2IsEnt || para2IsPlaceholder || para2Type == DeclarationTable::variable_) {
                         if (para1IsNum || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {   
-                            int ret = evaluateModifiesS(para1IsNum, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
+                            int ret = evaluateModifiesS(para1IsNum, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, *pkb); 
                             if (ret == -1)
                                 return;
                         }
                         // modifies query, procedures, parser misclassification
                         else if (para1Type == DeclarationTable::procedure_) {
-                            int ret = evaluateModifiesP(para1IsEnt, para2IsEnt, para2IsPlaceholder, para1, para2, pkb); 
+                            int ret = evaluateModifiesP(para1IsEnt, para2IsEnt, para2IsPlaceholder, para1, para2, *pkb); 
                             if (ret == -1)
                                 return;
                         }
@@ -3667,7 +3676,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                 else if (relation.getName().compare("modifiesp") == 0) {
                     if (para1IsEnt) {                       
                         if (para2IsEnt || para2IsPlaceholder || para2Type == DeclarationTable::variable_) {
-                            int ret = evaluateModifiesP(para1IsEnt, para2IsEnt, para2IsPlaceholder, para1, para2, pkb); 
+                            int ret = evaluateModifiesP(para1IsEnt, para2IsEnt, para2IsPlaceholder, para1, para2, *pkb); 
                             if (ret == -1)
                                 return;
                         }
@@ -3681,13 +3690,13 @@ void QueryProcessor::processQuery(PKB pkb) {
                 else if (relation.getName().compare("usess") == 0) {
                     if (para2IsEnt || para2IsPlaceholder || para2Type == DeclarationTable::variable_) {
                         if (para1IsNum || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) { 
-                            int ret = evaluateUsesS(para1IsNum, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, pkb); 
+                            int ret = evaluateUsesS(para1IsNum, para2IsEnt, para2IsPlaceholder, para1, para2, para1Num, *pkb); 
                             if (ret == -1)
                                 return;
                         }
                         // uses query, procedures, parser misclassification
                         else if (para1Type == DeclarationTable::procedure_) {
-                            int ret = evaluateUsesP(para1IsEnt, para2IsEnt, para2IsPlaceholder, para1, para2, pkb); 
+                            int ret = evaluateUsesP(para1IsEnt, para2IsEnt, para2IsPlaceholder, para1, para2, *pkb); 
                             if (ret == -1)
                                 return;
                         }
@@ -3701,7 +3710,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                 else if (relation.getName().compare("usesp") == 0) {
                     if (para1IsEnt) { 
                         if (para2IsEnt || para2IsPlaceholder || para2Type == DeclarationTable::variable_) {
-                            int ret = evaluateUsesP(para1IsEnt, para2IsEnt, para2IsPlaceholder, para1, para2, pkb); 
+                            int ret = evaluateUsesP(para1IsEnt, para2IsEnt, para2IsPlaceholder, para1, para2, *pkb); 
                             if (ret == -1)
                                 return;
                         }
@@ -3715,7 +3724,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                 else if (relation.getName().compare("calls") == 0) {
                     if (para1IsEnt || para1IsPlaceholder || para1Type == DeclarationTable::procedure_) {
                         if (para2IsEnt || para2IsPlaceholder || para2Type == DeclarationTable::procedure_) {
-                            int ret = evaluateCalls(false, para1IsEnt, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2,pkb);
+                            int ret = evaluateCalls(false, para1IsEnt, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2, *pkb);
                             if (ret == -1)
                                 return;
                         }
@@ -3729,7 +3738,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                 else if (relation.getName().compare("callst") == 0) {
                     if (para1IsEnt || para1IsPlaceholder || para1Type == DeclarationTable::procedure_) {
                         if (para2IsEnt || para2IsPlaceholder || para2Type == DeclarationTable::procedure_) {
-                            int ret = evaluateCalls(true, para1IsEnt, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2,pkb);
+                            int ret = evaluateCalls(true, para1IsEnt, para1IsPlaceholder, para2IsEnt, para2IsPlaceholder, para1, para2, *pkb);
                             if (ret == -1)
                                 return;
                         }
@@ -3743,7 +3752,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                 else if (relation.getName().compare("next") == 0) {
                     if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                        
                         if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
-                            int ret = evaluateNext(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                            int ret = evaluateNext(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, *pkb); 
                             if (ret == -1)
                                 return;
                         }
@@ -3757,7 +3766,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                 else if (relation.getName().compare("nextt") == 0) {
                     if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                        
                         if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
-                            int ret = evaluateNext(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                            int ret = evaluateNext(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, *pkb); 
                             if (ret == -1)
                                 return;
                         }
@@ -3771,7 +3780,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                 else if (relation.getName().compare("nextbip") == 0) {
                     if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                        
                         if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
-                            int ret = evaluateNextBip(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                            int ret = evaluateNextBip(false, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, *pkb); 
                             if (ret == -1)
                                 return;
                         }
@@ -3785,7 +3794,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                 else if (relation.getName().compare("nextbipt") == 0) {
                     if (para1IsNum || para1IsPlaceholder || para1Type == DeclarationTable::prog_line_ || para1Type == DeclarationTable::assign_ || para1Type == DeclarationTable::call_ || para1Type == DeclarationTable::if_ || para1Type == DeclarationTable::while_ || para1Type == DeclarationTable::stmt_) {                        
                         if (para2IsNum || para2IsPlaceholder || para2Type == DeclarationTable::prog_line_ || para2Type == DeclarationTable::assign_ || para2Type == DeclarationTable::call_ || para2Type == DeclarationTable::if_ || para2Type == DeclarationTable::while_ || para2Type == DeclarationTable::stmt_) {
-                            int ret = evaluateNextBip(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, pkb); 
+                            int ret = evaluateNextBip(true, para1IsNum, para1IsPlaceholder, para2IsNum, para2IsPlaceholder, para1, para2, para1Num, para2Num, *pkb); 
                             if (ret == -1)
                                 return;
                         }
@@ -3854,7 +3863,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                 // sibling query
                 else if (relation.getName().compare("sibling") == 0) {
                     if (!para1IsPlaceholder && !para2IsPlaceholder && !para1IsEnt && !para2IsEnt) {
-                        int ret = evaluateSibling(para1IsNum, para2IsNum, para1, para2, para1Num, para2Num, para1Type, para2Type, pkb);
+                        int ret = evaluateSibling(para1IsNum, para2IsNum, para1, para2, para1Num, para2Num, para1Type, para2Type, *pkb);
                         if (ret == -1)
                             return;
                     }
@@ -3864,7 +3873,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                 // contains query
                 else if (relation.getName().compare("contains") == 0) {
                     if (!para1IsPlaceholder && !para2IsPlaceholder && !para1IsEnt && !para2IsEnt) {
-                        int ret = evaluateContains(false, para1IsNum, para2IsNum, para1, para2, para1Num, para2Num, para1Type, para2Type, pkb);
+                        int ret = evaluateContains(false, para1IsNum, para2IsNum, para1, para2, para1Num, para2Num, para1Type, para2Type, *pkb);
                         if (ret == -1)
                             return;
                     }
@@ -3874,7 +3883,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                 // contains* query
                 else if (relation.getName().compare("containst") == 0) {
                     if (!para1IsPlaceholder && !para2IsPlaceholder && !para1IsEnt && !para2IsEnt) {
-                        int ret = evaluateContains(true, para1IsNum, para2IsNum, para1, para2, para1Num, para2Num, para1Type, para2Type, pkb);
+                        int ret = evaluateContains(true, para1IsNum, para2IsNum, para1, para2, para1Num, para2Num, para1Type, para2Type, *pkb);
                         if (ret == -1)
                             return;
                     }
@@ -3958,19 +3967,19 @@ void QueryProcessor::processQuery(PKB pkb) {
 
                     if (!hasStmtLst) {
                         if (!isWhile) {
-                            int ret = evaluateAssignPattern(pattern, var, expressionRoot, varIsEnt, varIsPlaceholder, hasUnderscore, pkb);
+                            int ret = evaluateAssignPattern(pattern, var, expressionRoot, varIsEnt, varIsPlaceholder, hasUnderscore, *pkb);
                             if (ret == -1)
                                 return;
                         }
                         else {
-                            int ret = evaluateIfWhilePattern(pattern, var, varIsEnt, varIsPlaceholder, pkb);
+                            int ret = evaluateIfWhilePattern(pattern, var, varIsEnt, varIsPlaceholder, *pkb);
                             if (ret == -1)
                                 return;
                         }
                     }
                     else {
                         if (declarationTable.getType(stmtLst1) == DeclarationTable::stmtLst_ && isWhile) {
-                            int ret = evaluateWhilePatternStmtLst(pattern, var, varIsEnt, varIsPlaceholder, stmtLst1, pkb);
+                            int ret = evaluateWhilePatternStmtLst(pattern, var, varIsEnt, varIsPlaceholder, stmtLst1, *pkb);
                             if (ret == -1)
                                 return;
                         }
@@ -4016,12 +4025,12 @@ void QueryProcessor::processQuery(PKB pkb) {
                     }
 
                     if (!hasStmtLst) {
-                        int ret = evaluateIfWhilePattern(pattern, var, varIsEnt, varIsPlaceholder, pkb);
+                        int ret = evaluateIfWhilePattern(pattern, var, varIsEnt, varIsPlaceholder, *pkb);
                         if (ret == -1)
                             return;
                     }
                     else {
-                        int ret = evaluateIfPatternStmtLst(pattern, var, varIsEnt, varIsPlaceholder, stmtLst1, SL1IsPlaceholder, stmtLst2, SL2IsPlaceholder, pkb);
+                        int ret = evaluateIfPatternStmtLst(pattern, var, varIsEnt, varIsPlaceholder, stmtLst1, SL1IsPlaceholder, stmtLst2, SL2IsPlaceholder, *pkb);
                         if (ret == -1)
                             return;
                     }
@@ -4050,7 +4059,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                 if (temp.getName().compare("attrCompare_attrRef") == 0) {
                     std::string syno, attrName;
                     int synoType;
-                    ret = attrRefChecker(&syno, &attrName, &synoType, tree[temp.getChildren()[0]], pkb);
+                    ret = attrRefChecker(&syno, &attrName, &synoType, tree[temp.getChildren()[0]], *pkb);
                     if (ret == -1)
                         return;
                     temp = tree[temp.getChildren()[1]];
@@ -4082,7 +4091,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                     else if (temp.getName().compare("ref_attrRef") == 0) {
                         std::string syno2, attrName2;
                         int synoType2;
-                        ret = attrRefChecker(&syno2, &attrName2, &synoType2, tree[temp.getChildren()[0]], pkb);
+                        ret = attrRefChecker(&syno2, &attrName2, &synoType2, tree[temp.getChildren()[0]], *pkb);
                         if (ret == -1)
                             return;
 
@@ -4114,7 +4123,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                 }
                 else if (temp.getName().compare("attrCompare_synonym") == 0) {
                     std::string syno = (tree[temp.getChildren()[0]]).getName();
-                    int synoType = evaluateType(pkb, syno);
+                    int synoType = evaluateType(*pkb, syno);
                     if (synoType != DeclarationTable::prog_line_) {
                         // Error
                         return;
@@ -4137,7 +4146,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                     else if (temp.getName().compare("ref_pl_attrRef") == 0) {
                         std::string syno2, attrName2;
                         int synoType2;
-                        ret = attrRefChecker(&syno2, &attrName2, &synoType2, tree[temp.getChildren()[0]], pkb);
+                        ret = attrRefChecker(&syno2, &attrName2, &synoType2, tree[temp.getChildren()[0]], *pkb);
                         if (ret == -1)
                             return;
                         if (synoType2 == DeclarationTable::variable_ || synoType2 == DeclarationTable::procedure_)
@@ -4165,7 +4174,7 @@ void QueryProcessor::processQuery(PKB pkb) {
         if (!isTuple) {
             result = resultStore.getValuesFor(target);
             if (declarationTable.getType(target) == DeclarationTable::stmtLst_) {
-                result = pkb.convertStmtLst(stringVecToIntVec(result));
+                result = pkb->convertStmtLst(stringVecToIntVec(result));
             }
         }
         else {
@@ -4184,7 +4193,7 @@ void QueryProcessor::processQuery(PKB pkb) {
                     }
                     std::vector<int> tempVec;
                     tempVec.push_back(temp);
-                    holder[i][stmtLstTarget[j]] = pkb.convertStmtLst(tempVec)[0];
+                    holder[i][stmtLstTarget[j]] = pkb->convertStmtLst(tempVec)[0];
                 }
             }
             for (int i = 0; i < (int)holder.size(); i++) {
