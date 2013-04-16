@@ -1,7 +1,5 @@
-assign a1, a2, a3;
-Select BOOLEAN such that Affects*(15, 10) such that Affects*(10, 6) such that Affects*(6, 15)
-Select BOOLEAN such that Affects*(15, 8) such that Affects*(8, 6) such that Affects*(6, 15)
-Select BOOLEAN such that Affects*(3, 10) such that Affects*(10, 6) such that Affects*(6, 3)
-Select BOOLEAN such that Affects*(3, 8) such that Affects*(8, 6) such that Affects*(6, 3)
-Select BOOLEAN such that Affects*(31, 36) such that Affects*(36, 35) such that Affects*(35, 31)
-Select BOOLEAN such that Affects*(31, 38) such that Affects*(38, 35) such that Affects*(35, 31)
+prog_line l1,l2; stmt s1,s2,s3,s4; 
+Select s2 such that NextBip* (10, s2)
+Select s2 such that NextBip* (s2, 86)
+Select s2 such that NextBip* (11, s2)
+Select s2 such that NextBip* (s2, 70)

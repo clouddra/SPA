@@ -1,4 +1,4 @@
-179
+192
 cat: All Category
 1 - Variable, Modifies :: s1
 variable v;
@@ -888,5 +888,45 @@ false
 184 - AffectsStar :: s1
 assign a1,a2; variable v1,v2,v3,v4,v5;
 Select a1 such that Affects*(16,a1)
+none
+5000
+185 - AffectsStar :: s1
+assign a1,a2; variable v1,v2,v3,v4,v5;
+Select BOOLEAN such that Affects*(15,10) such that Affects*(10,6) such that Affects*(6,15)
+false
+5000
+186 - AffectsStar :: s1
+assign a1,a2; variable v1,v2,v3,v4,v5;
+Select BOOLEAN such that Affects*(15,8) such that Affects*(8,6) such that Affects*(6,15)
+false
+5000
+187 - AffectsStar :: s1
+assign a1,a2; variable v1,v2,v3,v4,v5;
+Select a1 such that Affects*(a1,8)
+none
+5000
+188 - AffectsStar :: s1
+assign a1,a2; variable v1,v2,v3,v4,v5;
+Select a1 such that Affects*(a1,6)
+none
+5000
+189 - AffectsStar :: s1
+assign a1,a2; variable v1,v2,v3,v4,v5;
+Select a1 such that Affects*(a1,15)
+none
+5000
+190 - AffectsStar :: s1
+assign a1,a2; variable v1,v2,v3,v4,v5;
+Select BOOLEAN such that Affects*(15,8)
+none
+5000
+191 - AffectsStar :: s1
+assign a1,a2; variable v1,v2,v3,v4,v5;
+Select BOOLEAN such that Affects*(8,6)
+none
+5000
+192 - AffectsStar :: s1
+assign a1,a2; variable v1,v2,v3,v4,v5;
+Select BOOLEAN such that Affects*(6,15)
 none
 5000
