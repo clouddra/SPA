@@ -1089,6 +1089,7 @@ std::vector<std::string> Threading::intVecToStringVec(std::vector<int> input) {
     return output;
 }
 
+/*
 bool Threading::join_all() {
 	while(1) {
 		bool flag = true;
@@ -1103,6 +1104,19 @@ bool Threading::join_all() {
 		}
 		if (flag) break;
 	}
+	return true;
+}
+*/
+
+bool Threading::join_all() {
+	/*
+	for (int j=0; j<nThreads; j++) {
+		if (tList[j]->joinable()) {
+			tList[j]->join();
+		}
+	}
+	*/
+	tGroup.join_all();
 	return true;
 }
 
