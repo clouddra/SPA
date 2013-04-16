@@ -22,7 +22,7 @@ private:
 	Worker *workers;
 
 public:
-	Threading(int nThreads = boost::thread::hardware_concurrency());
+	Threading(int nThreads = boost::thread::hardware_concurrency()*4);
 	~Threading();
 	// Affects
 	std::vector<int> processAffectsSameVarStart(std::vector<int>& para1Val, PKB& pkb, int i);
