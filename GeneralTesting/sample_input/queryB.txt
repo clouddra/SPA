@@ -1,3 +1,4 @@
-prog_line l1,l2; stmt s1,s2,s3,s4; 
-Select s2 such that NextBip* (5, s2)
-Select s2 such that NextBip* (s2, 27)
+assign a1;
+Select a1 such that Affects*(a1, 8)
+Select BOOLEAN such that Affects*(15, 8)
+

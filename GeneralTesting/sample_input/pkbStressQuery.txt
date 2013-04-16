@@ -1,7 +1,0 @@
-1
-cat: All Category
-1 - Variable, Modifies :: s1
-assign a1,a2,a3;stmt s1,s2,s3;while w1,w2;variable v1; 
-Select a3 such that Follows(a1,a2) and Modifies(a3,v1) and Uses(w2,v1) and Parent*(w2,w1) and Parent*(w1,s1) and Parent(s1,a2) and Follows*(a3,s2) and Parent(108,a1) and Modifies(s2,"dinosaur")
-i,m,x,y,k,z,a,q,t,b,n
-5000

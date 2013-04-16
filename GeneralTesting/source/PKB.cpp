@@ -1669,25 +1669,28 @@ std::vector<int> PKB::depthUpT(int currStmt, std::unordered_set<int> varSet, std
 	visited[currStmt] = 1; // Mark currStmt as visited
 
 	int nodeType = stmtNodeTable.getType(currStmt);
-	if (nodeType == Node::assignNode && ignoreSet.count(currStmt) == 0)
+	if (nodeType == Node::assignNode)
 	{			
 		int var = modifiesTable.getModifiedBy(currStmt)[0]; // An assignment statement will only modify 1 variable
 		
 		// currStmt modifies a variable in varSet
 		if (varSet.count(var) > 0)
-		{
-			toReturn.push_back(currStmt);
+		{		
 			varSet.erase(var); // This modified variable will be taken out of varSet
 
-			// Add in the vars used by currStmt to varSet
-			std::vector<int> varsUsedByCurrStmt = usesTable.getUsedBy(currStmt);
-			for (int i=0; i<(int)varsUsedByCurrStmt.size(); i++)
-				varSet.insert(varsUsedByCurrStmt[i]);
+			if (ignoreSet.count(currStmt) == 0)
+			{
+				toReturn.push_back(currStmt);
+				// Add in the vars used by currStmt to varSet
+				std::vector<int> varsUsedByCurrStmt = usesTable.getUsedBy(currStmt);
+				for (int i=0; i<(int)varsUsedByCurrStmt.size(); i++)
+					varSet.insert(varsUsedByCurrStmt[i]);
 			
-			int numOfStmts = stmtNodeTable.getSize();
-			std::vector<int> temp(numOfStmts, -1);
-			visited = temp; // Reset all stmts to unvisited
-			ignoreSet.insert(currStmt); // Do not process this stmt next time
+				int numOfStmts = stmtNodeTable.getSize();
+				std::vector<int> temp(numOfStmts, -1);
+				visited = temp; // Reset all stmts to unvisited
+				ignoreSet.insert(currStmt); // Do not process this stmt next time
+			}
 		}
 	}
 	else if (nodeType == Node::callNode)
@@ -2453,25 +2456,29 @@ std::vector<int> PKB::depthUpBipT(int currStmt, std::unordered_set<int> varSet, 
 	visited[currStmt] = 1; // Mark currStmt as visited
 
 	int nodeType = stmtNodeTable.getType(currStmt);
-	if (nodeType == Node::assignNode && ignoreSet.count(currStmt) == 0)
+	if (nodeType == Node::assignNode)
 	{			
 		int var = modifiesTable.getModifiedBy(currStmt)[0]; // An assignment statement will only modify 1 variable
 		
 		// currStmt modifies a variable in varSet
 		if (varSet.count(var) > 0)
 		{
-			toReturn.push_back(currStmt);
+			
 			varSet.erase(var); // This modified variable will be taken out of varSet
 
-			// Add in the vars used by currStmt to varSet
-			std::vector<int> varsUsedByCurrStmt = usesTable.getUsedBy(currStmt);
-			for (int i=0; i<(int)varsUsedByCurrStmt.size(); i++)
-				varSet.insert(varsUsedByCurrStmt[i]);
+			if (ignoreSet.count(currStmt) == 0)
+			{
+				toReturn.push_back(currStmt);
+				// Add in the vars used by currStmt to varSet
+				std::vector<int> varsUsedByCurrStmt = usesTable.getUsedBy(currStmt);
+				for (int i=0; i<(int)varsUsedByCurrStmt.size(); i++)
+					varSet.insert(varsUsedByCurrStmt[i]);
 			
-			int numOfStmts = stmtNodeTable.getSize();
-			std::vector<int> temp(numOfStmts, -1);
-			visited = temp; // Reset all stmts to unvisited
-			ignoreSet.insert(currStmt); // Do not process this stmt next time
+				int numOfStmts = stmtNodeTable.getSize();
+				std::vector<int> temp(numOfStmts, -1);
+				visited = temp; // Reset all stmts to unvisited
+				ignoreSet.insert(currStmt); // Do not process this stmt next time
+			}
 		}
 	}
 

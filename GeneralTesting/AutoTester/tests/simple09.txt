@@ -9,7 +9,8 @@ procedure Peter {
 				n=b-b;											
 				call Bob;										
 				m = b*9*m+(k-3)*n;}								
-			else {a = a+b*(a-b);									
+			else {
+				a = a+b*(a-b);									
 				b=b-(b-b)-b;									
 				call John;										
 				a = b*m*n;}										

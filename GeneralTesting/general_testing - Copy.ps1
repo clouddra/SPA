@@ -40,7 +40,6 @@ $exe_autoTester27 = "Release\AutoTester.exe";
 $exe_autoTester28 = "Release\AutoTester.exe";
 $exe_autoTester29 = "Release\AutoTester.exe";
 $exe_autoTester30 = "Release\AutoTester.exe";
-$exe_autoTester31 = "Release\AutoTester.exe";
 
 #output filenames
 $out_cppunit = $cpp_relative_path +"cppunit.out";
@@ -76,7 +75,6 @@ $out_autoTester27 = $autoTester_relative_path +"autoTester27.out";
 $out_autoTester28 = $autoTester_relative_path +"autoTester28.out";
 $out_autoTester29 = $autoTester_relative_path +"autoTester29.out";
 $out_autoTester30 = $autoTester_relative_path +"autoTester30.out";
-$out_autoTester31 = $autoTester_relative_path +"autoTester31.out";
 
 #command line arguments for each executable
 $args_cppunit = @(" ");
@@ -112,7 +110,6 @@ $args_autoTester27 = @($autoTester_relative_path + "tests\simple27.txt " + $auto
 $args_autoTester28 = @($autoTester_relative_path + "tests\affectsBipShortSource.txt " + $autoTester_relative_path + "tests\affectsBipShort.txt " + $autoTester_relative_path + "tests\out28.xml");
 $args_autoTester29 = @($autoTester_relative_path + "tests\affectsBipShortExplodeSource.txt " + $autoTester_relative_path + "tests\affectsBipShortExplode.txt " + $autoTester_relative_path + "tests\out29.xml");
 $args_autoTester30 = @($autoTester_relative_path + "tests\affectsBipExplodeSource.txt " + $autoTester_relative_path + "tests\affectsBipExplode.txt " + $autoTester_relative_path + "tests\out30.xml");
-$args_autoTester31 = @($autoTester_relative_path + "tests\pkbStressSource.txt " + $autoTester_relative_path + "tests\pkbStressQuery.txt " + $autoTester_relative_path + "tests\out31.xml");
 
 #change directory to the $solution_path
 $current_path = get-location;
@@ -126,7 +123,7 @@ write-output $p;
 #"autoTester11", "autoTester12", "autoTester13" -> contain recursion
 #"cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8", "autoTester9", "autoTester10", "autoTester14", "autoTester15", "autoTester16", "autoTester17", "autoTester18", "autoTester19", "autoTester20", "autoTester21", "autoTester22", "autoTester23", "autoTester24", "autoTester25", "autoTester26", "autoTester27"
 #$all_testing = @("autoTester28", "autoTester29", "cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8", "autoTester9", "autoTester10", "autoTester14", "autoTester15", "autoTester16", "autoTester17", "autoTester18", "autoTester19", "autoTester20", "autoTester21", "autoTester22", "autoTester23", "autoTester24", "autoTester25", "autoTester26", "autoTester27");
-$all_testing = @("autoTester28", "autoTester29", "autoTester31");
+$all_testing = @("autoTester28", "autoTester29", "autoTester30");
 
 foreach ($testing in $all_testing)
 {
