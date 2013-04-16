@@ -1,146 +1,146 @@
 procedure Peter {
-	a = 5;														
-	while x {													
-			b= 3*x+b*3;											
-			t = 2+2+t*3*(2*t+a);								
-			if b then {											
-				n = b+3*(9+m);									
-				b = n*2+k;										
-				n=b-b;											
-				call Bob;										
-				m = b*9*m+(k-3)*n;}								
-			else {a = a+b*(a-b);									
-				b=b-(b-b)-b;									
-				call John;										
-				a = b*m*n;}										
-			m = b+5-0*b;										
-			n = 2;}												
-	call Bob;}													
+	a = 5;
+	while x {
+			b= 3*x+b*3;
+			t = 2+2+t*3*(2*t+a);
+			if b then {
+				n = b+3*(9+m);
+				b = n*2+k;
+				n=b-b;
+				call Bob;
+				m = b*9*m+(k-3)*n;}
+			else {a = a+b*(a-b);
+				b=b-(b-b)-b;
+				call John;
+				a = b*m*n;}
+			m = b+5-0*b;
+			n = 2;}
+	call Bob;}
 procedure Bob {
-	a = 5;														
-	if v then {													
-		q = x+10*x;												
-		k = b;													
-		while x {												
-			a=q;}}												
+	a = 5;
+	if v then {
+		q = x+10*x;
+		k = b;
+		while x {
+			a=q;}}
 	else {
-		a=q;}}													
+		a=q;}}
 procedure Mary {
-	x= 2*((3+5)*b*(5-x))-b;										
-	t = x+3*9*8+(x-t);											
-	if v then {													
-		b = x+10*x;												
-		k = b;													
-		while x {												
-			b= 3*x+b*3;											
-			m = b+5-0*b;										
-			n = 2;												
-			if m then {											
-				n = m+3*(9+m);									
-				m = n*2+k;										
-				call Bob;										
-				m = m*9*m+(k-3)*n;}								
+	x= 2*((3+5)*b*(5-x))-b;
+	t = x+3*9*8+(x-t);
+	if v then {
+		b = x+10*x;
+		k = b;
+		while x {
+			b= 3*x+b*3;
+			m = b+5-0*b;
+			n = 2;
+			if m then {
+				n = m+3*(9+m);
+				m = n*2+k;
+				call Bob;
+				m = m*9*m+(k-3)*n;}
 			else {
-				a = a+b*(a-b);									
-				a = b*m*n;}										
-			b= n*k;												
-			n = 5+7*3;}											
-		b = k+5*(k-5);											
-		k = k+1;												
-		k=k*3*k+b;												
-		call Bob;}											
+				a = a+b*(a-b);
+				a = b*m*n;}
+			b= n*k;
+			n = 5+7*3;}
+		b = k+5*(k-5);
+		k = k+1;
+		k=k*3*k+b;
+		call Bob;}
 	else {
-		m = m+5*k*3-(3+x*y);									
-		call Bob;												
-		k = 5+2*7;												
-		if m then{												
-			m = m + 1;											
-			m = n-k-k-k-(k+k);}									
+		m = m+5*k*3-(3+x*y);
+		call Bob;
+		k = 5+2*7;
+		if m then{
+			m = m + 1;
+			m = n-k-k-k-(k+k);}
 		else {
-			m = m + 2;											
-			m = n-k-k-k-(k+k);}}								
-	x = t*2*2+3*5*7;											
-	call Bob;													
-	x= (t-3)*5*2;												
-	call Bob;													
-	x = 3-(t+5*2*t);											
-	call Bob;													
-	x = t+3;													
-	t= 2*5;														
-	if x then {													
-		x = 10;													
-		call Bob;												
-		while y {												
-			if y then{											
-				if m then{										
-					m = m + 1;									
-					y = 10;}									
+			m = m + 2;
+			m = n-k-k-k-(k+k);}}
+	x = t*2*2+3*5*7;
+	call Bob;
+	x= (t-3)*5*2;
+	call Bob;
+	x = 3-(t+5*2*t);
+	call Bob;
+	x = t+3;
+	t= 2*5;
+	if x then {
+		x = 10;
+		call Bob;
+		while y {
+			if y then{
+				if m then{
+					m = m + 1;
+					y = 10;}
 				else {
-					m = m + 2;}}								
+					m = m + 2;}}
 			else {
-				y = (x + z - i * 2)*y;							
-				call Bob;}}										
-		y = i+3*n;}												
+				y = (x + z - i * 2)*y;
+				call Bob;}}
+		y = i+3*n;}
 	else {
-		x = 20;}												
-	call Bob;													
-	x = t;}														
-procedure John{	
-	i=1;														
-	m=i;														
-	x = i+m+2;													
-	y =    i+m;													
-	while i{													
-		k=m+x;													
-		while z{												
-			x = x+i;											
-			z=x+1;}												
-		m=x+1;													
-		while m {												
-			z=x+q;											
-			call Bob;											
-			while i{											
-				q=q+1;										
-				while z{										
-					i= x+5+3+m;									
-					z=z+1;										
-					while m{									
-						while y{								
-							while k{							
-								x = x+1;}						
-							call Mary;							
-							x=y;								
-							while m {							
-								while z{						
-									while i{					
-										m=3;}					
-									while x{					
-										x=x;					
-										while z{				
-											m = x+y;}}}}}		
-						z=x+5+1+x+m+y+i+k;						
-						z=x;									
-						i=m+1;									
-						m=i+m+x+k+y;}							
-					while m{									
-						i=1+5;}}								
-				m=x+i;}											
-			z=z+1;												
-			x=i;}}												
-	while z{													
-		m=i+m+x+k+y;}											
-	call Mary;													
-	if x then {													
-		x = 10;													
-		call Bob;												
-		if y then{												
-			if m then{											
-				m = m + 1;										
-				y = 10;}										
+		x = 20;}
+	call Bob;
+	x = t;}
+procedure John{
+	i=1;
+	m=i;
+	x = i+m+2;
+	y =    i+m;
+	while i{
+		k=m+x;
+		while z{
+			x = x+i;
+			z=x+1;}
+		m=x+1;
+		while m {
+			z=x+q;
+			call Bob;
+			while i{
+				q=q+1;
+				while z{
+					i= x+5+3+m;
+					z=z+1;
+					while m{
+						while y{
+							while k{
+								x = x+1;}
+							call Mary;
+							x=y;
+							while m {
+								while z{
+									while i{
+										m=3;}
+									while x{
+										x=x;
+										while z{
+											m = x+y;}}}}}
+						z=x+5+1+x+m+y+i+k;
+						z=x;
+						i=m+1;
+						m=i+m+x+k+y;}
+					while m{
+						i=1+5;}}
+				m=x+i;}
+			z=z+1;
+			x=i;}}
+	while z{
+		m=i+m+x+k+y;}
+	call Mary;
+	if x then {
+		x = 10;
+		call Bob;
+		if y then{
+			if m then{
+				m = m + 1;
+				y = 10;}
 			else {
-				m = m + 2;}}									
+				m = m + 2;}}
 		else {
-			y = (x + z - i * 2)*y;								
-			call Bob;}}											
+			y = (x + z - i * 2)*y;
+			call Bob;}}
 	else {
 		x = 20;}}
