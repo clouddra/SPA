@@ -34,7 +34,7 @@ procedure John{
 					while m{ 
 						i=1+5;}} 
 				m=x+i;}			
-			z=z+1 
+			z=z+1;
 			x=i;}} 
 	while z{
 		m=i+m+x+k+y;}}

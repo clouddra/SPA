@@ -262,7 +262,7 @@ Select s such that Parent(s,a) pattern a("x",_"y"_)
 5000
 53 - AssignPattern, TwoClauses, Parent* :: What are the direct/indirect parent of the assignments with 'x' on left side and 'y' on right side?
 assign a; stmt s;
-Select   s such    that Parent*  (s,a) pattern a(  "x", _"y"_)
+Select s such that Parent*(s,a) pattern a("x", _"y"_)
 17, 16, 13, 12, 11, 5
 5000
 54 - AssignPattern, TwoClauses, Follows :: What are the variables that is modified by an assignment with 'y' on the right side and this assignment is followed by another statement?
