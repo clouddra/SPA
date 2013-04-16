@@ -132,9 +132,13 @@ write-output $p;
 
 #tests that will be run
 #add/remove items if you want to do only unit testing or autoTester testing
+
 #"autoTester11", "autoTester12", "autoTester13" -> contain recursion
-#"cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8", "autoTester9", "autoTester10", "autoTester14", "autoTester15", "autoTester16", "autoTester17", "autoTester18", "autoTester19", "autoTester20", "autoTester21", "autoTester22", "autoTester23", "autoTester24", "autoTester25", "autoTester26", "autoTester27", "autoTester28", "autoTester29", "autoTester30", "autoTester31", "autoTester32", "autoTester33", "autoTester34"
-$all_testing = @("autoTester9");
+#"autoTester32", "autoTester34" -> can't run. dunno why.
+
+# uncomment the line below and comment the next line dfor complete tests
+#$all_testing = @("cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8", "autoTester9", "autoTester10", "autoTester14", "autoTester15", "autoTester16", "autoTester17", "autoTester18", "autoTester19", "autoTester20", "autoTester21", "autoTester22", "autoTester23", "autoTester24", "autoTester25", "autoTester26", "autoTester27", "autoTester28", "autoTester29", "autoTester30", "autoTester31", "autoTester32", "autoTester33", "autoTester34")
+$all_testing = @("cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8", "autoTester9", "autoTester10", "autoTester14", "autoTester15", "autoTester16", "autoTester17", "autoTester18", "autoTester19", "autoTester20", "autoTester21", "autoTester22", "autoTester23", "autoTester24", "autoTester25", "autoTester26", "autoTester27", "autoTester28", "autoTester29", "autoTester30", "autoTester31", "autoTester33")
 #$all_testing = @("autoTester28", "autoTester29", "autoTester30");
 
 foreach ($testing in $all_testing)

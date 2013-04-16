@@ -65,3 +65,19 @@ std::vector<int> CFGNode::getBipNext(){
 std::vector<int> CFGNode::getBipPrev(){
 	return bipPrev;
 }
+
+int CFGNode::getTop(){
+	return top;
+}
+
+int CFGNode::getBot(){
+	return bot;
+}
+
+void CFGNode::setBot(int b){
+	bot = b;
+}
+
+void CFGNode::setTop(int t){
+	top = t;
+}
