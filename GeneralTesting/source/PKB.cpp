@@ -1096,7 +1096,9 @@ void PKB::startBuildCfg() {
 			// update proc table to include info about cfg
 			procTable.setCFGStart(astNode.getValue(), start);	
 			// add dummy at end of proc
-			end = cfg.insertCFGNode(-1, -1, buildCfg(astNode.getChildren()[0], -1, callList));							
+			end = cfg.insertCFGNode(-1, -1, buildCfg(astNode.getChildren()[0], -1, callList));
+
+			cfg.setTopBottom(start, end);
 			procTable.setCFGEnd(astNode.getValue(), end);
 			
 			// start of next procedure
@@ -1120,6 +1122,7 @@ void PKB::startBuildCfg() {
 			cfg.addBipNext(bipEnd, *j);
 		}
 	}
+
 
 }
 

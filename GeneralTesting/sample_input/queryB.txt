@@ -1,4 +1,2 @@
-assign a1;
-Select a1 such that Affects*(a1, 8)
-Select BOOLEAN such that Affects*(15, 8)
-
+assign a1, a2, a3; 
+Select a such that Next*(15,n) and Next* (n,48) and Affects*(a,n)

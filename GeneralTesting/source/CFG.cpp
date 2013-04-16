@@ -2,6 +2,7 @@
 #include <queue>
 #include <unordered_set>
 
+
 std::vector<int> CFG::getNext(int stmt1, int nodeIndex){
 	std::vector<int> stmtList;
 	// if fall in range
@@ -241,15 +242,19 @@ std::vector<int> CFG::getNextBipT(int stmt1, int nodeIndex){
 
 
 	// if there is bip, we do recursive call
+	std::vector<int> nextNodes = cfg[nodeIndex].getNext();
 	std::vector<int> nextBip = cfg[nodeIndex].getBipNext();
 	for (std::vector<int>::iterator j = nextBip.begin() ; j != nextBip.end(); ++j) {
-		getNextBipT(*j, stmtList, visited, true);
+		if (nextNodes.empty())
+			getNextBipT(*j, stmtList, visited, false);
+		else
+			getNextBipT(*j, stmtList, visited, true);
 	}
 
 
 	// for normal next, no recusive return. Instead we branch to all possible callers
 
-	std::vector<int> nextNodes = cfg[nodeIndex].getNext();
+
 	for (std::vector<int>::iterator j = nextNodes.begin() ; j != nextNodes.end(); ++j) {
 		getNextBipT(*j, stmtList, visited, false);
 	}
@@ -263,9 +268,9 @@ std::vector<int> CFG::getNextBipT(int stmt1, int nodeIndex){
 
 void CFG::getNextBipT(int nodeIndex, std::unordered_set<int> &stmtList, std::vector<bool> &visited, bool recursive){
 
-	// if visited or end of call
+	// if visited, jump to end of proc
 	if (visited[nodeIndex] == true)
-		return;
+		nodeIndex = cfg[nodeIndex].getBot();
 
 	visited[nodeIndex] = true;
 
@@ -311,14 +316,19 @@ std::vector<int> CFG::getPrevBipT(int stmt2, int nodeIndex){
 
 	// if there is bip, we do recursive call
 	std::vector<int> prevBip = cfg[nodeIndex].getBipPrev();
+	std::vector<int> prevNodes = cfg[nodeIndex].getPrev();
 	for (std::vector<int>::iterator j = prevBip.begin() ; j != prevBip.end(); ++j) {
-		getPrevBipT(*j, stmtList, visited, true);
+		// we at top
+		if (prevNodes.empty())
+			getPrevBipT(*j, stmtList, visited, false);
+		else
+			getPrevBipT(*j, stmtList, visited, true);
 	}
 
 
 	// for normal next, no recusive return. Instead we branch to all possible callers
 
-	std::vector<int> prevNodes = cfg[nodeIndex].getPrev();
+
 	for (std::vector<int>::iterator j = prevNodes.begin() ; j != prevNodes.end(); ++j) {
 		getPrevBipT(*j, stmtList, visited, false);
 	}
@@ -332,9 +342,9 @@ std::vector<int> CFG::getPrevBipT(int stmt2, int nodeIndex){
 
 void CFG::getPrevBipT(int nodeIndex, std::unordered_set<int> &stmtList, std::vector<bool> &visited, bool recursive){
 
-	// if visited or end of call
+	// if visited jump to start of cfg
 	if (visited[nodeIndex] == true)
-		return;
+		nodeIndex=cfg[nodeIndex].getTop();
 
 	// put statements of current node
 	fillStmtInNode(stmtList, cfg[nodeIndex]);
@@ -520,4 +530,13 @@ void CFG::addBipPrev(int nodeIndex, int prev){
 void CFG::fillStmtInNode(std::unordered_set<int> &stmtList, CFGNode nextNode){
 	for (int i=nextNode.getStart(); i<=nextNode.getEnd(); i++)
 		stmtList.emplace(i);
+}
+
+void CFG::setTopBottom(int top, int bottom)
+{
+	for (int i=top; i<=bottom; i++)
+	{
+		cfg[i].setTop(top);
+		cfg[i].setBot(bottom);
+	}
 }

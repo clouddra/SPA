@@ -9,7 +9,6 @@
 #endif
 
 #include "CFGNode.h"
-
 #include <unordered_set>
 
 class CFG{
@@ -51,8 +50,10 @@ private:
 	int insertCFGNode();
 	void print();
 
+
 	void addBipNext(int nodeIndex, int next);
 	void addBipPrev(int nodeIndex, int prev);
+	void setTopBottom(int top, int bottom);
 };
 /*
 GNODE createGNode (TNODE astNode, INDEX nodeType, STMT stmtNum, GNODE prevNode)

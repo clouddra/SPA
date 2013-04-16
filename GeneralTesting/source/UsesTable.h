@@ -96,7 +96,7 @@ public:
 	int getSizeProc();
 
 	/**
-	 * Remove empty entries in Calls Table. To be invoked after extraction of calls relationship
+	 * Remove empty entries in Uses Table. To be invoked after extraction of uses relationship
 	 */
 	void compressTables();
 };

@@ -8,6 +8,8 @@ private:
 	std::vector<std::vector<std::string>> returnTuple;
 
 public:
+	void runNextSame(boost::function<std::vector<int>()> f);
+	void runNextDiff(boost::function<std::vector<std::vector<std::string>>()> f);
 	void runAffectsSame(boost::function<std::vector<int>()> f);
 	void runAffectsDiff(boost::function<std::vector<std::vector<std::string>>()> f);
 	std::vector<int> getReturnVector();
@@ -24,6 +26,22 @@ private:
 public:
 	Threading(int nThreads = boost::thread::hardware_concurrency()*4);
 	~Threading();
+	// Next
+	std::vector<int> processNextSameVarStart(std::vector<int>& para1Val, PKB& pkb, int i);
+	bool processNextSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb);
+	std::vector<std::vector<std::string>> processNextDiffVarStart(std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i);
+	std::vector<std::vector<std::string>> processNextDiffVarEnd(std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i);
+	bool processNextDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
+							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb);
+
+	// Next*
+	std::vector<int> processNextTSameVarStart(std::vector<int>& para1Val, PKB& pkb, int i);
+	bool processNextTSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb);
+	std::vector<std::vector<std::string>> processNextTDiffVarStart(std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i);
+	std::vector<std::vector<std::string>> processNextTDiffVarEnd(std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i);
+	bool processNextTDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
+							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb);
+
 	// Affects
 	std::vector<int> processAffectsSameVarStart(std::vector<int>& para1Val, PKB& pkb, int i);
 	bool processAffectsSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb);
