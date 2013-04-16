@@ -305,12 +305,12 @@ variable v; if ifStmt;
 Select v such that Contains (ifStmt, v)
 z
 5000
-62 - ContainsStar :: returns all the assignments that refer to variable “x” (either on the left- or right-hand-side)
+62 - ContainsStar :: returns all the assignments that refer to variable x (either on the left- or right-hand-side)
 variable v; assign a;
 Select a such that Contains* (a, v) with v.varName="x"
 2, 3, 4, 5, 6, 8, 12, 14
 5000
-63 - ContainsStar :: returns all the assignments with ‘plus’ nodes that refer to variable “x” (either on the left- or right-hand-side of plus)
+63 - ContainsStar :: returns all the assignments with plus nodes that refer to variable x (either on the left- or right-hand-side of plus)
 variable v; plus add; assign a;
 Select a such that Contains* (a, add) and Contains* (add, v) with v.varName="x"
 3, 4, 5, 6
