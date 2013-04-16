@@ -4,19 +4,19 @@ cat: All Category
 stmt s, s1;
 Select <s1> such that Affects(s1, _)
 none
-5000
+100000
 2 - Affects*::
 stmt s, s1;
 Select <s1> such that Affects*(_, s1)
 none
-5000
+100000
 2 - Affects*::
 stmt s, s1;
 Select <s1> such that Affects(_, s1)
 none
-5000
+100000
 2 - Affects*::
 stmt s, s1;
 Select <s1> such that Affects*(s1, _)
 none
-5000
+100000
