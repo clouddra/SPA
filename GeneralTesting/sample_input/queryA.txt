@@ -1,2 +1,10 @@
-assign a;
-Select a1 such that AffectsBip(a, 20)
+assign a1, a2;
+Select BOOLEAN such that Affects*(10, 6)
+Select BOOLEAN such that Affects*(16, 7)
+Select BOOLEAN such that Affects*(36, 35)
+Select BOOLEAN such that Affects*(36, 40)
+Select BOOLEAN such that Affects*(38, 35)
+Select BOOLEAN such that Affects*(38, 40)
+Select BOOLEAN such that Affects*(42, 40)
+Select BOOLEAN such that Affects*(8, 6)
+Select <a1, a2> such that Affects*(a1, a2)

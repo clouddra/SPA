@@ -1,0 +1,7 @@
+assign a1, a2, a3;
+Select BOOLEAN such that Affects*(15, 10) such that Affects*(10, 6) such that Affects*(6, 15)
+Select BOOLEAN such that Affects*(15, 8) such that Affects*(8, 6) such that Affects*(6, 15)
+Select BOOLEAN such that Affects*(3, 10) such that Affects*(10, 6) such that Affects*(6, 3)
+Select BOOLEAN such that Affects*(3, 8) such that Affects*(8, 6) such that Affects*(6, 3)
+Select BOOLEAN such that Affects*(31, 36) such that Affects*(36, 35) such that Affects*(35, 31)
+Select BOOLEAN such that Affects*(31, 38) such that Affects*(38, 35) such that Affects*(35, 31)
