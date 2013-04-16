@@ -3,6 +3,14 @@
 
 #include "QueryProcessor.h"
 
+void Worker::runNextSame(boost::function<std::vector<int>()> f) {
+	returnVector = f();
+}
+
+void Worker::runNextDiff(boost::function<std::vector<std::vector<std::string>>()> f) {
+	returnTuple = f();
+}
+
 void Worker::runAffectsSame(boost::function<std::vector<int>()> f) {
 	returnVector = f();
 }
@@ -32,6 +40,351 @@ Threading::~Threading() {
 	delete[] workers;
 	delete[] tList;
 }
+
+///////////////////////////////////////
+// [Next
+
+// Next(s1, s1)
+std::vector<int> Threading::processNextSameVarStart(std::vector<int>& para1Val, PKB& pkb, int i) {
+	std::vector<int> temp;
+    if (pkb.isNext(para1Val[i], para1Val[i])) {
+        temp.push_back(i);
+    }
+	return temp;
+}
+
+bool Threading::processNextSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
+    for (int i = 0; i < (int)para1Val.size(); i++) {
+		if (i%nThreads == 0 && i > 0) {
+			if (!join_all()) {
+				terminate_all();
+				return false;
+			}
+			//tGroup.join_all();
+			for (int j=0; j<nThreads; j++) {
+				std::vector<int> returnedVector = workers[j%nThreads].getReturnVector();
+				for (std::vector<int>::iterator it=returnedVector.begin(); it<returnedVector.end(); it++) {
+					temp.push_back(*it);
+				}
+				tGroup.remove_thread(tList[j]);
+			}
+		}
+
+		boost::function<std::vector<int>()> f2 = boost::bind(&Threading::processNextSameVarStart, this, para1Val, pkb, i);
+		boost::function<void()> f = boost::bind(&Worker::runNextSame, &(workers[i%nThreads]), f2);
+		tList[i%nThreads] = new boost::thread(f);
+		tGroup.add_thread(tList[i%nThreads]);
+    }
+
+	if (!join_all()) {
+		terminate_all();
+		return false;
+	}
+	//tGroup.join_all();
+	for (int j=0; j<nThreads; j++) {
+		if (tGroup.is_thread_in(tList[j])) {
+			std::vector<int> returnedVector = workers[j%nThreads].getReturnVector();
+			for (std::vector<int>::iterator it=returnedVector.begin(); it<returnedVector.end(); it++) {
+				temp.push_back(*it);
+			}
+			tGroup.remove_thread(tList[j]);
+		}
+	}
+	return true;
+}
+
+// Next(s1, s2) from start
+std::vector<std::vector<std::string>> Threading::processNextDiffVarStart(std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i) {
+	std::vector<int> temp;
+	std::vector<std::string> toStore;
+	std::vector<std::vector<std::string>> toStoreTuple;
+	temp = pkb.getNext(para1ValInt[i]);
+    toStore = intVecToStringVec(temp);
+    for (int j = 0; j < (int)toStore.size(); j++) {
+        std::vector<std::string> holder;
+        holder.push_back(para1ValString[i]);
+        holder.push_back(toStore[j]); 
+        toStoreTuple.push_back(holder);
+    }
+	return toStoreTuple;
+}
+
+// Next(s1, s2) from end
+std::vector<std::vector<std::string>> Threading::processNextDiffVarEnd(std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i) {
+	std::vector<int> temp;
+	std::vector<std::string> toStore;
+	std::vector<std::vector<std::string>> toStoreTuple;
+    temp = pkb.getPrev(para2ValInt[i]);
+    toStore = intVecToStringVec(temp);
+    for (int j = 0; j < (int)toStore.size(); j++) {
+        std::vector<std::string> holder;
+        holder.push_back(toStore[j]); 
+        holder.push_back(para2ValString[i]);
+        toStoreTuple.push_back(holder);
+    }
+	return toStoreTuple;
+}
+
+bool Threading::processNextDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
+							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb) {
+    if (isPara1) {
+        for (int i = 0; i < (int)para1ValInt.size(); i++) {
+			if (i%nThreads == 0 && i > 0) {
+				if (!join_all()) {
+					terminate_all();
+					return false;
+				}
+				//tGroup.join_all();
+				for (int j=0; j<nThreads; j++) {
+					std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
+					for (std::vector<std::vector<std::string>>::iterator it=returnedTuple.begin(); it<returnedTuple.end(); it++) {
+						toStoreTuple.push_back(*it);
+					}
+					tGroup.remove_thread(tList[j]);
+				}
+			}
+
+			boost::function<std::vector<std::vector<std::string>>()> f2 = boost::bind(&Threading::processNextDiffVarStart, this, para1ValString, para1ValInt, pkb, i);
+			boost::function<void()> f = boost::bind(&Worker::runNextDiff, &(workers[i%nThreads]), f2);
+			tList[i%nThreads] = new boost::thread(f);
+			tGroup.add_thread(tList[i%nThreads]);
+        }
+
+		if (!join_all()) {
+			terminate_all();
+			return false;
+		}
+		//tGroup.join_all();
+		for (int j=0; j<nThreads; j++) {
+			if (tGroup.is_thread_in(tList[j])) {
+				std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
+				for (std::vector<std::vector<std::string>>::iterator it=returnedTuple.begin(); it<returnedTuple.end(); it++) {
+					toStoreTuple.push_back(*it);
+				}
+				tGroup.remove_thread(tList[j]);
+			}
+		}
+		return true;
+    }
+    else {
+        for (int i = 0; i < (int)para2ValInt.size(); i++) {
+			if (i%nThreads == 0 && i > 0) {
+				if (!join_all()) {
+					terminate_all();
+					return false;
+				}
+				//tGroup.join_all();
+				for (int j=0; j<nThreads; j++) {
+					std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
+					for (std::vector<std::vector<std::string>>::iterator it=returnedTuple.begin(); it<returnedTuple.end(); it++) {
+						toStoreTuple.push_back(*it);
+					}
+					tGroup.remove_thread(tList[j]);
+				}
+			}
+
+			boost::function<std::vector<std::vector<std::string>>()> f2 = boost::bind(&Threading::processNextDiffVarEnd, this, para2ValString, para2ValInt, pkb, i);
+			boost::function<void()> f = boost::bind(&Worker::runNextDiff, &(workers[i%nThreads]), f2);
+			tList[i%nThreads] = new boost::thread(f);
+			tGroup.add_thread(tList[i%nThreads]);
+        }
+
+		if (!join_all()) {
+			terminate_all();
+			return false;
+		}
+		//tGroup.join_all();
+		for (int j=0; j<nThreads; j++) {
+			if (tGroup.is_thread_in(tList[j])) {
+				std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
+				for (std::vector<std::vector<std::string>>::iterator it=returnedTuple.begin(); it<returnedTuple.end(); it++) {
+					toStoreTuple.push_back(*it);
+				}
+				tGroup.remove_thread(tList[j]);
+			}
+		}
+		return true;
+    }
+}
+
+// Next]
+////////////////////////////////////////////
+
+///////////////////////////////////////
+// [Next*
+
+// Next*(s1, s1)
+std::vector<int> Threading::processNextTSameVarStart(std::vector<int>& para1Val, PKB& pkb, int i) {
+	bool found = false;
+	std::vector<int> temp;
+	std::vector<int> temp2 = pkb.getNextT(para1Val[i]);
+    for (int j = 0; j < (int)temp2.size(); j++) {
+        if (para1Val[i] == temp2[j]) {
+            found = true;
+            break;
+        }
+    }
+    if (found)
+        temp.push_back(para1Val[i]);
+	return temp;
+}
+
+bool Threading::processNextTSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
+    for (int i = 0; i < (int)para1Val.size(); i++) {
+		if (i%nThreads == 0 && i > 0) {
+			if (!join_all()) {
+				terminate_all();
+				return false;
+			}
+			//tGroup.join_all();
+			for (int j=0; j<nThreads; j++) {
+				std::vector<int> returnedVector = workers[j%nThreads].getReturnVector();
+				for (std::vector<int>::iterator it=returnedVector.begin(); it<returnedVector.end(); it++) {
+					temp.push_back(*it);
+				}
+				tGroup.remove_thread(tList[j]);
+			}
+		}
+
+		boost::function<std::vector<int>()> f2 = boost::bind(&Threading::processNextTSameVarStart, this, para1Val, pkb, i);
+		boost::function<void()> f = boost::bind(&Worker::runNextSame, &(workers[i%nThreads]), f2);
+		tList[i%nThreads] = new boost::thread(f);
+		tGroup.add_thread(tList[i%nThreads]);
+    }
+
+	if (!join_all()) {
+		terminate_all();
+		return false;
+	}
+	//tGroup.join_all();
+	for (int j=0; j<nThreads; j++) {
+		if (tGroup.is_thread_in(tList[j])) {
+			std::vector<int> returnedVector = workers[j%nThreads].getReturnVector();
+			for (std::vector<int>::iterator it=returnedVector.begin(); it<returnedVector.end(); it++) {
+				temp.push_back(*it);
+			}
+			tGroup.remove_thread(tList[j]);
+		}
+	}
+	return true;
+}
+
+// Next*(s1, s2) from start
+std::vector<std::vector<std::string>> Threading::processNextTDiffVarStart(std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i) {
+	std::vector<int> temp;
+	std::vector<std::string> toStore;
+	std::vector<std::vector<std::string>> toStoreTuple;
+	temp = pkb.getNextT(para1ValInt[i]);
+    toStore = intVecToStringVec(temp);
+    for (int j = 0; j < (int)toStore.size(); j++) {
+        std::vector<std::string> holder;
+        holder.push_back(para1ValString[i]);
+        holder.push_back(toStore[j]); 
+        toStoreTuple.push_back(holder);
+    }
+	return toStoreTuple;
+}
+
+// Next*(s1, s2) from end
+std::vector<std::vector<std::string>> Threading::processNextTDiffVarEnd(std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i) {
+	std::vector<int> temp;
+	std::vector<std::string> toStore;
+	std::vector<std::vector<std::string>> toStoreTuple;
+    temp = pkb.getPrevT(para2ValInt[i]);
+    toStore = intVecToStringVec(temp);
+    for (int j = 0; j < (int)toStore.size(); j++) {
+        std::vector<std::string> holder;
+        holder.push_back(toStore[j]); 
+        holder.push_back(para2ValString[i]);
+        toStoreTuple.push_back(holder);
+    }
+	return toStoreTuple;
+}
+
+bool Threading::processNextTDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
+							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb) {
+    if (isPara1) {
+        for (int i = 0; i < (int)para1ValInt.size(); i++) {
+			if (i%nThreads == 0 && i > 0) {
+				if (!join_all()) {
+					terminate_all();
+					return false;
+				}
+				//tGroup.join_all();
+				for (int j=0; j<nThreads; j++) {
+					std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
+					for (std::vector<std::vector<std::string>>::iterator it=returnedTuple.begin(); it<returnedTuple.end(); it++) {
+						toStoreTuple.push_back(*it);
+					}
+					tGroup.remove_thread(tList[j]);
+				}
+			}
+
+			boost::function<std::vector<std::vector<std::string>>()> f2 = boost::bind(&Threading::processNextTDiffVarStart, this, para1ValString, para1ValInt, pkb, i);
+			boost::function<void()> f = boost::bind(&Worker::runNextDiff, &(workers[i%nThreads]), f2);
+			tList[i%nThreads] = new boost::thread(f);
+			tGroup.add_thread(tList[i%nThreads]);
+        }
+
+		if (!join_all()) {
+			terminate_all();
+			return false;
+		}
+		//tGroup.join_all();
+		for (int j=0; j<nThreads; j++) {
+			if (tGroup.is_thread_in(tList[j])) {
+				std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
+				for (std::vector<std::vector<std::string>>::iterator it=returnedTuple.begin(); it<returnedTuple.end(); it++) {
+					toStoreTuple.push_back(*it);
+				}
+				tGroup.remove_thread(tList[j]);
+			}
+		}
+		return true;
+    }
+    else {
+        for (int i = 0; i < (int)para2ValInt.size(); i++) {
+			if (i%nThreads == 0 && i > 0) {
+				if (!join_all()) {
+					terminate_all();
+					return false;
+				}
+				//tGroup.join_all();
+				for (int j=0; j<nThreads; j++) {
+					std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
+					for (std::vector<std::vector<std::string>>::iterator it=returnedTuple.begin(); it<returnedTuple.end(); it++) {
+						toStoreTuple.push_back(*it);
+					}
+					tGroup.remove_thread(tList[j]);
+				}
+			}
+
+			boost::function<std::vector<std::vector<std::string>>()> f2 = boost::bind(&Threading::processNextTDiffVarEnd, this, para2ValString, para2ValInt, pkb, i);
+			boost::function<void()> f = boost::bind(&Worker::runNextDiff, &(workers[i%nThreads]), f2);
+			tList[i%nThreads] = new boost::thread(f);
+			tGroup.add_thread(tList[i%nThreads]);
+        }
+
+		if (!join_all()) {
+			terminate_all();
+			return false;
+		}
+		//tGroup.join_all();
+		for (int j=0; j<nThreads; j++) {
+			if (tGroup.is_thread_in(tList[j])) {
+				std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
+				for (std::vector<std::vector<std::string>>::iterator it=returnedTuple.begin(); it<returnedTuple.end(); it++) {
+					toStoreTuple.push_back(*it);
+				}
+				tGroup.remove_thread(tList[j]);
+			}
+		}
+		return true;
+    }
+}
+
+// Next*]
+////////////////////////////////////////////
 
 ///////////////////////////////////////
 // [Affects
@@ -742,11 +1095,9 @@ bool Threading::join_all() {
 		for (int j=0; j<nThreads; j++) {
 			if (tList[j]->joinable() && !tList[j]->try_join_for(boost::chrono::milliseconds(1000))) {
 				flag = false;
-				/*
 				if (AbstractWrapper::GlobalStop) {
 					return false;
 				}
-				*/
 			}
 			else flag = true & flag;
 		}
