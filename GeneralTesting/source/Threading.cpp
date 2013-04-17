@@ -33,6 +33,7 @@ Threading::Threading(int nThreads) : threadPool(nThreads) {
 }
 
 Threading::~Threading() {
+
 }
 
 ///////////////////////////////////////
@@ -52,7 +53,7 @@ bool Threading::processNextSameVarDriver(std::vector<int>& temp, std::vector<int
 	boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 	std::vector<std::vector<int>> results((int)para1Val.size());
     for (int i = 0; i < (int)para1Val.size(); i++) {
-		boost::function<void()> f = boost::bind(&Threading::processNextSameVarStart, this, boost::ref(results.at(i)), para1Val, pkb, i);
+		boost::function<void()> f = boost::bind(&Threading::processNextSameVarStart, this, boost::ref(results.at(i)), para1Val, boost::ref(pkb), i);
 		this->threadPool.enqueue(f);
     }
 	for (int i = 0; i < (int)para1Val.size(); i++) {
@@ -106,7 +107,7 @@ bool Threading::processNextDiffVarDriver(std::vector<std::vector<std::string>>& 
 		boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 		std::vector<std::vector<std::vector<std::string>>> results((int)para1ValInt.size());
 		for (int i = 0; i < (int)para1ValInt.size(); i++) {
-			boost::function<void()> f = boost::bind(&Threading::processNextDiffVarStart, this, boost::ref(results.at(i)), para1ValString, para1ValInt, pkb, i);
+			boost::function<void()> f = boost::bind(&Threading::processNextDiffVarStart, this, boost::ref(results.at(i)), para1ValString, para1ValInt, boost::ref(pkb), i);
 			this->threadPool.enqueue(f);
 		}
 		for (int i = 0; i < (int)para1ValInt.size(); i++) {
@@ -125,7 +126,7 @@ bool Threading::processNextDiffVarDriver(std::vector<std::vector<std::string>>& 
 		boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 		std::vector<std::vector<std::vector<std::string>>> results((int)para2ValInt.size());
 		for (int i = 0; i < (int)para2ValInt.size(); i++) {
-			boost::function<void()> f = boost::bind(&Threading::processNextDiffVarEnd, this, boost::ref(results.at(i)), para2ValString, para2ValInt, pkb, i);
+			boost::function<void()> f = boost::bind(&Threading::processNextDiffVarEnd, this, boost::ref(results.at(i)), para2ValString, para2ValInt, boost::ref(pkb), i);
 			this->threadPool.enqueue(f);
 		}
 		for (int i = 0; i < (int)para2ValInt.size(); i++) {
@@ -168,7 +169,7 @@ bool Threading::processNextTSameVarDriver(std::vector<int>& temp, std::vector<in
 	boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 	std::vector<std::vector<int>> results((int)para1Val.size());
     for (int i = 0; i < (int)para1Val.size(); i++) {
-		boost::function<void()> f = boost::bind(&Threading::processNextTSameVarStart,  this, boost::ref(results.at(i)), para1Val, pkb, i);
+		boost::function<void()> f = boost::bind(&Threading::processNextTSameVarStart,  this, boost::ref(results.at(i)), para1Val, boost::ref(pkb), i);
 		this->threadPool.enqueue(f);
     }
 	for (int i = 0; i < (int)para1Val.size(); i++) {
@@ -222,7 +223,7 @@ bool Threading::processNextTDiffVarDriver(std::vector<std::vector<std::string>>&
 		boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 		std::vector<std::vector<std::vector<std::string>>> results((int)para1ValInt.size());
 		for (int i = 0; i < (int)para1ValInt.size(); i++) {
-			boost::function<void()> f = boost::bind(&Threading::processNextTDiffVarStart, this, boost::ref(results.at(i)), para1ValString, para1ValInt, pkb, i);
+			boost::function<void()> f = boost::bind(&Threading::processNextTDiffVarStart, this, boost::ref(results.at(i)), para1ValString, para1ValInt, boost::ref(pkb), i);
 			this->threadPool.enqueue(f);
 		}
 		for (int i = 0; i < (int)para1ValInt.size(); i++) {
@@ -241,7 +242,7 @@ bool Threading::processNextTDiffVarDriver(std::vector<std::vector<std::string>>&
 		boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 		std::vector<std::vector<std::vector<std::string>>> results((int)para2ValInt.size());
 		for (int i = 0; i < (int)para2ValInt.size(); i++) {
-			boost::function<void()> f = boost::bind(&Threading::processNextTDiffVarEnd, this, boost::ref(results.at(i)), para2ValString, para2ValInt, pkb, i);
+			boost::function<void()> f = boost::bind(&Threading::processNextTDiffVarEnd, this, boost::ref(results.at(i)), para2ValString, para2ValInt, boost::ref(pkb), i);
 			this->threadPool.enqueue(f);
 		}
 		for (int i = 0; i < (int)para2ValInt.size(); i++) {
@@ -282,7 +283,7 @@ bool Threading::processAffectsSameVarDriver(std::vector<int>& temp, std::vector<
 	boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 	std::vector<std::vector<int>> results((int)para1Val.size());
     for (int i = 0; i < (int)para1Val.size(); i++) {
-		boost::function<void()> f = boost::bind(&Threading::processAffectsSameVarStart, this, boost::ref(results.at(i)), para1Val, pkb, i);
+		boost::function<void()> f = boost::bind(&Threading::processAffectsSameVarStart, this, boost::ref(results.at(i)), para1Val, boost::ref(pkb), i);
 		this->threadPool.enqueue(f);
     }
 	for (int i = 0; i < (int)para1Val.size(); i++) {
@@ -336,7 +337,7 @@ bool Threading::processAffectsDiffVarDriver(std::vector<std::vector<std::string>
 		boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 		std::vector<std::vector<std::vector<std::string>>> results((int)para1ValInt.size());
 		for (int i = 0; i < (int)para1ValInt.size(); i++) {
-			boost::function<void()> f = boost::bind(&Threading::processAffectsDiffVarStart, this, boost::ref(results.at(i)), para1ValString, para1ValInt, pkb, i);
+			boost::function<void()> f = boost::bind(&Threading::processAffectsDiffVarStart, this, boost::ref(results.at(i)), para1ValString, para1ValInt, boost::ref(pkb), i);
 			this->threadPool.enqueue(f);
 		}
 		for (int i = 0; i < (int)para1ValInt.size(); i++) {
@@ -355,7 +356,7 @@ bool Threading::processAffectsDiffVarDriver(std::vector<std::vector<std::string>
 		boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 		std::vector<std::vector<std::vector<std::string>>> results((int)para2ValInt.size());
 		for (int i = 0; i < (int)para2ValInt.size(); i++) {
-			boost::function<void()> f = boost::bind(&Threading::processAffectsDiffVarEnd, this, boost::ref(results.at(i)), para2ValString, para2ValInt, pkb, i);
+			boost::function<void()> f = boost::bind(&Threading::processAffectsDiffVarEnd, this, boost::ref(results.at(i)), para2ValString, para2ValInt, boost::ref(pkb), i);
 			this->threadPool.enqueue(f);
 		}
 		for (int i = 0; i < (int)para2ValInt.size(); i++) {
@@ -396,7 +397,7 @@ bool Threading::processAffectsTSameVarDriver(std::vector<int>& temp, std::vector
 	boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 	std::vector<std::vector<int>> results((int)para1Val.size());
     for (int i = 0; i < (int)para1Val.size(); i++) {
-		boost::function<void()> f = boost::bind(&Threading::processAffectsTSameVarStart, this, boost::ref(results.at(i)), para1Val, pkb, i);
+		boost::function<void()> f = boost::bind(&Threading::processAffectsTSameVarStart, this, boost::ref(results.at(i)), para1Val, boost::ref(pkb), i);
 		this->threadPool.enqueue(f);
     }
 	for (int i = 0; i < (int)para1Val.size(); i++) {
@@ -450,7 +451,7 @@ bool Threading::processAffectsTDiffVarDriver(std::vector<std::vector<std::string
 		boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 		std::vector<std::vector<std::vector<std::string>>> results((int)para1ValInt.size());
 		for (int i = 0; i < (int)para1ValInt.size(); i++) {
-			boost::function<void()> f = boost::bind(&Threading::processAffectsTDiffVarStart, this, boost::ref(results.at(i)), para1ValString, para1ValInt, pkb, i);
+			boost::function<void()> f = boost::bind(&Threading::processAffectsTDiffVarStart, this, boost::ref(results.at(i)), para1ValString, para1ValInt, boost::ref(pkb), i);
 			this->threadPool.enqueue(f);
 		}
 		for (int i = 0; i < (int)para1ValInt.size(); i++) {
@@ -469,7 +470,7 @@ bool Threading::processAffectsTDiffVarDriver(std::vector<std::vector<std::string
 		boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 		std::vector<std::vector<std::vector<std::string>>> results((int)para2ValInt.size());
 		for (int i = 0; i < (int)para2ValInt.size(); i++) {
-			boost::function<void()> f = boost::bind(&Threading::processAffectsTDiffVarEnd, this, boost::ref(results.at(i)), para2ValString, para2ValInt, pkb, i);
+			boost::function<void()> f = boost::bind(&Threading::processAffectsTDiffVarEnd, this, boost::ref(results.at(i)), para2ValString, para2ValInt, boost::ref(pkb), i);
 			this->threadPool.enqueue(f);
 		}
 		for (int i = 0; i < (int)para2ValInt.size(); i++) {
@@ -510,7 +511,7 @@ bool Threading::processAffectsBipSameVarDriver(std::vector<int>& temp, std::vect
 	boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 	std::vector<std::vector<int>> results((int)para1Val.size());
     for (int i = 0; i < (int)para1Val.size(); i++) {
-		boost::function<void()> f = boost::bind(&Threading::processAffectsBipSameVarStart, this, boost::ref(results.at(i)), para1Val, pkb, i);
+		boost::function<void()> f = boost::bind(&Threading::processAffectsBipSameVarStart, this, boost::ref(results.at(i)), para1Val, boost::ref(pkb), i);
 		this->threadPool.enqueue(f);
     }
 	for (int i = 0; i < (int)para1Val.size(); i++) {
@@ -564,7 +565,7 @@ bool Threading::processAffectsBipDiffVarDriver(std::vector<std::vector<std::stri
 		boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 		std::vector<std::vector<std::vector<std::string>>> results((int)para1ValInt.size());
 		for (int i = 0; i < (int)para1ValInt.size(); i++) {
-			boost::function<void()> f = boost::bind(&Threading::processAffectsBipDiffVarStart, this, boost::ref(results.at(i)), para1ValString, para1ValInt, pkb, i);
+			boost::function<void()> f = boost::bind(&Threading::processAffectsBipDiffVarStart, this, boost::ref(results.at(i)), para1ValString, para1ValInt, boost::ref(pkb), i);
 			this->threadPool.enqueue(f);
 		}
 		for (int i = 0; i < (int)para1ValInt.size(); i++) {
@@ -583,7 +584,7 @@ bool Threading::processAffectsBipDiffVarDriver(std::vector<std::vector<std::stri
 		boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 		std::vector<std::vector<std::vector<std::string>>> results((int)para2ValInt.size());
 		for (int i = 0; i < (int)para2ValInt.size(); i++) {
-			boost::function<void()> f = boost::bind(&Threading::processAffectsBipDiffVarEnd, this, boost::ref(results.at(i)), para2ValString, para2ValInt, pkb, i);
+			boost::function<void()> f = boost::bind(&Threading::processAffectsBipDiffVarEnd, this, boost::ref(results.at(i)), para2ValString, para2ValInt, boost::ref(pkb), i);
 			this->threadPool.enqueue(f);
 		}
 		for (int i = 0; i < (int)para2ValInt.size(); i++) {
@@ -624,7 +625,7 @@ bool Threading::processAffectsBipTSameVarDriver(std::vector<int>& temp, std::vec
 	boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 	std::vector<std::vector<int>> results((int)para1Val.size());
     for (int i = 0; i < (int)para1Val.size(); i++) {
-		boost::function<void()> f = boost::bind(&Threading::processAffectsBipTSameVarStart, this, boost::ref(results.at(i)), para1Val, pkb, i);
+		boost::function<void()> f = boost::bind(&Threading::processAffectsBipTSameVarStart, this, boost::ref(results.at(i)), para1Val, boost::ref(pkb), i);
 		this->threadPool.enqueue(f);
     }
 	for (int i = 0; i < (int)para1Val.size(); i++) {
@@ -678,7 +679,7 @@ bool Threading::processAffectsBipTDiffVarDriver(std::vector<std::vector<std::str
 		boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 		std::vector<std::vector<std::vector<std::string>>> results((int)para1ValInt.size());
 		for (int i = 0; i < (int)para1ValInt.size(); i++) {
-			boost::function<void()> f = boost::bind(&Threading::processAffectsBipTDiffVarStart, this, boost::ref(results.at(i)), para1ValString, para1ValInt, pkb, i);
+			boost::function<void()> f = boost::bind(&Threading::processAffectsBipTDiffVarStart, this, boost::ref(results.at(i)), para1ValString, para1ValInt, boost::ref(pkb), i);
 			this->threadPool.enqueue(f);
 		}
 		for (int i = 0; i < (int)para1ValInt.size(); i++) {
@@ -697,7 +698,7 @@ bool Threading::processAffectsBipTDiffVarDriver(std::vector<std::vector<std::str
 		boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 		std::vector<std::vector<std::vector<std::string>>> results((int)para2ValInt.size());
 		for (int i = 0; i < (int)para2ValInt.size(); i++) {
-			boost::function<void()> f = boost::bind(&Threading::processAffectsBipTDiffVarEnd, this, boost::ref(results.at(i)), para2ValString, para2ValInt, pkb, i);
+			boost::function<void()> f = boost::bind(&Threading::processAffectsBipTDiffVarEnd, this, boost::ref(results.at(i)), para2ValString, para2ValInt, boost::ref(pkb), i);
 			this->threadPool.enqueue(f);
 		}
 		for (int i = 0; i < (int)para2ValInt.size(); i++) {
