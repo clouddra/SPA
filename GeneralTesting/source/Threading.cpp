@@ -741,7 +741,7 @@ bool Threading::processAffectsTDiffVarDriver(std::vector<std::vector<std::string
 std::vector<int> Threading::processAffectsBipSameVarStart(std::vector<int>& para1Val, PKB& pkb, int i) {
 	std::vector<int> result;
 	std::vector<int> temp2;
-    temp2 = pkb.getAffectsBipStart(para1Val[i]);
+    temp2 = pkb.getAffectsBipStartAPI(para1Val[i]);
     for (int j = 0; j < (int)temp2.size(); j++) {
         if (temp2[j] == para1Val[i]) {
             result.push_back(para1Val[i]);
@@ -796,7 +796,7 @@ std::vector<std::vector<std::string>> Threading::processAffectsBipDiffVarStart(s
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
 	std::vector<std::vector<std::string>> toStoreTuple;
-	temp = pkb.getAffectsBipStart(para1ValInt[i]);
+	temp = pkb.getAffectsBipStartAPI(para1ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
@@ -812,7 +812,7 @@ std::vector<std::vector<std::string>> Threading::processAffectsBipDiffVarEnd(std
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
 	std::vector<std::vector<std::string>> toStoreTuple;
-    temp = pkb.getAffectsBipEnd(para2ValInt[i]);
+    temp = pkb.getAffectsBipEndAPI(para2ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
@@ -915,7 +915,7 @@ bool Threading::processAffectsBipDiffVarDriver(std::vector<std::vector<std::stri
 std::vector<int> Threading::processAffectsBipTSameVarStart(std::vector<int>& para1Val, PKB& pkb, int i) {
 	std::vector<int> result;
 	std::vector<int> temp2;
-    temp2 = pkb.getAffectsBipTStart(para1Val[i]);
+    temp2 = pkb.getAffectsBipTStartAPI(para1Val[i]);
     for (int j = 0; j < (int)temp2.size(); j++) {
         if (temp2[j] == para1Val[i]) {
             result.push_back(para1Val[i]);
@@ -970,7 +970,7 @@ std::vector<std::vector<std::string>> Threading::processAffectsBipTDiffVarStart(
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
 	std::vector<std::vector<std::string>> toStoreTuple;
-	temp = pkb.getAffectsBipTStart(para1ValInt[i]);
+	temp = pkb.getAffectsBipTStartAPI(para1ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
@@ -986,7 +986,7 @@ std::vector<std::vector<std::string>> Threading::processAffectsBipTDiffVarEnd(st
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
 	std::vector<std::vector<std::string>> toStoreTuple;
-    temp = pkb.getAffectsBipTEnd(para2ValInt[i]);
+    temp = pkb.getAffectsBipTEndAPI(para2ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;

@@ -2546,6 +2546,55 @@ std::vector<int> PKB::depthUpBipT(int currStmt, std::unordered_set<int> varSet, 
 	return toReturn;
 }
 
+std::vector<int> PKB::getAffectsBipStartAPI(int start)
+{
+	if (affectsBipMapStart.count(start) > 0)
+		return affectsBipMapStart[start];
+	else
+	{
+		std::vector<int> ans = getAffectsBipStart(start);
+		affectsBipMapStart[start] = ans;
+		return ans;
+	}
+}
+
+std::vector<int> PKB::getAffectsBipEndAPI(int end)
+{
+	if (affectsBipMapEnd.count(end) > 0)
+		return affectsBipMapEnd[end];
+	else
+	{
+		std::vector<int> ans = getAffectsBipEnd(end);
+		affectsBipMapEnd[end] = ans;
+		return ans;
+	}
+}
+
+std::vector<int> PKB::getAffectsBipTStartAPI(int start)
+{
+	if (affectsBipTMapStart.count(start) > 0)
+		return affectsBipTMapStart[start];
+	else
+	{
+		std::vector<int> ans = getAffectsBipTStart(start);
+		affectsBipTMapStart[start] = ans;
+		return ans;
+	}
+}
+
+std::vector<int> PKB::getAffectsBipTEndAPI(int end)
+{
+	if (affectsBipTMapEnd.count(end) > 0)
+		return affectsBipTMapEnd[end];
+	else
+	{
+		std::vector<int> ans = getAffectsBipTEnd(end);
+		affectsBipTMapEnd[end] = ans;
+		return ans;
+	}
+}
+
+
 void PKB::addCFGtoStmtNodeTable(int cfgNode, int startStmt, int endStmt){
 	for (int i=startStmt; i<=endStmt; i++)
 		stmtNodeTable.setCFG(i, cfgNode);

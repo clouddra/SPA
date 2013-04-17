@@ -105,10 +105,30 @@ private:
 	std::unordered_map<int, std::vector<int>> affectsMapEnd;
 	std::unordered_map<int, std::vector<int>> affectsTMapStart;
 	std::unordered_map<int, std::vector<int>> affectsTMapEnd;
+	std::unordered_map<int, std::vector<int>> affectsBipMapStart;
+	std::unordered_map<int, std::vector<int>> affectsBipMapEnd;
+	std::unordered_map<int, std::vector<int>> affectsBipTMapStart;
+	std::unordered_map<int, std::vector<int>> affectsBipTMapEnd;
 	void addCFGtoStmtNodeTable(int cfgNode, int startStmt, int endStmt);
 	void addCFGBiptoStmtNodeTable(int cfgBipNode, int startStmt, int endStmt);
     std::vector<int> convertToNodeIndex(std::string input, int type);
     std::vector<std::string> convertToStorageType(std::vector<int> result, int type);
+
+	std::vector<int> getAffectsStart(int start); 
+	std::vector<int> getAffectsEnd(int end);
+	std::vector<int> depthUp(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited);
+	std::vector<int> getAffectsTStart(int start);
+	std::vector<int> getAffectsTEnd(int end);
+	std::vector<int> depthUpT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::unordered_set<int> ignoreSet);
+	std::vector<int> depthDownT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::unordered_set<int> ignoreSet);
+	std::vector<int> depthDownBip(int currStmt, int var, std::vector<int> visited, std::vector<int> branchIn);
+	std::vector<int> depthUpBip(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::vector<int> branchIn);
+	std::vector<int> depthDownBipT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::vector<int> branchIn, std::unordered_set<int> ignoreSet);
+	std::vector<int> depthUpBipT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::vector<int> branchIn, std::unordered_set<int> ignoreSet);
+	std::vector<int> getAffectsBipStart(int start);
+	std::vector<int> getAffectsBipEnd(int end);	
+	std::vector<int> getAffectsBipTStart(int start);
+	std::vector<int> getAffectsBipTEnd(int end);
 
 public:
     PKB();
@@ -192,25 +212,14 @@ public:
 	void startBuildCfg();
 	void startBuildCfgBip();
 	std::vector<int> buildCfg(int stmtListAst, int cfgIndex, std::vector<std::pair<int,int>>& callList);
-	std::vector<int> getAffectsStart(int start); 
-	std::vector<int> getAffectsEnd(int end);
-	std::vector<int> depthUp(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited);
-	std::vector<int> getAffectsTStart(int start);
-	std::vector<int> getAffectsTEnd(int end);
-	std::vector<int> depthUpT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::unordered_set<int> ignoreSet);
-	std::vector<int> depthDownT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::unordered_set<int> ignoreSet);
 	std::vector<int> getAffectsStartAPI(int start);
 	std::vector<int> getAffectsEndAPI(int end);
 	std::vector<int> getAffectsTStartAPI(int start);
 	std::vector<int> getAffectsTEndAPI(int end);
-	std::vector<int> getAffectsBipStart(int start);
-	std::vector<int> getAffectsBipEnd(int end);
-	std::vector<int> depthDownBip(int currStmt, int var, std::vector<int> visited, std::vector<int> branchIn);
-	std::vector<int> depthUpBip(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::vector<int> branchIn);
-	std::vector<int> getAffectsBipTStart(int start);
-	std::vector<int> getAffectsBipTEnd(int end);
-	std::vector<int> depthDownBipT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::vector<int> branchIn, std::unordered_set<int> ignoreSet);
-	std::vector<int> depthUpBipT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::vector<int> branchIn, std::unordered_set<int> ignoreSet);
+	std::vector<int> getAffectsBipStartAPI(int start);
+	std::vector<int> getAffectsBipEndAPI(int end);	
+	std::vector<int> getAffectsBipTStartAPI(int start);
+	std::vector<int> getAffectsBipTEndAPI(int end);
 
 	void printModifiesTable();
 	AST PKB::getAST();
