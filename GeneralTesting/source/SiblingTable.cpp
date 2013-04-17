@@ -117,6 +117,5 @@ int SiblingTable::getSize() {
 }
 
 void SiblingTable::compressTable() {
-    if (size > 0)
-        siblingTable.resize(size);
+    siblingTable.resize(size);
 }
