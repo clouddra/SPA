@@ -58,7 +58,7 @@ write-output $p;
 #"autoTester11", "autoTester12", "autoTester13" -> contain recursion
 #"cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8", "autoTester9", "autoTester10", "autoTester14", "autoTester15", "autoTester16", "autoTester17", "autoTester18", "autoTester19", "autoTester20", "autoTester21", "autoTester22", "autoTester23", "autoTester24", "autoTester25", "autoTester26", "autoTester27"
 #$all_testing = @("autotester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8");
-$all_testing = @("autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6");
+$all_testing = @("autotester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6");
 
 
 foreach ($testing in $all_testing)

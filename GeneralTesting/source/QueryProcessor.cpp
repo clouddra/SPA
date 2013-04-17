@@ -1321,7 +1321,7 @@ int QueryProcessor::evaluateNext(bool T, bool para1IsNum, bool para1IsPlaceholde
         if (para1IsNum) {
             if (para2IsNum) {
                 bool found = false;
-                temp = pkb.getPrevTAPI(para2Num);
+                temp = pkb.getPrevT(para2Num);
                 for (int i = 0; i < (int)temp.size(); i++) {
                     if (para1Num == temp[i]) {
                         found = true;
@@ -1342,7 +1342,7 @@ int QueryProcessor::evaluateNext(bool T, bool para1IsNum, bool para1IsPlaceholde
                     return -1;
             }
             else {
-                temp = pkb.getNextTAPI(para1Num);
+                temp = pkb.getNextT(para1Num);
                 toStore = intVecToStringVec(temp);
                 int ret = resultStore.insertResult(para2, toStore);
                 if (ret == -1) {  // Exit cond
@@ -1358,7 +1358,7 @@ int QueryProcessor::evaluateNext(bool T, bool para1IsNum, bool para1IsPlaceholde
                 else
                     return -1;
             }
-            temp = pkb.getPrevTAPI(para2Num);
+            temp = pkb.getPrevT(para2Num);
             toStore = intVecToStringVec(temp);
             int ret = resultStore.insertResult(para1, toStore);
             if (ret == -1) {  // Exit cond
@@ -1393,7 +1393,7 @@ int QueryProcessor::evaluateNext(bool T, bool para1IsNum, bool para1IsPlaceholde
 				#ifndef ENABLE_THREADING
                 for (int i = 0; i < (int)para1Val.size(); i++) {
                     bool found = false;
-                    std::vector<int> temp2 = pkb.getNextTAPI(para1Val[i]);
+                    std::vector<int> temp2 = pkb.getNextT(para1Val[i]);
                     for (int j = 0; j < (int)temp2.size(); j++) {
                         if (para1Val[i] == temp2[j]) {
                             found = true;
@@ -1434,7 +1434,7 @@ int QueryProcessor::evaluateNext(bool T, bool para1IsNum, bool para1IsPlaceholde
 				#ifndef ENABLE_THREADING
                 if (isPara1) {
                     for (int i = 0; i < (int)para1ValInt.size(); i++) {
-                        temp = pkb.getNextTAPI(para1ValInt[i]);
+                        temp = pkb.getNextT(para1ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
                             std::vector<std::string> holder;
@@ -1446,7 +1446,7 @@ int QueryProcessor::evaluateNext(bool T, bool para1IsNum, bool para1IsPlaceholde
                 }
                 else {
                     for (int i = 0; i < (int)para2ValInt.size(); i++) {
-                        temp = pkb.getPrevTAPI(para2ValInt[i]);
+                        temp = pkb.getPrevT(para2ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
                             std::vector<std::string> holder;

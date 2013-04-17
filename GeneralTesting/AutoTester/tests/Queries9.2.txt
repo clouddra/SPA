@@ -147,7 +147,7 @@ Select w pattern w ("x", _)
 5000
 26 - Parent*, Next*, Pattern :: What while statements have 'x' as control variable?
 assign a; while w; prog_line n;
-Select a such that Parent* (w,a) and Next* (37,n) pattern a ("x",_) with a.stmt# = n
+Select a such that Parent* (w,a) and Next* (37,n) pattern a ("x",_) with n=a.stmt#
 17,21,26,27,34
 5000
 27 - Follows*, With :: What are the statements that follow 13?
