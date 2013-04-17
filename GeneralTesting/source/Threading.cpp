@@ -3,32 +3,6 @@
 
 #include "QueryProcessor.h"
 
-/*
-void Worker::runNextSame(boost::function<std::vector<int>()> f) {
-	returnVector = f();
-}
-
-void Worker::runNextDiff(boost::function<std::vector<std::vector<std::string>>()> f) {
-	returnTuple = f();
-}
-
-void Worker::runAffectsSame(boost::function<std::vector<int>()> f) {
-	returnVector = f();
-}
-
-void Worker::runAffectsDiff(boost::function<std::vector<std::vector<std::string>>()> f) {
-	returnTuple = f();
-}
-
-std::vector<int> Worker::getReturnVector() {
-	return returnVector;
-}
-
-std::vector<std::vector<std::string>> Worker::getReturnTuple() {
-	return returnTuple;
-}
-*/
-
 void Worker::operator()() { pool.service.run(); }
  
 ThreadPool::ThreadPool(int nThreads) : work(new boost::asio::io_service::work(service))
