@@ -103,6 +103,9 @@ int ContainsTable::getSize(){
 }
 
 void ContainsTable::compressTables(){
-	containerTable.resize(containeeCount);
-	containedInTable.resize(containerCount);
+    if (containeeCount > 0)
+	    containerTable.resize(containeeCount);
+
+    if (containerCount > 0)
+	    containedInTable.resize(containerCount);
 }

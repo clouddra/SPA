@@ -104,8 +104,11 @@ int CallsTable::getSize(){
 }
 
 void CallsTable::compressTables(){
-	callsTable.resize(calleeCount);
-	calledByTable.resize(callerCount);
+    if (calleeCount > 0)
+	    callsTable.resize(calleeCount);
+
+    if (callerCount > 0)
+	    calledByTable.resize(callerCount);
 }
 
 // code for testing modifies procedure in case anyone needs
