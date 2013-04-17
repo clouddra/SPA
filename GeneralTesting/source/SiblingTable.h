@@ -9,6 +9,7 @@ private:
 
 	std::vector<std::vector <int>> siblingTable;
 	int size;
+    int tableSize;
 	/*
 	std::vector<std::pair <int ,int>> siblingTable;
 	int size;

@@ -11,6 +11,8 @@
 
 CallsTable::CallsTable(){ 
 	size = 0;
+    callerCount = 0;
+    calleeCount = 0;
 }
 
 bool CallsTable::insertCalls(int proc1, int proc2){	
