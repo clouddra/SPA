@@ -2,7 +2,6 @@
 #include <boost/thread.hpp>
 #include <boost/asio.hpp>
 #include <boost/interprocess/sync/named_semaphore.hpp>
-#include <Windows.h>
 
 #define SEMNAME "sem"
 
