@@ -406,8 +406,7 @@ bool Threading::processNextTDiffVarDriver(std::vector<std::vector<std::string>>&
 // [Affects
 
 // Affects(a1, a1)
-std::vector<int> Threading::processAffectsSameVarStart(std::vector<int>& para1Val, PKB& pkb, int i) {
-	std::vector<int> result;
+void Threading::processAffectsSameVarStart(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i) {
 	std::vector<int> temp2;
     temp2 = pkb.getAffectsStartAPI(para1Val[i]);
     for (int j = 0; j < (int)temp2.size(); j++) {
@@ -416,7 +415,6 @@ std::vector<int> Threading::processAffectsSameVarStart(std::vector<int>& para1Va
             break;
         }
     }
-	return result;
 }
 
 bool Threading::processAffectsSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
@@ -460,35 +458,31 @@ bool Threading::processAffectsSameVarDriver(std::vector<int>& temp, std::vector<
 }
 
 // Affects(a1, a2) from start
-std::vector<std::vector<std::string>> Threading::processAffectsDiffVarStart(std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i) {
+void Threading::processAffectsDiffVarStart(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
-	std::vector<std::vector<std::string>> toStoreTuple;
 	temp = pkb.getAffectsStartAPI(para1ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
         holder.push_back(para1ValString[i]);
         holder.push_back(toStore[j]); 
-        toStoreTuple.push_back(holder);
+        result.push_back(holder);
     }
-	return toStoreTuple;
 }
 
 // Affects(a1, a2) from end
-std::vector<std::vector<std::string>> Threading::processAffectsDiffVarEnd(std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i) {
+void Threading::processAffectsDiffVarEnd(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
-	std::vector<std::vector<std::string>> toStoreTuple;
     temp = pkb.getAffectsEndAPI(para2ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
         holder.push_back(toStore[j]); 
         holder.push_back(para2ValString[i]);
-        toStoreTuple.push_back(holder);
+        result.push_back(holder);
     }
-	return toStoreTuple;
 }
 
 bool Threading::processAffectsDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
@@ -580,8 +574,7 @@ bool Threading::processAffectsDiffVarDriver(std::vector<std::vector<std::string>
 // [Affects*
 
 // Affects*(a1, a1)
-std::vector<int> Threading::processAffectsTSameVarStart(std::vector<int>& para1Val, PKB& pkb, int i) {
-	std::vector<int> result;
+void Threading::processAffectsTSameVarStart(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i) {
 	std::vector<int> temp2;
     temp2 = pkb.getAffectsTStartAPI(para1Val[i]);
     for (int j = 0; j < (int)temp2.size(); j++) {
@@ -590,7 +583,6 @@ std::vector<int> Threading::processAffectsTSameVarStart(std::vector<int>& para1V
             break;
         }
     }
-	return result;
 }
 
 bool Threading::processAffectsTSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
@@ -634,35 +626,31 @@ bool Threading::processAffectsTSameVarDriver(std::vector<int>& temp, std::vector
 }
 
 // Affects*(a1, a2) from start
-std::vector<std::vector<std::string>> Threading::processAffectsTDiffVarStart(std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i) {
+void Threading::processAffectsTDiffVarStart(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
-	std::vector<std::vector<std::string>> toStoreTuple;
 	temp = pkb.getAffectsTStartAPI(para1ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
         holder.push_back(para1ValString[i]);
         holder.push_back(toStore[j]); 
-        toStoreTuple.push_back(holder);
+        result.push_back(holder);
     }
-	return toStoreTuple;
 }
 
 // Affects*(a1, a2) from end
-std::vector<std::vector<std::string>> Threading::processAffectsTDiffVarEnd(std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i) {
+ Threading::processAffectsTDiffVarEnd(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
-	std::vector<std::vector<std::string>> toStoreTuple;
     temp = pkb.getAffectsTEndAPI(para2ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
         holder.push_back(toStore[j]); 
         holder.push_back(para2ValString[i]);
-        toStoreTuple.push_back(holder);
+        result.push_back(holder);
     }
-	return toStoreTuple;
 }
 
 bool Threading::processAffectsTDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
