@@ -1,0 +1,77 @@
+15
+cat: Test Case for Contains Known,Known
+2 - contains, Typed :: contains(ASSIGNMENT,PLUS)
+plus pl;
+Select BOOLEAN such that Contains(2,pl);
+true
+5000
+3 - contains, Typed :: contains(ASSIGNMENT,MINUS)
+minus min;
+Select BOOLEAN such that Contains(57,min);
+true
+5000
+4 - contains, Typed :: contains(ASSIGNMENT,MULTIPLY)
+times tm;
+Select BOOLEAN such that Contains(31,tm);
+true
+5000
+13 - contains, Typed :: contains(PLUS,PLUS)
+plus pls1,pls2;
+Select BOOLEAN such that Contains(pls1,pls2);
+true
+5000
+14 - contains, Typed :: contains(PLUS,MINUS)
+plus pls; minus min;
+Select BOOLEAN such that Contains(pls,min);
+false
+5000
+15 - contains, Typed :: contains(PLUS,MULTIPLY)
+plus pls; times tm;
+Select BOOLEAN such that Contains(pls,tm);
+true
+5000
+18 - contains, Typed :: contains(MULTIPLY,PLUS)
+times tm; plus pls;
+Select BOOLEAN such that Contains(tm,pls);
+true
+5000
+19 - contains, Typed :: contains(MULTIPLY,MINUS)
+times tm; minus min;
+Select BOOLEAN such that Contains(tm,min);
+true
+5000
+20 - contains, Typed :: contains(MULTIPLY,MULTIPLY)
+times tm1,tm2;
+Select BOOLEAN such that Contains(tm1,tm2);
+true
+5000
+23 - contains, Typed :: contains(MINUS,PLUS)
+plus pls;minus min;
+Select BOOLEAN such that Contains(min,pls);
+true
+5000
+24 - contains, Typed :: contains(MINUS,MINUS)
+minus min1,min2;
+Select BOOLEAN such that Contains(min1,min2);
+false
+5000
+25 - contains, Typed :: contains(MINUS,MULTIPLY)
+minus min; times tm;
+Select BOOLEAN such that Contains(min,tm);
+true
+5000
+33 - contains, Typed :: contains(STATEMENT,PLUS)
+plus pls;
+Select BOOLEAN such that Contains(82,pls);
+true
+5000
+34 - contains, Typed :: contains(STATEMENT,MINUS)
+minus min;
+Select BOOLEAN such that Contains(65,min);
+true
+5000
+35 - contains, Typed :: contains(STATEMENT,MULTIPLY)
+times tm;
+Select BOOLEAN such that Contains(43,tm);
+true
+5000
