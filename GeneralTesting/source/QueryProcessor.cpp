@@ -4255,8 +4255,17 @@ void QueryProcessor::processQuery(PKB& pkb) {
                             return;
                         if (synoType2 == DeclarationTable::variable_ || synoType2 == DeclarationTable::procedure_)
                             return;
+                        if (attrName2.compare("procName") == 0)
+                            return;
                         toStore = resultStore.getValuesFor(syno2);
-                        ret = resultStore.insertResult(syno, toStore);
+                        std::vector<std::vector<std::string>> toStoreTuple;
+                        for (int i = 0; i < (int)toStore.size(); i++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(toStore[i]);
+                            holder.push_back(toStore[i]);
+                            toStoreTuple.push_back(holder);
+                        }
+                        ret = resultStore.insertResult(syno, syno2, toStoreTuple);
                         if (ret == -1)
                             return;
                     }
