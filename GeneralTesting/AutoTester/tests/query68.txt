@@ -128,17 +128,17 @@ none
 32 - Sibling, Typed :: Sibling(CONSTANT,VARIABLE)
 constant c; variable v;
 Select <c,v> such that Sibling(c,v);
-0 ant,0 apple,0 banana,0 carrot,0 cockroach,0 gummy,0 jam,0 leek,1 aeroplane,1 ant,1 apple,1 beetle,1 dinosaur,1 donut,1 ham,10 lion,10 mango,100 aeroplane,101 egg,103 keep,104 aeroplane,11 leek,11 monkey,12 newt,13 mango,13 owl,14 apple,14 penguin,15 quail,2 banana,2 cloud,2 cockroach,2 donut,2 egg,3 dinosaur,3 fish,4 elephant,4 ham,5 fish,5 fox,6 fish,6 goat,7 hamster,7 leek,8 apple,8 jaguar,8 nachos,888 lamp,9 ham,9 kangeroo,9 leek,999 lamp
+0 ant,0 apple,0 banana,0 carrot,0 cockroach,0 gummy,0 jam,0 leek,1 aeroplane,1 ant,1 apple,1 beetle,1 dinosaur,1 donut,1 ham,10 lion,10 mango,100 aeroplane,101 egg,103 keep,104 aeroplane,11 leek,11 monkey,12 newt,13 mango,13 owl,14 apple,14 penguin,15 quail,2 banana,2 cloud,2 cockroach,2 donut,2 egg,3 dinosaur,3 fish,4 elephant,4 ham,5 fish,5 fox,6 fish,6 goat,7 hamster,7 leek,8 apple,8 jaguar,8 nachos,888 lamp,9 ham,9 kangeroo,9 leek,999 lamp,2 i
 5000
 33 - Sibling, Typed :: Sibling(CONSTANT,CONSTANT)
 constant c1,c2;
 Select <c1,c2> such that Sibling(c1,c2);
-none
+12 13,13 12
 5000
 37 - Sibling, Typed :: Sibling(VARIABLE,VARIABLE)
 variable v1,v2;
 Select <v1,v2> such that Sibling(v1,v2);
-aeroplane ant,aeroplane basin,aeroplane kangeroo,apple pear,carrot banana,carrot fish,cloud cloud,cloud garbage,door cloud,egg ham,elephant fish,fan cloud,fan igloo,fish fish,fish mango,fox cockroach,garbage fan,ham carrot,ham egg,hamster goat,hanger keep,igloo fan,kimchi donut,kimchi fish,kimchi ham,mango egg,mango pear,orange carrot,orange ham,pear orange
+aeroplane ant,aeroplane basin,aeroplane kangeroo,apple pear,carrot banana,carrot fish,cloud cloud,cloud garbage,door cloud,egg ham,elephant fish,fan cloud,fan igloo,fish fish,fish mango,fox cockroach,garbage fan,ham carrot,ham egg,hamster goat,hanger keep,igloo fan,kimchi donut,kimchi fish,kimchi ham,mango egg,mango pear,orange carrot,orange ham,pear orange,ant aeroplane,banana carrot,basin aeroplane,carrot ham,carrot orange,cloud door,cloud fan,cockroach fox,donut kimchi,egg mango,fan garbage,fish carrot,fish elephant,fish kimchi,garbage cloud,goat hamster,ham kimchi,ham orange,i x,kangeroo aeroplane,keep hanger,mango fish,orange pear,pear apple,pear mango,x i
 5000
 38 - Sibling, Typed :: Sibling(VARIABLE,CONSTANT)
 constant c;variable v;

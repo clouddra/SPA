@@ -203,8 +203,8 @@ procedure James{
 }
 
 procedure Kingsley{
-127.	call Henry;
-128.	call Merril;
+127.	x=i;
+128		x=i+2;
 }
 
 procedure Lucas{
