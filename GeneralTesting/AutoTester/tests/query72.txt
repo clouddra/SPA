@@ -303,7 +303,7 @@ Select w1 such that Modifies(w1,"gummy");
 51 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"ham");
-29,36,7,9,51,55
+29,36,7,9,51
 5000
 52 - Modifies, Typed :: check Modifies while
 while w1;
@@ -998,7 +998,7 @@ Select w1 such that Uses(w1,"gummy");
 51 - Uses, Typed :: check Uses while
 while w1;
 Select w1 such that Uses(w1,"ham");
-13,29,36,51,7,9
+13,29,36,51,7,9,55
 5000
 52 - Uses, Typed :: check Uses while
 while w1;
@@ -1018,7 +1018,7 @@ Select w1 such that Uses(w1,"kimchi");
 55 - Uses, Typed :: check Uses while
 while w1;
 Select w1 such that Uses(w1,"leek");
-29,51
+29,51,55
 5000
 56 - Uses, Typed :: check Uses while
 while w1;
@@ -1053,7 +1053,7 @@ Select w1 such that Uses(w1,"basin");
 62 - Uses, Typed :: check Uses while
 while w1;
 Select w1 such that Uses(w1,"cloud");
-60,74,76
+60,74,76,51,55
 5000
 63 - Uses, Typed :: check Uses while
 while w1;
@@ -1088,12 +1088,12 @@ Select w1 such that Uses(w1,"igloo");
 69 - Uses, Typed :: check Uses while
 while w1;
 Select w1 such that Uses(w1,"jumper");
-60,74,76
+60,74,76,51,55
 5000
 70 - Uses, Typed :: check Uses while
 while w1;
 Select w1 such that Uses(w1,"keep");
-60
+60,51,55
 5000
 71 - Uses, Typed :: check Uses while
 while w1;
