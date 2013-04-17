@@ -73,12 +73,10 @@ Threading::~Threading() {
 // [Next
 
 // Next(s1, s1)
-std::vector<int> Threading::processNextSameVarStart(std::vector<int>& para1Val, PKB& pkb, int i) {
-	std::vector<int> temp;
+void Threading::processNextSameVarStart(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i) {
     if (pkb.isNext(para1Val[i], para1Val[i])) {
-        temp.push_back(i);
+        result.push_back(i);
     }
-	return temp;
 }
 
 bool Threading::processNextSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
@@ -122,35 +120,31 @@ bool Threading::processNextSameVarDriver(std::vector<int>& temp, std::vector<int
 }
 
 // Next(s1, s2) from start
-std::vector<std::vector<std::string>> Threading::processNextDiffVarStart(std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i) {
+void Threading::processNextDiffVarStart(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
-	std::vector<std::vector<std::string>> toStoreTuple;
 	temp = pkb.getNext(para1ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
         holder.push_back(para1ValString[i]);
         holder.push_back(toStore[j]); 
-        toStoreTuple.push_back(holder);
+        result.push_back(holder);
     }
-	return toStoreTuple;
 }
 
 // Next(s1, s2) from end
-std::vector<std::vector<std::string>> Threading::processNextDiffVarEnd(std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i) {
+void Threading::processNextDiffVarEnd(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
-	std::vector<std::vector<std::string>> toStoreTuple;
     temp = pkb.getPrev(para2ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
         holder.push_back(toStore[j]); 
         holder.push_back(para2ValString[i]);
-        toStoreTuple.push_back(holder);
+        result.push_back(holder);
     }
-	return toStoreTuple;
 }
 
 bool Threading::processNextDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
@@ -242,9 +236,8 @@ bool Threading::processNextDiffVarDriver(std::vector<std::vector<std::string>>& 
 // [Next*
 
 // Next*(s1, s1)
-std::vector<int> Threading::processNextTSameVarStart(std::vector<int>& para1Val, PKB& pkb, int i) {
+void Threading::processNextTSameVarStart(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i) {
 	bool found = false;
-	std::vector<int> temp;
 	std::vector<int> temp2 = pkb.getNextT(para1Val[i]);
     for (int j = 0; j < (int)temp2.size(); j++) {
         if (para1Val[i] == temp2[j]) {
@@ -253,8 +246,7 @@ std::vector<int> Threading::processNextTSameVarStart(std::vector<int>& para1Val,
         }
     }
     if (found)
-        temp.push_back(para1Val[i]);
-	return temp;
+        result.push_back(para1Val[i]);
 }
 
 bool Threading::processNextTSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
@@ -298,35 +290,31 @@ bool Threading::processNextTSameVarDriver(std::vector<int>& temp, std::vector<in
 }
 
 // Next*(s1, s2) from start
-std::vector<std::vector<std::string>> Threading::processNextTDiffVarStart(std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i) {
+void Threading::processNextTDiffVarStart(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
-	std::vector<std::vector<std::string>> toStoreTuple;
 	temp = pkb.getNextT(para1ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
         holder.push_back(para1ValString[i]);
         holder.push_back(toStore[j]); 
-        toStoreTuple.push_back(holder);
+        result.push_back(holder);
     }
-	return toStoreTuple;
 }
 
 // Next*(s1, s2) from end
-std::vector<std::vector<std::string>> Threading::processNextTDiffVarEnd(std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i) {
+void Threading::processNextTDiffVarEnd(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
-	std::vector<std::vector<std::string>> toStoreTuple;
     temp = pkb.getPrevT(para2ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
         holder.push_back(toStore[j]); 
         holder.push_back(para2ValString[i]);
-        toStoreTuple.push_back(holder);
+        result.push_back(holder);
     }
-	return toStoreTuple;
 }
 
 bool Threading::processNextTDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
