@@ -1,4 +1,4 @@
-75
+76
 cat: All Category
 1 - Follows, Modifies ::
 stmt s1, s2; 
@@ -374,4 +374,9 @@ Select a2 such that Affects*(s1,a2) with s1.stmt#=1
 stmt s1; assign a2;
 Select a2 such that Affects*(s1,a2) and Next(s1,2)
 2, 3, 4, 5, 6, 8, 10, 11, 12, 13, 14
+5000
+76 - Next ::
+stmt s;
+Select s such that Next(s,_)
+1, 10, 11, 12, 13, 2, 3, 4, 5, 6, 7, 8, 9, 14
 5000
