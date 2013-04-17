@@ -79,7 +79,7 @@ int main() {
 		}
 		std::cout<<std::endl;
 	}	
-
+	
 	std::cout << "Follows table" << std::endl;
  
 	for(int i=0;i<pkb.getSiblingTable()->getSize();i++)

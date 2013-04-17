@@ -85,11 +85,6 @@ procedure p1;
 Select p1 such that Calls*(p1,"Illidan");
 
 5000
-30 - Calls, Typed :: Check call
-procedure p1;
-Select p1 such that Calls*(p1,"Oppi");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
 31 - Calls, Typed :: Check call
 procedure p2;
 Select p2 such that Calls("Alice",p2);
