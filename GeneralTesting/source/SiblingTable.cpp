@@ -46,13 +46,19 @@ bool SiblingTable::isSibling(int stmt1, int stmt2) {
 int SiblingTable::getSiblingIndex(int stmt, int stmt2) {
 
 	std::pair<int ,int> search = std::pair<int, int> (stmt,stmt2) ;
-	std::vector<std::pair<int ,int>>::iterator it;
+    std::pair<int ,int> search2 = std::pair<int, int> (stmt2,stmt) ;
+	std::vector<std::pair<int ,int>>::iterator it, it2;
 
 	// by right should work
 	it = std::find(siblingTable.begin(), siblingTable.end(), search);
 
 	if (it != siblingTable.end())	// found
 		return (int) (it - siblingTable.begin()) ;
+    else {
+        it2 = std::find(siblingTable.begin(), siblingTable.end(), search2);
+        if (it2 != siblingTable.end())	// found
+		    return (int) (it - siblingTable.begin()) ;
+    }
 
 	return -1;
 
