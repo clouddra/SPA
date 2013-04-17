@@ -37,7 +37,6 @@ struct SimpleGrammar : qi::grammar<Iterator, commonNode(), ascii::space_type>
 		text_ = lexeme[+(char_ - '{' - '}' - ';')				[_val += qi::_1]];
 		name_ = lexeme[+(char_ - ')' - '(' - qi::space - '+' - '-' - '*' - '/' - '=' - ';' - '"' - '{' - '}')			[_val += qi::_1]];
 
-			
 		call_	=
 				string("call")				[at_c<0>(_val) = qi::_1]
 			>>	name_						[at_c<1>(_val) = qi::_1]
