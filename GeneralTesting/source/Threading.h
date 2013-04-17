@@ -21,14 +21,6 @@ public:
 	std::vector<std::vector<std::string>> getReturnTuple();
 };
 */
-class Worker {
-public:
-    Worker(ThreadPool &s) : pool(s) { }
-    void operator()();
-private:
-    ThreadPool &pool; 
-};
-
 class ThreadPool {
 public:
     ThreadPool(int nThreads);
@@ -41,6 +33,14 @@ private:
     boost::asio::io_service service;
     std::unique_ptr<boost::asio::io_service::work> work;
     friend class Worker;
+};
+
+class Worker {
+public:
+    Worker(ThreadPool &s) : pool(s) { }
+    void operator()();
+private:
+    ThreadPool &pool; 
 };
 
 class Threading {
