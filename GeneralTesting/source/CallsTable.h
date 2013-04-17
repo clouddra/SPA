@@ -63,35 +63,3 @@ public:
 	 */
 	void compressTables();
 };
-
-/*
-INDEX[] insertCalls (PROC procedure1 , PROC procedure2);
-Description:
-
-If the call relationship between procedure 1 and procedure 2 is not in the Parent Table, inserts it to the Calls Table and returns its index.
-    Otherwise, returns its INDEX and the table remain unchanged
-
-INTEGER getSize()
-Description:
-    
-
-INDEX getCallsIndex (STMT statement1 , STMT statement2)
-Description:
-
-If the Calls relationship between procedure 1 and procedure 2 is in the Calls Table, returns its index.
-    Otherwise, returns -1 (special value)
-
-PAIR<PROC, PROC> extractCalls (INDEX ind)
-Description:
-    Returns the relationship of two statements at Calls Table [ind]
-If ind is out of range:
-Throws:
-    InvalidReferenceException.
-
-PROC[] getCalls (PROC procedure2)
-Description:
-    Return all procedures calling procedure procedure2.
-
-PROC[] getCalledBy (PROC procedure1)
-    Return all procedures called by procedure procedure1.
-*/    
