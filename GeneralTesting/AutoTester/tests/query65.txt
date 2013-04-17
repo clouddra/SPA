@@ -3,7 +3,7 @@ cat: Test Case for Sibling (Known,unknown) and (Unknown,Known)
 42 - Sibling, Typed :: Sibling(PLUS,VARIABLE)
 variable v; plus pls;
 Select v such that Sibling(pls,v);
-aeroplane,banana,basin,carrot,door,egg,fish,ham,innard,jaguar,kangeroo,keep,kimchi,lamp,orange,pear
+aeroplane,banana,basin,carrot,door,egg,fish,ham,innard,jaguar,kangeroo,keep,kimchi,lamp,orange,pear,x
 5000
 43 - Sibling, Typed :: Sibling(PLUS,CONSTANT)
 constant c; plus pls;
@@ -133,7 +133,7 @@ Select c such that Sibling(c,44);
 2 - Sibling, Typed :: Sibling(CALL,CALL)
 call c;
 Select c such that Sibling(c,128);
-127
+none
 5000
 29 - Sibling, Typed :: Sibling(CONSTANT,PLUS)
 plus pls;constant c;
@@ -153,7 +153,7 @@ Select c such that Sibling(c,tm);
 34 - Sibling, Typed :: Sibling(VARIABLE,PLUS)
 plus pls;variable v;
 Select v such that Sibling(v,pls);
-aeroplane,banana,basin,carrot,door,egg,fish,ham,innard,jaguar,kangeroo,keep,kimchi,lamp,orange,pear
+aeroplane,banana,basin,carrot,door,egg,fish,ham,innard,jaguar,kangeroo,keep,kimchi,lamp,orange,pear,x
 5000
 35 - Sibling, Typed :: Sibling(VARIABLE,MINUS)
 minus min;variable v;
@@ -288,7 +288,7 @@ Select s such that Sibling(47,s);
 2 - Sibling, Typed :: Sibling(CALL,CALL)
 call c;
 Select c such that Sibling(127,c);
-128
+none
 5000
 47 - Sibling, Typed :: Sibling(MINUS,VARIABLE)
 minus min;variable v;

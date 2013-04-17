@@ -1453,12 +1453,12 @@ Select <c,i> such that Follows*(c,i);
 105 - Follows, Typed :: check follows
 call c1,c2;
 Select <c1,c2> such that Follows(c1,c2);
-127 128
+none
 5000
 106 - Follows, Typed :: check follows
 call c1,c2;
 Select <c1,c2> such that Follows*(c1,c2);
-127 128
+none
 10000
 107 - Follows, Typed :: check follows
 call c; stmt s;
