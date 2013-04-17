@@ -272,7 +272,7 @@ public:
 	/**
 	 * Returns TRUE if stmt modifies var.
 	 * Otherwise, return FALSE.
-	*/
+	 */
     bool isModifies(int stmt, std::string var);
 
 	/**
@@ -324,7 +324,7 @@ public:
 	/**
 	 * Returns TRUE if stmt uses var.
 	 * Otherwise, return FALSE.
-	*/
+	 */
     bool isUses(int stmt, std::string var);
 
 	/**
@@ -350,7 +350,7 @@ public:
 	/**
 	 * Returns TRUE if proc uses var.
 	 * Otherwise, return FALSE.
-	*/
+	 */
     bool isUsesP(std::string proc, std::string var);
 
 	/**
@@ -386,7 +386,7 @@ public:
 	/**
 	 * Returns TRUE if stmt1 is followed by stmt2 in CFG
 	 * Otherwise, return FALSE.
-	*/
+	 */
     bool isNext(int stmt1, int stmt2);
 
 
@@ -402,7 +402,7 @@ public:
 
 	/**
 	 * Returns the total number of statements
-	*/
+	 */
     int getNumStmts();
 
 
