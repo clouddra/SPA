@@ -151,7 +151,7 @@ bool Threading::processNextDiffVarDriver(std::vector<std::vector<std::string>>& 
 // Next*(s1, s1)
 void Threading::processNextTSameVarStart(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i) {
 	bool found = false;
-	std::vector<int> temp2 = pkb.getNextTAPI(para1Val[i]);
+	std::vector<int> temp2 = pkb.getNextT(para1Val[i]);
     for (int j = 0; j < (int)temp2.size(); j++) {
         if (para1Val[i] == temp2[j]) {
             found = true;
@@ -188,7 +188,7 @@ bool Threading::processNextTSameVarDriver(std::vector<int>& temp, std::vector<in
 void Threading::processNextTDiffVarStart(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
-	temp = pkb.getNextTAPI(para1ValInt[i]);
+	temp = pkb.getNextT(para1ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
@@ -204,7 +204,7 @@ void Threading::processNextTDiffVarStart(std::vector<std::vector<std::string>>& 
 void Threading::processNextTDiffVarEnd(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
-    temp = pkb.getPrevTAPI(para2ValInt[i]);
+    temp = pkb.getPrevT(para2ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
