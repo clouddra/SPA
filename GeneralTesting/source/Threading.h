@@ -33,6 +33,7 @@ private:
 	boost::thread_group tGroup;
 	boost::thread **tList;
 	Worker *workers;
+	ThreadPool threadPool;
 
 public:
 	Threading(int nThreads = boost::thread::hardware_concurrency()*4);

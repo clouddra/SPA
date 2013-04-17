@@ -56,16 +56,17 @@ ThreadPool::~ThreadPool()
 
 Threading::Threading(int nThreads) {
 	this->nThreads = nThreads;
-	this->tList = new boost::thread*[nThreads];
-	for (int i=0; i<nThreads; i++) {
-		this->tList[i] = new boost::thread();
-	}
-	this->workers = new Worker[nThreads];
+	//this->tList = new boost::thread*[nThreads];
+	//for (int i=0; i<nThreads; i++) {
+	//	this->tList[i] = new boost::thread();
+	//}
+	//this->workers = new Worker[nThreads];
+	this->threadPool(nThreads);
 }
 
 Threading::~Threading() {
-	delete[] workers;
-	delete[] tList;
+	//delete[] workers;
+	//delete[] tList;
 }
 
 ///////////////////////////////////////
