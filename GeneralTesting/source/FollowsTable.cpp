@@ -104,11 +104,8 @@ int FollowsTable::getSize(){
 }
 
 void FollowsTable::compressTables(){
-    if (followerCount > 0)
-	    followsTable.resize(followerCount);
-
-    if (leaderCount > 0)
-	    followedByTable.resize(leaderCount);
+	followsTable.resize(followerCount);
+	followedByTable.resize(leaderCount);
 }
 
 /*
