@@ -2123,7 +2123,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
         if (para1IsNum) {
             // AffectsBip(1, 10)
             if (para2IsNum) {
-                temp = pkb.getAffectsBipStart(para1Num);
+                temp = pkb.getAffectsBipStartAPI(para1Num);
                 for (int i = 0; i < (int)temp.size(); i++) {
                     if (temp[i] == para2Num)
                         return 0;
@@ -2132,7 +2132,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             }
             // AffectsBip(1, _)
             else if (para2IsPlaceholder) {
-                temp = pkb.getAffectsBipStart(para1Num);
+                temp = pkb.getAffectsBipStartAPI(para1Num);
                 if (temp.size() > 0)
                     return 0;
                 else
@@ -2140,7 +2140,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             }
             // AffectsBip(1, a)
             else {
-                temp = pkb.getAffectsBipStart(para1Num);
+                temp = pkb.getAffectsBipStartAPI(para1Num);
                 toStore = intVecToStringVec(temp);
                 int ret = resultStore.insertResult(para2, toStore);
                 if (ret == -1) {  // Exit cond
@@ -2151,7 +2151,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
         else if (para2IsNum) {
             // AffectsBip(_, 10)
             if (para1IsPlaceholder) {
-                temp = pkb.getAffectsBipEnd(para2Num);
+                temp = pkb.getAffectsBipEndAPI(para2Num);
                 if (temp.size() > 0)
                     return 0;
                 else
@@ -2159,7 +2159,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             }
             // AffectsBip(a, 10)
             else {
-                temp = pkb.getAffectsBipEnd(para2Num);
+                temp = pkb.getAffectsBipEndAPI(para2Num);
                 toStore = intVecToStringVec(temp);
                 int ret = resultStore.insertResult(para1, toStore);
                 if (ret == -1) {  // Exit cond
@@ -2171,7 +2171,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
         else if (para1IsPlaceholder) {
             std::vector<int> temp2 = stringVecToIntVec(resultStore.getValuesFor(para2));
             for (int i = temp2.size()-1; i > -1; i--) {
-                temp = pkb.getAffectsBipEnd(temp2[i]);
+                temp = pkb.getAffectsBipEndAPI(temp2[i]);
                 if (temp.size() == 0)
                     temp2.erase(temp2.begin()+i);
             }
@@ -2185,7 +2185,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
         else if (para2IsPlaceholder) {
             std::vector<int> temp2 = stringVecToIntVec(resultStore.getValuesFor(para1));
             for (int i = temp2.size()-1; i > -1; i--) {
-                temp = pkb.getAffectsBipStart(temp2[i]);
+                temp = pkb.getAffectsBipStartAPI(temp2[i]);
                 if (temp.size() == 0)
                     temp2.erase(temp2.begin()+i);
             }
@@ -2216,7 +2216,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                     } */
 
                     std::vector<int> temp2;
-                    temp2 = pkb.getAffectsBipStart(para1Val[i]);
+                    temp2 = pkb.getAffectsBipStartAPI(para1Val[i]);
                     for (int j = 0; j < (int)temp2.size(); j++) {
                         if (temp2[j] == para1Val[i]) {
                             temp.push_back(para1Val[i]);
@@ -2266,7 +2266,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                             } 
                         } */
 
-                        temp = pkb.getAffectsBipStart(para1ValInt[i]);
+                        temp = pkb.getAffectsBipStartAPI(para1ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
                             std::vector<std::string> holder;
@@ -2287,7 +2287,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                             } 
                         } */
 
-                        temp = pkb.getAffectsBipEnd(para2ValInt[i]);
+                        temp = pkb.getAffectsBipEndAPI(para2ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
                             std::vector<std::string> holder;
@@ -2314,7 +2314,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
         if (para1IsNum) {
             // AffectsBip*(1, 10)
             if (para2IsNum) {
-                temp = pkb.getAffectsBipTStart(para1Num);
+                temp = pkb.getAffectsBipTStartAPI(para1Num);
                 for (int i = 0; i < (int)temp.size(); i++) {
                     if (temp[i] == para2Num)
                         return 0;
@@ -2323,7 +2323,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             }
             // AffectsBip*(1, _)
             else if (para2IsPlaceholder) {
-                temp = pkb.getAffectsBipTStart(para1Num);
+                temp = pkb.getAffectsBipTStartAPI(para1Num);
                 if (temp.size() > 0)
                     return 0;
                 else
@@ -2331,7 +2331,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             }
             // AffectsBip*(1, a)
             else {
-                temp = pkb.getAffectsBipTStart(para1Num);
+                temp = pkb.getAffectsBipTStartAPI(para1Num);
                 toStore = intVecToStringVec(temp);
                 int ret = resultStore.insertResult(para2, toStore);
                 if (ret == -1) {  // Exit cond
@@ -2342,7 +2342,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
         else if (para2IsNum) {
             // AffectsBip*(_, 10)
             if (para1IsPlaceholder) {
-                temp = pkb.getAffectsBipTEnd(para2Num);
+                temp = pkb.getAffectsBipTEndAPI(para2Num);
                 if (temp.size() > 0)
                     return 0;
                 else
@@ -2350,7 +2350,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
             }
             // AffectsBip*(a, 10)
             else {
-                temp = pkb.getAffectsBipTEnd(para2Num);
+                temp = pkb.getAffectsBipTEndAPI(para2Num);
                 toStore = intVecToStringVec(temp);
                 int ret = resultStore.insertResult(para1, toStore);
                 if (ret == -1) {  // Exit cond
@@ -2362,7 +2362,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
         else if (para1IsPlaceholder) {
             std::vector<int> temp2 = stringVecToIntVec(resultStore.getValuesFor(para2));
             for (int i = temp2.size()-1; i > -1; i--) {
-                temp = pkb.getAffectsBipTEnd(temp2[i]);
+                temp = pkb.getAffectsBipTEndAPI(temp2[i]);
                 if (temp.size() == 0)
                     temp2.erase(temp2.begin()+i);
             }
@@ -2376,7 +2376,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
         else if (para2IsPlaceholder) {
             std::vector<int> temp2 = stringVecToIntVec(resultStore.getValuesFor(para1));
             for (int i = temp2.size()-1; i > -1; i--) {
-                temp = pkb.getAffectsBipTStart(temp2[i]);
+                temp = pkb.getAffectsBipTStartAPI(temp2[i]);
                 if (temp.size() == 0)
                     temp2.erase(temp2.begin()+i);
             }
@@ -2406,7 +2406,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                     } */
 
                     std::vector<int> temp2;
-                    temp2 = pkb.getAffectsBipTStart(para1Val[i]);
+                    temp2 = pkb.getAffectsBipTStartAPI(para1Val[i]);
                     for (int j = 0; j < (int)temp2.size(); j++) {
                         if (temp2[j] == para1Val[i]) {
                             temp.push_back(para1Val[i]);
@@ -2456,7 +2456,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                             } 
                         } */
 
-                        temp = pkb.getAffectsBipTStart(para1ValInt[i]);
+                        temp = pkb.getAffectsBipTStartAPI(para1ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
                             std::vector<std::string> holder;
@@ -2477,7 +2477,7 @@ int QueryProcessor::evaluateAffectsBip(bool T, bool para1IsNum, bool para1IsPlac
                             } 
                         } */
 
-                        temp = pkb.getAffectsBipTEnd(para2ValInt[i]);
+                        temp = pkb.getAffectsBipTEndAPI(para2ValInt[i]);
                         toStore = intVecToStringVec(temp);
                         for (int j = 0; j < (int)toStore.size(); j++) {
                             std::vector<std::string> holder;
