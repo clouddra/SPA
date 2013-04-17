@@ -7,9 +7,6 @@ class CFGNode{
 
 private:
 	/**
-	 * Indicates the earliest that can be reached from the current node
-	 */
-	/**
 	 * Indicates the first statement of the node
 	 */
 	int start;
@@ -56,7 +53,7 @@ private:
 /*
 GNODE createGNode (TNODE astNode, INDEX nodeType, STMT stmtNum, GNODE prevNode)
 Description:
-    Creates a CFG node with the given nodeType. eg. “assign? “call?
+    Creates a CFG node with the given nodeType. eg. assign, call
     stmtNum corresponds to the statement number represented by this node.
     Creates a reference to corresponding astNode.
     Add this GNODE object to prevNode.nextArray[].

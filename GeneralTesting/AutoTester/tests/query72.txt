@@ -288,7 +288,7 @@ Select w1 such that Modifies(w1,"donut");
 48 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"egg");
-13,7,9
+13,7,9,51
 5000
 49 - Modifies, Typed :: check Modifies while
 while w1;
@@ -303,7 +303,7 @@ Select w1 such that Modifies(w1,"gummy");
 51 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"ham");
-29,36,7,9,51
+29,36,7,9,51,55
 5000
 52 - Modifies, Typed :: check Modifies while
 while w1;
@@ -323,7 +323,7 @@ Select w1 such that Modifies(w1,"kimchi");
 55 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"leek");
-7,9,51
+7,9,51,55
 5000
 56 - Modifies, Typed :: check Modifies while
 while w1;
@@ -398,7 +398,7 @@ Select w1 such that Modifies(w1,"jumper");
 70 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"keep");
-60,74,76,51,55
+60,74,76,51,55,
 5000
 71 - Modifies, Typed :: check Modifies while
 while w1;
@@ -983,7 +983,6 @@ Select w1 such that Uses(w1,"donut");
 48 - Uses, Typed :: check Uses while
 while w1;
 Select w1 such that Uses(w1,"egg");
-51,55
 51,55
 5000
 49 - Uses, Typed :: check Uses while

@@ -68,9 +68,29 @@ private:
 
 public:
 	QueryProcessor();
+
+    /**
+	 * Insert a node into the queryTree, used by PQLParser to build the queryTree
+	 */
 	int insertNode(std::string, std::string, int parent);
+
+    /**
+	 * Function called by SPAController to start query processing (after queryTree is built)
+	 */
 	void processQuery(PKB& pkb);
+
+    /**
+	 * Print out the queryTree
+	 */
     void printTree();
+
+    /**
+	 * Print out the result vector
+	 */
 	void printResult();
+
+    /**
+	 * Getter function for the result vector
+	 */
     std::list<std::string> getResult();
 };

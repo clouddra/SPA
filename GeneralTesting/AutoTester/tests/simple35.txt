@@ -1,0 +1,159 @@
+procedure Lazy { 
+    x = 1; 
+    y = 2; 
+    z = 3; 
+    if x then { 
+	    home = 9; } 
+    else { 
+	    c8g = 6 * x * y * z; } 
+    y1 = y; 
+    y12 = y1; 
+    y123 = y12; 
+    y1234 = y * y1 * y12 * y123 * y1234 * 10; 
+    while y123 { 
+	    if c8g then { 
+		    a2b3c = 6 * 0 + 2; 
+            korean = sarang + haeyo; 
+            hello = annyeong; } 
+	    else { 
+	        yesANDno = noANDyes; } 
+	    if y12 then { 
+		    here123 = efgh + z5; } 
+	    else { 
+	        mnop = lalala + happy; 
+	        abcd = equals + piggydap; } 
+	    z5 = 123456789; 
+	    z5 = z5 + 1; } 
+    yesANDNo = 999; 
+    while yesANDno { 
+	    a2b3c = 32 + 28; 
+	    while z5 { 
+		    abcd = 12345; 
+            efgh = 9876; 
+            while x { 
+			    call Hardworking; 
+                chinese = 888; 
+                while chinese { 
+                    english = abcd + efgh; 
+                    while english { 
+                        happy = 313; 
+                        while y1 { 
+                            a2b3c = abcd + efgh; 
+						    while y12{ 
+							    lalala = english + chinese; 
+                                yesANDno = lalala - y12 + f123g + english - happy; 
+                                if y12 then { 
+                                    f123g = 1 + 2 - 3; 
+                                    call Hardworking; 
+                                    call p3; 
+                                    call Hardworking; 
+                                    call p3; 
+                                    call p3;  } 
+                                else { 
+                                    gf456 = chinese; 
+                                    if y123 then { 
+                                        z5 = 5 * 3 + 1 - 2; } 
+                                    else { 
+								    y1234 = 2 * 9 - z5 + 2; } } } 
+					        noANDyes = 100 + 200 + 300 + lalala + 400; } 
+				        yummy = 9; 
+                        back = korean + chinese + english; 
+                        hungry = yummy + english + chinese; 
+                        while y1234 { 
+                            mnop = 3223; 
+                            call Hardworking; 
+                            call Hardworking; 
+		                    lalala = 5 + 3 + 2 + chinese; 
+                            call p3; 
+		                    mnop = (chinese + english + 1) - piggydap * somerset; 
+					        while mnop { 
+						        happy = happy - 1; 
+						        call p3; 
+						        while happy { 
+							        abcd = 224; 
+							        while y1 { 
+								        egg99 = 2 + (3 + 5) - abcd; } } } } } 
+			        noandyes = hungry; 
+			        efgh = mnop + 86 + 23 - english; } 
+		        aAbBcCdD = 200 - 900 * 100; 
+                AaBbCcDd = aAbBcCdD; 
+		        d7ia = 5; 
+                d7ib = 6; 
+                d7ic = 7; 
+                d7id = 8; 
+                d7ie = 9; 
+		        if aAbBcCdD then { 
+			        if d7ia then { 
+				        if d7ib then { 
+					        call Hardworking; 
+					        if d7ic then { 
+						        call p3; 
+						        if d7id then { 
+							        call p3; 
+							        if d7ie then { 
+								        AaBbCcDd = 7890 * 50 + 39 - 889 * 10; } 
+		                            else { 
+                                        z = ha99y * 8 + 5 - 2;} 
+                                } else { 
+                                    gf456 = abcd + egg99;} 
+                            } else {  
+                                aA12345bB = 77 * noANDyes;} 
+                        } else {  
+                            yummy = gf456 - abcd;} 
+                    } else {  
+                    mnop = y123 - 123;} 
+                } else {  
+			        v123abc45 = z5 + d7id;} 
+            }}} 
+    call Hardworking; } 
+procedure Hardworking { 
+    a1 = 236; 
+    b2 = 123; 
+    c3 = 678; 
+    d4 = 0; 
+    equal99 = a1 + b2 + c3 - d4; 
+    if d4 then { 
+	    call p3; 
+	    x = 567; 
+	    while x { 
+		    c3 = c3 - 1; } 
+		somerset = 313; 
+		while b2 { 
+			d4 = somerset; } } 
+    else { 
+        yeah = 899; 
+        snore = happy + 9999; 
+        year = 2013; } 
+    total = a1 + b2 + c3 - (d4 + x) * somerset; } 
+procedure p3 { 
+    prog1 = back + up; 
+    somerset = 456; 
+    pig = snore * lax; 
+    while here123 { 
+	    if snore then { 
+		    prog1 = 17 + 200; 
+		    equal99 = not + equals; 
+	    	    if snoring then { 
+			        back = pain + ouch; 
+			        lax = 345 * snoring; 
+			        call p4; } 
+		        else { 
+			        here123 = 99; }} 
+	    else { 
+		    helloWorld = pig + piggydap; 
+		    not = 29 + 100 - 2; 
+		    while snoring { 
+			    piggydap = late4school + 1511; } 
+		    equals = here123; 
+		    annyeong = chinese; 
+		    call p4; 
+		call p4; }} 
+    if not then { 
+	    up = up + helloWorld; 
+	    pig = 3 * 6; 
+	    call p4; } 
+    else { 
+        back = piggydap + 1234; }}
+procedure p4 {
+    a =1;
+}
