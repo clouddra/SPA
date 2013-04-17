@@ -21,6 +21,11 @@ public:
 	 * Returns all siblings of stmt
 	 */
 	std::vector<int> getSiblings(int stmt);
+
+	/**
+	 * Returns TRUE if input1 is a sibling of input2.
+     * Otherwise, return FALSE.
+	 */
 	bool isSibling(int stmt1, int stmt2);
 	
 	/**
