@@ -71,6 +71,7 @@ public:
 
     /**
 	 * Insert a node into the queryTree, used by PQLParser to build the queryTree
+     * Returns 0 if successful and -1 if not
 	 */
 	int insertNode(std::string, std::string, int parent);
 

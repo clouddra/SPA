@@ -15,7 +15,6 @@ PKB::PKB() {
     ast = AST();
     stmtNodeTable = StmtNodeTable();
 	cfg = CFG();
-	cfgBip = CFGBip();
 }
 
 int PKB::insertNode(int nodeType, std::string value, int parent) {
