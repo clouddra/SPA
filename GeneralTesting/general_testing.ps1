@@ -45,6 +45,16 @@ $exe_autoTester32 = "Release\AutoTester.exe";
 $exe_autoTester33 = "Release\AutoTester.exe";
 $exe_autoTester34 = "Release\AutoTester.exe";
 $exe_autoTester35 = "Release\AutoTester.exe";
+$exe_autoTester36 = "Release\AutoTester.exe";
+$exe_autoTester37 = "Release\AutoTester.exe";
+$exe_autoTester38 = "Release\AutoTester.exe";
+$exe_autoTester39 = "Release\AutoTester.exe";
+$exe_autoTester41 = "Release\AutoTester.exe";
+$exe_autoTester42 = "Release\AutoTester.exe";
+$exe_autoTester43 = "Release\AutoTester.exe";
+$exe_autoTester44 = "Release\AutoTester.exe";
+$exe_autoTester45 = "Release\AutoTester.exe";
+$exe_autoTester46 = "Release\AutoTester.exe";
 
 #output filenames
 $out_cppunit = $cpp_relative_path +"cppunit.out";
@@ -85,6 +95,16 @@ $out_autoTester32 = $autoTester_relative_path +"autoTester32.out";
 $out_autoTester33 = $autoTester_relative_path +"autoTester33.out";
 $out_autoTester34 = $autoTester_relative_path +"autoTester34.out";
 $out_autoTester35 = $autoTester_relative_path +"autoTester35.out";
+$out_autoTester36 = $autoTester_relative_path +"autoTester36.out";
+$out_autoTester37 = $autoTester_relative_path +"autoTester37.out";
+$out_autoTester38 = $autoTester_relative_path +"autoTester38.out";
+$out_autoTester39 = $autoTester_relative_path +"autoTester39.out";
+$out_autoTester41 = $autoTester_relative_path +"autoTester41.out";
+$out_autoTester42 = $autoTester_relative_path +"autoTester42.out";
+$out_autoTester43 = $autoTester_relative_path +"autoTester43.out";
+$out_autoTester44 = $autoTester_relative_path +"autoTester44.out";
+$out_autoTester45 = $autoTester_relative_path +"autoTester45.out";
+$out_autoTester46 = $autoTester_relative_path +"autoTester46.out";
 
 #command line arguments for each executable
 $args_cppunit = @(" ");
@@ -125,6 +145,16 @@ $args_autoTester32 = @($autoTester_relative_path + "tests\simple32.txt " + $auto
 $args_autoTester33 = @($autoTester_relative_path + "tests\simple33.txt " + $autoTester_relative_path + "tests\query33.txt " + $autoTester_relative_path + "tests\out33.xml");
 $args_autoTester34 = @($autoTester_relative_path + "tests\simple34.txt " + $autoTester_relative_path + "tests\query34.txt " + $autoTester_relative_path + "tests\out34.xml");
 $args_autoTester35 = @($autoTester_relative_path + "tests\simple35.txt " + $autoTester_relative_path + "tests\query35.txt " + $autoTester_relative_path + "tests\out35.xml");
+$args_autoTester36 = @($autoTester_relative_path + "tests\simple36.txt " + $autoTester_relative_path + "tests\query36.txt " + $autoTester_relative_path + "tests\out36.xml");
+$args_autoTester37 = @($autoTester_relative_path + "tests\simple37.txt " + $autoTester_relative_path + "tests\query37.txt " + $autoTester_relative_path + "tests\out37.xml");
+$args_autoTester38 = @($autoTester_relative_path + "tests\simple38.txt " + $autoTester_relative_path + "tests\query38.txt " + $autoTester_relative_path + "tests\out38.xml");
+$args_autoTester39 = @($autoTester_relative_path + "tests\simple39.txt " + $autoTester_relative_path + "tests\query39.txt " + $autoTester_relative_path + "tests\out39.xml");
+$args_autoTester41 = @($autoTester_relative_path + "tests\simple41.txt " + $autoTester_relative_path + "tests\query41.txt " + $autoTester_relative_path + "tests\out41.xml");
+$args_autoTester42 = @($autoTester_relative_path + "tests\simple42.txt " + $autoTester_relative_path + "tests\query42.txt " + $autoTester_relative_path + "tests\out42.xml");
+$args_autoTester43 = @($autoTester_relative_path + "tests\simple43.txt " + $autoTester_relative_path + "tests\query43.txt " + $autoTester_relative_path + "tests\out43.xml");
+$args_autoTester44 = @($autoTester_relative_path + "tests\simple44.txt " + $autoTester_relative_path + "tests\query44.txt " + $autoTester_relative_path + "tests\out44.xml");
+$args_autoTester45 = @($autoTester_relative_path + "tests\simple45.txt " + $autoTester_relative_path + "tests\query45.txt " + $autoTester_relative_path + "tests\out45.xml");
+$args_autoTester46 = @($autoTester_relative_path + "tests\simple46.txt " + $autoTester_relative_path + "tests\query46.txt " + $autoTester_relative_path + "tests\out46.xml");
 
 #change directory to the $solution_path
 $current_path = get-location;
@@ -137,13 +167,13 @@ write-output $p;
 #add/remove items if you want to do only unit testing or autoTester testing
 
 #"autoTester11", "autoTester12", "autoTester13" -> contain recursion
-#"autoTester32", "autoTester34" -> can't run. dunno why.
+#"autoTester30", "autoTester32", "autoTester34" -> can't run. dunno why.
 
-# uncomment the line below and comment the next line dfor complete tests
-$all_testing = @("cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8", "autoTester9", "autoTester10", "autoTester14", "autoTester15", "autoTester16", "autoTester17", "autoTester18", "autoTester19", "autoTester20", "autoTester21", "autoTester22", "autoTester23", "autoTester24", "autoTester25", "autoTester26", "autoTester27", "autoTester28", "autoTester29", "autoTester30", "autoTester31", "autoTester32", "autoTester33", "autoTester34", "autoTester35")
-#$all_testing = @("cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8", "autoTester9", "autoTester10", "autoTester14", "autoTester15", "autoTester16", "autoTester17", "autoTester18", "autoTester19", "autoTester20", "autoTester21", "autoTester22", "autoTester23", "autoTester24", "autoTester25", "autoTester26", "autoTester27", "autoTester28", "autoTester29", "autoTester31", "autoTester33", "autoTester35")
+# uncomment the line below and comment the next line for complete tests
+#$all_testing = @("cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8", "autoTester9", "autoTester10", "autoTester14", "autoTester15", "autoTester16", "autoTester17", "autoTester18", "autoTester19", "autoTester20", "autoTester21", "autoTester22", "autoTester23", "autoTester24", "autoTester25", "autoTester26", "autoTester27", "autoTester28", "autoTester29", "autoTester30", "autoTester31", "autoTester32", "autoTester33", "autoTester34", "autoTester35", "autoTester36", "autoTester37", "autoTester38", "autoTester39", "autoTester41", "autoTester42", "autoTester43", "autoTester44", "autoTester45", "autoTester46")
+$all_testing = @("cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8", "autoTester9", "autoTester10", "autoTester14", "autoTester15", "autoTester16", "autoTester17", "autoTester18", "autoTester19", "autoTester20", "autoTester21", "autoTester22", "autoTester23", "autoTester24", "autoTester25", "autoTester26", "autoTester27", "autoTester28", "autoTester29", "autoTester31", "autoTester33", "autoTester35","autoTester36", "autoTester37", "autoTester38", "autoTester39", "autoTester41", "autoTester42", "autoTester43", "autoTester44", "autoTester45", "autoTester46")
 #$all_testing = @("autoTester31", "autoTester33");
-#all_testing = @("autoTester31");
+#$all_testing = @("autoTester35");
 
 foreach ($testing in $all_testing)
 {

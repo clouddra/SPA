@@ -205,8 +205,15 @@ int UsesTable::getSizeProc(){
 }
 
 void UsesTable::compressTables(){
-	procToVarTable.resize(procCount);
-	varToProcTable.resize(procVarCount);
-	varToStmtTable.resize(varCount);
-	stmtToVarTable.resize(stmtCount);
+    if (procCount > 0)
+	    procToVarTable.resize(procCount);
+
+    if (procVarCount > 0)
+	    varToProcTable.resize(procVarCount);
+
+    if (varCount > 0)
+	    varToStmtTable.resize(varCount);
+
+    if (stmtCount > 0)
+	    stmtToVarTable.resize(stmtCount);
 }

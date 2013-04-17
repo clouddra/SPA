@@ -103,8 +103,11 @@ int ParentTable::getSize(){
 }
 
 void ParentTable::compressTables(){
-	parentTable.resize(childCount);
-	childTable.resize(parentCount);
+    if (childCount > 0)
+	    parentTable.resize(childCount);
+
+    if (parentCount > 0)
+	    childTable.resize(parentCount);
 }
 
 /*
