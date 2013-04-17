@@ -33,8 +33,6 @@ Threading::Threading(int nThreads) : threadPool(nThreads) {
 }
 
 Threading::~Threading() {
-	//delete[] workers;
-	//delete[] tList;
 }
 
 ///////////////////////////////////////
