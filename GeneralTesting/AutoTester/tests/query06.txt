@@ -1,4 +1,4 @@
-14
+20
 cat: All Category
 1 - NextBipStar ::
 stmt s;
@@ -69,4 +69,35 @@ Select s such that NextBip*(s, 5)
 stmt s;
 Select s such that NextBip*(s, 7)
 6, 2, 1
+5000
+cat: AffectsBip
+15 - AffectsBip ::
+assign a;
+Select a such that AffectsBip(1, a)
+6, 10, 11, 8, 3, 5
+5000
+16 - ReturnBoolean, AffectsBip ::
+
+Select BOOLEAN such that AffectsBip(3, 8)
+false
+5000
+17 - AffectsBip ::
+assign a;
+Select a such that AffectsBip(3, a)
+11, 5
+5000
+18 - AffectsBip ::
+assign a;
+Select a such that AffectsBip(a, 11)
+1, 3, 6, 10
+5000
+19 - ReturnBoolean, AffectsBip ::
+
+Select BOOLEAN such that AffectsBip(8, 10)
+true
+5000
+20 - AffectsBip ::
+assign a;
+Select a such that AffectsBip(6, a)
+11, 8
 5000
