@@ -1,0 +1,47 @@
+15
+cat: Test Case for Sibling unKnown,unKnown
+1 - All, Typed :: Combo
+assign a; if i; while w;
+Select i such that Sibling(a,i);
+17,22,30,48,64,67,70
+5000
+1 - All, Typed :: Combo
+assign a; if i; while w;
+Select i such that Contains*(i,w);
+22,61,64,67,70
+5000
+1 - All, Typed :: Combo
+assign a; if i; while w;
+Select i such that Sibling(a,i) and Contains*(i,w);
+22,64,67,70
+5000
+2 - All, Typed :: Combo
+assign a; if i; while w; call c; procedure p;
+Select c such that Sibling(i,c);
+134,40,47
+5000
+2 - All, Typed :: Combo
+assign a; if i; while w; call c; procedure p;
+Select c such that Contains*(p,c);
+120,123,125,130,134,135,136,28,40,47,53,56
+5000
+2 - All, Typed :: Combo
+assign a; if i; while w; call c; procedure p;
+Select c such that Sibling(i,c) and Contains*(p,c);
+40,134,47
+5000
+4 - All, Typed :: Combo
+assign a;times tm;
+Select a such that Contains(a,tm);
+124,126,129,137,31,32,33,34,37,38,39,42,43,62,66,69,73,77
+5000
+5 - All, Typed :: Combo
+assign a,a1,a2;stmt s1,s2,s3;while w,w1,w2;variable v1;
+Select w2 such that Uses(w2,v1) and Modifies(s2,v1) and Parent*(w1,s1) and Parent(s1,a2) and Follows*(11,a2) and Follows*(s2,s3) and Modifies(s2,"cockroach") and Parent*(w2,s3) and Sibling(a,w2);
+99
+5000
+6 - All, Typed :: Combo
+assign a1,a2,a3; variable v1,v2; while w1; stmtLst sl;
+Select a3 such that Parent(w1,a1) and Follows(a1,a2) pattern a2("jam",_) and a2(_,_"ham"_) such that Uses(a2,v1) and Modifies(a2,v2) and Affects*(a3,a2) with a2.stmt#=38 and v1.varName="ham" such that Contains(sl,a3);
+31,32,33,34,37
+5000
