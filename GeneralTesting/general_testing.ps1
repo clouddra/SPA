@@ -44,6 +44,7 @@ $exe_autoTester31 = "Release\AutoTester.exe";
 $exe_autoTester32 = "Release\AutoTester.exe";
 $exe_autoTester33 = "Release\AutoTester.exe";
 $exe_autoTester34 = "Release\AutoTester.exe";
+$exe_autoTester35 = "Release\AutoTester.exe";
 
 #output filenames
 $out_cppunit = $cpp_relative_path +"cppunit.out";
@@ -83,6 +84,7 @@ $out_autoTester31 = $autoTester_relative_path +"autoTester31.out";
 $out_autoTester32 = $autoTester_relative_path +"autoTester32.out";
 $out_autoTester33 = $autoTester_relative_path +"autoTester33.out";
 $out_autoTester34 = $autoTester_relative_path +"autoTester34.out";
+$out_autoTester35 = $autoTester_relative_path +"autoTester35.out";
 
 #command line arguments for each executable
 $args_cppunit = @(" ");
@@ -122,6 +124,7 @@ $args_autoTester31 = @($autoTester_relative_path + "tests\simple31.txt " + $auto
 $args_autoTester32 = @($autoTester_relative_path + "tests\simple32.txt " + $autoTester_relative_path + "tests\query32.txt " + $autoTester_relative_path + "tests\out32.xml");
 $args_autoTester33 = @($autoTester_relative_path + "tests\simple33.txt " + $autoTester_relative_path + "tests\query33.txt " + $autoTester_relative_path + "tests\out33.xml");
 $args_autoTester34 = @($autoTester_relative_path + "tests\simple34.txt " + $autoTester_relative_path + "tests\query34.txt " + $autoTester_relative_path + "tests\out34.xml");
+$args_autoTester35 = @($autoTester_relative_path + "tests\simple35.txt " + $autoTester_relative_path + "tests\query35.txt " + $autoTester_relative_path + "tests\out35.xml");
 
 #change directory to the $solution_path
 $current_path = get-location;
@@ -137,10 +140,10 @@ write-output $p;
 #"autoTester32", "autoTester34" -> can't run. dunno why.
 
 # uncomment the line below and comment the next line dfor complete tests
-#$all_testing = @("cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8", "autoTester9", "autoTester10", "autoTester14", "autoTester15", "autoTester16", "autoTester17", "autoTester18", "autoTester19", "autoTester20", "autoTester21", "autoTester22", "autoTester23", "autoTester24", "autoTester25", "autoTester26", "autoTester27", "autoTester28", "autoTester29", "autoTester30", "autoTester31", "autoTester32", "autoTester33", "autoTester34")
-$all_testing = @("cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8", "autoTester9", "autoTester10", "autoTester14", "autoTester15", "autoTester16", "autoTester17", "autoTester18", "autoTester19", "autoTester20", "autoTester21", "autoTester22", "autoTester23", "autoTester24", "autoTester25", "autoTester26", "autoTester27", "autoTester28", "autoTester29", "autoTester31", "autoTester33")
+#$all_testing = @("cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8", "autoTester9", "autoTester10", "autoTester14", "autoTester15", "autoTester16", "autoTester17", "autoTester18", "autoTester19", "autoTester20", "autoTester21", "autoTester22", "autoTester23", "autoTester24", "autoTester25", "autoTester26", "autoTester27", "autoTester28", "autoTester29", "autoTester30", "autoTester31", "autoTester32", "autoTester33", "autoTester34", "autoTester35")
+#$all_testing = @("cppunit", "integration", "autoTester", "autoTester1", "autoTester2", "autoTester3", "autoTester4", "autoTester5", "autoTester6", "autoTester7", "autoTester8", "autoTester9", "autoTester10", "autoTester14", "autoTester15", "autoTester16", "autoTester17", "autoTester18", "autoTester19", "autoTester20", "autoTester21", "autoTester22", "autoTester23", "autoTester24", "autoTester25", "autoTester26", "autoTester27", "autoTester28", "autoTester29", "autoTester31", "autoTester33", "autoTester35")
 #$all_testing = @("autoTester31", "autoTester33");
-#$all_testing = @("autoTester6");
+$all_testing = @("autoTester35");
 
 foreach ($testing in $all_testing)
 {
