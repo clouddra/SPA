@@ -2,25 +2,9 @@
 #include <boost/thread.hpp>
 #include <boost/asio.hpp>
 #include <boost/interprocess/sync/named_semaphore.hpp>
-#include <Windows.h>
 
 #define SEMNAME "sem"
 
-/*
-class Worker {
-private:
-	std::vector<int> returnVector;
-	std::vector<std::vector<std::string>> returnTuple;
-
-public:
-	void runNextSame(boost::function<std::vector<int>()> f);
-	void runNextDiff(boost::function<std::vector<std::vector<std::string>>()> f);
-	void runAffectsSame(boost::function<std::vector<int>()> f);
-	void runAffectsDiff(boost::function<std::vector<std::vector<std::string>>()> f);
-	std::vector<int> getReturnVector();
-	std::vector<std::vector<std::string>> getReturnTuple();
-};
-*/
 class ThreadPool {
 public:
     ThreadPool(int nThreads);
@@ -46,9 +30,6 @@ private:
 class Threading {
 private:
 	int nThreads;
-	//boost::thread_group tGroup;
-	//boost::thread **tList;
-	//Worker *workers;
 	ThreadPool threadPool;
 
 public:
@@ -68,6 +49,22 @@ public:
 	void processNextTDiffVarStart(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i);
 	void processNextTDiffVarEnd(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i);
 	bool processNextTDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
+							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb);
+
+	// NextBip
+	void processNextBipSameVarStart(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i);
+	bool processNextBipSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb);
+	void processNextBipDiffVarStart(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i);
+	void processNextBipDiffVarEnd(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i);
+	bool processNextBipDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
+							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb);
+
+	// NextBip*
+	void processNextBipTSameVarStart(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i);
+	bool processNextBipTSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb);
+	void processNextBipTDiffVarStart(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i);
+	void processNextBipTDiffVarEnd(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i);
+	bool processNextBipTDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
 							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb);
 
 	// Affects
@@ -103,7 +100,5 @@ public:
 							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb);
 
 	std::vector<std::string> intVecToStringVec(std::vector<int> input);
-	bool join_all();
-	void terminate_all(); // Not portable, windows only
 };
 #endif

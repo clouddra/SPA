@@ -805,6 +805,31 @@ std::vector<int> PKB::getNext() {
     return ret;
 }
 
+std::vector<int> PKB::getNextTAPI(int stmt)
+{
+	if (nextTMap.count(stmt) > 0)
+		return nextTMap[stmt];
+	else
+	{
+		std::vector<int> ans = cfg.getNextT(stmt, stmtNodeTable.getCFG(stmt));
+		nextTMap[stmt] = ans;
+		return ans;
+	}
+}
+
+std::vector<int> PKB::getPrevTAPI(int stmt)
+{
+	if (prevTMap.count(stmt) > 0)
+		return prevTMap[stmt];
+	else
+	{
+		std::vector<int> ans = cfg.getPrevT(stmt, stmtNodeTable.getCFG(stmt));
+		prevTMap[stmt] = ans;
+		return ans;
+	}
+}
+
+
 std::vector<int> PKB::getNextT(int stmt) {
     return cfg.getNextT(stmt, stmtNodeTable.getCFG(stmt));
 }
