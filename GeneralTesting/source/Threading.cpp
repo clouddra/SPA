@@ -742,8 +742,7 @@ bool Threading::processAffectsTDiffVarDriver(std::vector<std::vector<std::string
 // [AffectsBip
 
 // AffectsBip(a1, a1)
-std::vector<int> Threading::processAffectsBipSameVarStart(std::vector<int>& para1Val, PKB& pkb, int i) {
-	std::vector<int> result;
+void Threading::processAffectsBipSameVarStart(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i) {
 	std::vector<int> temp2;
     temp2 = pkb.getAffectsBipStartAPI(para1Val[i]);
     for (int j = 0; j < (int)temp2.size(); j++) {
@@ -752,7 +751,6 @@ std::vector<int> Threading::processAffectsBipSameVarStart(std::vector<int>& para
             break;
         }
     }
-	return result;
 }
 
 bool Threading::processAffectsBipSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
@@ -796,35 +794,31 @@ bool Threading::processAffectsBipSameVarDriver(std::vector<int>& temp, std::vect
 }
 
 // AffectsBip(a1, a2) from start
-std::vector<std::vector<std::string>> Threading::processAffectsBipDiffVarStart(std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i) {
+void Threading::processAffectsBipDiffVarStart(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
-	std::vector<std::vector<std::string>> toStoreTuple;
 	temp = pkb.getAffectsBipStartAPI(para1ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
         holder.push_back(para1ValString[i]);
         holder.push_back(toStore[j]); 
-        toStoreTuple.push_back(holder);
+        result.push_back(holder);
     }
-	return toStoreTuple;
 }
 
 // AffectsBip(a1, a2) from end
-std::vector<std::vector<std::string>> Threading::processAffectsBipDiffVarEnd(std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i) {
+void Threading::processAffectsBipDiffVarEnd(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
-	std::vector<std::vector<std::string>> toStoreTuple;
     temp = pkb.getAffectsBipEndAPI(para2ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
         holder.push_back(toStore[j]); 
         holder.push_back(para2ValString[i]);
-        toStoreTuple.push_back(holder);
+        result.push_back(holder);
     }
-	return toStoreTuple;
 }
 
 bool Threading::processAffectsBipDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
@@ -916,8 +910,7 @@ bool Threading::processAffectsBipDiffVarDriver(std::vector<std::vector<std::stri
 // [AffectsBip*
 
 // AffectsBip*(a1, a1)
-std::vector<int> Threading::processAffectsBipTSameVarStart(std::vector<int>& para1Val, PKB& pkb, int i) {
-	std::vector<int> result;
+void Threading::processAffectsBipTSameVarStart(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i) {
 	std::vector<int> temp2;
     temp2 = pkb.getAffectsBipTStartAPI(para1Val[i]);
     for (int j = 0; j < (int)temp2.size(); j++) {
@@ -926,7 +919,6 @@ std::vector<int> Threading::processAffectsBipTSameVarStart(std::vector<int>& par
             break;
         }
     }
-	return result;
 }
 
 bool Threading::processAffectsBipTSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
@@ -970,35 +962,31 @@ bool Threading::processAffectsBipTSameVarDriver(std::vector<int>& temp, std::vec
 }
 
 // AffectsBip*(a1, a2) from start
-std::vector<std::vector<std::string>> Threading::processAffectsBipTDiffVarStart(std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i) {
+void Threading::processAffectsBipTDiffVarStart(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
-	std::vector<std::vector<std::string>> toStoreTuple;
 	temp = pkb.getAffectsBipTStartAPI(para1ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
         holder.push_back(para1ValString[i]);
         holder.push_back(toStore[j]);
-        toStoreTuple.push_back(holder);
+        result.push_back(holder);
     }
-	return toStoreTuple;
 }
 
 // AffectsBip*(a1, a2) from end
-std::vector<std::vector<std::string>> Threading::processAffectsBipTDiffVarEnd(std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i) {
+std::vector<std::vector<std::string>> Threading::processAffectsBipTDiffVarEnd(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
-	std::vector<std::vector<std::string>> toStoreTuple;
     temp = pkb.getAffectsBipTEndAPI(para2ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
         holder.push_back(toStore[j]); 
         holder.push_back(para2ValString[i]);
-        toStoreTuple.push_back(holder);
+        result.push_back(holder);
     }
-	return toStoreTuple;
 }
 
 bool Threading::processAffectsBipTDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
@@ -1112,22 +1100,19 @@ bool Threading::join_all() {
 }
 */
 
+/*
 bool Threading::join_all() {
-	/*
-	for (int j=0; j<nThreads; j++) {
-		if (tList[j]->joinable()) {
-			tList[j]->join();
-		}
-	}
-	*/
 	tGroup.join_all();
 	return true;
 }
+*/
 
 // Not portable, windows only
+/*
 void Threading::terminate_all() {
 	for (int i=0; i<nThreads; i++) {
 		TerminateThread(tList[i]->native_handle(), EXIT_SUCCESS);
 	}
 }
+*/
 #endif
