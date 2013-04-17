@@ -114,6 +114,7 @@ private:
     std::vector<int> convertToNodeIndex(std::string input, int type);
     std::vector<std::string> convertToStorageType(std::vector<int> result, int type);
 	Node qNodeToNode(QueryNode qNode);
+	std::vector<int> buildCfg(int stmtListAst, int cfgIndex, std::vector<std::pair<int,int>>& callList);
 	std::vector<int> getAffectsStart(int start); 
 	std::vector<int> getAffectsEnd(int end);
 	std::vector<int> depthUp(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited);
@@ -133,12 +134,42 @@ private:
 public:
     PKB();
     int insertNode(int nodeType, std::string value, int parent);
+
+	/**
+	 * Return all containers of given input in the wanted outputType
+	 */
     std::vector<std::string> getContainer(std::string input, int inputType, int outputType);
+
+	/**
+	 * Return all containers* of given input in the wanted outputType (includes indirect containers)
+	 */
     std::vector<std::string> getContainerT(std::string input, int inputType, int outputType);
+
+	/**
+	 * Return all items contained in given input in the wanted outputType
+	 */
 	std::vector<std::string> getContainedIn(std::string input, int inputType, int outputType);
+
+	/**
+	 * Return all items contained* in given input in the wanted outputType (includes indirect containment)
+	 */
     std::vector<std::string> getContainedInT(std::string input, int inputType, int outputType);
+
+	/**
+	 * Returns TRUE if input1 is the container of input2.
+     * Otherwise, return FALSE.
+	 */
     bool isContains(std::string input1, int type1, std::string input2, int type2);
+
+	/**
+	 * Returns all siblings of given input
+	 */
     std::vector<std::string> getSibling(std::string input, int inputType, int outputType);
+
+	/**
+	 * Returns TRUE if input1 is a sibling of input2.
+     * Otherwise, return FALSE.
+	 */
     bool isSibling(std::string input1, int type1, std::string input2, int type2);
 
 	/**
@@ -354,7 +385,7 @@ public:
     bool isUsesP(std::string proc, std::string var);
 
 	/**
-	 * Returns all statements directly after stmt in the CFG
+	 * Returns all statements directly after given stmt in the CFG
 	 */
     std::vector<int> getNext(int stmt);
 
@@ -364,12 +395,12 @@ public:
     std::vector<int> getNext();
 
 	/**
-	 * Returns all statements directly/indirectly after stmt in the CFG
+	 * Returns all statements directly/indirectly after given stmt in the CFG
 	 */
 	std::vector<int> getNextT(int stmt);
 
 	/**
-	 * Returns all statements directly before stmt in the CFG
+	 * Returns all statements directly before given stmt in the CFG
 	 */
 	std::vector<int> getPrev(int stmt);
 
@@ -379,7 +410,7 @@ public:
     std::vector<int> getPrev();
 
 	/**
-	 * Returns all statements directly/indirectly before stmt in the CFG
+	 * Returns all statements directly/indirectly before given stmt in the CFG
 	 */
     std::vector<int> getPrevT(int stmt);
 
@@ -389,15 +420,52 @@ public:
 	 */
     bool isNext(int stmt1, int stmt2);
 
-
+	/**
+	 * Returns all statements directly after given stmt in the CFGBip (will branch out if curr stmt = call)
+	 * If at last stmt of proc, will branch to after all call stmts that called the proc
+	 */
     std::vector<int> getNextBip(int stmt);
+
+	/**
+	 * Returns all statements directly after some stmt in CFGBip (will branch out if curr stmt = call)
+	 */
     std::vector<int> getNextBip();
+
+	/**
+	 * Returns all statements after given stmt in the CFGBip (include indirect statements)
+	 */
 	std::vector<int> getNextBipT(int stmt);
+
+	/**
+	 * Returns all statements directly before given stmt in the CFGBip (will branch out if prev stmt = call)
+	 * If at first stmt of proc, will branch to all call stmts that called the proc
+	 */
 	std::vector<int> getPrevBip(int stmt);
+
+	/**
+	 * Returns all statements directly before some stmt in CFGBip (will branch out if prev stmt = call)
+	 */
     std::vector<int> getPrevBip();
+
+	/**
+	 * Returns all statements before given stmt in the CFGBip (include indirect statements)
+	 */
     std::vector<int> getPrevBipT(int stmt);
+
+	/**
+	 * Returns TRUE if stmt1 is followed by stmt2 in CFGBip
+	 * Otherwise, return FALSE.
+	 */
     bool isNextBip(int stmt1, int stmt2);
+
+	/**
+	 * Returns all statements corresponding to the given nodeType
+	 */
     std::vector<int> getStmtWithType(int nodeType);
+
+	/**
+	 * Returns the varTable
+	 */
     std::vector<std::string> getVarTable();
 
 	/**
@@ -405,8 +473,12 @@ public:
 	 */
     int getNumStmts();
 
-
+	/**
+	 * Returns the names of all procedures
+	 */
     std::vector<std::string> getAllProc();
+
+
     void postParseCleanup();
     std::vector<int> getNodeIndexes(int type);
     std::vector<std::string> convertStmtLst(std::vector<int> nodeIndexes);
@@ -432,10 +504,20 @@ public:
 	 */
 	bool subtreeCompare(int astNodeIndex, int qNodeIndex, std::vector<QueryNode> queryTree);
 
+	/**
+	 * Returns all constants' values
+	 */
     std::set<int> getConstants();
+
+	/**
+	 * Builds the CFG
+	 */
 	void startBuildCfg();
+
+	/**
+	 * Builds the CFGBip
+	 */
 	void startBuildCfgBip();
-	std::vector<int> buildCfg(int stmtListAst, int cfgIndex, std::vector<std::pair<int,int>>& callList);
 
 	/**
 	 * Returns a1 for Affects(start, a1), where start is the given statement
@@ -477,15 +559,58 @@ public:
 	 */
 	std::vector<int> getAffectsBipTEndAPI(int end);
 
+	/**
+	 * Prints the modifiesTable
+	 */
 	void printModifiesTable();
+
+	/**
+	 * Returns the ast
+	 */
 	AST PKB::getAST();
+
+	/**
+	 * Returns a reference to modifiesTable
+	 */
 	ModifiesTable* getModifiesTable();
+
+	/**
+	 * Returns a reference to parentTable
+	 */
 	ParentTable* getParentTable();
+
+	/**
+	 * Returns a reference to followsTable
+	 */
 	FollowsTable* getFollowsTable();
+
+	/**
+	 * Returns a reference to usesTable
+	 */
 	UsesTable* getUsesTable();
+
+	/**
+	 * Returns a reference to callsTable
+	 */
 	CallsTable* getCallsTable();
+
+	/**
+	 * Returns a reference to stmtNodeTable
+	 */
 	StmtNodeTable* getStmtNodeTable();
+
+	/**
+	 * Returns a reference to procTable
+	 */
 	ProcTable* getProcTable();
+
+	/**
+	 * Returns a reference to containsTable
+	 */
 	ContainsTable* getContainsTable();
+
+	/**
+	 * Returns a reference to siblingTable
+	 */
 	SiblingTable* getSiblingTable();		
 };
