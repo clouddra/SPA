@@ -6,21 +6,6 @@
 
 #define SEMNAME "sem"
 
-/*
-class Worker {
-private:
-	std::vector<int> returnVector;
-	std::vector<std::vector<std::string>> returnTuple;
-
-public:
-	void runNextSame(boost::function<std::vector<int>()> f);
-	void runNextDiff(boost::function<std::vector<std::vector<std::string>>()> f);
-	void runAffectsSame(boost::function<std::vector<int>()> f);
-	void runAffectsDiff(boost::function<std::vector<std::vector<std::string>>()> f);
-	std::vector<int> getReturnVector();
-	std::vector<std::vector<std::string>> getReturnTuple();
-};
-*/
 class ThreadPool {
 public:
     ThreadPool(int nThreads);
@@ -46,9 +31,6 @@ private:
 class Threading {
 private:
 	int nThreads;
-	//boost::thread_group tGroup;
-	//boost::thread **tList;
-	//Worker *workers;
 	ThreadPool threadPool;
 
 public:
@@ -103,7 +85,5 @@ public:
 							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb);
 
 	std::vector<std::string> intVecToStringVec(std::vector<int> input);
-	bool join_all();
-	void terminate_all(); // Not portable, windows only
 };
 #endif
