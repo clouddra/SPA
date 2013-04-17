@@ -376,7 +376,7 @@ bool Threading::processNextBipDiffVarDriver(std::vector<std::vector<std::string>
 // NextBip*(s1, s1)
 void Threading::processNextBipTSameVarStart(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i) {
 	bool found = false;
-	std::vector<int> temp2 = pkb.getNextT(para1Val[i]);
+	std::vector<int> temp2 = pkb.getNextBipT(para1Val[i]);
     for (int j = 0; j < (int)temp2.size(); j++) {
         if (para1Val[i] == temp2[j]) {
             found = true;
@@ -394,7 +394,7 @@ bool Threading::processNextBipTSameVarDriver(std::vector<int>& temp, std::vector
 	boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 	std::vector<std::vector<int>> results((int)para1Val.size());
     for (int i = 0; i < (int)para1Val.size(); i++) {
-		boost::function<void()> f = boost::bind(&Threading::processNextTSameVarStart,  this, boost::ref(results.at(i)), para1Val, boost::ref(pkb), i);
+		boost::function<void()> f = boost::bind(&Threading::processNextBipTSameVarStart,  this, boost::ref(results.at(i)), para1Val, boost::ref(pkb), i);
 		this->threadPool.enqueue(f);
     }
 	for (int i = 0; i < (int)para1Val.size(); i++) {
@@ -413,7 +413,7 @@ bool Threading::processNextBipTSameVarDriver(std::vector<int>& temp, std::vector
 void Threading::processNextBipTDiffVarStart(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
-	temp = pkb.getNextT(para1ValInt[i]);
+	temp = pkb.getNextBipT(para1ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
@@ -429,7 +429,7 @@ void Threading::processNextBipTDiffVarStart(std::vector<std::vector<std::string>
 void Threading::processNextBipTDiffVarEnd(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
-    temp = pkb.getPrevT(para2ValInt[i]);
+    temp = pkb.getPrevBipT(para2ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
@@ -448,7 +448,7 @@ bool Threading::processNextBipTDiffVarDriver(std::vector<std::vector<std::string
 		boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 		std::vector<std::vector<std::vector<std::string>>> results((int)para1ValInt.size());
 		for (int i = 0; i < (int)para1ValInt.size(); i++) {
-			boost::function<void()> f = boost::bind(&Threading::processNextTDiffVarStart, this, boost::ref(results.at(i)), para1ValString, para1ValInt, boost::ref(pkb), i);
+			boost::function<void()> f = boost::bind(&Threading::processNextBipTDiffVarStart, this, boost::ref(results.at(i)), para1ValString, para1ValInt, boost::ref(pkb), i);
 			this->threadPool.enqueue(f);
 		}
 		for (int i = 0; i < (int)para1ValInt.size(); i++) {
@@ -467,7 +467,7 @@ bool Threading::processNextBipTDiffVarDriver(std::vector<std::vector<std::string
 		boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 		std::vector<std::vector<std::vector<std::string>>> results((int)para2ValInt.size());
 		for (int i = 0; i < (int)para2ValInt.size(); i++) {
-			boost::function<void()> f = boost::bind(&Threading::processNextTDiffVarEnd, this, boost::ref(results.at(i)), para2ValString, para2ValInt, boost::ref(pkb), i);
+			boost::function<void()> f = boost::bind(&Threading::processNextBipTDiffVarEnd, this, boost::ref(results.at(i)), para2ValString, para2ValInt, boost::ref(pkb), i);
 			this->threadPool.enqueue(f);
 		}
 		for (int i = 0; i < (int)para2ValInt.size(); i++) {
