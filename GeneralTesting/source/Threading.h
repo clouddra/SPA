@@ -1,7 +1,10 @@
 #ifdef ENABLE_THREADING
 #include <boost/thread.hpp>
+#include <boost/asio.hpp>
+#include <boost/interprocess/sync/named_semaphore.hpp>
 #include <Windows.h>
 
+/*
 class Worker {
 private:
 	std::vector<int> returnVector;
@@ -14,6 +17,14 @@ public:
 	void runAffectsDiff(boost::function<std::vector<std::vector<std::string>>()> f);
 	std::vector<int> getReturnVector();
 	std::vector<std::vector<std::string>> getReturnTuple();
+};
+*/
+class Worker {
+public:
+    Worker(ThreadPool &s) : pool(s) { }
+    void operator()();
+private:
+    ThreadPool &pool; 
 };
 
 class Threading {
@@ -77,5 +88,19 @@ public:
 	std::vector<std::string> intVecToStringVec(std::vector<int> input);
 	bool join_all();
 	void terminate_all(); // Not portable, windows only
+};
+
+class ThreadPool {
+public:
+    ThreadPool(int nThreads);
+    template<class F>
+		void enqueue(F f);
+    ~ThreadPool();
+
+private:
+    std::vector<std::unique_ptr<boost::thread>> workers;
+    boost::asio::io_service service;
+    std::unique_ptr<boost::asio::io_service::work> work;
+    friend class Worker;
 };
 #endif

@@ -3,6 +3,7 @@
 
 #include "QueryProcessor.h"
 
+/*
 void Worker::runNextSame(boost::function<std::vector<int>()> f) {
 	returnVector = f();
 }
@@ -25,6 +26,32 @@ std::vector<int> Worker::getReturnVector() {
 
 std::vector<std::vector<std::string>> Worker::getReturnTuple() {
 	return returnTuple;
+}
+*/
+
+void Worker::operator()() { pool.service.run(); }
+ 
+ThreadPool::ThreadPool(int threads) : work(new boost::asio::io_service::work(service))
+{
+    for(int i = 0;i<threads; i++)
+        workers.push_back(
+            std::unique_ptr<boost::thread>(
+                new boost::thread(Worker(*this))
+            )
+        );
+}
+
+template<class F>
+void ThreadPool::enqueue(F f)
+{
+    service.post(f);
+}
+
+ThreadPool::~ThreadPool()
+{
+	work.reset();
+    for(size_t i = 0;i<workers.size();++i)
+        workers[i]->join();
 }
 
 Threading::Threading(int nThreads) {
