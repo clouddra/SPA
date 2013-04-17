@@ -10,6 +10,7 @@
 
 SiblingTable::SiblingTable(){ 
 	size = 0;
+    tableSize = 0;
 }
 
 bool SiblingTable::insertSibling(int stmt1, int stmt2){
@@ -34,8 +35,9 @@ bool SiblingTable::insertSibling(int stmt1, int stmt2){
 
 	siblingTable[stmt1].push_back(stmt2);
 	siblingTable[stmt2].push_back(stmt1);
+    size++;
     int temp = std::max(stmt1, stmt2);
-    size = std::max(temp+1, size);
+    tableSize = std::max(temp+1, tableSize);
 	return true;
 
 }
@@ -113,9 +115,10 @@ int SiblingTable::getSiblingIndex(int stmt, int stmt2) {
 }
 */
 int SiblingTable::getSize() {
-	return siblingTable.size();
+	return size;
 }
 
 void SiblingTable::compressTable() {
-    siblingTable.resize(size);
+    if (size > 0)
+        siblingTable.resize(tableSize);
 }

@@ -276,6 +276,16 @@ public:
 	 */
     bool isCalls(std::string proc1, std::string proc2);
 
+    /**
+	 * Returns all call stmts that call the given procedure
+	 */
+    std::vector<int> getCallingStmts(std::string proc);
+
+    /**
+	 * Returns procedure called by a stmt
+	 */
+    std::string getCalledProc(int callStmt);
+
 	/**
 	 * Returns all statements that modifies variable var.
 	 */

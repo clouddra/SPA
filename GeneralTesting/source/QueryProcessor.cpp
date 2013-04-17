@@ -34,6 +34,21 @@ std::vector<int> stringVecToIntVec(std::vector<std::string> input) {
     return output;
 }
 
+struct vecComp {
+    bool operator() (std::vector<std::string> a, std::vector<std::string> b) const {
+        if (a.size() != b.size())
+            return (a.size() > b.size());
+        else {
+            for (int i = 0; i < (int)a.size(); i++) {
+                int temp = a[i].compare(b[i]);
+                if (temp != 0)
+                    return (temp > 0);
+            }
+        }
+        return false;
+    }
+};
+
 QueryProcessor::QueryProcessor()
 {
 	queryTree = QueryTree();
@@ -3468,6 +3483,7 @@ void QueryProcessor::processQuery(PKB& pkb) {
     currNode = tree[currNode.getChildren()[0]];
     std::string target;
     std::vector<std::string> tupleTarget;
+    std::vector<int> callProcName;
     bool isBool = false, isTuple = false;
     if (currNode.getName().compare("elem") == 0) {
         currNode = tree[currNode.getChildren()[0]];
@@ -3484,6 +3500,8 @@ void QueryProcessor::processQuery(PKB& pkb) {
                 int ret = attrRefChecker(&target, &holder, &temp, currNode, pkb);
                 if (ret == -1)
                     return;
+                if (holder.compare("procName") == 0 && temp == DeclarationTable::call_)
+                    callProcName.push_back(0);
             }
         }
         else {
@@ -3506,6 +3524,8 @@ void QueryProcessor::processQuery(PKB& pkb) {
                     int ret = attrRefChecker(&target, &holder, &temp, currNode, pkb);
                     if (ret == -1)
                         return;
+                    if (holder.compare("procName") == 0 && temp == DeclarationTable::call_)
+                        callProcName.push_back(i);
                 }
             }
             else {
@@ -4081,6 +4101,8 @@ void QueryProcessor::processQuery(PKB& pkb) {
                     if (temp.getName().compare("ref_integer") == 0) {
                         if (synoType == DeclarationTable::variable_ || synoType == DeclarationTable::procedure_)
                             return;
+                        if (attrName.compare("procName") == 0)
+                            return;
                         std::string integerString = tree[temp.getChildren()[0]].getName(); 
                         int integerHolder;
                         bool dummy, isNum = false;
@@ -4095,13 +4117,24 @@ void QueryProcessor::processQuery(PKB& pkb) {
                             return;
                     }
                     else if (temp.getName().compare("ref_ident") == 0) {
-                        if (synoType != DeclarationTable::variable_ && synoType != DeclarationTable::procedure_)
+                        if (synoType != DeclarationTable::variable_ && synoType != DeclarationTable::procedure_ && synoType != DeclarationTable::call_)
                             return;
                         std::string varName = tree[temp.getChildren()[0]].getName();
-                        toStore.push_back(varName);
-                        ret = resultStore.insertResult(syno, toStore);
-                        if (ret == -1)
-                            return;
+                        if (synoType == DeclarationTable::call_) {
+                            if (attrName.compare("procName") != 0)
+                                return;
+                            std::vector<int> tempVec = pkb.getCallingStmts(varName);
+                            toStore = intVecToStringVec(tempVec);
+                            ret = resultStore.insertResult(syno, toStore);
+                            if (ret == -1)
+                                return;
+                        }
+                        else {
+                            toStore.push_back(varName);
+                            ret = resultStore.insertResult(syno, toStore);
+                            if (ret == -1)
+                                return;
+                        }
                     }
                     else if (temp.getName().compare("ref_attrRef") == 0) {
                         std::string syno2, attrName2;
@@ -4114,22 +4147,78 @@ void QueryProcessor::processQuery(PKB& pkb) {
                             if (!(synoType == DeclarationTable::variable_ && synoType2 == DeclarationTable::variable_))
                                 return;
                         }
-                        if (synoType == DeclarationTable::procedure_ || synoType2 == DeclarationTable::procedure_) {
-                            if (!(synoType == DeclarationTable::procedure_ && synoType2 == DeclarationTable::procedure_))
+                        bool proc1 = false, proc2 = false;
+                        if (synoType == DeclarationTable::procedure_ || (synoType == DeclarationTable::call_ && attrName.compare("procName") == 0)) {
+                            proc1 = true;
+                        }
+                        if (synoType2 == DeclarationTable::procedure_ || (synoType2 == DeclarationTable::call_ && attrName2.compare("procName") == 0)) {
+                            proc2 = true;
+                        }
+                        if (proc1 || proc2) {
+                            if (!(proc1 && proc2))
                                 return;
                         }
 
-                        toStore = resultStore.getValuesFor(syno);
                         std::vector<std::vector<std::string>> toStoreTuple;
-                        for (int i = 0; i < (int)toStore.size(); i++) {
-                            std::vector<std::string> tempVec;
-                            tempVec.push_back(toStore[i]);
-                            tempVec.push_back(toStore[i]); 
-                            toStoreTuple.push_back(tempVec);
-                        } 
-                        ret = resultStore.insertResult(syno, syno2, toStoreTuple);
-                        if (ret == -1)
-                            return;
+                        if (synoType == DeclarationTable::call_) {
+                            if (synoType2 == DeclarationTable::call_) {
+                                toStore = resultStore.getValuesFor(syno);
+                                std::vector<std::vector<std::string>> toStoreTuple;
+                                for (int i = 0; i < (int)toStore.size(); i++) {
+                                    std::vector<std::string> tempVec;
+                                    tempVec.push_back(toStore[i]);
+                                    tempVec.push_back(toStore[i]); 
+                                    toStoreTuple.push_back(tempVec);
+                                } 
+                                ret = resultStore.insertResult(syno, syno2, toStoreTuple);
+                                if (ret == -1)
+                                    return;
+                            }
+                            else {
+                                std::vector<std::string> holder = resultStore.getValuesFor(syno2);
+                                for (int i = 0; i < (int)holder.size(); i++) {
+                                    std::vector<int> tempVec = pkb.getCallingStmts(holder[i]);
+                                    toStore = intVecToStringVec(tempVec);
+                                    for (int j = 0; j < (int)toStore.size(); j++) {
+                                        std::vector<std::string> holder2;
+                                        holder2.push_back(toStore[j]);
+                                        holder2.push_back(holder[i]);
+                                        toStoreTuple.push_back(holder2);
+                                    }
+                                }
+                                ret = resultStore.insertResult(syno, syno2, toStoreTuple);
+                                if (ret == -1)
+                                    return;
+                            }
+                        }
+                        else if (synoType2 == DeclarationTable::call_) {
+                            std::vector<std::string> holder = resultStore.getValuesFor(syno);
+                            for (int j = 0; j < (int)toStore.size(); j++) {
+                                std::vector<int> tempVec = pkb.getCallingStmts(holder[i]);
+                                toStore = intVecToStringVec(tempVec);
+                                for (int j = 0; j < (int)toStore.size(); j++) {
+                                    std::vector<std::string> holder2;                                    
+                                    holder2.push_back(holder[i]);
+                                    holder2.push_back(toStore[j]);
+                                    toStoreTuple.push_back(holder2);
+                                }
+                            }
+                            ret = resultStore.insertResult(syno, syno2, toStoreTuple);
+                            if (ret == -1)
+                                return;
+                        }
+                        else {
+                            toStore = resultStore.getValuesFor(syno);
+                            for (int i = 0; i < (int)toStore.size(); i++) {
+                                std::vector<std::string> tempVec;
+                                tempVec.push_back(toStore[i]);
+                                tempVec.push_back(toStore[i]); 
+                                toStoreTuple.push_back(tempVec);
+                            } 
+                            ret = resultStore.insertResult(syno, syno2, toStoreTuple);
+                            if (ret == -1)
+                                return;
+                        }
                     }
                     else {
                         // Error
@@ -4187,9 +4276,20 @@ void QueryProcessor::processQuery(PKB& pkb) {
         result.push_back("true");
     else {
         if (!isTuple) {
-            result = resultStore.getValuesFor(target);
-            if (declarationTable.getType(target) == DeclarationTable::stmtLst_) {
-                result = pkb.convertStmtLst(stringVecToIntVec(result));
+            if (callProcName.size() > 0) {
+                std::vector<std::string> holder = resultStore.getValuesFor(target);
+                std::vector<int> tempVec = stringVecToIntVec(holder);
+                for (int i = 0; i < (int)tempVec.size(); i++) {
+                    result.push_back(pkb.getCalledProc(tempVec[i]));
+                }
+                std::unordered_set<std::string> tempSet = std::unordered_set<std::string> (result.begin(), result.end());
+                result = std::vector<std::string> (tempSet.begin(), tempSet.end());
+            }
+            else {
+                result = resultStore.getValuesFor(target);
+                if (declarationTable.getType(target) == DeclarationTable::stmtLst_) {
+                    result = pkb.convertStmtLst(stringVecToIntVec(result));
+                }
             }
         }
         else {
@@ -4210,6 +4310,18 @@ void QueryProcessor::processQuery(PKB& pkb) {
                     tempVec.push_back(temp);
                     holder[i][stmtLstTarget[j]] = pkb.convertStmtLst(tempVec)[0];
                 }
+                for (int k = 0; k < (int)callProcName.size(); k++) {
+                    std::istringstream convert(holder[i][callProcName[k]]);
+                    int temp = -1;
+                    if (!(convert >> temp)) {
+                        return;
+                    }
+                    holder[i][callProcName[k]] = pkb.getCalledProc(temp);
+                }
+            }
+            if (callProcName.size() > 0) {
+                std::set<std::vector<std::string>, vecComp> tempSet = std::set<std::vector<std::string>, vecComp> (holder.begin(), holder.end());
+                holder = std::vector<std::vector<std::string>> (tempSet.begin(), tempSet.end());
             }
             for (int i = 0; i < (int)holder.size(); i++) {
                 std::string tupleResult = holder[i][0];
@@ -4232,8 +4344,14 @@ int QueryProcessor::attrRefChecker(std::string* synonym, std::string* attrName, 
     }
 
     *attrName = (tree[attrRef.getChildren()[1]]).getName();
-    if (*synoType == DeclarationTable::assign_ || *synoType == DeclarationTable::if_ || *synoType == DeclarationTable::stmt_ || *synoType == DeclarationTable::while_ || *synoType == DeclarationTable::call_) {
+    if (*synoType == DeclarationTable::assign_ || *synoType == DeclarationTable::if_ || *synoType == DeclarationTable::stmt_ || *synoType == DeclarationTable::while_) {
         if ((*attrName).compare("stmt#") != 0) {
+            // Error
+            return -1;
+        }
+    }
+    else if (*synoType == DeclarationTable::call_) {
+        if ((*attrName).compare("stmt#") != 0 && (*attrName).compare("procName") != 0) {
             // Error
             return -1;
         }

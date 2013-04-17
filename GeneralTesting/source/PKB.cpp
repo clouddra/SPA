@@ -611,6 +611,27 @@ bool PKB::isCalls(std::string proc1, std::string proc2) {
     return callsTable.isCalls(p1, p2);
 }
 
+std::vector<int> PKB::getCallingStmts(std::string proc) {
+    int procIndex = procTable.getProcIndex(proc);
+    std::vector<int> callStmts = stmtNodeTable.getASTWithType(Node::callNode);
+    std::vector<Node> tree = ast.getTree();
+    std::vector<int> toRet;
+
+    for (int i = 0; i < (int)callStmts.size(); i++) {
+        if (tree[callStmts[i]].getValue() == procIndex)
+            toRet.push_back(tree[callStmts[i]].getStmtNum());
+    }
+    return toRet;
+}
+
+std::string PKB::getCalledProc(int callStmt) {
+    std::vector<Node> tree = ast.getTree();
+    if (stmtNodeTable.getType(callStmt) != Node::callNode)
+        return "";
+    int procIndex = tree[stmtNodeTable.getAST(callStmt)].getValue();
+    return procTable.getProcName(procIndex);
+}
+
 std::vector<int> PKB::getModifiesVar(std::string var) {
     int varIndex = varTable.getVarIndex(var);
     if (varIndex == -1)
