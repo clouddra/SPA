@@ -17,11 +17,11 @@ bool ContainsTable::insertContains(int stmt1, int stmt2){
 	bool notInVector = false;
 
 	// expand size if index > size of vector
-	if (stmt2> int(containerTable.size()-1)) {
+	if (stmt2 > int(containerTable.size()-1)) {
 		containerTable.resize(stmt2*2+1);
 		notInVector = true;
 	}
-	if (stmt1> int(containedInTable.size()-1)) {
+	if (stmt1 > int(containedInTable.size()-1)) {
 		containedInTable.resize(stmt1*2+1);
 		notInVector = true;
 	}

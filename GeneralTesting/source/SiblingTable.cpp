@@ -18,23 +18,31 @@ bool SiblingTable::insertSibling(int stmt1, int stmt2){
 
 	//expand table if necessary
 	int currSize = siblingTable.size();
-	if(stmt1>currSize)
-		siblingTable.resize(stmt1+1);
+	if(stmt1>=currSize) {
+		siblingTable.resize(stmt1*2+1);
+        notInVector = true;
+    }
 
 	currSize = siblingTable.size();
-	if(stmt2>currSize)
-		siblingTable.resize(stmt2+1);
+	if(stmt2>=currSize) {
+		siblingTable.resize(stmt2*2+1);
+        notInVector = true;
+    }
+
+    if (!notInVector && isSibling(stmt1, stmt2))
+        return false;
 
 	siblingTable[stmt1].push_back(stmt2);
 	siblingTable[stmt2].push_back(stmt1);
-	
+    int temp = std::max(stmt1, stmt2);
+    size = std::max(temp+1, size);
 	return true;
 
 }
 std::vector<int> SiblingTable::getSiblings(int stmt)
 {
 	std::vector<int> results;
-	if(stmt>int(siblingTable.size()-1))
+	if(stmt > (int)(siblingTable.size()-1))
 		return results;
 
 	return siblingTable.at(stmt);
@@ -106,4 +114,8 @@ int SiblingTable::getSiblingIndex(int stmt, int stmt2) {
 */
 int SiblingTable::getSize() {
 	return siblingTable.size();
+}
+
+void SiblingTable::compressTable() {
+    siblingTable.resize(size);
 }

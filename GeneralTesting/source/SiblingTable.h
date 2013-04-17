@@ -27,4 +27,6 @@ public:
 	 * Returns total number of sibling relations
 	 */
 	int getSize();
+
+    void compressTable();
 };

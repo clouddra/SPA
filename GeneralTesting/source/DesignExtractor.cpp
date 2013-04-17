@@ -198,6 +198,14 @@ void DesignExtractor::populateTables()
 			}
 		}
 	}
+
+    _mt->compressTables();
+    _ft->compressTables();
+    _ut->compressTables();
+    _ct->compressTables();
+    _pt->compressTables();
+    _cont->compressTables();
+    _st->compressTable();
 }
 	
 void DesignExtractor::addModifiesUsesForCallsStmt(int callStmt, int proc)
