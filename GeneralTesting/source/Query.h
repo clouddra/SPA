@@ -11,6 +11,9 @@ public:
     int weight;
     bool evaluated;
 
+    /**
+	 * Change weight to inputWeight if given string matches 1 of the parameters and inputWeight < current weight
+	 */
     void setWeight(std::string a, int inputWeight) {
        if (a.compare(para1) == 0 || a.compare(para2) == 0) {
            if (inputWeight < weight)
