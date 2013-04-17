@@ -1,2 +1,3 @@
-assign a1, a2, a3; 
-Select a such that Next*(15,n) and Next* (n,48) and Affects*(a,n)
+assign a1, a2, a3;
+Select a1 such that Affects*(1, a1)
+Select a1 such that Affects*(1, a1)
