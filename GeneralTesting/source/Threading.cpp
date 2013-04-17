@@ -31,9 +31,9 @@ std::vector<std::vector<std::string>> Worker::getReturnTuple() {
 
 void Worker::operator()() { pool.service.run(); }
  
-ThreadPool::ThreadPool(int threads) : work(new boost::asio::io_service::work(service))
+ThreadPool::ThreadPool(int nThreads) : work(new boost::asio::io_service::work(service))
 {
-    for(int i = 0;i<threads; i++)
+    for(int i = 0;i<nThreads; i++)
         workers.push_back(
             std::unique_ptr<boost::thread>(
                 new boost::thread(Worker(*this))
@@ -77,9 +77,11 @@ void Threading::processNextSameVarStart(std::vector<int>& result, std::vector<in
     if (pkb.isNext(para1Val[i], para1Val[i])) {
         result.push_back(i);
     }
+
 }
 
 bool Threading::processNextSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
+	/*
     for (int i = 0; i < (int)para1Val.size(); i++) {
 		if (i%nThreads == 0 && i > 0) {
 			if (!join_all()) {
@@ -116,6 +118,22 @@ bool Threading::processNextSameVarDriver(std::vector<int>& temp, std::vector<int
 			tGroup.remove_thread(tList[j]);
 		}
 	}
+	*/
+	boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, -1*(int)para1Val.size());
+	std::vector<std::vector<int>> results((int)para1Val.size());
+    for (int i = 0; i < (int)para1Val.size(); i++) {
+		boost::function<void()> f = boost::bind(&Threading::processNextSameVarStart,  this, results.at(i), para1Val, pkb, i);
+		this->threadPool.enqueue(f);
+    }
+	
+	sem.wait();
+
+	for (int i=0; i<(int)para1Val.size(); i++) {
+		for (std::vector<int>::iterator it=results.at(i).begin(); it<results.at(i).end(); it++) {
+			temp.push_back(*it);
+		}
+	}
+
 	return true;
 }
 

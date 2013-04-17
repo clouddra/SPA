@@ -4,6 +4,8 @@
 #include <boost/interprocess/sync/named_semaphore.hpp>
 #include <Windows.h>
 
+#define SEMNAME "sem"
+
 /*
 class Worker {
 private:
@@ -27,16 +29,30 @@ private:
     ThreadPool &pool; 
 };
 
+class ThreadPool {
+public:
+    ThreadPool(int nThreads);
+    template<class F>
+		void enqueue(F f);
+    ~ThreadPool();
+
+private:
+    std::vector<std::unique_ptr<boost::thread>> workers;
+    boost::asio::io_service service;
+    std::unique_ptr<boost::asio::io_service::work> work;
+    friend class Worker;
+};
+
 class Threading {
 private:
 	int nThreads;
-	boost::thread_group tGroup;
-	boost::thread **tList;
-	Worker *workers;
+	//boost::thread_group tGroup;
+	//boost::thread **tList;
+	//Worker *workers;
 	ThreadPool threadPool;
 
 public:
-	Threading(int nThreads = boost::thread::hardware_concurrency()*4);
+	Threading(int nThreads = boost::thread::hardware_concurrency());
 	~Threading();
 	// Next
 	void processNextSameVarStart(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i);
@@ -89,19 +105,5 @@ public:
 	std::vector<std::string> intVecToStringVec(std::vector<int> input);
 	bool join_all();
 	void terminate_all(); // Not portable, windows only
-};
-
-class ThreadPool {
-public:
-    ThreadPool(int nThreads);
-    template<class F>
-		void enqueue(F f);
-    ~ThreadPool();
-
-private:
-    std::vector<std::unique_ptr<boost::thread>> workers;
-    boost::asio::io_service service;
-    std::unique_ptr<boost::asio::io_service::work> work;
-    friend class Worker;
 };
 #endif
