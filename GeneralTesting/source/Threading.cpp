@@ -625,40 +625,18 @@ void Threading::processAffectsBipTSameVarStart(std::vector<int>& result, std::ve
 }
 
 bool Threading::processAffectsBipTSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
+	boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, -1*(int)para1Val.size());
+	std::vector<std::vector<int>> results((int)para1Val.size());
     for (int i = 0; i < (int)para1Val.size(); i++) {
-		if (i%nThreads == 0 && i > 0) {
-			if (!join_all()) {
-				terminate_all();
-				return false;
-			}
-			//tGroup.join_all();
-			for (int j=0; j<nThreads; j++) {
-				std::vector<int> returnedVector = workers[j%nThreads].getReturnVector();
-				for (std::vector<int>::iterator it=returnedVector.begin(); it<returnedVector.end(); it++) {
-					temp.push_back(*it);
-				}
-				tGroup.remove_thread(tList[j]);
-			}
-		}
-
-		boost::function<std::vector<int>()> f2 = boost::bind(&Threading::processAffectsBipTSameVarStart, this, para1Val, pkb, i);
-		boost::function<void()> f = boost::bind(&Worker::runAffectsSame, &(workers[i%nThreads]), f2);
-		tList[i%nThreads] = new boost::thread(f);
-		tGroup.add_thread(tList[i%nThreads]);
+		boost::function<void()> f = boost::bind(&Threading::processAffectsBipTSameVarStart, this, results.at(i), para1Val, pkb, i);
+		this->threadPool.enqueue(f);
     }
+	
+	sem.wait();
 
-	if (!join_all()) {
-		terminate_all();
-		return false;
-	}
-	//tGroup.join_all();
-	for (int j=0; j<nThreads; j++) {
-		if (tGroup.is_thread_in(tList[j])) {
-			std::vector<int> returnedVector = workers[j%nThreads].getReturnVector();
-			for (std::vector<int>::iterator it=returnedVector.begin(); it<returnedVector.end(); it++) {
-				temp.push_back(*it);
-			}
-			tGroup.remove_thread(tList[j]);
+	for (int i=0; i<(int)para1Val.size(); i++) {
+		for (std::vector<int>::iterator it=results.at(i).begin(); it<results.at(i).end(); it++) {
+			temp.push_back(*it);
 		}
 	}
 	return true;
@@ -681,7 +659,7 @@ void Threading::processAffectsBipTDiffVarStart(std::vector<std::vector<std::stri
 }
 
 // AffectsBip*(a1, a2) from end
-std::vector<std::vector<std::string>> Threading::processAffectsBipTDiffVarEnd(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i) {
+void Threading::processAffectsBipTDiffVarEnd(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
     temp = pkb.getAffectsBipTEndAPI(para2ValInt[i]);
@@ -699,79 +677,35 @@ std::vector<std::vector<std::string>> Threading::processAffectsBipTDiffVarEnd(st
 bool Threading::processAffectsBipTDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
 							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb) {
     if (isPara1) {
-        for (int i = 0; i < (int)para1ValInt.size(); i++) {
-			if (i%nThreads == 0 && i > 0) {
-				if (!join_all()) {
-					terminate_all();
-					return false;
-				}
-				//tGroup.join_all();
-				for (int j=0; j<nThreads; j++) {
-					std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
-					for (std::vector<std::vector<std::string>>::iterator it=returnedTuple.begin(); it<returnedTuple.end(); it++) {
-						toStoreTuple.push_back(*it);
-					}
-					tGroup.remove_thread(tList[j]);
-				}
-			}
-
-			boost::function<std::vector<std::vector<std::string>>()> f2 = boost::bind(&Threading::processAffectsBipTDiffVarStart, this, para1ValString, para1ValInt, pkb, i);
-			boost::function<void()> f = boost::bind(&Worker::runAffectsDiff, &(workers[i%nThreads]), f2);
-			tList[i%nThreads] = new boost::thread(f);
-			tGroup.add_thread(tList[i%nThreads]);
-        }
-
-		if (!join_all()) {
-			terminate_all();
-			return false;
+		boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, -1*(int)para1ValInt.size());
+		std::vector<std::vector<std::vector<std::string>>> results((int)para1ValInt.size());
+		for (int i = 0; i < (int)para1ValInt.size(); i++) {
+			boost::function<void()> f = boost::bind(&Threading::processAffectsBipTDiffVarStart, this, results.at(i), para1ValString, para1ValInt, pkb, i);
+			this->threadPool.enqueue(f);
 		}
-		//tGroup.join_all();
-		for (int j=0; j<nThreads; j++) {
-			if (tGroup.is_thread_in(tList[j])) {
-				std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
-				for (std::vector<std::vector<std::string>>::iterator it=returnedTuple.begin(); it<returnedTuple.end(); it++) {
-					toStoreTuple.push_back(*it);
-				}
-				tGroup.remove_thread(tList[j]);
+	
+		sem.wait();
+
+		for (int i=0; i<(int)para1ValInt.size(); i++) {
+			for (std::vector<std::vector<std::string>>::iterator it=results.at(i).begin(); it<results.at(i).end(); it++) {
+				toStoreTuple.push_back(*it);
 			}
 		}
 		return true;
     }
     else {
-        for (int i = 0; i < (int)para2ValInt.size(); i++) {
-			if (i%nThreads == 0 && i > 0) {
-				if (!join_all()) {
-					terminate_all();
-					return false;
-				}
-				//tGroup.join_all();
-				for (int j=0; j<nThreads; j++) {
-					std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
-					for (std::vector<std::vector<std::string>>::iterator it=returnedTuple.begin(); it<returnedTuple.end(); it++) {
-						toStoreTuple.push_back(*it);
-					}
-					tGroup.remove_thread(tList[j]);
-				}
-			}
-
-			boost::function<std::vector<std::vector<std::string>>()> f2 = boost::bind(&Threading::processAffectsBipTDiffVarEnd, this, para2ValString, para2ValInt, pkb, i);
-			boost::function<void()> f = boost::bind(&Worker::runAffectsDiff, &(workers[i%nThreads]), f2);
-			tList[i%nThreads] = new boost::thread(f);
-			tGroup.add_thread(tList[i%nThreads]);
-        }
-
-		if (!join_all()) {
-			terminate_all();
-			return false;
+		boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, -1*(int)para2ValInt.size());
+		std::vector<std::vector<std::vector<std::string>>> results((int)para2ValInt.size());
+		for (int i = 0; i < (int)para2ValInt.size(); i++) {
+			boost::function<void()> f = boost::bind(&Threading::processAffectsBipTDiffVarEnd, this, results.at(i), para2ValString, para2ValInt, pkb, i);
+			this->threadPool.enqueue(f);
 		}
-		//tGroup.join_all();
-		for (int j=0; j<nThreads; j++) {
-			if (tGroup.is_thread_in(tList[j])) {
-				std::vector<std::vector<std::string>> returnedTuple = workers[j%nThreads].getReturnTuple();
-				for (std::vector<std::vector<std::string>>::iterator it=returnedTuple.begin(); it<returnedTuple.end(); it++) {
-					toStoreTuple.push_back(*it);
-				}
-				tGroup.remove_thread(tList[j]);
+	
+		sem.wait();
+
+		for (int i=0; i<(int)para2ValInt.size(); i++) {
+			for (std::vector<std::vector<std::string>>::iterator it=results.at(i).begin(); it<results.at(i).end(); it++) {
+				toStoreTuple.push_back(*it);
 			}
 		}
 		return true;
@@ -787,39 +721,4 @@ std::vector<std::string> Threading::intVecToStringVec(std::vector<int> input) {
     }
     return output;
 }
-
-/*
-bool Threading::join_all() {
-	while(1) {
-		bool flag = true;
-		for (int j=0; j<nThreads; j++) {
-			if (tList[j]->joinable() && !tList[j]->try_join_for(boost::chrono::milliseconds(1000))) {
-				flag = false;
-				if (AbstractWrapper::GlobalStop) {
-					return false;
-				}
-			}
-			else flag = true & flag;
-		}
-		if (flag) break;
-	}
-	return true;
-}
-*/
-
-/*
-bool Threading::join_all() {
-	tGroup.join_all();
-	return true;
-}
-*/
-
-// Not portable, windows only
-/*
-void Threading::terminate_all() {
-	for (int i=0; i<nThreads; i++) {
-		TerminateThread(tList[i]->native_handle(), EXIT_SUCCESS);
-	}
-}
-*/
 #endif
