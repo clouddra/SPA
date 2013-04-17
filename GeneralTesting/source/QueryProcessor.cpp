@@ -3573,11 +3573,7 @@ void QueryProcessor::processQuery(PKB& pkb) {
                 if (para1Type == -2 || para2Type == -2) {   // Cannot figure out parameter type
                     return;
                 }
-                    // Exit if a "constant" type variable is found (not allowed)
-                if (para1Type == DeclarationTable::constant_ || para1Type == DeclarationTable::constant_) {
-                    // std::cout << "Constant type not allowed in query\n";
-                    return;
-                }
+           
 
                 // Get rid of " " if parameters are entities
                 if (para1IsEnt) {
