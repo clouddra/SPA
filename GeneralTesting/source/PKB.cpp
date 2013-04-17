@@ -15,7 +15,6 @@ PKB::PKB() {
     ast = AST();
     stmtNodeTable = StmtNodeTable();
 	cfg = CFG();
-	cfgBip = CFGBip();
 }
 
 int PKB::insertNode(int nodeType, std::string value, int parent) {
@@ -819,9 +818,18 @@ std::vector<int> PKB::getPrev() {
     for (int i = 0; i < (int)procTable.getSize(); i++) {
         int first = procTable.getProcFirstln(i);
         int last = procTable.getProcLastln(i);
+        CFGNode tempNode = cfg.getCFGNode(procTable.getCFGEnd(i));
+        std::vector<int> temp = tempNode.getPrev();
+        std::unordered_set<int> exclude;
+        for (int j = 0; j < (int)temp.size(); j++) {
+            if (getNext(cfg.getCFGNode(temp[j]).getEnd()).size() == 0)
+                exclude.insert(cfg.getCFGNode(temp[j]).getEnd());
+        }
 
-        for (int j = first; j < last; j++) {
-            ret.push_back(j);
+        for (int j = first; j <= last; j++) {
+            bool found = false;
+            if (exclude.find(j) == exclude.end())
+                ret.push_back(j);
         }
     }
     return ret;
@@ -869,14 +877,19 @@ std::vector<int> PKB::getPrevBip() {
     for (int i = 0; i < (int)procTable.getSize(); i++) {
         int first = procTable.getProcFirstln(i);
         int last = procTable.getProcLastln(i);
-
-        for (int j = first; j < last; j++) {
-            ret.push_back(j);
+        CFGNode tempNode = cfg.getCFGNode(procTable.getCFGEnd(i));
+        std::vector<int> temp = tempNode.getPrev();
+        std::unordered_set<int> exclude;
+        for (int j = 0; j < (int)temp.size(); j++) {
+            if (getNextBip(cfg.getCFGNode(temp[j]).getEnd()).size() == 0)
+                exclude.insert(cfg.getCFGNode(temp[j]).getEnd());
         }
-    }
-    std::vector<int> temp = callsTable.getCalls();
-    for (int i = 0; i < (int)temp.size(); i++) {
-        ret.push_back(procTable.getProcLastln(temp[i]));
+
+        for (int j = first; j <= last; j++) {
+            bool found = false;
+            if (exclude.find(j) == exclude.end())
+                ret.push_back(j);
+        }
     }
     return ret;
 }

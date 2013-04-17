@@ -73,11 +73,6 @@
 #include "CFG.h"
 #endif
 
-#ifndef CFG_BIP
-#define CFG_BIP
-#include "CFGBip.h"
-#endif
-
 #ifndef QUEUE_HEAD
 #define QUEUE_HEAD
 #include <queue>
@@ -88,7 +83,6 @@ class PKB {
 private:
     AST ast;
 	CFG cfg;
-	CFGBip cfgBip;
     ModifiesTable modifiesTable;
     ParentTable parentTable;
     FollowsTable followsTable;
@@ -110,7 +104,6 @@ private:
 	std::unordered_map<int, std::vector<int>> affectsBipTMapStart;
 	std::unordered_map<int, std::vector<int>> affectsBipTMapEnd;
 	void addCFGtoStmtNodeTable(int cfgNode, int startStmt, int endStmt);
-	void addCFGBiptoStmtNodeTable(int cfgBipNode, int startStmt, int endStmt);
     std::vector<int> convertToNodeIndex(std::string input, int type);
     std::vector<std::string> convertToStorageType(std::vector<int> result, int type);
 	Node qNodeToNode(QueryNode qNode);
