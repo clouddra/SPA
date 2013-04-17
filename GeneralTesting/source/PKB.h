@@ -78,8 +78,13 @@
 #include <queue>
 #endif
 
-class PKB {
+#ifndef BOOST_MUTEX
+#define BOOST_MUTEX
+#include <boost/thread/mutex.hpp>
+#endif
 
+class PKB {
+	
 private:
     AST ast;
 	CFG cfg;
@@ -97,14 +102,17 @@ private:
     std::set<int> constantList;
 	std::unordered_map<int, std::vector<int>> nextTMap;
 	std::unordered_map<int, std::vector<int>> prevTMap;
-	std::unordered_map<int, std::vector<int>> affectsMapStart;
-	std::unordered_map<int, std::vector<int>> affectsMapEnd;
-	std::unordered_map<int, std::vector<int>> affectsTMapStart;
-	std::unordered_map<int, std::vector<int>> affectsTMapEnd;
-	std::unordered_map<int, std::vector<int>> affectsBipMapStart;
-	std::unordered_map<int, std::vector<int>> affectsBipMapEnd;
-	std::unordered_map<int, std::vector<int>> affectsBipTMapStart;
+
+	static boost::mutex mutex;
+	std::unordered_map<int, std::vector<int>> affectsMapStart;	
+	std::unordered_map<int, std::vector<int>> affectsMapEnd;	
+	std::unordered_map<int, std::vector<int>> affectsTMapStart;	
+	std::unordered_map<int, std::vector<int>> affectsTMapEnd;	
+	std::unordered_map<int, std::vector<int>> affectsBipMapStart;	
+	std::unordered_map<int, std::vector<int>> affectsBipMapEnd;	
+	std::unordered_map<int, std::vector<int>> affectsBipTMapStart;	
 	std::unordered_map<int, std::vector<int>> affectsBipTMapEnd;
+
 	void addCFGtoStmtNodeTable(int cfgNode, int startStmt, int endStmt);
     std::vector<int> convertToNodeIndex(std::string input, int type);
     std::vector<std::string> convertToStorageType(std::vector<int> result, int type);

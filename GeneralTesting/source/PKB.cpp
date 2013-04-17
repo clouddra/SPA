@@ -1470,7 +1470,9 @@ std::vector<int> PKB::getAffectsStartAPI(int start)
 	else
 	{
 		std::vector<int> ans = getAffectsStart(start);
+		mutex.lock();
 		affectsMapStart[start] = ans;
+		mutex.unlock();
 		return ans;
 	}
 }
@@ -1482,7 +1484,9 @@ std::vector<int> PKB::getAffectsEndAPI(int end)
 	else
 	{
 		std::vector<int> ans = getAffectsEnd(end);
+		mutex.lock();
 		affectsMapEnd[end] = ans;
+		mutex.unlock();
 		return ans;
 	}
 }
@@ -1758,7 +1762,9 @@ std::vector<int> PKB::getAffectsTStartAPI(int start)
 	else
 	{
 		std::vector<int> ans = getAffectsTStart(start);
+		mutex.lock();
 		affectsTMapStart[start] = ans;
+		mutex.unlock();
 		return ans;
 	}
 }
@@ -1770,7 +1776,9 @@ std::vector<int> PKB::getAffectsTEndAPI(int end)
 	else
 	{
 		std::vector<int> ans = getAffectsTEnd(end);
+		mutex.lock();
 		affectsTMapEnd[end] = ans;
+		mutex.unlock();
 		return ans;
 	}
 }
@@ -2587,7 +2595,9 @@ std::vector<int> PKB::getAffectsBipStartAPI(int start)
 	else
 	{
 		std::vector<int> ans = getAffectsBipStart(start);
+		mutex.lock();
 		affectsBipMapStart[start] = ans;
+		mutex.unlock();
 		return ans;
 	}
 }
@@ -2599,7 +2609,9 @@ std::vector<int> PKB::getAffectsBipEndAPI(int end)
 	else
 	{
 		std::vector<int> ans = getAffectsBipEnd(end);
+		mutex.lock();
 		affectsBipMapEnd[end] = ans;
+		mutex.unlock();
 		return ans;
 	}
 }
@@ -2611,7 +2623,9 @@ std::vector<int> PKB::getAffectsBipTStartAPI(int start)
 	else
 	{
 		std::vector<int> ans = getAffectsBipTStart(start);
+		mutex.lock();
 		affectsBipTMapStart[start] = ans;
+		mutex.unlock();
 		return ans;
 	}
 }
@@ -2623,7 +2637,9 @@ std::vector<int> PKB::getAffectsBipTEndAPI(int end)
 	else
 	{
 		std::vector<int> ans = getAffectsBipTEnd(end);
+		mutex.lock();
 		affectsBipTMapEnd[end] = ans;
+		mutex.unlock();
 		return ans;
 	}
 }
