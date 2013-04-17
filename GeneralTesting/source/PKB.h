@@ -95,6 +95,8 @@ private:
     StmtNodeTable stmtNodeTable;
     NodeTable nodeTable;
     std::set<int> constantList;
+	std::unordered_map<int, std::vector<int>> nextTMap;
+	std::unordered_map<int, std::vector<int>> prevTMap;
 	std::unordered_map<int, std::vector<int>> affectsMapStart;
 	std::unordered_map<int, std::vector<int>> affectsMapEnd;
 	std::unordered_map<int, std::vector<int>> affectsTMapStart;
@@ -107,6 +109,8 @@ private:
     std::vector<int> convertToNodeIndex(std::string input, int type);
     std::vector<std::string> convertToStorageType(std::vector<int> result, int type);
 	Node qNodeToNode(QueryNode qNode);
+	std::vector<int> getNextT(int stmt);
+    std::vector<int> getPrevT(int stmt);
 	std::vector<int> buildCfg(int stmtListAst, int cfgIndex, std::vector<std::pair<int,int>>& callList);
 	std::vector<int> getAffectsStart(int start); 
 	std::vector<int> getAffectsEnd(int end);
@@ -390,7 +394,7 @@ public:
 	/**
 	 * Returns all statements directly/indirectly after given stmt in the CFG
 	 */
-	std::vector<int> getNextT(int stmt);
+	std::vector<int> getNextTAPI(int stmt);
 
 	/**
 	 * Returns all statements directly before given stmt in the CFG
@@ -405,7 +409,7 @@ public:
 	/**
 	 * Returns all statements directly/indirectly before given stmt in the CFG
 	 */
-    std::vector<int> getPrevT(int stmt);
+	std::vector<int> getPrevTAPI(int stmt);
 
 	/**
 	 * Returns TRUE if stmt1 is followed by stmt2 in CFG
