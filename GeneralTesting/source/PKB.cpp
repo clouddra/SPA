@@ -1721,12 +1721,10 @@ std::vector<int> PKB::getAffectsTStartAPI(int start)
 {
 	if (affectsTMapStart.count(start) > 0)
 		return affectsTMapStart[start];
-	
 	else
 	{
 		std::vector<int> ans = getAffectsTStart(start);
 		affectsTMapStart[start] = ans;
-//		affectsTMapStart.emplace(std::make_pair(start, ans));
 		return ans;
 	}
 }

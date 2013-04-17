@@ -393,7 +393,7 @@ bool Threading::processNextTDiffVarDriver(std::vector<std::vector<std::string>>&
 std::vector<int> Threading::processAffectsSameVarStart(std::vector<int>& para1Val, PKB& pkb, int i) {
 	std::vector<int> result;
 	std::vector<int> temp2;
-    temp2 = pkb.getAffectsStart(para1Val[i]);
+    temp2 = pkb.getAffectsStartAPI(para1Val[i]);
     for (int j = 0; j < (int)temp2.size(); j++) {
         if (temp2[j] == para1Val[i]) {
             result.push_back(para1Val[i]);
@@ -567,7 +567,7 @@ bool Threading::processAffectsDiffVarDriver(std::vector<std::vector<std::string>
 std::vector<int> Threading::processAffectsTSameVarStart(std::vector<int>& para1Val, PKB& pkb, int i) {
 	std::vector<int> result;
 	std::vector<int> temp2;
-    temp2 = pkb.getAffectsTStart(para1Val[i]);
+    temp2 = pkb.getAffectsTStartAPI(para1Val[i]);
     for (int j = 0; j < (int)temp2.size(); j++) {
         if (temp2[j] == para1Val[i]) {
             result.push_back(para1Val[i]);
@@ -622,7 +622,7 @@ std::vector<std::vector<std::string>> Threading::processAffectsTDiffVarStart(std
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
 	std::vector<std::vector<std::string>> toStoreTuple;
-	temp = pkb.getAffectsTStart(para1ValInt[i]);
+	temp = pkb.getAffectsTStartAPI(para1ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
@@ -638,7 +638,7 @@ std::vector<std::vector<std::string>> Threading::processAffectsTDiffVarEnd(std::
 	std::vector<int> temp;
 	std::vector<std::string> toStore;
 	std::vector<std::vector<std::string>> toStoreTuple;
-    temp = pkb.getAffectsTEnd(para2ValInt[i]);
+    temp = pkb.getAffectsTEndAPI(para2ValInt[i]);
     toStore = intVecToStringVec(temp);
     for (int j = 0; j < (int)toStore.size(); j++) {
         std::vector<std::string> holder;
