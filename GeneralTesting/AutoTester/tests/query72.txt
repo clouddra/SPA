@@ -28,12 +28,12 @@ Alice,Bob,Charlie,Danny,Eliza,Fred,Goneril,Henry,Illidan,James,Kingsley,Lucas,Me
 6 - Modifies, Typed :: check Modifies assignment
 assign a1; variable v1; 
 Select v1 such that Modifies(a1,v1);
-aeroplane,ant,apple,banana,basin,beetle,carrot,cloud,cockroach,dinosaur,donut,door,egg,elephant,elevator,fan,fish,fox,garbage,goat,gummy,ham,hamster,hanger,igloo,innard,jaguar,jam,jumper,kangeroo,keep,kimchi,lamp,leek,lion,mango,monkey,nachos,newt,orange,owl,pear,penguin,quail,aBnX295,aEaH429,aGaF102,aGeK401,aIdR679,aIsE574,aJqZ17,aJrQ192,aMkZ333,aMzK453,aNsW606,aPoD802,aPrW413,aRnV86,aSrU739,aSuJ364,aTaM458,aTbO966,aTbT78,aUkR495,aVtI926,aWtB526,aXmZ855,aYvZ475,bCtI151,bEqQ592,bGqM971,bHgO153,bJcU579,bOiM996,bOoP479,bPeT591,bTeX403,bXcB632,bZfF759,bZnJ244,bZnW564,cAeN195,cDnU259,cEgO284,cEhH329,cEnK634,cGtS123,cJjK632,cKpE766,cLeY132,cMaW943,cMvI670,cNlH131,cOfC466,cOgA336,cOgV336,cQjE457,cRjY3,cScO108,cSxL227,cUfE46,cUkL619,cUxV65,cVmB701,cWiF658,cWlQ564,cYhJ341,dAxP409,dFjU746,dFjX98,dGwW994,dGxB722,dHcD52,dIjH303,dKkS285,dKtS246,dNcE708,dNjX405,dPwA91,dQsC881,dQwW200,dSgA244,dUlJ226,dVcB715,dWkX968,eBcF648,eBjI662,eDqN694,eEwC553,eFvF420,eFxZ98,eJqU442,eJrV469,eJwK579,eLaX854,eMlV762,eOsR422,ePtK115,eRiA483,eTbB338,eTeN427,eTlJ112,eTuV513,eUhA812,eUlQ651,eVdF177,eVrB196,eWmA547,eXbL428,eXbZ260,fAwX397,fDiE380,fEvD910,fExS590,fFaT657,fHvH813,fHvL878,fIrI142,fNmA752,fNrG936,fQyZ791,fReR710,fSeH892,fTtH911,fUgE405,fVdR262,fXzU62,gAbK837,gAnO884,gAuZ469,gBsH757,gBuU279,gCfH611,gCgM197,gCkR802,gCnZ261,gCvN191,gFjJ203,gHbH274,gKwP717,gNqP615,gPmQ83,gRoW570,gVyU843,gWgK325,gXwX696,gYuI361,hDmO645,hDsZ776,hEhB109,hEkX373,hGtO432,hHvH288,hKyH776,hKyM613,hPbT51,hPtO722,hSnI881,hUdY836,hUzH278,hVsT472,hWlJ280,hWpQ960,hWvN297,hXsF91,iAwT145,iBiL349,iEdU57,iFqP724,iIqF937,iJhI851,iKfW273,iKsH37,iKuC151,iLcG821,iLzP805,iOzZ508,iVaM50,iVkZ787,iVyQ418,iXxA739,jBnY898,jCvB201,jDaZ290,jGvI940,jHhL365,jIcR726,jIfH810,jOfX344,jQdV910,jQpQ508,jRbM661,jTqB504,jTrU701,jWkS55,jXfY786,jZkY314,jZoW370,kBmK584,kCeA266,kCyI272,kHsN220,kIoJ477,kKlW317,kKoR43,kKqL97,kLpX893,kMqB138,kOdR658,kQvE485,kRuC321,kTfQ478,kWbC104,lAyS476,lDaK93,lEyC960,lFnE159,lFoR629,lHdL925,lKgP760,lLtK602,lMuY335,lRlP26,lRtA131,lScD281,lTnS64,lVfH988,lVyK224,lWxU53,lYsZ293,lZqH430,mBwK96,mEhG497,mEtX223,mFjG76,mHvN737,mIdT916,mJqY47,mKbJ14,mOaR162,mPfA191,mTvR446,mTzD333,mUoY562,mYcE721,nBrX977,nChM928,nCzC848,nDlE202,nHcF476,nItE94,nJrH2,nMsM875,nPpU60,nPtX279,nRgP130,nXuO7,nYoY642,oBrY487,oCuJ866,oCuS364,oDoJ500,oEkV500,oGcQ143,oIeT294,oKgN698,oLkL612,oMaW215,oOlU266,oPwO298,oQtQ835,oQxV921,oRrI573,oSpX526,oTaF764,oTqE32,oUoI583,oWwF4,oXeU770,oXgG260,oXvA471,oZwC845,p,pAfK338,pCnK857,pCxO92,pGjD858,pIqV415,pIsP793,pJmB560,pJnU308,pLjF613,pOcE659,pPeQ495,pQfV4,pQmN564,pRzX130,pThO565,pTyS854,pVbU831,pWgZ360,pXjD945,pZhH193,qDbG440,qDjR264,qEjZ998,qHpJ294,qHzR113,qIgC59,qMdO443,qNhE258,qOmG375,qOsE255,qPlD875,qQcA233,qTyI867,qUsB156,qVaZ975,qVoL483,qZeJ43,rCkP997,rCqN306,rCxB766,rDhP641,rDnQ139,rEzS156,rFeM285,rFxS478,rIkK713,rJmO344,rKjJ948,rKtK883,rLbS22,rLcO21,rLxO834,rMaR886,rNuB65,rQeG749,rRaM272,rTcL279,rTlD372,rUaF321,rUfF135,rUtF565,rVcA926,rVtT305,rWhB737,rYjN166,rYsJ539,sAeE565,sCqU754,sCxD14,sEpW336,sFlO715,sGaH347,sHxK787,sJiA840,sJnX426,sNgR726,sOhS206,sRkW581,sSeJ164,sSnW326,sUiT275,sWpH158,sWuD660,sXcK128,sXzX982,sYmG535,sZcM205,sZkP243,sZwP89,t,tAmW546,tDwC10,tFqU27,tGxY44,tJuR573,tLaB218,tLlN941,tNbT746,tQzY994,tSvF291,tVhS883,tVoL77,tWmD495,tXtE58,tYyL280,uFbA911,uFnL917,uGaD286,uGsJ754,uHuF203,uLgJ625,uMfC466,uNjY188,uNqC676,uQrM333,uQrN134,uRaO9,uSfR536,uThU729,uTrQ724,uVzG864,uZbQ201,uZzY318,vAgV320,vDdH467,vDtU704,vFaW507,vFhC604,vFsP982,vHhB972,vKbR613,vLvE12,vLvW455,vMrP421,vQnN919,vQuM382,vSaV957,vSvH371,vWeY990,vZbI991,wEyL959,wFmP401,wGaQ832,wGfG320,wGiZ578,wIeU685,wIgK267,wJfV914,wLrS409,wNaJ218,wOhS88,wOzJ583,wQiB321,wSsG361,wUjC252,wXcN883,wXhL467,wYpH792,xAcZ842,xAiO159,xDhK339,xDzO159,xEeG147,xHaT268,xKbR731,xLjZ812,xLtG191,xNgK58,xNtM751,xRmO234,xRyD162,xSzY109,xVeA440,xVlO169,xWgB442,xWjO114,xWkV539,xZfZ774,yBmA286,yCoC222,yDfV592,yEiC775,yGjA720,yJiC412,yKaN677,yKcB355,yLcJ287,yLqW13,yNuT380,yOxP297,yRnZ896,yTdX740,yWeA650,yXhD167,yXyW696,yYfZ964,yZiE37,yZnS702,z,zFpS831,zIpD993,zJiU95,zKeW582,zKfI857,zNoM628,zOxA571,zPdI799,zPhD127,zPiG111,zPwY307,zQdT33,zRkW105,zVoQ61,zWiY404
+aeroplane,ant,apple,banana,basin,beetle,carrot,cloud,cockroach,dinosaur,donut,door,egg,elephant,elevator,fan,fish,fox,garbage,goat,gummy,ham,hamster,hanger,igloo,innard,jaguar,jam,jumper,kangeroo,keep,kimchi,lamp,leek,lion,mango,monkey,nachos,newt,orange,owl,pear,penguin,quail,aBnX295,aEaH429,aGaF102,aGeK401,aIdR679,aIsE574,aJqZ17,aJrQ192,aMkZ333,aMzK453,aNsW606,aPoD802,aPrW413,aRnV86,aSrU739,aSuJ364,aTaM458,aTbO966,aTbT78,aUkR495,aVtI926,aWtB526,aXmZ855,aYvZ475,bCtI151,bEqQ592,bGqM971,bHgO153,bJcU579,bOiM996,bOoP479,bPeT591,bTeX403,bXcB632,bZfF759,bZnJ244,bZnW564,cAeN195,cDnU259,cEgO284,cEhH329,cEnK634,cGtS123,cJjK632,cKpE766,cLeY132,cMaW943,cMvI670,cNlH131,cOfC466,cOgA336,cOgV336,cQjE457,cRjY3,cScO108,cSxL227,cUfE46,cUkL619,cUxV65,cVmB701,cWiF658,cWlQ564,cYhJ341,dAxP409,dFjU746,dFjX98,dGwW994,dGxB722,dHcD52,dIjH303,dKkS285,dKtS246,dNcE708,dNjX405,dPwA91,dQsC881,dQwW200,dSgA244,dUlJ226,dVcB715,dWkX968,eBcF648,eBjI662,eDqN694,eEwC553,eFvF420,eFxZ98,eJqU442,eJrV469,eJwK579,eLaX854,eMlV762,eOsR422,ePtK115,eRiA483,eTbB338,eTeN427,eTlJ112,eTuV513,eUhA812,eUlQ651,eVdF177,eVrB196,eWmA547,eXbL428,eXbZ260,fAwX397,fDiE380,fEvD910,fExS590,fFaT657,fHvH813,fHvL878,fIrI142,fNmA752,fNrG936,fQyZ791,fReR710,fSeH892,fTtH911,fUgE405,fVdR262,fXzU62,gAbK837,gAnO884,gAuZ469,gBsH757,gBuU279,gCfH611,gCgM197,gCkR802,gCnZ261,gCvN191,gFjJ203,gHbH274,gKwP717,gNqP615,gPmQ83,gRoW570,gVyU843,gWgK325,gXwX696,gYuI361,hDmO645,hDsZ776,hEhB109,hEkX373,hGtO432,hHvH288,hKyH776,hKyM613,hPbT51,hPtO722,hSnI881,hUdY836,hUzH278,hVsT472,hWlJ280,hWpQ960,hWvN297,hXsF91,iAwT145,iBiL349,iEdU57,iFqP724,iIqF937,iJhI851,iKfW273,iKsH37,iKuC151,iLcG821,iLzP805,iOzZ508,iVaM50,iVkZ787,iVyQ418,iXxA739,jBnY898,jCvB201,jDaZ290,jGvI940,jHhL365,jIcR726,jIfH810,jOfX344,jQdV910,jQpQ508,jRbM661,jTqB504,jTrU701,jWkS55,jXfY786,jZkY314,jZoW370,kBmK584,kCeA266,kCyI272,kHsN220,kIoJ477,kKlW317,kKoR43,kKqL97,kLpX893,kMqB138,kOdR658,kQvE485,kRuC321,kTfQ478,kWbC104,lAyS476,lDaK93,lEyC960,lFnE159,lFoR629,lHdL925,lKgP760,lLtK602,lMuY335,lRlP26,lRtA131,lScD281,lTnS64,lVfH988,lVyK224,lWxU53,lYsZ293,lZqH430,mBwK96,mEhG497,mEtX223,mFjG76,mHvN737,mIdT916,mJqY47,mKbJ14,mOaR162,mPfA191,mTvR446,mTzD333,mUoY562,mYcE721,nBrX977,nChM928,nCzC848,nDlE202,nHcF476,nItE94,nJrH2,nMsM875,nPpU60,nPtX279,nRgP130,nXuO7,nYoY642,oBrY487,oCuJ866,oCuS364,oDoJ500,oEkV500,oGcQ143,oIeT294,oKgN698,oLkL612,oMaW215,oOlU266,oPwO298,oQtQ835,oQxV921,oRrI573,oSpX526,oTaF764,oTqE32,oUoI583,oWwF4,oXeU770,oXgG260,oXvA471,oZwC845,p,pAfK338,pCnK857,pCxO92,pGjD858,pIqV415,pIsP793,pJmB560,pJnU308,pLjF613,pOcE659,pPeQ495,pQfV4,pQmN564,pRzX130,pThO565,pTyS854,pVbU831,pWgZ360,pXjD945,pZhH193,qDbG440,qDjR264,qEjZ998,qHpJ294,qHzR113,qIgC59,qMdO443,qNhE258,qOmG375,qOsE255,qPlD875,qQcA233,qTyI867,qUsB156,qVaZ975,qVoL483,qZeJ43,rCkP997,rCqN306,rCxB766,rDhP641,rDnQ139,rEzS156,rFeM285,rFxS478,rIkK713,rJmO344,rKjJ948,rKtK883,rLbS22,rLcO21,rLxO834,rMaR886,rNuB65,rQeG749,rRaM272,rTcL279,rTlD372,rUaF321,rUfF135,rUtF565,rVcA926,rVtT305,rWhB737,rYjN166,rYsJ539,sAeE565,sCqU754,sCxD14,sEpW336,sFlO715,sGaH347,sHxK787,sJiA840,sJnX426,sNgR726,sOhS206,sRkW581,sSeJ164,sSnW326,sUiT275,sWpH158,sWuD660,sXcK128,sXzX982,sYmG535,sZcM205,sZkP243,sZwP89,t,tAmW546,tDwC10,tFqU27,tGxY44,tJuR573,tLaB218,tLlN941,tNbT746,tQzY994,tSvF291,tVhS883,tVoL77,tWmD495,tXtE58,tYyL280,uFbA911,uFnL917,uGaD286,uGsJ754,uHuF203,uLgJ625,uMfC466,uNjY188,uNqC676,uQrM333,uQrN134,uRaO9,uSfR536,uThU729,uTrQ724,uVzG864,uZbQ201,uZzY318,vAgV320,vDdH467,vDtU704,vFaW507,vFhC604,vFsP982,vHhB972,vKbR613,vLvE12,vLvW455,vMrP421,vQnN919,vQuM382,vSaV957,vSvH371,vWeY990,vZbI991,wEyL959,wFmP401,wGaQ832,wGfG320,wGiZ578,wIeU685,wIgK267,wJfV914,wLrS409,wNaJ218,wOhS88,wOzJ583,wQiB321,wSsG361,wUjC252,wXcN883,wXhL467,wYpH792,xAcZ842,xAiO159,xDhK339,xDzO159,xEeG147,xHaT268,xKbR731,xLjZ812,xLtG191,xNgK58,xNtM751,xRmO234,xRyD162,xSzY109,xVeA440,xVlO169,xWgB442,xWjO114,xWkV539,xZfZ774,yBmA286,yCoC222,yDfV592,yEiC775,yGjA720,yJiC412,yKaN677,yKcB355,yLcJ287,yLqW13,yNuT380,yOxP297,yRnZ896,yTdX740,yWeA650,yXhD167,yXyW696,yYfZ964,yZiE37,yZnS702,z,zFpS831,zIpD993,zJiU95,zKeW582,zKfI857,zNoM628,zOxA571,zPdI799,zPhD127,zPiG111,zPwY307,zQdT33,zRkW105,zVoQ61,zWiY404,x
 5000
 7 - Modifies, Typed :: check Modifies while
 while w1; variable v1;
 Select v1 such that Modifies(w1,v1);
-aeroplane,ant,apple,banana,carrot,cloud,cockroach,dinosaur,door,egg,elevator,fan,fish,fox,garbage,goat,gummy,ham,hamster,hanger,igloo,innard,jaguar,jam,jumper,kangeroo,keep,kimchi,leek,mango,nachos,pear,cEnK634,dKkS285,eTeN427,fIrI142,fSeH892,nPtX279,oQxV921,wNaJ218
+aeroplane,ant,apple,banana,carrot,cloud,cockroach,dinosaur,door,egg,elevator,fan,fish,fox,garbage,goat,gummy,ham,hamster,hanger,igloo,innard,jaguar,jam,jumper,kangeroo,keep,kimchi,leek,mango,nachos,pear,cEnK634,dKkS285,eTeN427,fIrI142,fSeH892,nPtX279,oQxV921,wNaJ218,basin,beetle,donut,elephant,lamp,lion,monkey,newt,orange,owl,penguin,quail,x
 5000
 8 - Modifies, Typed :: check Modifies if
 if i1; variable v1;
@@ -268,22 +268,22 @@ Select a1 such that Modifies(a1,"quail");
 44 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"apple");
-7,9
+7,9,51
 5000
 45 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"banana");
-29
+29,51
 5000
 46 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"carrot");
-29,7,9
+29,7,9,51
 5000
 47 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"donut");
-
+51
 5000
 48 - Modifies, Typed :: check Modifies while
 while w1;
@@ -298,32 +298,32 @@ Select w1 such that Modifies(w1,"fish");
 50 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"gummy");
-7
+7,51
 5000
 51 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"ham");
-29,36,7,9
+29,36,7,9,51
 5000
 52 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"innard");
-7,9
+7,9,51
 5000
 53 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"jam");
-29,36,7,9
+29,36,7,9,51
 5000
 54 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"kimchi");
-23,7,9
+23,7,9,51
 5000
 55 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"leek");
-7,9
+7,9,51
 5000
 56 - Modifies, Typed :: check Modifies while
 while w1;
@@ -333,152 +333,152 @@ Select w1 such that Modifies(w1,"mango");
 57 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"nachos");
-29
+29,51
 5000
 58 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"orange");
-
+51,55
 5000
 59 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"pear");
-51
+51,55
 5000
 60 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"aeroplane");
-100,102,104,106,108,111,113,115,116,60,99
+100,102,104,106,108,111,113,115,116,60,99,51,55
 5000
 61 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"basin");
-
+51,55
 5000
 62 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"cloud");
-60
+60,51,55
 5000
 63 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"door");
-60
+60,51,55
 5000
 64 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"elevator");
-60
+60,51,55
 5000
 65 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"fan");
-60
+60,51,55
 5000
 66 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"garbage");
-60
+60,51,55
 5000
 67 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"hanger");
-60
+60,51,55
 5000
 68 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"igloo");
-60
+60,51,55
 5000
 69 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"jumper");
-60,74
+60,74,51,55
 5000
 70 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"keep");
-60,74,76
+60,74,76,51,55
 5000
 71 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"ant");
-100,102,104,106,108,111,113,99
+100,102,104,106,108,111,113,99,51,55
 5000
 72 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"beetle");
-
+51
 5000
 73 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"cockroach");
-100,99
+100,99,51
 5000
 74 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"dinosaur");
-100,102,99
+100,102,99,51
 5000
 75 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"elephant");
-
+51
 5000
 76 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"fox");
-100,102,104,99
+100,102,104,99,51
 5000
 77 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"goat");
-100,102,104,106,99
+100,102,104,106,99,51
 5000
 78 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"hamster");
-100,102,104,106,108,99
+100,102,104,106,108,99,51
 5000
 79 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"jaguar");
-100,102,104,106,108,99
+100,102,104,106,108,99,51
 5000
 80 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"kangeroo");
-100,102,104,106,108,111,99
+100,102,104,106,108,111,99,51
 5000
 81 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"lion");
-
+51
 5000
 82 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"monkey");
-
+51
 5000
 83 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"newt");
-
+51
 5000
 84 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"owl");
-
+51
 5000
 85 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"penguin");
-
+51
 5000
 86 - Modifies, Typed :: check Modifies while
 while w1;
 Select w1 such that Modifies(w1,"quail");
-
+51
 5000
 87 - Modifies, Typed :: check Modifies if
 if i1;
@@ -695,440 +695,10 @@ if i1;
 Select i1 such that Modifies(i1,"quail");
 
 5000
-130 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"apple");
-120,123,125,127,128,134,135,28,40,53,386
-5000
-131 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"banana");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-132 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"carrot");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-133 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"donut");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-134 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"egg");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-135 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"fish");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-386 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"gummy");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-137 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"ham");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-138 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"innard");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-139 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"jam");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-140 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"kimchi");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-141 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"leek");
-120,123,125,127,128,134,135,386,28,40,53,56
-5000
-142 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"mango");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-143 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"nachos");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-144 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"orange");
-120,123,125,127,128,134,135,386,28,40,53,56
-5000
-145 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"pear");
-120,123,125,127,128,134,135,386,28,40,53,56
-5000
-146 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"aeroplane");
-120,123,125,127,128,130,134,135,386,28,40,47,53,56
-5000
-147 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"basin");
-120,123,125,127,128,130,134,135,386,28,40,47,53,56
-5000
-148 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"cloud");
-120,123,125,127,128,130,134,135,386,28,40,47,53,56
-5000
-149 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"door");
-120,123,125,127,128,130,134,135,386,28,40,47,53,56
-5000
-150 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"elevator");
-120,123,125,127,128,130,134,135,386,28,40,47,53,56
-5000
-151 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"fan");
-120,123,125,127,128,130,134,135,386,28,40,47,53,56
-5000
-152 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"garbage");
-120,123,125,127,128,130,134,135,386,28,40,47,53,56
-5000
-153 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"hanger");
-120,123,125,127,128,130,134,135,386,28,40,47,53,56
-5000
-154 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"igloo");
-120,123,125,127,128,130,134,135,386,28,40,47,53,56
-5000
-155 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"jumper");
-120,123,125,127,128,130,134,135,386,28,40,47,53,56
-5000
-156 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"keep");
-120,123,125,127,128,130,134,135,386,28,40,47,53,56
-5000
-157 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"ant");
-120,123,125,127,128,134,135,386,28,40,47,53,56
-5000
-158 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"beetle");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-159 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"cockroach");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-160 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"dinosaur");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-161 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"elephant");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-162 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"fox");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-163 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"goat");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-164 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"hamster");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-165 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"jaguar");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-166 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"kangeroo");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-167 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"lion");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-168 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"monkey");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-169 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"newt");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-170 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"owl");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-171 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"penguin");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-172 - Modifies, Typed :: check Modifies call
-call c1;
-Select c1 such that Modifies(c1,"quail");
-120,123,125,127,128,134,135,386,28,40,53
-5000
-173 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"apple");
-Alice,Bob,Danny,Fred,Goneril,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-174 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"banana");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-175 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"carrot");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-176 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"donut");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-177 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"egg");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-178 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"fish");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-179 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"gummy");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-180 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"ham");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-181 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"innard");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-182 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"jam");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-183 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"kimchi");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-184 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"leek");
-Alice,Bob,Charlie,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-185 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"mango");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-186 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"nachos");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-187 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"orange");
-Alice,Bob,Charlie,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-188 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"pear");
-Alice,Bob,Charlie,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-189 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"aeroplane");
-Alice,Bob,Charlie,Danny,Eliza,Fred,Henry,James,Kingsley,Lucas,Merril,Nancy,Oppi
-5000
-190 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"basin");
-Alice,Bob,Charlie,Danny,Eliza,Fred,Henry,James,Kingsley,Lucas,Merril,Nancy,Oppi
-5000
-191 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"cloud");
-Alice,Bob,Charlie,Danny,Eliza,Fred,Henry,James,Kingsley,Lucas,Merril,Nancy,Oppi
-5000
-192 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"door");
-Alice,Bob,Charlie,Danny,Eliza,Fred,Henry,James,Kingsley,Lucas,Merril,Nancy,Oppi
-5000
-193 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"elevator");
-Alice,Bob,Charlie,Danny,Eliza,Fred,Henry,James,Kingsley,Lucas,Merril,Nancy,Oppi
-5000
-194 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"fan");
-Alice,Bob,Charlie,Danny,Eliza,Fred,Henry,James,Kingsley,Lucas,Merril,Nancy,Oppi
-5000
-195 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"garbage");
-Alice,Bob,Charlie,Danny,Eliza,Fred,Henry,James,Kingsley,Lucas,Merril,Nancy,Oppi
-5000
-196 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"hanger");
-Alice,Bob,Charlie,Danny,Eliza,Fred,Henry,James,Kingsley,Lucas,Merril,Nancy,Oppi
-5000
-197 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"igloo");
-Alice,Bob,Charlie,Danny,Eliza,Fred,Henry,James,Kingsley,Lucas,Merril,Nancy,Oppi
-5000
-198 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"jumper");
-Alice,Bob,Charlie,Danny,Eliza,Fred,Henry,James,Kingsley,Lucas,Merril,Nancy,Oppi
-5000
-199 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"keep");
-Alice,Bob,Charlie,Danny,Eliza,Fred,Henry,James,Kingsley,Lucas,Merril,Nancy,Oppi
-5000
-200 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"ant");
-Alice,Bob,Charlie,Danny,Fred,Henry,James,Kingsley,Lucas,Merril,Nancy,Oppi
-5000
-201 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"beetle");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-202 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"cockroach");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-203 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"dinosaur");
-Alice,Bob,Danny,Fred,Henry,Illidan,James,Kingsley,Merril,Nancy,Oppi
-5000
-204 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"elephant");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-205 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"fox");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-206 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"goat");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-207 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"hamster");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-208 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"jaguar");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-209 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"kangeroo");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-210 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"lion");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-211 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"monkey");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-212 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"newt");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-213 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"owl");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-214 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"penguin");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
-215 - Modifies, Typed :: check Modifies procedure
-procedure p1;
-Select p1 such that Modifies(p1,"quail");
-Alice,Bob,Danny,Fred,Henry,James,Kingsley,Merril,Nancy,Oppi
-5000
 1 - Uses, Typed :: check Uses assignment
 assign a1; variable v1; 
 Select a1 such that Uses(a1,v1);
-105,107,109,11,110,112,118,119,121,122,124,126,129,137,14,18,19,2,21,24,3,31,32,33,34,37,38,39,42,43,44,45,49,5,50,52,54,57,59,62,63,65,66,68,69,71,72,73,75,77,78,79,81,82,136,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,299,300,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,370,371,372,373,374,375,376,377,378,379,380,381,382,383,384,385,387,388,389,390,391,392,393,394,395,396,397,398,399,400,401,402,403,404,405,406,407,408,409,410,411,412,413,414,415,416,417,418,419,420,421,422,423,424,425,426,427,428,429,430,431,432,433,434,435,436,437,438,439,440,441,442,443,444,445,446,447,448,449,450,451,452,453,454,455,456,457,458,459,460,461,462,463,464,465,466,467,468,469,470,471,472,473,474,475,476,477,478,479,480,481,482,483,484,485,486,487,488,489,490,491,492,493,494,495,496,497,498,499,500,501,502,503,504,505,506,507,508,509,510,511,512,513,514,515,516,517,518,519,520,521,522,523,524,525,526,527,528,529,530,531,532,533,534,535,536,537,538,539,540,541,542,543,544,545,546,547,548,549,550,551,552,553,554,555,556,557,558,559,560,561,562,563,564,565,566,567,568,569,570,571,572,573,574,575,576,577,578,579,580,581,582,583,584,585,586,587,588,589,590,591,592,593,594,595,596,597,598,599,600,601,602,603,604,605,606,607,608,609,610,611,612,613,614,615,616,617,618,619,620,621,622,623,624,625,626,627,628,629,630,631,632,633,634,635,636,638,639,640,641,642,643,645,646,647,649,650,651,652
+105,107,109,11,110,112,118,119,121,122,124,126,127,128,129,137,14,18,19,2,21,24,3,31,32,33,34,37,38,39,42,43,44,45,49,5,50,52,54,57,59,62,63,65,66,68,69,71,72,73,75,77,78,79,81,82,136,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,299,300,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,370,371,372,373,374,375,376,377,378,379,380,381,382,383,384,385,387,388,389,390,391,392,393,394,395,396,397,398,399,400,401,402,403,404,405,406,407,408,409,410,411,412,413,414,415,416,417,418,419,420,421,422,423,424,425,426,427,428,429,430,431,432,433,434,435,436,437,438,439,440,441,442,443,444,445,446,447,448,449,450,451,452,453,454,455,456,457,458,459,460,461,462,463,464,465,466,467,468,469,470,471,472,473,474,475,476,477,478,479,480,481,482,483,484,485,486,487,488,489,490,491,492,493,494,495,496,497,498,499,500,501,502,503,504,505,506,507,508,509,510,511,512,513,514,515,516,517,518,519,520,521,522,523,524,525,526,527,528,529,530,531,532,533,534,535,536,537,538,539,540,541,542,543,544,545,546,547,548,549,550,551,552,553,554,555,556,557,558,559,560,561,562,563,564,565,566,567,568,569,570,571,572,573,574,575,576,577,578,579,580,581,582,583,584,585,586,587,588,589,590,591,592,593,594,595,596,597,598,599,600,601,602,603,604,605,606,607,608,609,610,611,612,613,614,615,616,617,618,619,620,621,622,623,624,625,626,627,628,629,630,631,632,633,634,635,636,638,639,640,641,642,643,645,646,647,649,650,651,652
 5000
 2 - Uses, Typed :: check Uses while
 while w1; variable v1;
@@ -1143,7 +713,7 @@ Select i1 such that Uses(i1,v1);
 4 - Uses, Typed :: check Uses call
 call c1; variable v1;
 Select c1 such that Uses(c1,v1);
-120,123,125,127,128,130,134,135,28,40,47,53,56,386
+120,123,125,130,134,135,28,40,47,53,56,386
 5000
 5 - Uses, Typed :: check Uses procedure
 procedure p1; variable v1;
@@ -1158,7 +728,7 @@ aeroplane,ant,apple,banana,basin,beetle,carrot,cloud,cockroach,dinosaur,donut,do
 7 - Uses, Typed :: check Uses while
 while w1; variable v1;
 Select v1 such that Uses(w1,v1);
-aeroplane,ant,apple,banana,basin,beetle,carrot,cloud,cockroach,dinosaur,donut,door,egg,elevator,fan,fish,fox,garbage,goat,gummy,ham,hamster,hanger,igloo,jam,jumper,kangeroo,keep,kimchi,leek,mango,nachos,pear,cEnK634,dKkS285,eTeN427,fIrI142,fSeH892,gBuU279,nPtX279,oQxV921,p,pJnU308,rLbS22,rUtF565,uLgJ625,wNaJ218
+aeroplane,ant,apple,banana,basin,beetle,carrot,cloud,cockroach,dinosaur,donut,door,egg,elevator,fan,fish,fox,garbage,goat,gummy,ham,hamster,hanger,igloo,jam,jumper,kangeroo,keep,kimchi,leek,mango,nachos,pear,cEnK634,dKkS285,eTeN427,fIrI142,fSeH892,gBuU279,nPtX279,oQxV921,p,pJnU308,rLbS22,rUtF565,uLgJ625,wNaJ218,elephant,i,orange
 5000
 8 - Uses, Typed :: check Uses if
 if i1; variable v1;
@@ -1393,27 +963,28 @@ Select a1 such that Uses(a1,"quail");
 44 - Uses, Typed :: check Uses while
 while w1;
 Select w1 such that Uses(w1,"apple");
-7
+7,51,55
 5000
 45 - Uses, Typed :: check Uses while
 while w1;
 Select w1 such that Uses(w1,"banana");
-29,36
+29,36,51,55
 5000
 46 - Uses, Typed :: check Uses while
 while w1;
 Select w1 such that Uses(w1,"carrot");
-29,7,9
+29,7,9,51,55
 5000
 47 - Uses, Typed :: check Uses while
 while w1;
 Select w1 such that Uses(w1,"donut");
-23,7,9
+23,7,9,51,55
 5000
 48 - Uses, Typed :: check Uses while
 while w1;
 Select w1 such that Uses(w1,"egg");
-51
+51,55
+51,55
 5000
 49 - Uses, Typed :: check Uses while
 while w1;
@@ -1423,7 +994,7 @@ Select w1 such that Uses(w1,"fish");
 50 - Uses, Typed :: check Uses while
 while w1;
 Select w1 such that Uses(w1,"gummy");
-7,9
+7,9,51
 5000
 51 - Uses, Typed :: check Uses while
 while w1;
@@ -1438,7 +1009,7 @@ Select w1 such that Uses(w1,"innard");
 53 - Uses, Typed :: check Uses while
 while w1;
 Select w1 such that Uses(w1,"jam");
-15,23,7,9
+15,23,7,9,51
 5000
 54 - Uses, Typed :: check Uses while
 while w1;

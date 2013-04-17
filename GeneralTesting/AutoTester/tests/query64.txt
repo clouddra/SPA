@@ -3,7 +3,7 @@ cat: Test Case for Contains* (Known,unKnown) and (unKnown,Known)
 2 - Contains, Typed :: contains*(ASSIGNMENT,PLUS)
 plus pls;assign a;
 Select a such that Contains*(a,pls);
-11,110,112,122,18,19,2,21,24,37,44,45,5,50,54,59,63,78,81,82
+11,110,112,122,18,19,2,21,24,37,44,45,5,50,54,59,63,78,81,82,128
 5000
 3 - Contains, Typed :: contains*(ASSIGNMENT,MINUS)
 minus min;assign a;
@@ -118,7 +118,7 @@ Bob
 35 - Contains, Typed :: contains*(PROCEDURE,PLUS)
 plus pls;procedure p;
 Select p such that Contains*(p,pls);
-Alice,Bob,Charlie,Danny,Eliza,Fred,Henry
+Alice,Bob,Charlie,Danny,Eliza,Fred,Henry,Kingsley
 5000
 36 - Contains, Typed :: contains*(PROCEDURE,MINUS)
 minus min;procedure p;
@@ -158,7 +158,7 @@ Select s such that Contains*(s,56);
 57 - Contains, Typed :: contains*(STATEMENT,PLUS)
 plus pls;stmt s;
 Select s such that Contains*(s,pls);
-2,5,7,9,11,17,18,19,21,22,23,24,29,36,37,44,45,48,50,51,54,59,60,61,63,64,67,70,78,81,82,108,106,104,102,100,99,110,111,112,122
+2,5,7,9,11,17,18,19,21,22,23,24,29,36,37,44,45,48,50,51,54,59,60,61,63,64,67,70,78,81,82,108,106,104,102,100,99,110,111,112,122,128
 5000
 58 - Contains, Typed :: contains*(STATEMENT,MINUS)
 minus min;stmt s;
@@ -203,7 +203,7 @@ Select sl such that Contains*(sl,56);
 46 - Contains, Typed :: contains*(STMT_LIST,PLUS)
 plus pls;stmtLst sl;
 Select sl such that Contains*(sl,pls);
-1,10,100,101,103,105,107,109,112,121,122,124,18,20,23,24,26,29,30,37,44,50,51,52,58,61,63,66,69,73,8,83
+1,10,100,101,103,105,107,109,112,122,18,20,23,24,29,30,37,44,50,51,52,58,61,63,66,69,73,8,83,127
 5000
 47 - Contains, Typed :: contains*(STMT_LIST,MINUS)
 minus min;stmtLst sl;
@@ -328,7 +328,7 @@ Select c such that Contains*(61,c);
 61 - Contains, Typed :: contains*(PLUS,VARIABLE)
 plus pls; variable v;
 Select v such that Contains*(pls,v);
-aeroplane,apple,banana,basin,beetle,carrot,cloud,donut,egg,fish,ham,keep,kimchi,leek,mango,nachos,orange
+aeroplane,apple,banana,basin,beetle,carrot,cloud,donut,egg,fish,ham,keep,kimchi,leek,mango,nachos,orange,i
 5000
 62 - Contains, Typed :: contains*(PLUS,CONSTANT)
 plus pls; constant c;
