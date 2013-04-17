@@ -77,7 +77,8 @@ void Threading::processNextSameVarStart(std::vector<int>& result, std::vector<in
     if (pkb.isNext(para1Val[i], para1Val[i])) {
         result.push_back(i);
     }
-
+	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
+	sem.post();
 }
 
 bool Threading::processNextSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
@@ -149,6 +150,8 @@ void Threading::processNextDiffVarStart(std::vector<std::vector<std::string>>& r
         holder.push_back(toStore[j]); 
         result.push_back(holder);
     }
+	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
+	sem.post();
 }
 
 // Next(s1, s2) from end
@@ -163,6 +166,8 @@ void Threading::processNextDiffVarEnd(std::vector<std::vector<std::string>>& res
         holder.push_back(para2ValString[i]);
         result.push_back(holder);
     }
+	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
+	sem.post();
 }
 
 bool Threading::processNextDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
@@ -265,6 +270,8 @@ void Threading::processNextTSameVarStart(std::vector<int>& result, std::vector<i
     }
     if (found)
         result.push_back(para1Val[i]);
+	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
+	sem.post();
 }
 
 bool Threading::processNextTSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
@@ -319,6 +326,8 @@ void Threading::processNextTDiffVarStart(std::vector<std::vector<std::string>>& 
         holder.push_back(toStore[j]); 
         result.push_back(holder);
     }
+	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
+	sem.post();
 }
 
 // Next*(s1, s2) from end
@@ -333,6 +342,8 @@ void Threading::processNextTDiffVarEnd(std::vector<std::vector<std::string>>& re
         holder.push_back(para2ValString[i]);
         result.push_back(holder);
     }
+	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
+	sem.post();
 }
 
 bool Threading::processNextTDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
@@ -433,6 +444,8 @@ void Threading::processAffectsSameVarStart(std::vector<int>& result, std::vector
             break;
         }
     }
+	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
+	sem.post();	
 }
 
 bool Threading::processAffectsSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
@@ -487,6 +500,8 @@ void Threading::processAffectsDiffVarStart(std::vector<std::vector<std::string>>
         holder.push_back(toStore[j]); 
         result.push_back(holder);
     }
+	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
+	sem.post();
 }
 
 // Affects(a1, a2) from end
@@ -501,6 +516,8 @@ void Threading::processAffectsDiffVarEnd(std::vector<std::vector<std::string>>& 
         holder.push_back(para2ValString[i]);
         result.push_back(holder);
     }
+	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
+	sem.post();
 }
 
 bool Threading::processAffectsDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
@@ -601,6 +618,8 @@ void Threading::processAffectsTSameVarStart(std::vector<int>& result, std::vecto
             break;
         }
     }
+	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
+	sem.post();
 }
 
 bool Threading::processAffectsTSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
@@ -655,6 +674,8 @@ void Threading::processAffectsTDiffVarStart(std::vector<std::vector<std::string>
         holder.push_back(toStore[j]); 
         result.push_back(holder);
     }
+	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
+	sem.post();
 }
 
 // Affects*(a1, a2) from end
@@ -669,6 +690,8 @@ void Threading::processAffectsTDiffVarStart(std::vector<std::vector<std::string>
         holder.push_back(para2ValString[i]);
         result.push_back(holder);
     }
+	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
+	sem.post();
 }
 
 bool Threading::processAffectsTDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
@@ -769,6 +792,8 @@ void Threading::processAffectsBipSameVarStart(std::vector<int>& result, std::vec
             break;
         }
     }
+	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
+	sem.post();
 }
 
 bool Threading::processAffectsBipSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
@@ -823,6 +848,8 @@ void Threading::processAffectsBipDiffVarStart(std::vector<std::vector<std::strin
         holder.push_back(toStore[j]); 
         result.push_back(holder);
     }
+	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
+	sem.post();
 }
 
 // AffectsBip(a1, a2) from end
@@ -837,6 +864,8 @@ void Threading::processAffectsBipDiffVarEnd(std::vector<std::vector<std::string>
         holder.push_back(para2ValString[i]);
         result.push_back(holder);
     }
+	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
+	sem.post();
 }
 
 bool Threading::processAffectsBipDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
@@ -937,6 +966,8 @@ void Threading::processAffectsBipTSameVarStart(std::vector<int>& result, std::ve
             break;
         }
     }
+	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
+	sem.post();
 }
 
 bool Threading::processAffectsBipTSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
@@ -991,6 +1022,8 @@ void Threading::processAffectsBipTDiffVarStart(std::vector<std::vector<std::stri
         holder.push_back(toStore[j]);
         result.push_back(holder);
     }
+	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
+	sem.post();
 }
 
 // AffectsBip*(a1, a2) from end
@@ -1005,6 +1038,8 @@ std::vector<std::vector<std::string>> Threading::processAffectsBipTDiffVarEnd(st
         holder.push_back(para2ValString[i]);
         result.push_back(holder);
     }
+	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
+	sem.post();
 }
 
 bool Threading::processAffectsBipTDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
