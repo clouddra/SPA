@@ -52,6 +52,22 @@ public:
 	bool processNextTDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
 							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb);
 
+	// NextBip
+	void processNextBipSameVarStart(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i);
+	bool processNextBipSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb);
+	void processNextBipDiffVarStart(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i);
+	void processNextBipDiffVarEnd(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i);
+	bool processNextBipDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
+							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb);
+
+	// NextBip*
+	void processNextBipTSameVarStart(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i);
+	bool processNextBipTSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb);
+	void processNextBipTDiffVarStart(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i);
+	void processNextBipTDiffVarEnd(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i);
+	bool processNextBipTDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
+							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb);
+
 	// Affects
 	void processAffectsSameVarStart(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i);
 	bool processAffectsSameVarDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb);
