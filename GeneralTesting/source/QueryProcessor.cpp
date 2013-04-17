@@ -1673,6 +1673,8 @@ int QueryProcessor::evaluateNextBip(bool T, bool para1IsNum, bool para1IsPlaceho
                 if (para1Val.size() == 0) {
                     return -1;
                 }
+
+				#ifndef ENABLE_THREADING
                 for (int i = 0; i < (int)para1Val.size(); i++) {
                     bool found = false;
                     std::vector<int> temp2 = pkb.getNextBipT(para1Val[i]);
@@ -1685,6 +1687,11 @@ int QueryProcessor::evaluateNextBip(bool T, bool para1IsNum, bool para1IsPlaceho
                     if (found)
                         temp.push_back(para1Val[i]);
                 }
+				#else
+				Threading threading;
+				if (!threading.processNextBipTSameVarDriver(temp, para1Val, pkb)) return -1;
+				#endif
+
                 toStore = intVecToStringVec(temp);
                 int ret = resultStore.insertResult(para1, toStore);
                 if (ret == -1) {  // Exit cond
@@ -1707,6 +1714,8 @@ int QueryProcessor::evaluateNextBip(bool T, bool para1IsNum, bool para1IsPlaceho
 				}
 
                 std::vector<std::vector<std::string>> toStoreTuple;
+
+				#ifndef ENABLE_THREADING
                 if (isPara1) {
                     for (int i = 0; i < (int)para1ValInt.size(); i++) {
                         temp = pkb.getNextBipT(para1ValInt[i]);
@@ -1731,6 +1740,11 @@ int QueryProcessor::evaluateNextBip(bool T, bool para1IsNum, bool para1IsPlaceho
                         }
                     }
                 }
+				#else
+				Threading threading;
+				if(!threading.processNextBipTDiffVarDriver(toStoreTuple, para1ValString, para1ValInt, para2ValString, para2ValInt, isPara1, pkb)) return -1;
+				#endif
+
                 int ret = resultStore.insertResult(para1, para2, toStoreTuple);
                 if (ret == -1)
                     return -1;
