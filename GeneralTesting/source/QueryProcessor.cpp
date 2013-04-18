@@ -3561,11 +3561,11 @@ void QueryProcessor::processQuery(PKB& pkb) {
         
         while (queryOrder[i].size() > 0) {
             
-            /*
+            
             // Autotester timeout
             if (AbstractWrapper::GlobalStop) {
                 return;
-            } */
+            } 
 
             int nextQuery;
 
