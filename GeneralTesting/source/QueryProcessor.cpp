@@ -4193,7 +4193,7 @@ void QueryProcessor::processQuery(PKB& pkb) {
                         }
                         else if (synoType2 == DeclarationTable::call_) {
                             std::vector<std::string> holder = resultStore.getValuesFor(syno);
-                            for (int j = 0; j < (int)toStore.size(); j++) {
+                            for (int i = 0; i < (int)holder.size(); i++) {
                                 std::vector<int> tempVec = pkb.getCallingStmts(holder[i]);
                                 toStore = intVecToStringVec(tempVec);
                                 for (int j = 0; j < (int)toStore.size(); j++) {
