@@ -8,7 +8,7 @@ Select  s1 with s1.stmt# = 10;
 2 - with, Typed :: 
 stmt s1; constant c;
 Select  c with s1.stmt# = c.value;
-0,1,2,9,10,11,22,33
+1,2,9,10,11,22,33
 5000
 3 - with, Typed :: 
 stmt s1,s2;
@@ -23,7 +23,7 @@ Select  c with c.value = 1;
 5 - with, Typed :: 
 stmt s1; constant c;
 Select  s1 with c.value = s1.stmt#;
-0,1,2,9,10,11,22,33
+1,2,9,10,11,22,33
 5000
 6 - with, Typed :: 
 assign a; if i; while w; stmt s; variable v; procedure p; call cl; constant c;
@@ -50,10 +50,10 @@ assign a; if i; while w; stmt s; variable v; procedure p; call cl; constant c;
 Select  BOOLEAN with v.varName = p.procName;
 false
 5000
-12 - with, Typed :: 
-assign a; if i; while w; stmt s; variable v; procedure p; call cl; constant c;
+12 - Call, With ::
+assign a; if i; while w; stmt s; variable v; procedure p; call cl; constant c; 
 Select  p with cl.procName = p.procName;
-yello,zebra,extra
+extra,yello,zebra
 5000
 225 - with, Typed :: stmt#=value
 call cl; constant c;
