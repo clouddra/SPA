@@ -1,5 +1,5 @@
-assign a1; variable v; stmtLst sl, sl2; if ifs; while w;
-Select sl pattern w(_, sl)
+assign a1; variable v; stmtLst sl, sl2; if ifs; while w; prog_line n;
+Select n with a1.stmt# = n
 
 
  

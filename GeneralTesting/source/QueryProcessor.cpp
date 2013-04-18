@@ -4220,6 +4220,32 @@ void QueryProcessor::processQuery(PKB& pkb) {
                                 return;
                         }
                     }
+                    else if (temp.getName().compare("attrCompare_synonym") == 0) {
+                        std::string syno2, attrName2;
+                        int synoType2;
+                        ret = attrRefChecker(&syno2, &attrName2, &synoType2, tree[temp.getChildren()[0]], pkb);
+                        if (ret == -1)
+                            return;
+                        if (synoType2 != DeclarationTable::prog_line_) {
+                            // Error
+                            return;
+                        }
+                        if (synoType == DeclarationTable::variable_ || synoType == DeclarationTable::procedure_)
+                            return;
+                        if (attrName.compare("procName") == 0)
+                            return;
+                        toStore = resultStore.getValuesFor(syno);
+                        std::vector<std::vector<std::string>> toStoreTuple;
+                        for (int i = 0; i < (int)toStore.size(); i++) {
+                            std::vector<std::string> holder;
+                            holder.push_back(toStore[i]);
+                            holder.push_back(toStore[i]);
+                            toStoreTuple.push_back(holder);
+                        }
+                        ret = resultStore.insertResult(syno, syno2, toStoreTuple);
+                        if (ret == -1)
+                            return;
+                    }
                     else {
                         // Error
                         return;
