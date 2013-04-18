@@ -17,6 +17,8 @@ PKB::PKB() {
 	cfg = CFG();
 }
 
+boost::mutex PKB::mutex;
+
 int PKB::insertNode(int nodeType, std::string value, int parent) {
     int indexValue = -1;
     bool newStmtFlag = false;
