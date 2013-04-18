@@ -152,7 +152,7 @@ foreach ($testing in $all_testing)
 
 		write-output "Output: `n---`n";
 
-		get-content $file;
+		#get-content $file;
 		
 		write-output "---------`n";
 		write-output "Done running $testing`n`n`n";
