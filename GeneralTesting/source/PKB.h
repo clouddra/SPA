@@ -103,7 +103,7 @@ private:
 	std::unordered_map<int, std::vector<int>> nextTMap;
 	std::unordered_map<int, std::vector<int>> prevTMap;
 
-	static boost::mutex mutex;
+	static boost::mutex PKB::mutex;
 	std::unordered_map<int, std::vector<int>> affectsMapStart;	
 	std::unordered_map<int, std::vector<int>> affectsMapEnd;	
 	std::unordered_map<int, std::vector<int>> affectsTMapStart;	
