@@ -4094,7 +4094,8 @@ void QueryProcessor::processQuery(PKB& pkb) {
                 if (temp.getName().compare("attrCompare_attrRef") == 0) {
                     std::string syno, attrName;
                     int synoType;
-                    ret = attrRefChecker(&syno, &attrName, &synoType, tree[temp.getChildren()[0]], pkb);
+                    int tempIndex = temp.getChildren()[0];
+                    ret = attrRefChecker(&syno, &attrName, &synoType, tree[tree[tempIndex].getChildren()[0]], pkb);
                     if (ret == -1)
                         return;
                     temp = tree[temp.getChildren()[1]];
@@ -4220,12 +4221,9 @@ void QueryProcessor::processQuery(PKB& pkb) {
                                 return;
                         }
                     }
-                    else if (temp.getName().compare("attrCompare_synonym") == 0) {
-                        std::string syno2, attrName2;
-                        int synoType2;
-                        ret = attrRefChecker(&syno2, &attrName2, &synoType2, tree[temp.getChildren()[0]], pkb);
-                        if (ret == -1)
-                            return;
+                    else if (temp.getName().compare("ref_synonym") == 0) {
+                        std::string syno2 = (tree[temp.getChildren()[0]]).getName();
+                        int synoType2 = evaluateType(pkb, syno2);         
                         if (synoType2 != DeclarationTable::prog_line_) {
                             // Error
                             return;
