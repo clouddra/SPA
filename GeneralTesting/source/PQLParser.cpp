@@ -359,20 +359,13 @@ namespace pqlparser
 				attrCompare_				[at_c<0>(_val) = "attrCompare"][push_back(at_c<2>(_val), qi::_1)]
 				>> *("and" >> attrCompare_  [push_back(at_c<2>(_val), qi::_1)])		
 				;
-			/*
+
 			attrCompare_ = 
 				hold[
-				(attrRef_					[at_c<0>(_val) = "attrCompare_attrRef"][push_back(at_c<2>(_val), qi::_1)]
+				ref_						[at_c<0>(_val) = "attrCompare_attrRef"][push_back(at_c<2>(_val), qi::_1)]
 				>> string("=")
 				>> ref_						[push_back(at_c<2>(_val), qi::_1)]
-				)
 				]
-				|
-				(
-				synonym_					[at_c<0>(_val) = "attrCompare_synonym"][push_back(at_c<2>(_val), qi::_1)]
-				>> string("=")
-				>> ref_pl_					[push_back(at_c<2>(_val), qi::_1)]
-				)
 				;
 
 			ref_pl_ =
@@ -387,39 +380,19 @@ namespace pqlparser
 				;
 			
 			ref_ =
-				('"' >> IDENT_ >> '"')		[at_c<0>(_val) = "ref_ident"][push_back(at_c<2>(_val), qi::_1)]
+				hold[attrRef_				[at_c<0>(_val) = "ref_attrRef"][push_back(at_c<2>(_val), qi::_1)]]
+				| synonym_					[at_c<0>(_val) = "ref_synonym"][push_back(at_c<2>(_val), qi::_1)]
+				| ('"' >> IDENT_ >> '"')	[at_c<0>(_val) = "ref_ident"][push_back(at_c<2>(_val), qi::_1)]
 				| INTEGER_					[at_c<0>(_val) = "ref_integer"][push_back(at_c<2>(_val), qi::_1)]
-				| attrRef_					[at_c<0>(_val) = "ref_attrRef"][push_back(at_c<2>(_val), qi::_1)]
-				;
-			*/
-
-// =========================
-
-			attrCompare_ = 
-				(ref_					[at_c<0>(_val) = "attrCompare_attrRef"][push_back(at_c<2>(_val), qi::_1)]
-				>> string("=")
-				>> ref_						[push_back(at_c<2>(_val), qi::_1)]
-				) // Removed something here
 				;
 
-			// No more ref-pl
-
-			ref_ =
-				('"' >> IDENT_ >> '"')		[at_c<0>(_val) = "ref_ident"][push_back(at_c<2>(_val), qi::_1)]
-				| INTEGER_					[at_c<0>(_val) = "ref_integer"][push_back(at_c<2>(_val), qi::_1)]
-				| attrRef_					[at_c<0>(_val) = "ref_attrRef"][push_back(at_c<2>(_val), qi::_1)]
-				| synonym_					[at_c<0>(_val) = "ref_synonym"][push_back(at_c<2>(_val), qi::_1)] // Added
-				;
-			
 			attrRef_ =
 				synonym_					[at_c<0>(_val) = "attrRef"][push_back(at_c<2>(_val), qi::_1)]
 				>> string(".")
 				>> attrName_				[push_back(at_c<2>(_val), qi::_1)]
 				;
 
-// ===========================
-
-			patternCond_ =
+				patternCond_ =
 				pattern_					[at_c<0>(_val) = "patternCond"][push_back(at_c<2>(_val), qi::_1)]
 				>> *("and" >> pattern_      [push_back(at_c<2>(_val), qi::_1)])	
 				;
