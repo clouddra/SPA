@@ -2254,9 +2254,21 @@ std::vector<int> PKB::depthDownBipT(int currStmt, std::unordered_set<int> varSet
 		int cfgIndex = stmtNodeTable.getCFG(currStmt);
 		std::vector<int> nextStmt = cfg.getNext(currStmt, cfgIndex);
 
+		int currProcInd = procTable.getProcOfStmt(currStmt);
+		int firstStmt = procTable.getProcFirstln(currProcInd);
+		int lastStmt = procTable.getProcLastln(currProcInd);
+
 		// If currStmt is last stmt of proc and proc is main branch
 		if (branchIn.empty() && nextStmt.empty())
 		{
+			for (int k = firstStmt; k <= lastStmt; k++)
+			{
+				// Remove curr proc stmts from ignoreSet
+				if (ignoreSet.count(k) > 0)
+					ignoreSet.erase(k);
+				// Reset curr proc stmts to unvisited
+				visited[k] = -1;
+			}
 			std::vector<int> nextStmtBip = cfg.getNextBip(currStmt, cfgIndex);
 			for (int i=0; i<(int)nextStmtBip.size(); i++)
 			{
@@ -2266,12 +2278,15 @@ std::vector<int> PKB::depthDownBipT(int currStmt, std::unordered_set<int> varSet
 		}
 		else if (nextStmt.empty()) // at last stmt and in sub branch, so should return to prev branch
 		{
-			// Reset curr proc stmts to unvisited
-			int currProcInd = procTable.getProcOfStmt(currStmt);
-			int firstStmt = procTable.getProcFirstln(currProcInd);
-			int lastStmt = procTable.getProcLastln(currProcInd);
+			
 			for (int k = firstStmt; k <= lastStmt; k++)
+			{
+				// Remove curr proc stmts from ignoreSet
+				if (ignoreSet.count(k) > 0)
+					ignoreSet.erase(k);
+				// Reset curr proc stmts to unvisited
 				visited[k] = -1;
+			}
 
 			int nextBipStmt = branchIn.back();
 			branchIn.pop_back();
@@ -2292,6 +2307,19 @@ std::vector<int> PKB::depthDownBipT(int currStmt, std::unordered_set<int> varSet
 		int cfgIndex = stmtNodeTable.getCFG(currStmt);
 		std::vector<int> nextStmt = cfg.getNext(currStmt, cfgIndex); // We are making use of the assumption getNext(callstmt) only has 0 or 1 stmt
 
+		// As long as branching away from curr proc, we reset visited and ignoreSet
+		int currProcInd = procTable.getProcOfStmt(currStmt);
+		int firstStmt = procTable.getProcFirstln(currProcInd);
+		int lastStmt = procTable.getProcLastln(currProcInd);
+		for (int k = firstStmt; k <= lastStmt; k++)
+		{
+			// Remove curr proc stmts from ignoreSet
+			if (ignoreSet.count(k) > 0)
+				ignoreSet.erase(k);
+			// Reset curr proc stmts to unvisited
+			visited[k] = -1;
+		}
+
 		if (!nextStmt.empty()) // call stmt is not the last stmt of current procedure
 		{
 			// Jump to the first stmt of called procedure, add the nextStmt to branch back in later
@@ -2311,7 +2339,7 @@ std::vector<int> PKB::depthDownBipT(int currStmt, std::unordered_set<int> varSet
 				int dummyCfgNodeInd = procTable.getCFGEnd(currProcInd);
 				std::vector<int> nextBipDummy = cfg.getNextBip(-1, dummyCfgNodeInd);
 
-				if (nextBipDummy.empty()) // no where else to branch after we return
+				if (nextBipDummy.empty()) // no where else to branch after we return, no need add branchIn
 				{
 					std::vector<int> nextStmtBip = cfg.getNextBip(currStmt, cfgIndex);
 					for (int i=0; i<(int)nextStmtBip.size(); i++)
@@ -2320,6 +2348,7 @@ std::vector<int> PKB::depthDownBipT(int currStmt, std::unordered_set<int> varSet
 						toReturn.insert(toReturn.end(), temp.begin(), temp.end());
 					}
 				}
+
 				// Add the many possible nextStmt to branch back in later
 				for (int j=0; j<(int)nextBipDummy.size(); j++)
 				{
@@ -2336,13 +2365,6 @@ std::vector<int> PKB::depthDownBipT(int currStmt, std::unordered_set<int> varSet
 			}
 			else // in subBranch, we need to return to prev branch after we branch out
 			{
-				// Reset curr proc stmts to unvisited
-				int currProcInd = procTable.getProcOfStmt(currStmt);
-				int firstStmt = procTable.getProcFirstln(currProcInd);
-				int lastStmt = procTable.getProcLastln(currProcInd);
-				for (int k = firstStmt; k <= lastStmt; k++)
-					visited[k] = -1;
-
 				// No need to handle branchIn, coz we cannot pop it yet
 				std::vector<int> nextStmtBip = cfg.getNextBip(currStmt, cfgIndex);
 				for (int i=0; i<(int)nextStmtBip.size(); i++)
@@ -2367,6 +2389,18 @@ std::vector<int> PKB::depthDownBipT(int currStmt, std::unordered_set<int> varSet
 			}
 			else // time to branch out
 			{
+				int currProcInd = procTable.getProcOfStmt(currStmt);
+				int firstStmt = procTable.getProcFirstln(currProcInd);
+				int lastStmt = procTable.getProcLastln(currProcInd);
+				for (int k = firstStmt; k <= lastStmt; k++)
+				{
+					// Remove curr proc stmts from ignoreSet
+					if (ignoreSet.count(k) > 0)
+						ignoreSet.erase(k);
+					// Reset curr proc stmts to unvisited
+					visited[k] = -1;
+				}
+
 				if (branchIn.empty()) // in main branch
 				{
 					std::vector<int> nextStmtBip = cfg.getNextBip(currStmt, cfgIndex);
@@ -2379,13 +2413,6 @@ std::vector<int> PKB::depthDownBipT(int currStmt, std::unordered_set<int> varSet
 				}
 				else // in sub branch, so we return to previous branch
 				{
-					// Reset curr proc stmts to unvisited
-					int currProcInd = procTable.getProcOfStmt(currStmt);
-					int firstStmt = procTable.getProcFirstln(currProcInd);
-					int lastStmt = procTable.getProcLastln(currProcInd);
-					for (int k = firstStmt; k <= lastStmt; k++)
-						visited[k] = -1;
-
 					int nextBipStmt = branchIn.back();
 					branchIn.pop_back();
 					std::vector<int> temp = depthDownBipT(nextBipStmt, varSet, visited, branchIn, ignoreSet);
@@ -2548,6 +2575,18 @@ std::vector<int> PKB::depthUpBipT(int currStmt, std::unordered_set<int> varSet, 
 		// if the prevBip stmt is not a getPrev stmt, means we are branching to another proc
 		if (prevSet.count(prevStmtBip[i]) == 0)
 		{
+			int currProcInd = procTable.getProcOfStmt(currStmt);
+			int firstStmt = procTable.getProcFirstln(currProcInd);
+			int lastStmt = procTable.getProcLastln(currProcInd);
+			for (int k = firstStmt; k <= lastStmt; k++)
+			{
+				// Remove curr proc stmts from ignoreSet
+				if (ignoreSet.count(k) > 0)
+					ignoreSet.erase(k);
+				// Reset curr proc stmts to unvisited
+				visited[k] = -1;
+			}
+
 			int prevBipProcInd = procTable.getProcOfStmt(prevStmtBip[i]);
 			// if prevBipStmt was in a procedure that prevStmt called, we going in sub branch
 			if (procToStmtMap.count(prevBipProcInd) > 0)
