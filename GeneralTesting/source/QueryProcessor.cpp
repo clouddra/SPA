@@ -1860,7 +1860,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
 			toStore = intVecToStringVec(temp2);
 			#else
 			Threading threading;
-			if (!threading.processAffectsPara1IsPlaceholderDriver(temp, temp2, pkb)) return -1;
+			if (!threading.processAffectsPara2IsPlaceholderDriver(temp, temp2, pkb)) return -1;
 			toStore = intVecToStringVec(temp);
 			#endif
 
@@ -2032,12 +2032,20 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
         // Affects*(_, a)
         else if (para1IsPlaceholder) {
             std::vector<int> temp2 = stringVecToIntVec(resultStore.getValuesFor(para2));
+
+			#ifndef ENABLE_THREADING
             for (int i = temp2.size()-1; i > -1; i--) {
                 temp = pkb.getAffectsTEndAPI(temp2[i]);
                 if (temp.size() == 0)
                     temp2.erase(temp2.begin()+i);
             }
-            toStore = intVecToStringVec(temp2);
+			toStore = intVecToStringVec(temp2);
+			#else
+			Threading threading;
+			if (!threading.processAffectsTPara1IsPlaceholderDriver(temp, temp2, pkb)) return -1;
+			toStore = intVecToStringVec(temp);
+			#endif
+
             int ret = resultStore.insertResult(para2, toStore);
             if (ret == -1) {  // Exit cond
                 return -1;
@@ -2046,12 +2054,20 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
         // Affects*(a, _)
         else if (para2IsPlaceholder) {
             std::vector<int> temp2 = stringVecToIntVec(resultStore.getValuesFor(para1));
+
+			#ifndef ENABLE_THREADING
             for (int i = temp2.size()-1; i > -1; i--) {
                 temp = pkb.getAffectsTStartAPI(temp2[i]);
                 if (temp.size() == 0)
                     temp2.erase(temp2.begin()+i);
             }
-            toStore = intVecToStringVec(temp2);
+			toStore = intVecToStringVec(temp2);
+			#else
+			Threading threading;
+			if (!threading.processAffectsTPara2IsPlaceholderDriver(temp, temp2, pkb)) return -1;
+			toStore = intVecToStringVec(temp);
+			#endif
+
             int ret = resultStore.insertResult(para1, toStore);
             if (ret == -1) {  // Exit cond
                 return -1;
