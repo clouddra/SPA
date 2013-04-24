@@ -1,2 +1,2 @@
-assign a1, a2; variable v; stmtLst sl, sl2; if ifs; while w; prog_line n;
-Select a1 such that Affects(_, a2)
+assign a1, a2; variable v; stmtLst sl, sl2; if ifs; while w; prog_line n; stmt s;
+Select s such that NextBip(s, 5)
