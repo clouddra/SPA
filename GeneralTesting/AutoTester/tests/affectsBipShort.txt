@@ -58,5 +58,5 @@ Select a such that AffectsBip(a,5)
 12 - NextBip::
 stmt s;
 Select s such that NextBip(s,5) 
-none
+12, 15
 5000
