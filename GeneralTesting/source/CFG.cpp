@@ -107,68 +107,59 @@ std::vector<int> CFG::getPrevBip(int stmt2, int nodeIndex){
 	// if Bip, must branch back to prev proc
 	std::vector<int> prevBip = cfg[nodeIndex].getBipPrev();
 	if (!prevBip.empty()) {
-		for (std::vector<int>::iterator j = prevNodes.begin() ; j != prevNodes.end(); ++j) {
-			// check if not branching out (not calls node).
-			// if true we must add to stmtList
-			if (cfg[*j].getBipNext().empty())
-				stmtList.push_back(cfg[*j].getEnd());
-		}
+		getPrevBip(stmt2, nodeIndex, stmtList);
+	}
 
-		for (std::vector<int>::iterator j = prevBip.begin() ; j != prevBip.end(); ++j) {
+	// else do normal prev
+	else{
+		for (std::vector<int>::iterator j = prevNodes.begin() ; j != prevNodes.end(); ++j) {
 			int prevStmt = cfg[*j].getEnd();
 
 			if (prevStmt!=-1)
 				stmtList.push_back(prevStmt);
-
-			// we take the node before dummy if it is dummy. 
-			// no need for recursion unlike nextBip since we just take node before dummy
-			// In nextBip there is no node after dummy
-			else {
-				std::vector<int> prevNodes = cfg[*j].getPrev();
-				for (std::vector<int>::iterator i = prevNodes.begin() ; i != prevNodes.end(); ++i) {
-					// node before dummy is not a dummy
-					stmtList.push_back(cfg[*i].getEnd());
-				}
-			}
-
-
 		}
-		return stmtList;
 	}
 
-	else{
-		// if no Bip
-		for (std::vector<int>::iterator j = prevNodes.begin() ; j != prevNodes.end(); ++j) {
-			// no dummy for prev
-			stmtList.push_back(cfg[*j].getEnd());
-		}
-
-		return stmtList;
-	}
-
+	return stmtList;
 }
 
 
 void CFG::getPrevBip(int stmt1, int nodeIndex, std::vector<int> &stmtList){
 
-
 	std::vector<int> prevBip = cfg[nodeIndex].getBipPrev();
+	std::vector<int> prevNodes = cfg[nodeIndex].getPrev();
 
 	for (std::vector<int>::iterator j = prevBip.begin() ; j != prevBip.end(); ++j) {
 		int prevStmt = cfg[*j].getEnd();
 
-		if (prevStmt!=-1)
+		if (prevStmt!=-1) 
 			stmtList.push_back(prevStmt);
 
-		// we take the node before dummy
-		else {
-			std::vector<int> prevNodes = cfg[*j].getPrev();
-			for (std::vector<int>::iterator i = prevNodes.begin() ; i != prevNodes.end(); ++i) {
-				// node before dummy is not a dummy
-				stmtList.push_back(cfg[*i].getEnd());
+		// recursive bip for dummy until we find valid node
+		else{
+			for (std::vector<int>::iterator i= prevNodes.begin() ; i != prevNodes.end(); ++i) {
+			// check if not branching out (not calls node).
+			// if not calls we must add to stmtList
+			if (cfg[*i].getBipNext().empty())
+				stmtList.push_back(cfg[*i].getEnd());	
 			}
+			getPrevBip(-1, *j, stmtList);
 		}
 	}
+	// do until no more bip then do normal prev
+	if (prevBip.empty() && stmt1 == -1) {
+
+		std::vector<int> prevNodes = cfg[nodeIndex].getPrev();
+		for (std::vector<int>::iterator j = prevNodes.begin() ; j != prevNodes.end(); ++j) {
+			int prevStmt = cfg[*j].getEnd();
+
+			if (prevStmt!=-1)
+				stmtList.push_back(prevStmt);
+		}
+	}
+
+
+
 
 }
 

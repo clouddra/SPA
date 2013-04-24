@@ -20,3 +20,13 @@ assign a1, a2;
 Select a1 such that Affects*(a2,a1)
 
 5000
+9 - Affects
+assign a1, a2;
+Select a1 such that Affects*(a1,_)
+
+5000
+10 - Affects
+assign a1, a2;
+Select a1 such that Affects*(_,a1)
+
+5000
