@@ -523,6 +523,66 @@ bool Threading::processAffectsSameVarDriver(std::vector<int>& temp, std::vector<
 	return true;
 }
 
+// Affects(_, a2)
+void Threading::processAffectsPara1IsPlaceholder(std::vector<int>& result, std::vector<int>& para2Val, PKB& pkb, int i) {
+	std::vector<int> temp2;
+    temp2 = pkb.getAffectsEndAPI(para2Val[i]);
+    if (temp2.size() != 0)
+        result.push_back(para2Val[i]);
+	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
+	sem.post();
+}
+
+// Affects(a1, _)
+void Threading::processAffectsPara2IsPlaceholder(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i) {
+	std::vector<int> temp2;
+	temp2 = pkb.getAffectsStartAPI(para1Val[i]);
+    if (temp2.size() != 0)
+        result.push_back(para1Val[i]);
+	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
+	sem.post();
+}
+
+bool Threading::processAffectsPara1IsPlaceholderDriver(std::vector<int>& temp, std::vector<int>& para2Val, PKB& pkb) {
+	boost::interprocess::named_semaphore::remove(SEMNAME);
+	boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
+	std::vector<std::vector<int>> results((int)para2Val.size());
+    for (int i = 0; i < (int)para2Val.size(); i++) {
+		boost::function<void()> f = boost::bind(&Threading::processAffectsPara1IsPlaceholder, this, boost::ref(results.at(i)), para2Val, boost::ref(pkb), i);
+		this->threadPool.enqueue(f);
+    }
+	for (int i = 0; i < (int)para2Val.size(); i++) {
+		sem.wait();
+	}
+	for (int i=0; i<(int)para2Val.size(); i++) {
+		for (std::vector<int>::iterator it=results.at(i).begin(); it<results.at(i).end(); it++) {
+			temp.push_back(*it);
+		}
+	}
+	boost::interprocess::named_semaphore::remove(SEMNAME);
+	return true;
+}
+
+bool Threading::processAffectsPara2IsPlaceholderDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb) {
+	boost::interprocess::named_semaphore::remove(SEMNAME);
+	boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
+	std::vector<std::vector<int>> results((int)para1Val.size());
+    for (int i = 0; i < (int)para1Val.size(); i++) {
+		boost::function<void()> f = boost::bind(&Threading::processAffectsSameVarStart, this, boost::ref(results.at(i)), para1Val, boost::ref(pkb), i);
+		this->threadPool.enqueue(f);
+    }
+	for (int i = 0; i < (int)para1Val.size(); i++) {
+		sem.wait();
+	}
+	for (int i=0; i<(int)para1Val.size(); i++) {
+		for (std::vector<int>::iterator it=results.at(i).begin(); it<results.at(i).end(); it++) {
+			temp.push_back(*it);
+		}
+	}
+	boost::interprocess::named_semaphore::remove(SEMNAME);
+	return true;
+}
+
 // Affects(a1, a2) from start
 void Threading::processAffectsDiffVarStart(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, PKB& pkb, int i) {
 	std::vector<int> temp;
