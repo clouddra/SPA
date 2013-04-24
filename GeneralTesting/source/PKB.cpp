@@ -189,7 +189,7 @@ std::vector<int> PKB::convertToNodeIndex(std::string input, int type) {
     std::vector<int> nodeInput, temp;
     std::vector<Node> tree = ast.getTree();
     std::istringstream convert(input);
-    int inputNum = -1;
+    int inputNum = -1, tempInt;
     bool isNum = false;
     if (convert >> inputNum)
         isNum = true;
@@ -202,7 +202,9 @@ std::vector<int> PKB::convertToNodeIndex(std::string input, int type) {
         case Node::stmtSpecialValue:
             if (!isNum)
                 return temp;
-            nodeInput.push_back(stmtNodeTable.getAST(inputNum));
+            tempInt = stmtNodeTable.getAST(inputNum);
+            if (tempInt != -1)
+                nodeInput.push_back(tempInt);
             break;
 
         case Node::constNode:
@@ -614,10 +616,12 @@ bool PKB::isCalls(std::string proc1, std::string proc2) {
 }
 
 std::vector<int> PKB::getCallingStmts(std::string proc) {
+    std::vector<int> toRet;
     int procIndex = procTable.getProcIndex(proc);
+    if (procIndex == -1)
+        return toRet;
     std::vector<int> callStmts = stmtNodeTable.getASTWithType(Node::callNode);
     std::vector<Node> tree = ast.getTree();
-    std::vector<int> toRet;
 
     for (int i = 0; i < (int)callStmts.size(); i++) {
         if (tree[callStmts[i]].getValue() == procIndex)
@@ -951,7 +955,10 @@ std::vector<int> PKB::getPrevBipT(int stmt) {
 }
 
 bool PKB::isNextBip(int stmt1, int stmt2) {
-    return cfg.isNextBip(stmt1, stmtNodeTable.getCFG(stmt1), stmt2);
+    int temp = stmtNodeTable.getCFG(stmt1);
+	if (temp == -1)
+		return false;
+    return cfg.isNextBip(stmt1, temp, stmt2);
 }
 
 std::vector<int> PKB::getStmtWithType(int nodeType) {
@@ -972,17 +979,19 @@ std::vector<std::vector<std::string>> PKB::addStmtLst(std::vector<int> stmts, bo
     
     for (int i = 0; i < (int)stmts.size(); i++) {
         int temp = stmtNodeTable.getAST(stmts[i]);
-        std::vector<std::string> holder;
-        holder.push_back(std::to_string((long long)stmts[i]));
-        if (addStmtLst1) {
-            int stmtLst1 = tree[temp].getChildren()[1];
-            holder.push_back(std::to_string((long long)stmtLst1));
+        if (temp != -1) {
+            std::vector<std::string> holder;
+            holder.push_back(std::to_string((long long)stmts[i]));
+            if (addStmtLst1) {
+                int stmtLst1 = tree[temp].getChildren()[1];
+                holder.push_back(std::to_string((long long)stmtLst1));
+            }
+            if (addStmtLst2) {
+                int stmtLst2 = tree[temp].getChildren()[2];
+                holder.push_back(std::to_string((long long)stmtLst2));
+            }
+            toRet.push_back(holder);
         }
-        if (addStmtLst2) {
-            int stmtLst2 = tree[temp].getChildren()[2];
-            holder.push_back(std::to_string((long long)stmtLst2));
-        }
-        toRet.push_back(holder);
     }
     return toRet;
 }
