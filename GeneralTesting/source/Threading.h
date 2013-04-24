@@ -74,6 +74,10 @@ public:
 	void processAffectsDiffVarEnd(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i);
 	bool processAffectsDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
 							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb);
+	void processAffectsPara1IsPlaceholder(std::vector<int>& result, std::vector<int>& para2Val, PKB& pkb, int i);
+	void processAffectsPara2IsPlaceholder(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i);
+	bool processAffectsPara1IsPlaceholderDriver(std::vector<int>& temp, std::vector<int>& para2Val, PKB& pkb);
+	bool processAffectsPara2IsPlaceholderDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb);
 
 	// Affects*
 	void processAffectsTSameVarStart(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i);
@@ -82,6 +86,10 @@ public:
 	void processAffectsTDiffVarEnd(std::vector<std::vector<std::string>>& result, std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, PKB& pkb, int i);
 	bool processAffectsTDiffVarDriver(std::vector<std::vector<std::string>>& toStoreTuple, std::vector<std::string>& para1ValString, std::vector<int>& para1ValInt, 
 							std::vector<std::string>& para2ValString, std::vector<int>& para2ValInt, bool isPara1, PKB& pkb);
+	void processAffectsTPara1IsPlaceholder(std::vector<int>& result, std::vector<int>& para2Val, PKB& pkb, int i);
+	void processAffectsTPara2IsPlaceholder(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i);
+	bool processAffectsTPara1IsPlaceholderDriver(std::vector<int>& temp, std::vector<int>& para2Val, PKB& pkb);
+	bool processAffectsTPara2IsPlaceholderDriver(std::vector<int>& temp, std::vector<int>& para1Val, PKB& pkb);
 
 	// AffectsBip
 	void processAffectsBipSameVarStart(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i);

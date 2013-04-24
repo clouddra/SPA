@@ -1,0 +1,67 @@
+1
+cat: All
+1 - AffectsStar
+prog_line n;
+Select n such that Affects*(26, n)
+27,28,29,31,34,37,38,39,40,41,46,47,49,50,51,52,53,55,57,58,79,80,81
+5000
+2 - AffectsStar
+assign a1,a2; while w;
+Select <a1,a2> such that Affects*(a1,a2) and Parent*(w,a1) and Parent*(w,a2) pattern w("z",_)
+22 36,24 32,24 34,24 38,24 39,24 40,26 27,26 28,26 29,26 31,26 34,26 37,26 38,26 39,26 40,26 41,27 28,27 29,27 31,27 34,27 37,27 38,27 39,27 40,27 41,28 29,28 31,28 34,28 37,28 38,28 39,28 40,28 41,29 34,29 39,29 40,31 34,31 38,31 39,31 40,31 41,32 34,32 38,32 39,32 40,37 34,38 34,38 39,38 40,39 39,40 34,41 34,41 38,41 39,41 40,42 24,42 32,42 34,42 38,42 39,42 40
+5000
+3 - AffectsStar
+assign a1,a2; if ifs; variable v;
+Select a1 such that Affects*(a1,a2) and Parent*(ifs,a2) and Uses(ifs,v) with v.varName="sh"
+117,118,119,120,122,125,126,128,130,131
+5000
+4 - AffectsStar
+assign a;
+Select a such that Affects*(85,a)
+87,88,89
+5000
+5 - AffectsStar
+assign a1,a2; if ifs;
+Select <a1,a2> such that Affects*(a1,a2) pattern ifs("c",_,_) such that Parent(ifs,a1)
+20 47,20 46,20 49
+5000
+6 - Pattern
+if ifs;
+Select ifs pattern ifs("u",_,_)
+23
+5000
+7 - AffectsStar
+assign a;
+Select a such that Affects*(104,a)
+101
+5000
+8 - AffectsStar
+assign a;
+Select a such that Affects*(24,a) and Affects*(a,39) and Affects*(32,a) and Affects*(a,50) and Affects*(a,51) and Affects*(a,52) and Affects*(a,53) and Affects*(a,55) and Affects*(a,57) and Affects*(a,58) and Affects*(a,79) and Affects*(a,80) and Affects*(a,81)
+38,39
+5000
+9 - AffectsStar
+assign a1,a2; while w;
+Select <a1,a2> such that Affects*(a1,a2) and Parent*(w,a1) pattern w("q",_)
+47 49,47 46,49 46,49 47,49 49,47 47
+5000
+10 - AffectsStar
+assign a1,a2; call c;
+Select <a1,a2> such that Follows(a1,c) and Affects*(a1,a2) and Follows(c,a2)
+
+5000
+11 - AffectsStar
+assign a1,a2; constant k;
+Select a1 such that Affects*(a1,a2) with a2.stmt#=k.value
+24,26,27,28,29,31,32,37,38,39,40,41,42,44,51,117,118,119,120,122
+5000
+12 - AffectsStar :: non existent progline
+assign a;
+Select a such that Affects(a,300)
+
+5000
+13 - AffectsStar, Pattern :: non existent while loop
+assign a1,a2; while w;
+Select a1 such that Affects(a1,a2) and Parent*(w,a2) pattern w("zh",_)
+
+5000

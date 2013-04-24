@@ -1,9 +1,2 @@
-assign a1; variable v; stmtLst sl, sl2; if ifs; while w; prog_line n;
-Select n with a1.stmt# = n
-
-
- 
-
- 
-
-
+assign a1, a2; variable v; stmtLst sl, sl2; if ifs; while w; prog_line n;
+Select a1 such that Affects(_, a2)
