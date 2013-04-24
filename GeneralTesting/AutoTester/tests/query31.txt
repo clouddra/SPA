@@ -275,6 +275,11 @@ assign a1, a2, a3, a4;
 Select a1 such that Affects*(a1, a2) and Affects*(a3, a4)
 1,10,102,103,104,106,108,110,113,114,115,13,17,18,2,24,25,26,27,28,32,37,41,43,49,53,55,56,58,59,64,65,67,7,70,75,76,80,83,86,87,9,91,94,97
 5000
+551 - AffectsStar ::
+assign a1, a2, a3, a4;
+Select a1 such that Affects*(a1, _) and Affects*(a3, a4)
+1,10,102,103,104,106,108,110,113,114,115,13,17,18,2,24,25,26,27,28,32,37,41,43,49,53,55,56,58,59,64,65,67,7,70,75,76,80,83,86,87,9,91,94,97
+5000
 56 - Multiple :: Modifies
 stmt s1, s2, s3; variable v1, v2, v3; constant c;
 Select <s1, v1, s2, v3> such that Modifies(s1, v1) and Modifies(s2, v2) and Modifies(s3, v3) with s1.stmt#=c.value and s2.stmt#=c.value
