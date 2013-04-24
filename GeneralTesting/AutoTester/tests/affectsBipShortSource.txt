@@ -1,11 +1,15 @@
-procedure Bill {	x = 5;
+procedure Bill {	x = 2;
 	call Mary;
-	y = x + 6;
+	y = x;
 	call John;
-	z = x * y + 2;}
-procedure Mary {y = x * 3 ;
+	w = x * y + z;}
+procedure Mary {y = x ;
 	call John;
-	z = x + y;}
+	w=5;}
 procedure John {	if i then {
-		x = x + z; }
-	else {y = x * y; }}
+		y = x + y;
+		call Jane;
+		z = 5;}
+	else {y = x + y;
+		call Jane;}}
+procedure Jane{z=x+y;}

@@ -1,0 +1,82 @@
+16
+cat: All
+1 - AffectsBip
+assign a;
+Select a such that AffectsBip(137,a)
+139,141,142,144,146,147
+5000
+2 - AffectsBip
+assign a;
+Select a such that AffectsBip(a,139)
+137,146
+5000
+3 - AffectsBip
+assign a;
+Select a such that AffectsBip(a,141)
+137,139,146,147,142
+5000
+4 - AffectsBip
+
+Select BOOLEAN such that AffectsBip(137,141)
+true
+5000
+5 - AffectsBip
+assign a;
+Select a such that AffectsBip(a,142)
+137
+5000
+6 - AffectsBip
+assign a;
+Select a such that AffectsBip(a,144)
+137,142,146,147
+5000
+7 - AffectsBip
+assign a;
+Select a such that AffectsBip(139,a)
+141,147
+5000
+8 - AffectsBip
+assign a;
+Select a such that AffectsBip(a,146)
+137,144,146
+5000
+9 - AffectsBip
+assign a;
+Select a such that AffectsBip(a,147)
+137,139,142,146
+5000
+10 - AffectsBip
+assign a;
+Select a such that AffectsBip(142,a)
+144,147
+5000
+11 - AffectsBip
+
+Select BOOLEAN such that AffectsBip(15,12)
+true
+5000
+12 - AffectsBip
+
+Select BOOLEAN such that AffectsBip(116,115)
+false
+5000
+13 - Pattern ::
+assign a;
+Select a pattern a("jb","hn")
+118
+5000
+14 - Pattern ::
+assign a;
+Select a pattern a("yy", "xx*33")
+142
+5000
+15 - FollowsStar ::
+
+Select BOOLEAN such that Follows* (_,1)
+false
+5000
+16 - Next ::
+stmt s1;
+Select s1 such that Next(2000000, s1)
+none
+5000

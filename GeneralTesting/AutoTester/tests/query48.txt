@@ -1,0 +1,22 @@
+16
+cat: All
+1 - Affects
+assign a1, a2;
+Select a1 such that Affects*(7,a1)
+
+5000
+2 - Affects
+assign a1, a2;
+Select a1 such that Affects*(a1, 7)
+
+5000
+5 - Affects
+assign a1, a2;
+Select a1 such that Affects*(a1,a2)
+
+5000
+6 - Affects
+assign a1, a2;
+Select a1 such that Affects*(a2,a1)
+
+5000

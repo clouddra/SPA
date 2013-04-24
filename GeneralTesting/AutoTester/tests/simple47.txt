@@ -1,0 +1,181 @@
+procedure America{
+	a=1;
+	b=2;
+	c=3;
+	d=4;
+	m=3+x;
+	if g then{
+		m=2;}
+	else{
+		k=1;}
+	e=(k+(o*v)+s+(o+(l+(m+a)-w)+(r+s)*m-j)-r-v);
+	f=d+r;
+	call Brazil;
+	u=a+(b*c)-d+(f+(g-(h*i)+j)*k-l+(m-n));}
+
+procedure Brazil{
+	a=0;
+	call China;}
+
+procedure China{
+	c=6;
+	while k{
+		call Denmark;}}
+
+procedure Denmark{
+	f=2+4-(u*d+r);}
+
+procedure England{
+	if c then{
+		d=m-(h+o);}
+	else {
+		while z{
+			r=w;
+			if u then{
+				c=b;
+				d=2;
+				t=3;
+				t=t+1;
+				z=t;
+				d=z;
+				if f then{
+					g=h+z;
+					q=(c*l)+w;
+					if t then{
+						n=s*(w-k)+(y*(z+a)*i-x);
+						r=1;}
+					else{
+						d=r;
+						s=z*3*(4+h);}}
+				else{
+					c=(q-e);
+					p=(p*(t*f)*(p-(j*m)*t)+(y+f+(c*p*d*c)+i)+v);
+					a=(c+o)-d;}}
+			else{
+				e=g*g-i;
+				b=1+3+5+7;}}}
+	q=h-b;
+	f=l;
+	while q{
+		z=o;
+		j=(f+(t+q)-(v*o)*d);
+		while j{
+			o=j;}}
+	s=3+p+x-f;
+	x=1+3+p+x+5;
+	y=1*3+p+x;
+	z=1*(3+p+x);
+	while k{
+		s=3+p+x-f;}
+	if i then{
+		a=f+g+(3+p+x);}
+	else{
+		d=(3+p+x);}
+	while s{
+		carrot = 0;
+		lime = 0;
+		while s{
+			carrot = 0;
+			lime = 0;
+			while s{
+				carrot = 0;
+				lime = 0;
+				while s{
+					carrot = 0;
+					lime = 0;
+					if t then{
+						while s{
+							carrot = 0;
+							lime = 0;
+							if t then{
+								while s{
+									carrot = 0;
+									lime = 0;
+									b=3+p+x+a;}}
+							else{
+								d=3+p+x;}}}
+					else{
+						d=3+p+x;}}}}}}
+procedure Finland{
+	h=a;
+	call Hungary;
+	if q then{
+		d=1;
+		if o then{
+			r=(d-d);
+			f=r;
+			y=r+i;}
+		else {
+			g=h;
+			r=1;}}
+	else {
+		h=b;
+		j=x+1;}
+	while k{
+		f=2;
+		y=ba+bb+bc;
+		ba=1;
+		call Germany;
+		bb=1;
+		if p then{
+			f=c;
+			while a{
+				p=0;}
+			c=3;
+			h=u;}
+		else{
+			u=4+f;}}}
+
+procedure Germany{
+	ba=3;
+	bb=2;}
+
+procedure Hungary{
+	h=a+b+c;}
+procedure India{
+	ba=0;
+	call Finland;
+	bb=2+7;
+	while lp{
+		call Finland;
+		z=bb;
+		bb=7;}}
+procedure Singapore{
+	hn=sg+467-(bj*tky)*hk-kl+70*(la-5+(7*213*(ny+(dnv-(sl-man)+90)*(74+jkt))*4-bk));
+	jb=hn;
+	tky=hn-34*7;
+	hn=357*trt-lnd+sg*(4-bk);
+	if sh then{
+		rio=(uk-fin);
+		vn=(sg+467*(vn-hk+jb*(tky-hk)*(bj*tky)+(uk+(wdc+jkt)+hn-(hn-rio)+54)*fin)*(id-dnv)-ny);
+		while sg{
+			ny=(sg+467);
+			jb=5;
+			while id{
+				sg=jb*(uk*(ms-rio)-(sg+(wdc*man+2*sl-man*(bk*bj)-sl)+hk+lnd)+trt)-sg;
+				while dnv{
+					trt=ams*(hn-(ny*(tky-hk)-hk-dnv-(id*hk*(234*(4545*123)-fin)+uk)+trt)+123)*tky+par;
+					hk=(par+ams);}}}}
+	else{
+		ny=par+ams;
+		bk=(par+ams);
+		hn=(uk*(tky-hk)+la);}
+	par=tky-hk;
+	tky=tky-hk+2;}
+procedure Xavier {
+	xx = 55;
+	call Yugoslavia;
+	yy = xx + 66;
+	call Zimbabwe;
+	zz = xx * yy + 22; }
+
+procedure Yugoslavia {
+	yy = xx*33;
+	call Zimbabwe;
+	zz = xx + yy; }
+
+procedure Zimbabwe {
+	if ii then {
+		xx = xx + zz; }
+	else {
+		yy = xx * yy; } }

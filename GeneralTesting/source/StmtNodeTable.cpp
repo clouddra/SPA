@@ -69,26 +69,38 @@ std::vector<int> StmtNodeTable::getStmtWithType(int nodeType){
 }
 
 int StmtNodeTable::getAST(int stmt){
+	if (stmt >= stmtNodeTable.size())
+		return -1;
 	return stmtNodeTable[stmt].getAST();
 }
 
 int StmtNodeTable::getCFG(int stmt){
+	if (stmt >= stmtNodeTable.size())
+		return -1;
 	return stmtNodeTable[stmt].getCFG();
 }
 
 int StmtNodeTable::getType(int stmt){
+	if (stmt >= stmtNodeTable.size())
+		return -1;
 	return stmtNodeTable[stmt].getType();
 }
 
 void StmtNodeTable::setAST(int stmt, int ast){
+	if (stmt >= stmtNodeTable.size())
+		return;
 	stmtNodeTable[stmt].setAST(ast);
 }
 
 void StmtNodeTable::setCFG(int stmt, int cfg){
+	if (stmt >= stmtNodeTable.size())
+		return;
 	stmtNodeTable[stmt].setCFG(cfg);
 }
 
 void StmtNodeTable::setType(int stmt, int type){
+	if (stmt >= stmtNodeTable.size())
+		return;
 	stmtNodeTable[stmt].setType(type);
 }
 

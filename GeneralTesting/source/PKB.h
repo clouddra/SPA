@@ -124,8 +124,11 @@ private:
 	std::vector<int> depthUp(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited);
 	std::vector<int> getAffectsTStart(int start);
 	std::vector<int> getAffectsTEnd(int end);
-	std::vector<int> depthUpT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::unordered_set<int> ignoreSet);
-	std::vector<int> depthDownT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::unordered_set<int> ignoreSet);
+
+	// Changing this 2 functions
+	std::vector<int> depthUpT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::vector<int> &ignoreVec);
+	std::vector<int> depthDownT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::vector<int> &ignoreVec);
+
 	std::vector<int> depthDownBip(int currStmt, int var, std::vector<int> visited, std::vector<int> branchIn);
 	std::vector<int> depthUpBip(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::vector<int> branchIn);
 	std::vector<int> depthDownBipT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::vector<int> branchIn, std::unordered_set<int> ignoreSet);

@@ -794,7 +794,7 @@ int QueryProcessor::evaluateFollows(bool T, bool para1IsNum, bool para1IsPlaceho
             }
         }
         else if (para2IsNum) {
-            if (para2IsPlaceholder) {
+            if (para1IsPlaceholder) {
                 temp = pkb.getFollows(para2Num);
                 if (temp.size() > 0)
                     return 0;

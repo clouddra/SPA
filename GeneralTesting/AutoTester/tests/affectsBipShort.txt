@@ -20,14 +20,14 @@ stmt s;
 Select s such that AffectsBip(11, s)
 5, 8
 5000
-6 - AffectsBip*::
-stmt s;
+7 - AffectsBip*::
+assign s;
 Select s such that AffectsBip*(1, s)
 11, 5, 6, 10, 8, 3
 5000
-6 - AffectsBip::
-stmt s;
-Select s such that AffectsBip(1, s)
+8 - AffectsBip::
+assign a;
+Select a such that AffectsBip(1, a)
 11, 5, 6, 10, 8, 3
 5000
 6 - AffectsBip::
@@ -49,4 +49,9 @@ Select s such that AffectsBip*(s, 8)
 stmt s;
 Select s such that AffectsBip(s, 8)
 1,6,10,11
+5000
+10 - AffectsStar ::
+assign a;
+Select a such that AffectsBip*(a,5) 
+
 5000

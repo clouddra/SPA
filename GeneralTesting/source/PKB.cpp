@@ -812,7 +812,10 @@ bool PKB::isUses(int stmt, std::string var) {
 }
 
 std::vector<int> PKB::getNext(int stmt) {
-    return cfg.getNext(stmt, stmtNodeTable.getCFG(stmt));
+	int temp = stmtNodeTable.getCFG(stmt);
+	if (temp == -1)
+		return std::vector<int>();
+    return cfg.getNext(stmt, temp);
 }
 
 std::vector<int> PKB::getNext() {
@@ -824,16 +827,24 @@ std::vector<int> PKB::getNext() {
         for (int j = first+1; j <= last; j++) {
             ret.push_back(j);
         }
+		if (getPrev(first).size() > 0)
+			ret.push_back(first);
     }
     return ret;
 }
 
 std::vector<int> PKB::getNextT(int stmt) {
-    return cfg.getNextT(stmt, stmtNodeTable.getCFG(stmt));
+	int temp = stmtNodeTable.getCFG(stmt);
+	if (temp == -1)
+		return std::vector<int>();
+    return cfg.getNextT(stmt, temp);
 }
 
 std::vector<int> PKB::getPrev(int stmt) {
-    return cfg.getPrev(stmt, stmtNodeTable.getCFG(stmt));
+	int temp = stmtNodeTable.getCFG(stmt);
+	if (temp == -1)
+		return std::vector<int>();
+    return cfg.getPrev(stmt, temp);
 }
 
 std::vector<int> PKB::getPrev() {
@@ -859,15 +870,24 @@ std::vector<int> PKB::getPrev() {
 }
 
 std::vector<int> PKB::getPrevT(int stmt) {
-    return cfg.getPrevT(stmt, stmtNodeTable.getCFG(stmt));
+	int temp = stmtNodeTable.getCFG(stmt);
+	if (temp == -1)
+		return std::vector<int>();
+    return cfg.getPrevT(stmt, temp);
 }
 
 bool PKB::isNext(int stmt1, int stmt2) {
-    return cfg.isNext(stmt1, stmtNodeTable.getCFG(stmt1), stmt2);
+	int temp = stmtNodeTable.getCFG(stmt1);
+	if (temp == -1)
+		return false;
+    return cfg.isNext(stmt1, temp, stmt2);
 }
 
 std::vector<int> PKB::getNextBip(int stmt) {
-    return cfg.getNextBip(stmt, stmtNodeTable.getCFG(stmt));
+	int temp = stmtNodeTable.getCFG(stmt);
+	if (temp == -1)
+		return std::vector<int>();
+    return cfg.getNextBip(stmt, temp);
 }
 
 std::vector<int> PKB::getNextBip() {
@@ -888,11 +908,17 @@ std::vector<int> PKB::getNextBip() {
 }
 
 std::vector<int> PKB::getNextBipT(int stmt) {
-    return cfg.getNextBipT(stmt, stmtNodeTable.getCFG(stmt));
+	int temp = stmtNodeTable.getCFG(stmt);
+	if (temp == -1)
+		return std::vector<int>();
+    return cfg.getNextBipT(stmt, temp);
 }
 
 std::vector<int> PKB::getPrevBip(int stmt) {
-    return cfg.getPrevBip(stmt, stmtNodeTable.getCFG(stmt));
+	int temp = stmtNodeTable.getCFG(stmt);
+	if (temp == -1)
+		return std::vector<int>();
+    return cfg.getPrevBip(stmt, temp);
 }
 
 std::vector<int> PKB::getPrevBip() {
@@ -918,7 +944,10 @@ std::vector<int> PKB::getPrevBip() {
 }
 
 std::vector<int> PKB::getPrevBipT(int stmt) {
-    return cfg.getPrevBipT(stmt, stmtNodeTable.getCFG(stmt));
+	int temp = stmtNodeTable.getCFG(stmt);
+	if (temp == -1)
+		return std::vector<int>();
+    return cfg.getPrevBipT(stmt, temp);
 }
 
 bool PKB::isNextBip(int stmt1, int stmt2) {
@@ -1585,7 +1614,10 @@ std::vector<int> PKB::getAffectsTStart(int start)
 	int var = modifiesTable.getModifiedBy(start)[0]; // An assignment statement will only modify 1 variable
 	std::unordered_set<int> varSet;
 	varSet.insert(var);
-	std::unordered_set<int> ignoreSet;
+
+	// Changing to vector
+	std::vector<int> ignoreVec(numOfStmts, -1);
+	// std::unordered_set<int> ignoreSet;
 
 	// Do not mark start as visited, in case "Affects(12, 12)"
 
@@ -1593,7 +1625,7 @@ std::vector<int> PKB::getAffectsTStart(int start)
 	std::vector<int> nextStmt = cfg.getNext(start, cfgIndex);
 	for (int i=0; i<(int)nextStmt.size(); i++)
 	{
-		std::vector<int> temp = depthDownT(nextStmt[i], varSet, visited, ignoreSet);
+		std::vector<int> temp = depthDownT(nextStmt[i], varSet, visited, ignoreVec);
 		toReturn.insert(toReturn.end(), temp.begin(), temp.end());
 	}
 
@@ -1604,7 +1636,7 @@ std::vector<int> PKB::getAffectsTStart(int start)
 	return finalReturn;
 }
 
-std::vector<int> PKB::depthDownT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::unordered_set<int> ignoreSet)
+std::vector<int> PKB::depthDownT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::vector<int> &ignoreVec)
 {
 	std::vector<int> toReturn;
 
@@ -1615,7 +1647,7 @@ std::vector<int> PKB::depthDownT(int currStmt, std::unordered_set<int> varSet, s
 	visited[currStmt] = 1; // Mark currStmt as visited
 
 	int nodeType = stmtNodeTable.getType(currStmt);
-	if (nodeType == Node::assignNode && ignoreSet.count(currStmt) == 0)
+	if (nodeType == Node::assignNode && ignoreVec[currStmt] == -1)
 	{			
 		int var = modifiesTable.getModifiedBy(currStmt)[0]; // An assignment statement will only modify 1 variable
 		std::vector<int> varsUsedByCurrStmt = usesTable.getUsedBy(currStmt);
@@ -1631,7 +1663,7 @@ std::vector<int> PKB::depthDownT(int currStmt, std::unordered_set<int> varSet, s
 				int numOfStmts = stmtNodeTable.getSize();
 				std::vector<int> temp(numOfStmts, -1);
 				visited = temp; // Reset all stmts to unvisited
-				ignoreSet.insert(currStmt); // Do not process this stmt next time
+				ignoreVec[currStmt] = 1; // Do not process this stmt next time
 				canErase = false; // We cannot remove the modified var in varSet
 				break;
 			}
@@ -1657,7 +1689,7 @@ std::vector<int> PKB::depthDownT(int currStmt, std::unordered_set<int> varSet, s
 	std::vector<int> nextStmt = cfg.getNext(currStmt, cfgIndex);
 	for (int i=0; i<(int)nextStmt.size(); i++)
 	{
-		std::vector<int> temp = depthDownT(nextStmt[i], varSet, visited, ignoreSet);
+		std::vector<int> temp = depthDownT(nextStmt[i], varSet, visited, ignoreVec);
 		toReturn.insert(toReturn.end(), temp.begin(), temp.end());
 	}
 
@@ -1679,7 +1711,10 @@ std::vector<int> PKB::getAffectsTEnd(int end)
 	// Multiple variables may be used in the "end" statement
 	std::vector<int> varVec = usesTable.getUsedBy(end);
 	std::unordered_set<int> varSet(varVec.begin(), varVec.end());
-	std::unordered_set<int> ignoreSet;
+
+	// Changing to vector
+	std::vector<int> ignoreVec(numOfStmts, -1);
+	// std::unordered_set<int> ignoreSet;
 
 	// Do not mark end as visited, in case "Affects(12, 12)"
 
@@ -1687,7 +1722,7 @@ std::vector<int> PKB::getAffectsTEnd(int end)
 	std::vector<int> prevStmt = cfg.getPrev(end, cfgIndex);
 	for (int i=0; i<(int)prevStmt.size(); i++)
 	{
-		std::vector<int> temp = depthUpT(prevStmt[i], varSet, visited, ignoreSet);
+		std::vector<int> temp = depthUpT(prevStmt[i], varSet, visited, ignoreVec);
 		toReturn.insert(toReturn.end(), temp.begin(), temp.end());
 	}
 
@@ -1698,7 +1733,7 @@ std::vector<int> PKB::getAffectsTEnd(int end)
 	return finalReturn;
 }
 
-std::vector<int> PKB::depthUpT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::unordered_set<int> ignoreSet)
+std::vector<int> PKB::depthUpT(int currStmt, std::unordered_set<int> varSet, std::vector<int> visited, std::vector<int> &ignoreVec)
 {
 	std::vector<int> toReturn;
 
@@ -1718,7 +1753,7 @@ std::vector<int> PKB::depthUpT(int currStmt, std::unordered_set<int> varSet, std
 		{		
 			varSet.erase(var); // This modified variable will be taken out of varSet
 
-			if (ignoreSet.count(currStmt) == 0)
+			if (ignoreVec[currStmt] == -1)
 			{
 				toReturn.push_back(currStmt);
 				// Add in the vars used by currStmt to varSet
@@ -1729,7 +1764,7 @@ std::vector<int> PKB::depthUpT(int currStmt, std::unordered_set<int> varSet, std
 				int numOfStmts = stmtNodeTable.getSize();
 				std::vector<int> temp(numOfStmts, -1);
 				visited = temp; // Reset all stmts to unvisited
-				ignoreSet.insert(currStmt); // Do not process this stmt next time
+				ignoreVec[currStmt] = 1; // Do not process this stmt next time
 			}
 		}
 	}
@@ -1749,7 +1784,7 @@ std::vector<int> PKB::depthUpT(int currStmt, std::unordered_set<int> varSet, std
 	std::vector<int> prevStmt = cfg.getPrev(currStmt, cfgIndex);
 	for (int i=0; i<(int)prevStmt.size(); i++)
 	{
-		std::vector<int> temp = depthUpT(prevStmt[i], varSet, visited, ignoreSet);
+		std::vector<int> temp = depthUpT(prevStmt[i], varSet, visited, ignoreVec);
 		toReturn.insert(toReturn.end(), temp.begin(), temp.end());
 	}
 

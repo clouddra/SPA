@@ -723,3 +723,18 @@ procedure p; constant c;
 Select p such that Contains* (p, c) with c.value=1
 testIf, testBoth
 5000
+130 - NextStar ::
+prog_line n;
+Select n such that Next*(_,n)
+
+5000
+131 - NextStar ::
+prog_line n;
+Select n such that Next*(1,n)
+
+5000
+132 - Next ::
+prog_line n;
+Select n such that Next(1,n)
+2
+5000
