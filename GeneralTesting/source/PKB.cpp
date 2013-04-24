@@ -2205,6 +2205,29 @@ std::vector<int> PKB::depthUpBip(int currStmt, std::unordered_set<int> varSet, s
 						visited[k] = -1;
 
 					int branchToStmt = branchIn.back();
+
+					int callNodeAstInd = stmtNodeTable.getAST(branchToStmt);
+					int procInd = ast.getNode(callNodeAstInd).getValue();
+					if (procInd != currProcInd) // The prev call stmt does not tally to curr proc
+					{
+						int dummyCfgNodeInd = procTable.getCFGEnd(procInd);
+						std::vector<int> lastStmtVec = cfg.getPrev(-1, dummyCfgNodeInd);
+						// Does not work if have multiple ending call stmts
+						for (int k=0; k<(int)lastStmtVec.size(); k++)
+						{
+							if (stmtNodeTable.getType(lastStmtVec[i]) == Node::callNode)
+							{
+								int callNodeAstInd2 = stmtNodeTable.getAST(lastStmtVec[i]);
+								int procInd2 = ast.getNode(callNodeAstInd2).getValue();
+								if (procInd2 == currProcInd) // Matching procedure
+								{
+									branchIn.push_back(lastStmtVec[i]);
+									branchToStmt = branchIn.back();
+								}
+							}
+						}
+					}
+					
 					branchIn.pop_back();
 					std::vector<int> temp = depthUpBip(branchToStmt, varSet, visited, branchIn);
 					toReturn.insert(toReturn.end(), temp.begin(), temp.end());
