@@ -568,7 +568,7 @@ bool Threading::processAffectsPara2IsPlaceholderDriver(std::vector<int>& temp, s
 	boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 	std::vector<std::vector<int>> results((int)para1Val.size());
     for (int i = 0; i < (int)para1Val.size(); i++) {
-		boost::function<void()> f = boost::bind(&Threading::processAffectsSameVarStart, this, boost::ref(results.at(i)), para1Val, boost::ref(pkb), i);
+		boost::function<void()> f = boost::bind(&Threading::processAffectsPara2IsPlaceholder, this, boost::ref(results.at(i)), para1Val, boost::ref(pkb), i);
 		this->threadPool.enqueue(f);
     }
 	for (int i = 0; i < (int)para1Val.size(); i++) {
@@ -710,7 +710,7 @@ void Threading::processAffectsTPara1IsPlaceholder(std::vector<int>& result, std:
 // Affects*(a1, _)
 void Threading::processAffectsTPara2IsPlaceholder(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i) {
 	std::vector<int> temp2;
-	temp2 = pkb.getAffectsTStartAPI(para1Val[i]);
+	temp2 = pkb.getAffectsStartAPI(para1Val[i]);
     if (temp2.size() != 0)
         result.push_back(para1Val[i]);
 	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
@@ -742,7 +742,7 @@ bool Threading::processAffectsTPara2IsPlaceholderDriver(std::vector<int>& temp, 
 	boost::interprocess::named_semaphore sem(boost::interprocess::create_only_t(), SEMNAME, 0);
 	std::vector<std::vector<int>> results((int)para1Val.size());
     for (int i = 0; i < (int)para1Val.size(); i++) {
-		boost::function<void()> f = boost::bind(&Threading::processAffectsTSameVarStart, this, boost::ref(results.at(i)), para1Val, boost::ref(pkb), i);
+		boost::function<void()> f = boost::bind(&Threading::processAffectsTPara2IsPlaceholder, this, boost::ref(results.at(i)), para1Val, boost::ref(pkb), i);
 		this->threadPool.enqueue(f);
     }
 	for (int i = 0; i < (int)para1Val.size(); i++) {
