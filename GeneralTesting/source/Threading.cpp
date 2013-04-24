@@ -710,7 +710,7 @@ void Threading::processAffectsTPara1IsPlaceholder(std::vector<int>& result, std:
 // Affects*(a1, _)
 void Threading::processAffectsTPara2IsPlaceholder(std::vector<int>& result, std::vector<int>& para1Val, PKB& pkb, int i) {
 	std::vector<int> temp2;
-	temp2 = pkb.getAffectsTStartAPI(para1Val[i]);
+	temp2 = pkb.getAffectsStartAPI(para1Val[i]);
     if (temp2.size() != 0)
         result.push_back(para1Val[i]);
 	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);
