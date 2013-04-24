@@ -1828,12 +1828,19 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
         // Affects(_, a)
         else if (para1IsPlaceholder) {
             std::vector<int> para2Val = stringVecToIntVec(resultStore.getValuesFor(para2));
+
+			#ifndef ENABLE_THREADING
             for (int i = 0; i < (int)para2Val.size(); i++) {
                 std::vector<int> temp2;
                 temp2 = pkb.getAffectsEndAPI(para2Val[i]);
                 if (temp2.size() != 0)
                     temp.push_back(para2Val[i]);
             }
+			#else
+			Threading threading;
+			if (!threading.processAffectsPara1IsPlaceholderDriver(temp, para2Val, pkb)) return -1;
+			#endif
+			
             toStore = intVecToStringVec(temp);
             int ret = resultStore.insertResult(para2, toStore);
             if (ret == -1) {  // Exit cond
@@ -1843,13 +1850,20 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
         // Affects(a, _)
         else if (para2IsPlaceholder) {
             std::vector<int> para1Val = stringVecToIntVec(resultStore.getValuesFor(para1));
+
+			#ifndef ENABLE_THREADING
             for (int i = 0; i < (int)para1Val.size(); i++) {
                 std::vector<int> temp2;
                 temp2 = pkb.getAffectsStartAPI(para1Val[i]);
                 if (temp2.size() != 0)
                     temp.push_back(para1Val[i]);
             }
-            toStore = intVecToStringVec(temp);
+			#else
+			Threading threading;
+			if (!threading.processAffectsPara2IsPlaceholderDriver(temp, para1Val, pkb)) return -1;
+			#endif
+
+			toStore = intVecToStringVec(temp);
             int ret = resultStore.insertResult(para1, toStore);
             if (ret == -1) {  // Exit cond
                 return -1;
@@ -2017,13 +2031,21 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
         }
         // Affects*(_, a)
         else if (para1IsPlaceholder) {
+			
             std::vector<int> para2Val = stringVecToIntVec(resultStore.getValuesFor(para2));
+
+			#ifndef ENABLE_THREADING
             for (int i = 0; i < (int)para2Val.size(); i++) {
                 std::vector<int> temp2;
                 temp2 = pkb.getAffectsTEndAPI(para2Val[i]);
                 if (temp2.size() != 0)
                     temp.push_back(para2Val[i]);
             }
+			#else
+			Threading threading;
+			if (!threading.processAffectsTPara1IsPlaceholderDriver(temp, para2Val, pkb)) return -1;
+			#endif
+
             toStore = intVecToStringVec(temp);
             int ret = resultStore.insertResult(para2, toStore);
             if (ret == -1) {  // Exit cond
@@ -2033,12 +2055,19 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
         // Affects*(a, _)
         else if (para2IsPlaceholder) {
             std::vector<int> para1Val = stringVecToIntVec(resultStore.getValuesFor(para1));
+
+			#ifndef ENABLE_THREADING
             for (int i = 0; i < (int)para1Val.size(); i++) {
                 std::vector<int> temp2;
                 temp2 = pkb.getAffectsStartAPI(para1Val[i]);
                 if (temp2.size() != 0)
                     temp.push_back(para1Val[i]);
             }
+			#else
+			Threading threading;
+			if (!threading.processAffectsTPara2IsPlaceholderDriver(temp, para1Val, pkb)) return -1;
+			#endif
+
             toStore = intVecToStringVec(temp);
             int ret = resultStore.insertResult(para1, toStore);
             if (ret == -1) {  // Exit cond
@@ -2077,6 +2106,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
 				Threading threading;
 				if(!threading.processAffectsTSameVarDriver(temp, para1Val, pkb)) return -1;
 				#endif
+
                 toStore = intVecToStringVec(temp);
                 int ret = resultStore.insertResult(para1, toStore);
                 if (ret == -1) {  // Exit cond
