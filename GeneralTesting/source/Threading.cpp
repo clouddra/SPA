@@ -700,7 +700,7 @@ bool Threading::processAffectsTSameVarDriver(std::vector<int>& temp, std::vector
 // Affects*(_, a2)
 void Threading::processAffectsTPara1IsPlaceholder(std::vector<int>& result, std::vector<int>& para2Val, PKB& pkb, int i) {
 	std::vector<int> temp2;
-    temp2 = pkb.getAffectsTEndAPI(para2Val[i]);
+    temp2 = pkb.getAffectsEndAPI(para2Val[i]);
     if (temp2.size() != 0)
         result.push_back(para2Val[i]);
 	boost::interprocess::named_semaphore sem(boost::interprocess::open_only_t(), SEMNAME);

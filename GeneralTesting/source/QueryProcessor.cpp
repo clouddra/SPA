@@ -2037,7 +2037,7 @@ int QueryProcessor::evaluateAffects(bool T, bool para1IsNum, bool para1IsPlaceho
 			#ifndef ENABLE_THREADING
             for (int i = 0; i < (int)para2Val.size(); i++) {
                 std::vector<int> temp2;
-                temp2 = pkb.getAffectsTEndAPI(para2Val[i]);
+                temp2 = pkb.getAffectsEndAPI(para2Val[i]);
                 if (temp2.size() != 0)
                     temp.push_back(para2Val[i]);
             }
@@ -4196,7 +4196,7 @@ void QueryProcessor::processQuery(PKB& pkb) {
                             }
 
                             std::vector<std::vector<std::string>> toStoreTuple;
-                            if (synoType == DeclarationTable::call_) {
+                            if (synoType == DeclarationTable::call_ && proc1) {
                                 if (synoType2 == DeclarationTable::call_) {
                                     toStore = resultStore.getValuesFor(syno);
                                     std::vector<std::vector<std::string>> toStoreTuple;
@@ -4227,7 +4227,7 @@ void QueryProcessor::processQuery(PKB& pkb) {
                                         return;
                                 }
                             }
-                            else if (synoType2 == DeclarationTable::call_) {
+                            else if (synoType2 == DeclarationTable::call_ && proc2) {
                                 std::vector<std::string> holder = resultStore.getValuesFor(syno);
                                 for (int i = 0; i < (int)holder.size(); i++) {
                                     std::vector<int> tempVec = pkb.getCallingStmts(holder[i]);
