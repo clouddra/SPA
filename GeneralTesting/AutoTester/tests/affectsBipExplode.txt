@@ -2,11 +2,11 @@
 cat: All Category
 1 - Affects::
 stmt s, s1;
-Select <s1> such that Affects(s1, _)
+Select s1 such that Affects(s1, _)
 none
 5000
 2 - Affects*::
 stmt s, s1;
-Select <s1> such that Affects*(s1, _)
+Select s1 such that Affects*(1, s1)
 none
-5000
+30000

@@ -2208,6 +2208,7 @@ std::vector<int> PKB::depthUpBip(int currStmt, std::unordered_set<int> varSet, s
 					branchIn.pop_back();
 					std::vector<int> temp = depthUpBip(branchToStmt, varSet, visited, branchIn);
 					toReturn.insert(toReturn.end(), temp.begin(), temp.end());
+					return toReturn; // Must return straight since branching back
 				}
 			}
 		}
@@ -2660,6 +2661,7 @@ std::vector<int> PKB::depthUpBipT(int currStmt, std::unordered_set<int> varSet, 
 					branchIn.pop_back();
 					std::vector<int> temp = depthUpBipT(branchToStmt, varSet, visited, branchIn, ignoreSet);
 					toReturn.insert(toReturn.end(), temp.begin(), temp.end());
+					return toReturn; // Must return straight since branching back
 				}
 			}
 		}
