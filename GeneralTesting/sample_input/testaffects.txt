@@ -1,2 +1,2 @@
 assign a1, a2, a3; stmt s,s1,s2,s3; prog_line n; 
-Select s1 such that Affects*(s3,s2) and Affects*(s2,81) and Affects*(s1,s2) with s3.stmt#=n and n = 67
+Select s3 with s3.stmt#=n
